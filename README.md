@@ -31,7 +31,7 @@ Restaurant booking app
 
 `/admin/bookings`         Admin/Staff (all bookings across brand)
 
-## Page Details
+# Page Details
 
 ## AUTH
 

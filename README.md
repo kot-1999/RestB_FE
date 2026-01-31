@@ -5,21 +5,30 @@ Restaurant booking app
 ## Pages overview
 
 `/auth/login`             User, Admin, Staff
+
 `/auth/register`          User, Admin, Staff
+
 `/auth/forgotPassword`
 
 
 `/restaurants`            User (browse all restaurant locations)
+
 `/restaurants/:id`        User (view & book a specific restaurant)
+
 `/brands/:id`             User (view brand info + all its restaurants)
 
 `/profile`                User (profile, settings)
+
 `/profile/bookings`       User (own bookings)
 
 `/admin`                  Admin/Staff (dashboard)
+
 `/admin/brand`            Admin/Staff (manage brand info)
+
 `/admin/restaurants`      Admin (manage all restaurants under the brand)
+
 `/admin/restaurants/:id`  Admin (restaurant settings, booking rules, employees)
+
 `/admin/bookings`         Admin/Staff (all bookings across brand)
 
 ## Page Details

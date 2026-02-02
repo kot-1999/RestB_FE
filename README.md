@@ -1,4 +1,4 @@
-# RestB_FE - FRONT END
+# RestB - FRONT END
 Restaurant booking app
 
 

@@ -1,4 +1,4 @@
-Code of Conduct for RestB - FRONT END
+Code of Conduct for RestB
 
 Introduction
 This Code of Conduct outlines the standards of expected behaviour and ethical guidelines for all members involved in RestB. We strive to create an environment that fosters respect, inclusivity, and professionalism. All participants must adhere to these rules to ensure a positive and productive experience.
@@ -23,13 +23,13 @@ Handle confidential information with care and respect the privacy of others, inc
 2. Team Collaboration and Participation
 
 2.1 Communication Standards
-- Primary channels: [specify: e.g., Discord, Slack, WhatsApp]
 - Response time: All team members should respond to messages within 48 hours
-- Meeting schedule: [specify frequency: e.g., Stand-ups every Monday and Thursday]
+- Meeting schedule: Weekly team meetings (day and time to be confirmed by team lead)
+- Meeting format: In-person or online will be determined by the team lead
+- Absences must be communicated at least 24 hours in advance when possible
 
 2.2 Attendance Requirements
-- Minimum 80% attendance at scheduled team meetings required
-- Absences must be communicated at least 24 hours in advance when possible
+- Minimum 80% attendance at scheduled team meetings (online/offline )required
 - Repeated absences without valid reason may constitute a breach of conduct
 
 2.3 Work Contribution
@@ -118,7 +118,7 @@ Project Team Leader: Oleksandr Kashytskyi
 
 Team Members:
 - Oleksandr Kashytskyi
-- Wassim Khan
+- Muhammad Wasim Khan
 - Stephen Lyne
 - America Bernal-Hluz
 - Ravula Bhavya Sree
@@ -128,13 +128,13 @@ Date: 30/01/2026
 **Signatures:**
 All team members confirm their understanding and acceptance of this Code of Conduct.
 
-Oleksandr Kashytskyi -  Date: _________
+Oleksandr Kashytskyi -  Date: February 3, 2026
 
 
-Wassim Khan - Date: _________
+Muhammad Wasim Khan - Date: February 3, 2026
 
 
-Stephen Lyne - Date: _________
+Stephen Lyne - Date: Febraury 3, 2026
 
 
 America Bernal Hluz - Date: February 2, 2026

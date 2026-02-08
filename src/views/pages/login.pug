@@ -1,0 +1,35 @@
+doctype html
+html(lang="en")
+  head
+    meta(charset="UTF-8")
+    meta(name="viewport", content="width=device-width, initial-scale=1.0")
+    title Login - RestB
+    link(rel="stylesheet", href="/css/style.css")
+  
+  body
+    header
+      include ../partials/header.pug
+    
+    main
+      .login-container
+        .login-form
+          h2 Login to RestB
+          
+          form
+            .form-group
+              label(for="email") Email
+              input(type="email" id="email" name="email" required)
+            
+            .form-group
+              label(for="password") Password
+              input(type="password" id="password" name="password" required)
+            
+            button(type="submit" class="login-submit") Login
+            
+            .login-links
+              a(href="/") Back to Home
+    
+    include ../partials/footer.pug
+    
+    script(src="/js/main.js")
+    script(src="/js/login.js")

@@ -1,6 +1,142 @@
-# RestB - FRONT END
-Restaurant booking app
+# RestB Frontend
 
+A modern frontend application built with Pug templating, compiled to static HTML for deployment.
+
+## Architecture
+
+This frontend is designed to be completely independent from the backend, communicating only through REST APIs.
+
+### Build Process
+
+- **Build Time**: Node.js compiles Pug templates into static HTML
+- **Runtime**: Browser serves static HTML, CSS, and JavaScript
+- **Communication**: JavaScript communicates with backend via HTTP APIs (fetch/axios)
+
+### Directory Structure
+
+```
+RestB_FE/
+├── src/
+│   ├── views/
+│   │   ├── layouts/          # Base layouts
+│   │   │   └── base.pug
+│   │   ├── pages/            # Individual pages
+│   │   │   ├── index.pug
+│   │   │   └── about.pug
+│   │   └── partials/         # Reusable components
+│   │       ├── header.pug
+│   │       └── footer.pug
+│   └── assets/
+│       ├── css/
+│       │   └── style.css
+│       └── js/
+│           └── main.js
+├── dist/                     # Built static files (deployable)
+├── package.json
+└── README.md
+```
+
+## Getting Started
+
+### Prerequisites
+
+- Node.js (for build process only)
+- npm
+
+### Installation
+
+```bash
+npm install
+```
+
+### Build Commands
+
+```bash
+# Build the static site
+npm run build
+
+# Clean the dist directory
+npm run clean
+
+# Compile Pug templates only
+npm run compile-pug
+
+# Copy assets only
+npm run copy-assets
+
+# Build and serve locally for development
+npm run dev
+
+# Build with watch mode for development
+npm run build:watch
+```
+
+### Development
+
+1. Make changes to Pug templates in `src/views/`
+2. Update CSS in `src/assets/css/`
+3. Update JavaScript in `src/assets/js/`
+4. Run `npm run build` to compile changes
+5. Or use `npm run dev` for automatic rebuilding and serving
+
+## Deployment
+
+Only the `dist/` folder needs to be deployed. This contains:
+- Static HTML files (compiled from Pug)
+- CSS files
+- JavaScript files
+
+The `dist/` folder can be deployed to any static hosting service:
+- Netlify
+- Vercel
+- GitHub Pages
+- AWS S3 + CloudFront
+- etc.
+
+## API Communication
+
+The frontend communicates with the backend through REST APIs. Configure the backend URL in `src/assets/js/main.js`:
+
+```javascript
+const API = {
+    baseURL: 'http://localhost:3000/api', // Update to your backend URL
+    // ... API methods
+};
+```
+
+## Key Concepts
+
+### Node.js Usage
+- **Required**: For build process (Pug compilation)
+- **Not Required**: For runtime (browser serves static files)
+
+### Express Usage
+- **Not Used**: Frontend is completely static
+- **Backend Only**: Express runs in separate RestB_BE repository
+
+### Pug Compilation
+- Templates are compiled to HTML during build
+- No server-side rendering
+- Static HTML is served directly to browsers
+
+## Features
+
+- ✅ Pug templating with layouts and partials
+- ✅ Responsive CSS design
+- ✅ API integration utilities
+- ✅ Build process with watch mode
+- ✅ Static site generation
+- ✅ Separate frontend/backend architecture
+
+## Browser Support
+
+- Modern browsers (Chrome, Firefox, Safari, Edge)
+- No server-side requirements
+- Static file serving only
+
+---
+
+# Restaurant Booking App Pages
 
 ## Pages overview
 

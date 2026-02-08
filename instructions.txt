@@ -1,0 +1,90 @@
+RestB Frontend - Quick Start Guide
+=====================================
+
+RUN & BUILD COMMANDS
+-------------------
+
+npm install          # Install dependencies (run once)
+npm run build        # Build static site
+npm run dev          # Build and serve locally at http://localhost:3000
+npm run devmon       # Build, serve, and watch for changes ( I ( Wasim ) use this )
+npm run clean        # Clean dist directory
+npm run build:watch  # Build with auto-rebuild on file changes
+
+HOW IT WORKS
+-------------
+
+1. BUILD TIME (Node.js required):
+   - Pug templates (.pug files) are compiled into HTML
+   - CSS and JavaScript are copied as-is
+   - Everything goes into 'dist/' folder
+
+2. RUNTIME (Node.js NOT required):
+   - Browser serves static files from 'dist/'
+   - No server-side rendering
+   - JavaScript communicates with backend via REST APIs
+
+DIRECTORY STRUCTURE
+-------------------
+
+src/
+├── views/           # All Pug templates
+│   ├── layouts/     # Base layouts
+│   ├── pages/       # Page templates
+│   └── partials/    # Reusable components (header, footer)
+├── assets/
+│   ├── css/         # CSS files
+│   └── js/          # JavaScript files
+
+dist/                # Built files (deploy this folder)
+├── index.html        # Root landing page
+├── pages/           # All other pages
+└── css/, js/        # Assets
+
+HOW TO CREATE A NEW PAGE
+------------------------
+
+1. CREATE PUG FILE:
+   - Copy src/views/pages/index.pug to src/views/pages/yourpage.pug
+   - Update title and content
+   - Use include for header/footer: include ../partials/header.pug
+
+2. CREATE JAVASCRIPT:
+   - Create src/assets/js/yourpage.js
+   - Add page-specific functionality
+   - Include in your Pug: script(src="/js/yourpage.js")
+
+3. BUILD:
+   - Run npm run build
+   - Pages go to dist/pages/yourpage.html
+
+4. ACCESS:
+   - Visit http://localhost:3000/pages/yourpage.html
+
+DEVELOPMENT WORKFLOW
+-------------------
+
+1. START DEVELOPMENT:
+   npm run devmon
+   # Builds project, serves at localhost:3000, watches for changes
+
+2. WATCHED FOLDERS:
+   - src/          # All Pug templates
+   - src/assets/    # CSS and JavaScript files  
+   - dist/          # Built files
+
+3. AUTO-REBUILD:
+   - Any change to .pug, .css, .js, or .html files
+   - Automatically rebuilds and refreshes browser
+
+EXAMPLE: Creating Dashboard Page
+-----------------------------
+
+1. cp src/views/pages/index.pug src/views/pages/dashboard.pug
+2. Edit src/views/pages/dashboard.pug with dashboard content
+3. Create src/assets/js/dashboard.js
+4. Add script(src="/js/dashboard.js") to dashboard.pug
+5. npm run build
+6. Visit http://localhost:3000/pages/dashboard.html
+
+That's it!

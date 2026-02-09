@@ -102,6 +102,41 @@ main {
   color: #2c3e50;
 }
 
+/* User type selector */
+.user-type-selector {
+  margin-bottom: 2rem;
+}
+
+.user-type-tabs {
+  display: flex;
+  gap: 0.5rem;
+  margin-bottom: 1.5rem;
+}
+
+.user-type-tab {
+  flex: 1;
+  padding: 0.75rem 1rem;
+  border: 2px solid #ddd;
+  background: white;
+  color: #666;
+  border-radius: 4px;
+  font-size: 0.9rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.user-type-tab:hover {
+  border-color: #3498db;
+  color: #3498db;
+}
+
+.user-type-tab.active {
+  background: #3498db;
+  border-color: #3498db;
+  color: white;
+}
+
 .form-group {
   margin-bottom: 1.5rem;
 }

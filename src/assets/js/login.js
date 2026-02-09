@@ -5,17 +5,52 @@ document.addEventListener('DOMContentLoaded', function() {
     // Only run on login page
     if (!document.querySelector('.login-form')) return;
     
+    // Initialize user type tabs
+    initializeUserTypeTabs();
+    
+    // Initialize form submission
     const loginForm = document.querySelector('.login-form form');
     if (loginForm) {
         loginForm.addEventListener('submit', handleLogin);
     }
 });
 
-function handleLogin(e) {
+// Initialize user type selection tabs
+function initializeUserTypeTabs() {
+    const tabs = document.querySelectorAll('.user-type-tab');
+    const userTypeInput = document.getElementById('userType');
+    
+    tabs.forEach(tab => {
+        tab.addEventListener('click', function() {
+            // Remove active class from all tabs
+            tabs.forEach(t => t.classList.remove('active'));
+            
+            // Add active class to clicked tab
+            this.classList.add('active');
+            
+            // Update hidden input value
+            const userType = this.getAttribute('data-type');
+            userTypeInput.value = userType;
+            
+            // Update form title
+            const formTitle = document.querySelector('.login-form h2');
+            if (userType === 'partner') {
+                formTitle.textContent = 'Partner Login - RestB';
+            } else {
+                formTitle.textContent = 'Customer Login - RestB';
+            }
+            
+            console.log('User type selected:', userType);
+        });
+    });
+}
+
+async function handleLogin(e) {
     e.preventDefault();
     
     const email = document.getElementById('email').value;
     const password = document.getElementById('password').value;
+    const userType = document.getElementById('userType').value;
     
     // Validation
     if (!email || !password) {
@@ -31,12 +66,72 @@ function handleLogin(e) {
     // Show loading state
     showLoading();
     
-    // Here you would normally send to backend API
-    setTimeout(() => {
-        console.log('Login attempt:', { email, password });
+    try {
+        // Get API configuration
+        const config = window.RestBConfig.getConfig();
+        const apiUrl = `${config.apiUrl}/api/${config.apiVersion}/auth/login`;
+        
+        console.log('Attempting login for:', { email, userType, apiUrl });
+        
+        // Prepare login data
+        const loginData = {
+            email: email,
+            password: password,
+            userType: userType // 'user' for customer, 'partner' for partner
+        };
+        
+        // Send login request to backend
+        const response = await fetch(apiUrl, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(loginData),
+            timeout: config.timeout
+        });
+        
+        const result = await response.json();
+        
+        if (response.ok) {
+            // Login successful
+            console.log('Login successful:', result);
+            
+            // Store auth token (if provided)
+            if (result.token) {
+                localStorage.setItem('restb_token', result.token);
+            }
+            
+            // Store user info
+            if (result.user) {
+                localStorage.setItem('restb_user', JSON.stringify(result.user));
+            }
+            
+            showSuccess('Login successful! Redirecting...');
+            
+            // Redirect based on user type
+            setTimeout(() => {
+                if (userType === 'partner') {
+                    // Redirect to partner dashboard
+                    window.location.href = '/pages/admin.html';
+                } else {
+                    // Redirect to customer profile or home
+                    window.location.href = '/index.html';
+                }
+            }, 1500);
+            
+        } else {
+            // Login failed
+            console.error('Login failed:', result);
+            showError(result.message || 'Login failed. Please check your credentials.');
+        }
+        
+    } catch (error) {
+        console.error('Login error:', error);
         hideLoading();
-        showSuccess('Login functionality would connect to backend API');
-    }, 1000);
+        showError('Network error. Please check your connection and try again.');
+    }
+    
+    hideLoading();
 }
 
 function isValidEmail(email) {
@@ -44,30 +139,37 @@ function isValidEmail(email) {
 }
 
 function showError(message) {
-    // Remove existing error messages
-    const existingError = document.querySelector('.error-message');
-    if (existingError) existingError.remove();
+    // Remove existing messages
+    removeMessages();
     
     const errorDiv = document.createElement('div');
     errorDiv.className = 'error-message';
     errorDiv.textContent = message;
-    errorDiv.style.cssText = 'color: #e74c3c; margin-top: 1rem; padding: 0.5rem; background: #fdf2f2; border-radius: 4px;';
+    errorDiv.style.cssText = 'color: #e74c3c; margin-top: 1rem; padding: 0.5rem; background: #fdf2f2; border-radius: 4px; border: 1px solid #f5c6cb;';
     
     const form = document.querySelector('.login-form form');
     form.appendChild(errorDiv);
 }
 
 function showSuccess(message) {
-    const existingSuccess = document.querySelector('.success-message');
-    if (existingSuccess) existingSuccess.remove();
+    // Remove existing messages
+    removeMessages();
     
     const successDiv = document.createElement('div');
     successDiv.className = 'success-message';
     successDiv.textContent = message;
-    successDiv.style.cssText = 'color: #27ae60; margin-top: 1rem; padding: 0.5rem; background: #f0f9f4; border-radius: 4px;';
+    successDiv.style.cssText = 'color: #27ae60; margin-top: 1rem; padding: 0.5rem; background: #f0f9f4; border-radius: 4px; border: 1px solid #c3e6cb;';
     
     const form = document.querySelector('.login-form form');
     form.appendChild(successDiv);
+}
+
+function removeMessages() {
+    const existingError = document.querySelector('.error-message');
+    if (existingError) existingError.remove();
+    
+    const existingSuccess = document.querySelector('.success-message');
+    if (existingSuccess) existingSuccess.remove();
 }
 
 function showLoading() {

@@ -9,8 +9,8 @@
     "compile-pug": "pug src/views/ --out dist/views/ --basedir src/views/",
     "copy-assets": "cp -r src/assets/ dist/assets/",
     "create-root-index": "cp dist/views/pages/index.html dist/index.html",
-    "dev": "npm run build && npx serve dist -p 3000",
-    "devmon": "npm run build && (npm run watch & npx serve dist -p 3000)",
+    "dev": "npm run build && npx serve dist -p 3055",
+    "devmon": "npm run build && (npm run watch & npx serve dist -p 3055)",
     "build:watch": "npm run build && npm run watch",
     "watch": "nodemon --watch src --watch src/assets --watch dist --ext pug,css,js,html --exec 'npm run build'"
   },

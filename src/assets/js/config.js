@@ -20,7 +20,7 @@ const backends = {
 // Main configuration - just change this value!
 const config = {
     // CHANGE THIS to switch backends: 'github', 'local', or 'production'
-    usebackend: 'github',
+    usebackend: 'local', // Use GitHub Codespace backend
     
     // Auto-populated based on usebackend
     get current() {

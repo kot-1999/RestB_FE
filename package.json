@@ -1,0 +1,30 @@
+{
+  "name": "restb-frontend",
+  "version": "1.0.0",
+  "description": "Frontend for RestB application using Pug templating",
+  "main": "index.js",
+  "scripts": {
+    "build": "npm run clean && npm run compile-pug && npm run copy-assets && npm run create-root-index",
+    "clean": "rm -rf dist",
+    "compile-pug": "pug src/views/ --out dist/ --basedir src/views/",
+    "copy-assets": "cp -r src/assets/ dist/",
+    "create-root-index": "cp dist/pages/index.html dist/index.html",
+    "dev": "npm run build && npx serve dist -p 3000",
+    "devmon": "npm run build && (npm run watch & npx serve dist -p 3000)",
+    "build:watch": "npm run build && npm run watch",
+    "watch": "nodemon --watch src --watch src/assets --watch dist --ext pug,css,js,html --exec 'npm run build'"
+  },
+  "devDependencies": {
+    "pug": "^3.0.2",
+    "pug-cli": "^1.0.0-alpha6",
+    "serve": "^14.2.1",
+    "nodemon": "^3.0.2"
+  },
+  "keywords": [
+    "pug",
+    "frontend",
+    "static-site"
+  ],
+  "author": "",
+  "license": "MIT"
+}

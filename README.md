@@ -1,5 +1,78 @@
-# RestB - FRONT END
-Restaurant booking app
+# RestB Frontend
+
+A simple website built with Pug templates that compiles to HTML.
+
+## How It Works
+
+- **Build**: Node.js converts Pug files to HTML
+- **Run**: Browser shows the HTML files
+- **Backend**: Separate - talks through APIs
+
+## Files
+
+```
+RestB_FE/
+├── src/
+│   ├── views/           # Pug templates
+│   │   ├── layouts/     # Base layouts
+│   │   │   └── base.pug
+│   │   ├── pages/       # Page templates
+│   │   │   ├── index.pug
+│   │   │   └── login.pug
+│   │   └── partials/    # Reusable parts
+│   │       ├── header.pug
+│   │       └── footer.pug
+│   └── assets/          # CSS and JavaScript
+│       ├── css/
+│       │   └── style.css
+│       └── js/
+│           ├── main.js
+│           └── login.js
+├── dist/                # Built website (deploy this)
+├── package.json         # Project settings
+├── package-lock.json    # Dependency lock
+├── instructions.txt     # Setup guide
+└── README.md           # This file
+```
+
+## Quick Start
+
+### 1. Install
+```bash
+npm install
+```
+
+### 2. Run Development Server
+```bash
+npm run devmon
+```
+This builds your site and starts it at `http://localhost:3000`
+
+### 3. Make Changes
+- Edit files in `src/`
+- Changes auto-rebuild and refresh
+
+## Commands
+
+```bash
+npm run build        # Build the website
+npm run dev          # Build and serve
+npm run devmon       # Build, serve, and watch changes
+npm run clean        # Delete build folder
+```
+
+## How to Add a New Page
+
+1. Copy `src/views/pages/index.pug` to `src/views/pages/yourpage.pug`
+2. Edit the new file
+3. Run `npm run build`
+4. Visit `http://localhost:3000/pages/yourpage.html`
+
+## Deploy
+
+Upload the `dist/` folder to any web host or simply open `dist/index.html`.
+
+That's it!
 
 
 ## Pages overview
@@ -35,19 +108,19 @@ Restaurant booking app
 
 ## AUTH
 
-### `/auth/login`  
+### `/auth/login`
 **Roles:** User, Admin, Staff  
 **Features:**
 - Email + password login
 - Role-based redirect
 
-### `/auth/register`  
+### `/auth/register`
 **Roles:** User, Admin  
 **Features:**
 - User registration
 - Admin (brand owner) registration
 
-### `/auth/forgotPassword`  
+### `/auth/forgotPassword`
 **Features:**
 - Password reset flow
 
@@ -55,7 +128,7 @@ Restaurant booking app
 
 ## USER (PUBLIC)
 
-### `/restaurants`  
+### `/restaurants`
 **Role:** User  
 **Features:**
 - Restaurants (locations) list
@@ -64,7 +137,7 @@ Restaurant booking app
 - Sorting
 - Average rating & reviews count
 
-### `/restaurants/:id`  
+### `/restaurants/:id`
 **Role:** User  
 **Features:**
 - Restaurant details (address)
@@ -75,7 +148,7 @@ Restaurant booking app
 - Booking rules display
 - Reviews & ratings
 
-### `/brands/:id`  
+### `/brands/:id`
 **Role:** User  
 **Features:**
 - Brand information
@@ -87,14 +160,14 @@ Restaurant booking app
 
 ## USER PROFILE
 
-### `/profile`  
+### `/profile`
 **Role:** User  
 **Features:**
 - User settings
 - Contact information
 - Password change
 
-### `/profile/bookings`  
+### `/profile/bookings`
 **Role:** User  
 **Features:**
 - Booking list
@@ -107,7 +180,7 @@ Restaurant booking app
 
 ## ADMIN / STAFF DASHBOARD
 
-### `/admin`  
+### `/admin`
 **Roles:** Admin, Staff  
 **Features:**
 - Dashboard overview
@@ -118,7 +191,7 @@ Restaurant booking app
 
 ## BRAND MANAGEMENT
 
-### `/admin/brand`  
+### `/admin/brand`
 **Roles:** Admin, Staff  
 **Features:**
 - Brand details
@@ -130,19 +203,19 @@ Restaurant booking app
 
 ## RESTAURANT (LOCATION) MANAGEMENT
 
-### `/admin/restaurants`  
+### `/admin/restaurants`
 **Role:** Admin  
 **Features:**
 - List of restaurants under brand
 - Create / edit / delete restaurant
 
-### `/admin/restaurants/:id`  
+### `/admin/restaurants/:id`
 **Role:** Admin  
 **Features:**
 - Restaurant details (address, photos)
 - Booking rules:
-  - Auto-approval ON/OFF
-  - Max auto-approved bookings
+    - Auto-approval ON/OFF
+    - Max auto-approved bookings
 - Opening hours
 - Employee assignment
 
@@ -150,15 +223,15 @@ Restaurant booking app
 
 ## BOOKINGS
 
-### `/admin/bookings`  
+### `/admin/bookings`
 **Roles:** Admin, Staff  
 **Features:**
 - Bookings list
 - Filter by restaurant
 - Accept / reject bookings
 - Propose booking time change:
-  - New date/time
-  - Mandatory reason
+    - New date/time
+    - Mandatory reason
 - **Staff access limited to assigned restaurants only**
 
 ---

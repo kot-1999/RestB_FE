@@ -69,16 +69,27 @@ async function handleLogin(e) {
     try {
         // Get API configuration
         const config = window.RestBConfig.getConfig();
-        const apiUrl = `${config.apiUrl}/api/${config.apiVersion}/auth/login`;
+        
+        // Determine API endpoint based on user type
+        let apiUrl;
+        if (userType === 'partner') {
+            // B2B endpoint for partners
+            apiUrl = `${config.baseUrl}/b2b/v1/authorization/login`;
+        } else {
+            // B2C endpoint for customers
+            apiUrl = `${config.baseUrl}/b2c/v1/authorization/login`;
+        }
         
         console.log('Attempting login for:', { email, userType, apiUrl });
+        console.log('Current backend:', window.RestBConfig.getBackend());
         
-        // Prepare login data
+        // Prepare login data according to backend requirements
         const loginData = {
             email: email,
-            password: password,
-            userType: userType // 'user' for customer, 'partner' for partner
+            password: password
         };
+        
+        console.log('Login payload:', loginData);
         
         // Send login request to backend
         const response = await fetch(apiUrl, {
@@ -86,11 +97,18 @@ async function handleLogin(e) {
             headers: {
                 'Content-Type': 'application/json',
             },
-            body: JSON.stringify(loginData),
-            timeout: config.timeout
+            body: JSON.stringify(loginData)
         });
         
-        const result = await response.json();
+        let result;
+        try {
+            result = await response.json();
+        } catch (e) {
+            // If response is not JSON, get text
+            result = { error: await response.text() };
+        }
+        
+        console.log('API Response:', { status: response.status, result });
         
         if (response.ok) {
             // Login successful
@@ -120,9 +138,12 @@ async function handleLogin(e) {
             }, 1500);
             
         } else {
-            // Login failed
-            console.error('Login failed:', result);
-            showError(result.message || 'Login failed. Please check your credentials.');
+            // Login failed - check if it's an endpoint not found error
+            if (response.status === 404) {
+                showError(`Login endpoint not found: ${apiUrl}. Backend may not be implemented yet.`);
+            } else {
+                showError(result.message || result.error || 'Login failed. Please check your credentials.');
+            }
         }
         
     } catch (error) {

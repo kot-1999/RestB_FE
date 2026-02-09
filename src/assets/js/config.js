@@ -1,57 +1,80 @@
 // Configuration file for RestB Frontend
-// Contains different environment settings for API endpoints and database connections
+// Simple backend selection system
 
-const configs = {
-    // Local development environment
-    local: {
-        apiUrl: 'http://localhost:3000',
-        apiVersion: 'v1',
-        timeout: 10000
-    },
-    
-    // GitHub workspace/backend environment  
+// Backend configurations
+const backends = {
     github: {
-        apiUrl: 'https://your-github-backend-url.com', // TODO: Replace with actual GitHub backend URL
-        apiVersion: 'v1',
+        url: 'https://automatic-adventure-5p6rj7465jwh5rv-3000.app.github.dev',
         timeout: 15000
     },
-    
-    // Production environment
+    local: {
+        url: 'http://localhost:3000',
+        timeout: 10000
+    },
     production: {
-        apiUrl: 'https://api.restb.com', // TODO: Replace with actual production URL
-        apiVersion: 'v1', 
+        url: 'https://api.restb.com', // TODO: Replace with actual production URL
         timeout: 20000
     }
 };
 
-// Get current environment from localStorage or default to local
-function getCurrentEnvironment() {
-    return localStorage.getItem('restb_env') || 'local';
-}
-
-// Set current environment
-function setEnvironment(env) {
-    if (configs[env]) {
-        localStorage.setItem('restb_env', env);
-        return true;
+// Main configuration - just change this value!
+const config = {
+    // CHANGE THIS to switch backends: 'github', 'local', or 'production'
+    usebackend: 'github',
+    
+    // Auto-populated based on usebackend
+    get current() {
+        return backends[this.usebackend] || backends.github;
+    },
+    
+    // Get base URL
+    get baseUrl() {
+        return this.current.url;
+    },
+    
+    // Get timeout
+    get timeout() {
+        return this.current.timeout;
     }
-    return false;
-}
-
-// Get current config
-function getConfig() {
-    const env = getCurrentEnvironment();
-    return configs[env];
-}
+};
 
 // Export for use in other files
 window.RestBConfig = {
-    configs,
-    getCurrentEnvironment,
-    setEnvironment,
-    getConfig
+    // Get current backend config
+    getConfig: () => config,
+    
+    // Switch backend
+    setBackend: (backendName) => {
+        if (backends[backendName]) {
+            config.usebackend = backendName;
+            localStorage.setItem('restb_backend', backendName);
+            console.log(`Backend switched to: ${backendName} (${config.baseUrl})`);
+            return true;
+        }
+        console.error(`Backend '${backendName}' not found. Available: ${Object.keys(backends).join(', ')}`);
+        return false;
+    },
+    
+    // Get current backend name
+    getBackend: () => config.usebackend,
+    
+    // Get all available backends
+    getAvailableBackends: () => Object.keys(backends),
+    
+    // Quick switch function for console use
+    switchTo: {
+        github: () => window.RestBConfig.setBackend('github'),
+        local: () => window.RestBConfig.setBackend('local'),
+        production: () => window.RestBConfig.setBackend('production')
+    }
 };
 
+// Initialize from localStorage or use default
+const savedBackend = localStorage.getItem('restb_backend');
+if (savedBackend && backends[savedBackend]) {
+    config.usebackend = savedBackend;
+}
+
 // For debugging - log current config on load
-console.log('RestB Config loaded. Current environment:', getCurrentEnvironment());
-console.log('Current config:', getConfig());
+console.log('RestB Config loaded. Current backend:', config.usebackend);
+console.log('Base URL:', config.baseUrl);

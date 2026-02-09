@@ -6,9 +6,9 @@
   "scripts": {
     "build": "npm run clean && npm run compile-pug && npm run copy-assets && npm run create-root-index",
     "clean": "rm -rf dist",
-    "compile-pug": "pug src/views/ --out dist/ --basedir src/views/",
-    "copy-assets": "cp -r src/assets/ dist/",
-    "create-root-index": "cp dist/pages/index.html dist/index.html",
+    "compile-pug": "pug src/views/ --out dist/views/ --basedir src/views/",
+    "copy-assets": "cp -r src/assets/ dist/assets/",
+    "create-root-index": "cp dist/views/pages/index.html dist/index.html",
     "dev": "npm run build && npx serve dist -p 3000",
     "devmon": "npm run build && (npm run watch & npx serve dist -p 3000)",
     "build:watch": "npm run build && npm run watch",

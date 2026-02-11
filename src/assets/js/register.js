@@ -56,154 +56,72 @@ async function handleRegister(e) {
     
     // Validation
     if (!firstName || !lastName || !email || !password) {
-        showError('Please fill in all fields');
+        UIManager.showFormMessage('Please fill in all fields', 'error', '.register-form');
         return;
     }
     
     if (firstName.length < 2 || firstName.length > 255) {
-        showError('First name must be between 2 and 255 characters');
+        UIManager.showFormMessage('First name must be between 2 and 255 characters', 'error', '.register-form');
         return;
     }
     
     if (lastName.length < 2 || lastName.length > 255) {
-        showError('Last name must be between 2 and 255 characters');
+        UIManager.showFormMessage('Last name must be between 2 and 255 characters', 'error', '.register-form');
         return;
     }
     
     if (password.length < 3) {
-        showError('Password must be at least 3 characters long');
+        UIManager.showFormMessage('Password must be at least 3 characters long', 'error', '.register-form');
         return;
     }
     
     if (!isValidEmail(email)) {
-        showError('Please enter a valid email address');
+        UIManager.showFormMessage('Please enter a valid email address', 'error', '.register-form');
         return;
     }
     
     // Show loading state
-    showLoading();
+    UIManager.setButtonLoading('.register-submit', 'Registering...');
     
     try {
-        // Get API configuration
-        const config = window.RestBConfig.getConfig();
+        console.log('Attempting registration for:', { firstName, lastName, email, userType });
         
-        // Determine API endpoint based on user type
-        let apiUrl;
-        if (userType === 'partner') {
-            // B2B endpoint for partners
-            apiUrl = `${config.baseUrl}/api/b2b/v1/authorization/register`;
-        } else {
-            // B2C endpoint for customers
-            apiUrl = `${config.baseUrl}/api/b2c/v1/authorization/register`;
-        }
-        
-        console.log('Attempting registration for:', { firstName, lastName, email, userType, apiUrl });
-        console.log('Current backend:', window.RestBConfig.getBackend());
-        
-        // Prepare registration data according to backend requirements
+        // Prepare registration data
         const registerData = {
-            firstName: firstName,
-            lastName: lastName,
-            email: email,
-            password: password
+            firstName,
+            lastName,
+            email,
+            password
         };
         
-        console.log('Registration payload:', registerData);
+        // Use AuthService to handle registration
+        const result = await AuthService.register(registerData, userType);
         
-        // Send registration request to backend
-        const response = await fetch(apiUrl, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify(registerData)
-        });
-        
-        let result;
-        try {
-            result = await response.json();
-        } catch (e) {
-            // If response is not JSON, get text
-            result = { error: await response.text() };
-        }
-        
-        console.log('API Response:', { status: response.status, result });
-        
-        if (response.ok) {
-            // Registration successful
-            console.log('Registration successful:', result);
+        if (result.success) {
+            UIManager.showSuccess(result.message);
             
-            showSuccess('Registration successful! You can now login.');
-            
-            // DISABLED: Auto redirect to login page
-            // setTimeout(() => {
-            //     window.location.href = '/views/pages/login.html';
-            // }, 2000);
-            
+            // Redirect to login or dashboard after successful registration
+            setTimeout(() => {
+                if (userType === 'partner') {
+                    window.location.href = '/pages/admin.html';
+                } else {
+                    window.location.href = '/index.html';
+                }
+            }, 2000);
         } else {
-            // Registration failed - check if it's an endpoint not found error
-            if (response.status === 404) {
-                showError(`Registration endpoint not found: ${apiUrl}. Backend may not be implemented yet.`);
-            } else {
-                showError(result.message || result.error || 'Registration failed. Please try again.');
-            }
+            UIManager.showFormMessage(result.message, 'error', '.register-form');
         }
         
     } catch (error) {
         console.error('Registration error:', error);
-        hideLoading();
-        showError('Network error. Please check your connection and try again.');
+        UIManager.showError('Network error. Please check your connection and try again.');
     }
     
-    hideLoading();
+    UIManager.resetButton('.register-submit');
 }
 
+// These functions are now handled by UIManager
+// Keeping isValidEmail for validation
 function isValidEmail(email) {
     return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
-}
-
-function showError(message) {
-    // Remove existing messages
-    removeMessages();
-    
-    const errorDiv = document.createElement('div');
-    errorDiv.className = 'error-message';
-    errorDiv.textContent = message;
-    errorDiv.style.cssText = 'color: #e74c3c; margin-top: 1rem; padding: 0.5rem; background: #fdf2f2; border-radius: 4px; border: 1px solid #f5c6cb;';
-    
-    const form = document.querySelector('.register-form form');
-    form.appendChild(errorDiv);
-}
-
-function showSuccess(message) {
-    // Remove existing messages
-    removeMessages();
-    
-    const successDiv = document.createElement('div');
-    successDiv.className = 'success-message';
-    successDiv.textContent = message;
-    successDiv.style.cssText = 'color: #27ae60; margin-top: 1rem; padding: 0.5rem; background: #f0f9f4; border-radius: 4px; border: 1px solid #c3e6cb;';
-    
-    const form = document.querySelector('.register-form form');
-    form.appendChild(successDiv);
-}
-
-function removeMessages() {
-    const existingError = document.querySelector('.error-message');
-    if (existingError) existingError.remove();
-    
-    const existingSuccess = document.querySelector('.success-message');
-    if (existingSuccess) existingSuccess.remove();
-}
-
-function showLoading() {
-    const submitBtn = document.querySelector('.register-submit');
-    submitBtn.textContent = 'Registering...';
-    submitBtn.disabled = true;
-}
-
-function hideLoading() {
-    const submitBtn = document.querySelector('.register-submit');
-    submitBtn.textContent = 'Register';
-    submitBtn.disabled = false;
 }

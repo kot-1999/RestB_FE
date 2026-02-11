@@ -2,10 +2,35 @@
 document.addEventListener('DOMContentLoaded', function() {
     console.log('RestB Frontend loaded');
     
+    // Initialize authentication state
+    initializeAuth();
+    
     // Global functionality that runs on all pages
     initializeNavigation();
     initializeGlobalEvents();
+    
+    // Initialize access control if user is authenticated
+    if (AuthService.isAuthenticated()) {
+        AccessControl.initialize();
+    }
 });
+
+/**
+ * Initialize authentication state
+ */
+async function initializeAuth() {
+    // Check if current page requires authentication
+    const requiresAuth = document.body.hasAttribute('data-requires-auth');
+    
+    if (requiresAuth) {
+        await AuthService.initializeAuth(true);
+    } else {
+        // Validate session if user is logged in
+        if (AuthService.isAuthenticated()) {
+            await AuthService.validateSession();
+        }
+    }
+}
 
 function initializeNavigation() {
     // Add smooth scrolling for anchor links
@@ -23,57 +48,98 @@ function initializeNavigation() {
 }
 
 function initializeGlobalEvents() {
-    // Add any global event listeners here
+    // Add logout functionality to logout buttons
+    const logoutButtons = document.querySelectorAll('[data-action="logout"]');
+    logoutButtons.forEach(button => {
+        button.addEventListener('click', (e) => {
+            e.preventDefault();
+            AuthService.logout();
+        });
+    });
+    
+    // Add user menu toggle functionality
+    const userMenuToggles = document.querySelectorAll('[data-toggle="user-menu"]');
+    userMenuToggles.forEach(toggle => {
+        toggle.addEventListener('click', (e) => {
+            e.preventDefault();
+            const menu = document.querySelector(toggle.getAttribute('data-target'));
+            if (menu) {
+                menu.style.display = menu.style.display === 'none' ? 'block' : 'none';
+            }
+        });
+    });
+    
     console.log('Global events initialized');
 }
 
-// Utility functions that can be used across pages
+// Enhanced utility functions using new centralized systems
 const Utils = {
-    // API helper functions
-    async apiCall(endpoint, options = {}) {
-        const defaultOptions = {
-            headers: {
-                'Content-Type': 'application/json',
-            }
-        };
-        
-        const finalOptions = { ...defaultOptions, ...options };
-        
-        try {
-            const response = await fetch(`/api${endpoint}`, finalOptions);
-            if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
-            return await response.json();
-        } catch (error) {
-            console.error('API call failed:', error);
-            throw error;
-        }
-    },
-    
-    // Form validation helper
+    // Email validation (kept for compatibility)
     validateEmail(email) {
         return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
     },
     
-    // Show notification helper
-    showNotification(message, type = 'info') {
-        const notification = document.createElement('div');
-        notification.className = `notification ${type}`;
-        notification.textContent = message;
-        notification.style.cssText = `
-            position: fixed;
-            top: 20px;
-            right: 20px;
-            padding: 1rem;
-            background: ${type === 'error' ? '#e74c3c' : type === 'success' ? '#27ae60' : '#3498db'};
-            color: white;
-            border-radius: 4px;
-            z-index: 1000;
-        `;
-        
-        document.body.appendChild(notification);
-        
-        setTimeout(() => {
-            notification.remove();
-        }, 3000);
+    // Show notification using UIManager
+    showNotification(message, type = 'info', duration = 3000) {
+        return UIManager.showNotification(message, type, duration);
+    },
+    
+    // Show success notification
+    showSuccess(message, duration = 3000) {
+        return UIManager.showSuccess(message, duration);
+    },
+    
+    // Show error notification
+    showError(message, duration = 5000) {
+        return UIManager.showError(message, duration);
+    },
+    
+    // Check if user has specific permission
+    hasPermission(permission) {
+        return AccessControl.hasPermission(permission);
+    },
+    
+    // Get current user info
+    getCurrentUser() {
+        return AuthService.getCurrentUser();
+    },
+    
+    // Format user role for display
+    formatUserRole(userType, role = null) {
+        return AccessControl.getRoleDisplayName(userType, role);
+    },
+    
+    // Redirect if not authenticated
+    requireAuth() {
+        if (!AuthService.isAuthenticated()) {
+            window.location.href = '/views/pages/login.html';
+            return false;
+        }
+        return true;
+    },
+    
+    // Format date for display
+    formatDate(dateString) {
+        const date = new Date(dateString);
+        return date.toLocaleDateString('en-US', {
+            year: 'numeric',
+            month: 'short',
+            day: 'numeric',
+            hour: '2-digit',
+            minute: '2-digit'
+        });
+    },
+    
+    // Debounce function for search inputs
+    debounce(func, wait) {
+        let timeout;
+        return function executedFunction(...args) {
+            const later = () => {
+                clearTimeout(timeout);
+                func(...args);
+            };
+            clearTimeout(timeout);
+            timeout = setTimeout(later, wait);
+        };
     }
 };

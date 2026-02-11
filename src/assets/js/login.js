@@ -54,153 +54,49 @@ async function handleLogin(e) {
     
     // Validation
     if (!email || !password) {
-        showError('Please fill in all fields');
+        UIManager.showFormMessage('Please fill in all fields', 'error', '.login-form');
         return;
     }
     
     if (!isValidEmail(email)) {
-        showError('Please enter a valid email address');
+        UIManager.showFormMessage('Please enter a valid email address', 'error', '.login-form');
         return;
     }
     
     // Show loading state
-    showLoading();
+    UIManager.setButtonLoading('.login-submit', 'Logging in...');
     
     try {
-        // Get API configuration
-        const config = window.RestBConfig.getConfig();
+        console.log('Attempting login for:', { email, userType });
         
-        // Determine API endpoint based on user type
-        let apiUrl;
-        if (userType === 'partner') {
-            // B2B endpoint for partners
-            apiUrl = `${config.baseUrl}/api/b2b/v1/authorization/login`;
+        // Use AuthService to handle login
+        const result = await AuthService.login(email, password, userType);
+        
+        if (result.success) {
+            UIManager.showSuccess(result.message);
+            
+            // Redirect based on user type
+            setTimeout(() => {
+                if (userType === 'partner') {
+                    window.location.href = '/pages/admin.html';
+                } else {
+                    window.location.href = '/index.html';
+                }
+            }, 1500);
         } else {
-            // B2C endpoint for customers
-            apiUrl = `${config.baseUrl}/api/b2c/v1/authorization/login`;
-        }
-        
-        console.log('Attempting login for:', { email, userType, apiUrl });
-        console.log('Current backend:', window.RestBConfig.getBackend());
-        
-        // Prepare login data according to backend requirements
-        const loginData = {
-            email: email,
-            password: password
-        };
-        
-        console.log('Login payload:', loginData);
-        
-        // Send login request to backend
-        const response = await fetch(apiUrl, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify(loginData)
-        });
-        
-        let result;
-        try {
-            result = await response.json();
-        } catch (e) {
-            // If response is not JSON, get text
-            result = { error: await response.text() };
-        }
-        
-        console.log('API Response:', { status: response.status, result });
-        
-        if (response.ok) {
-            // Login successful
-            console.log('Login successful:', result);
-            
-            // Store auth token (if provided)
-            if (result.token) {
-                localStorage.setItem('restb_token', result.token);
-            }
-            
-            // Store user info
-            if (result.user) {
-                localStorage.setItem('restb_user', JSON.stringify(result.user));
-            }
-            
-            showSuccess('Login successful! You are now authenticated.');
-            
-            // DISABLED: Auto redirect after login
-            // setTimeout(() => {
-            //     if (userType === 'partner') {
-            //         // Redirect to partner dashboard
-            //         window.location.href = '/pages/admin.html';
-            //     } else {
-            //         // Redirect to customer profile or home
-            //         window.location.href = '/index.html';
-            //     }
-            // }, 1500);
-            
-        } else {
-            // Login failed - check if it's an endpoint not found error
-            if (response.status === 404) {
-                showError(`Login endpoint not found: ${apiUrl}. Backend may not be implemented yet.`);
-            } else {
-                showError(result.message || result.error || 'Login failed. Please check your credentials.');
-            }
+            UIManager.showFormMessage(result.message, 'error', '.login-form');
         }
         
     } catch (error) {
         console.error('Login error:', error);
-        hideLoading();
-        showError('Network error. Please check your connection and try again.');
+        UIManager.showError('Network error. Please check your connection and try again.');
     }
     
-    hideLoading();
+    UIManager.resetButton('.login-submit');
 }
 
+// These functions are now handled by UIManager
+// Keeping isValidEmail for validation
 function isValidEmail(email) {
     return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
-}
-
-function showError(message) {
-    // Remove existing messages
-    removeMessages();
-    
-    const errorDiv = document.createElement('div');
-    errorDiv.className = 'error-message';
-    errorDiv.textContent = message;
-    errorDiv.style.cssText = 'color: #e74c3c; margin-top: 1rem; padding: 0.5rem; background: #fdf2f2; border-radius: 4px; border: 1px solid #f5c6cb;';
-    
-    const form = document.querySelector('.login-form form');
-    form.appendChild(errorDiv);
-}
-
-function showSuccess(message) {
-    // Remove existing messages
-    removeMessages();
-    
-    const successDiv = document.createElement('div');
-    successDiv.className = 'success-message';
-    successDiv.textContent = message;
-    successDiv.style.cssText = 'color: #27ae60; margin-top: 1rem; padding: 0.5rem; background: #f0f9f4; border-radius: 4px; border: 1px solid #c3e6cb;';
-    
-    const form = document.querySelector('.login-form form');
-    form.appendChild(successDiv);
-}
-
-function removeMessages() {
-    const existingError = document.querySelector('.error-message');
-    if (existingError) existingError.remove();
-    
-    const existingSuccess = document.querySelector('.success-message');
-    if (existingSuccess) existingSuccess.remove();
-}
-
-function showLoading() {
-    const submitBtn = document.querySelector('.login-submit');
-    submitBtn.textContent = 'Logging in...';
-    submitBtn.disabled = true;
-}
-
-function hideLoading() {
-    const submitBtn = document.querySelector('.login-submit');
-    submitBtn.textContent = 'Login';
-    submitBtn.disabled = false;
 }

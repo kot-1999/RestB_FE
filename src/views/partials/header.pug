@@ -18,10 +18,28 @@ nav.navbar
           a.nav-link(href="#" data-action="user-menu-toggle") Account
             span.dropdown-arrow ▼
           .user-dropdown(data-dropdown="user-menu" style="display: none;")
-            if AuthService && AuthService.isCustomer()
-              a.dropdown-item(href="/views/pages/customer-dashboard.html") Dashboard
-            if AuthService && AuthService.isPartner()
+            // Customer navigation
+            .dropdown-section(data-user-role="customer")
+              h4 Customer
+              a.dropdown-item(href="/views/pages/customer-profile.html") My Profile
+              a.dropdown-item(href="/views/pages/restaurants.html") Browse Restaurants
+              a.dropdown-item(href="/views/pages/customer-bookings.html") My Bookings
+            // AdminStaff navigation
+            .dropdown-section(data-user-role="adminStaff")
+              h4 Staff
+              a.dropdown-item(href="/views/pages/staff-dashboard.html") Dashboard
+              a.dropdown-item(href="/views/pages/staff-bookings.html") Manage Bookings
+              a.dropdown-item(href="/views/pages/staff-availability.html") Availability
+              a.dropdown-item(href="/views/pages/customer-profile.html") My Profile
+            // SuperAdmin navigation
+            .dropdown-section(data-user-role="superAdmin")
+              h4 Administration
               a.dropdown-item(href="/views/pages/admin-dashboard.html") Dashboard
+              a.dropdown-item(href="/views/pages/admin-brands.html") Manage Brands
+              a.dropdown-item(href="/views/pages/admin-restaurants.html") Manage Restaurants
+              a.dropdown-item(href="/views/pages/admin-staff.html") Manage Staff
+              a.dropdown-item(href="/views/pages/admin-bookings.html") Manage Bookings
+              a.dropdown-item(href="/views/pages/admin-settings.html") System Settings
             .dropdown-divider
             a.dropdown-item(href="#" data-action="logout") Logout
           button.nav-btn.logout-btn(data-action="logout") Logout

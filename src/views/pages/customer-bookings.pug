@@ -1,0 +1,150 @@
+doctype html
+html(lang="en")
+  head
+    meta(charset="UTF-8")
+    meta(name="viewport", content="width=device-width, initial-scale=1.0")
+    title My Bookings - RestBoo
+    link(rel="stylesheet", href="/assets/css/style.css")
+  
+  body
+    header
+      include ../partials/header.pug
+    
+    main
+      .bookings-container
+        .bookings-header
+          h1 My Bookings
+          p View and manage your restaurant reservations
+        
+        .bookings-filters
+          .filter-tabs
+            button.btn-tab.active(data-status="all") All Bookings
+            button.btn-tab(data-status="upcoming") Upcoming
+            button.btn-tab(data-status="completed") Completed
+            button.btn-tab(data-status="cancelled") Cancelled
+        
+        .bookings-list
+          .loading-indicator(id="bookingsLoading")
+            p Loading your bookings...
+        
+        .empty-state(id="noBookings" style="display: none;")
+          .empty-icon 📅
+          h3 No bookings found
+          p You haven't made any restaurant reservations yet.
+          a.btn-primary(href="/views/pages/restaurants.html") Browse Restaurants
+    
+    // Booking Details Modal
+    .modal(id="bookingModal" style="display: none;")
+      .modal-content
+        .modal-header
+          h2 Booking Details
+          button.close-btn(id="closeBookingModalBtn") ×
+        
+        .modal-body
+          .booking-details
+            .detail-section
+              h3 Restaurant Information
+              .detail-item
+                strong Restaurant:
+                span(id="modalRestaurantName") Restaurant Name
+              .detail-item
+                strong Date:
+                span(id="modalBookingDate") Date
+              .detail-item
+                strong Time:
+                span(id="modalBookingTime") Time
+              .detail-item
+                strong Party Size:
+                span(id="modalPartySize") People
+              .detail-item
+                strong Status:
+                span.booking-status(id="modalBookingStatus") Confirmed
+            
+            .detail-section
+              h3 Special Requests
+              p(id="modalSpecialRequests") None
+            
+            .detail-section
+              h3 Actions
+              .booking-actions
+                button.btn-primary(id="modifyBookingBtn") Modify Booking
+                button.btn-secondary(id="cancelBookingBtn") Cancel Booking
+                button.btn-success(id="leaveReviewBtn" style="display: none;") Leave Review
+    
+    // Modify Booking Modal
+    .modal(id="modifyBookingModal" style="display: none;")
+      .modal-content
+        .modal-header
+          h2 Modify Booking
+          button.close-btn(id="closeModifyModalBtn") ×
+        
+        .modal-body
+          .modify-form
+            .form-group
+              label(for="newBookingDate") New Date
+              input(type="date" id="newBookingDate" required)
+            
+            .form-group
+              label(for="newBookingTime") New Time
+              select(id="newBookingTime" required)
+                option(value="") Select time
+                // Time options will be loaded dynamically
+            
+            .form-group
+              label(for="newPartySize") Party Size
+              select(id="newPartySize" required)
+                option(value="") Select size
+                option(value="1") 1 person
+                option(value="2") 2 people
+                option(value="3") 3 people
+                option(value="4") 4 people
+                option(value="5") 5 people
+                option(value="6") 6 people
+                option(value="7") 7 people
+                option(value="8") 8+ people
+            
+            .form-group
+              label(for="specialRequests") Special Requests
+              textarea(id="specialRequests" rows="3" placeholder="Any special requirements?")
+            
+            .form-actions
+              button.btn-primary(id="saveChangesBtn") Save Changes
+              button.btn-secondary(id="cancelChangesBtn") Cancel
+    
+    // Review Modal
+    .modal(id="reviewModal" style="display: none;")
+      .modal-content
+        .modal-header
+          h2 Leave a Review
+          button.close-btn(id="closeReviewModalBtn") ×
+        
+        .modal-body
+          .review-form
+            .form-group
+              label(for="reviewRating") Rating
+              .rating-stars
+                button.star(type="button" data-rating="1") ⭐
+                button.star(type="button" data-rating="2") ⭐
+                button.star(type="button" data-rating="3") ⭐
+                button.star(type="button" data-rating="4") ⭐
+                button.star(type="button" data-rating="5") ⭐
+              input(type="hidden" id="reviewRating" value="5")
+            
+            .form-group
+              label(for="reviewComment") Your Review
+              textarea(id="reviewComment" rows="4" placeholder="Share your dining experience..." required)
+            
+            .form-actions
+              button.btn-primary(id="submitReviewBtn") Submit Review
+              button.btn-secondary(id="cancelReviewBtn") Cancel
+    
+    include ../partials/footer.pug
+    
+    script(src="/assets/js/config.js")
+    script(src="/assets/js/utils/storage.js")
+    script(src="/assets/js/utils/ui.js")
+    script(src="/assets/js/utils/api.js")
+    script(src="/assets/js/utils/auth.js")
+    script(src="/assets/js/utils/access-control.js")
+    script(src="/assets/js/main.js")
+    script(src="/assets/js/customer-bookings.js")

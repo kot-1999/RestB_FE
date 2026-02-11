@@ -1,0 +1,156 @@
+doctype html
+html(lang="en")
+  head
+    meta(charset="UTF-8")
+    meta(name="viewport", content="width=device-width, initial-scale=1.0")
+    title Restaurants - RestBoo
+    link(rel="stylesheet", href="/assets/css/style.css")
+  
+  body
+    header
+      include ../partials/header.pug
+    
+    main
+      .restaurants-container
+        .restaurants-header
+          h1 Discover Restaurants
+          p Find and book tables at amazing restaurants
+        
+        .search-filters
+          .search-section
+            .search-bar
+              input(type="text" id="searchInput" placeholder="Search restaurants, cuisines, locations...")
+              button.btn-primary(type="button" id="searchBtn") Search
+            
+            .filter-section
+              .filter-group
+                label(for="cuisineFilter") Cuisine
+                select(id="cuisineFilter")
+                  option(value="") All Cuisines
+                  option(value="italian") Italian
+                  option(value="chinese") Chinese
+                  option(value="indian") Indian
+                  option(value="mexican") Mexican
+                  option(value="japanese") Japanese
+                  option(value="american") American
+                  option(value="thai") Thai
+              
+              .filter-group
+                label(for="priceFilter") Price Range
+                select(id="priceFilter")
+                  option(value="") All Prices
+                  option(value="$") $ (Budget)
+                  option(value="$$") $$ (Moderate)
+                  option(value="$$$") $$$ (Expensive)
+                  option(value="$$$$") $$$$ (Fine Dining)
+              
+              .filter-group
+                label(for="locationFilter") Location
+                select(id="locationFilter")
+                  option(value="") All Locations
+                  option(value="downtown") Downtown
+                  option(value="suburbs") Suburbs
+                  option(value="airport") Airport Area
+                  option(value="waterfront") Waterfront
+              
+              .filter-group
+                label(for="availabilityFilter") Availability
+                select(id="availabilityFilter")
+                  option(value="") Any Time
+                  option(value="now") Available Now
+                  option(value="today") Available Today
+                  option(value="this-week") This Week
+        
+        .restaurants-grid
+          // Restaurant cards will be dynamically loaded here
+          .loading-indicator(id="restaurantsLoading")
+            p Loading restaurants...
+        
+        .pagination
+          button.btn-secondary(id="prevPageBtn" disabled) Previous
+          span.page-info
+            | Page 
+            span(id="currentPage") 1
+            |  of 
+            span(id="totalPages") 1
+          button.btn-secondary(id="nextPageBtn") Next
+    
+    // Restaurant Details Modal
+    .modal(id="restaurantModal" style="display: none;")
+      .modal-content
+        .modal-header
+          h2(id="modalRestaurantName") Restaurant Name
+          button.close-btn(id="closeModalBtn") ×
+        
+        .modal-body
+          .restaurant-gallery
+            .gallery-main
+              img(id="mainImage" src="" alt="Restaurant")
+            .gallery-thumbnails
+              // Thumbnail images will be loaded here
+          
+          .restaurant-info
+            .info-section
+              h3 About
+              p(id="restaurantDescription") Restaurant description
+              
+              .info-grid
+                .info-item
+                  strong Cuisine:
+                  span(id="restaurantCuisine") Italian
+                .info-item
+                  strong Price:
+                  span(id="restaurantPrice") $$
+                .info-item
+                  strong Location:
+                  span(id="restaurantLocation") Downtown
+                .info-item
+                  strong Rating:
+                  span(id="restaurantRating") ⭐ 4.5
+                .info-item
+                  strong Capacity:
+                  span(id="restaurantCapacity") 100 seats
+            
+            .availability-section
+              h3 Check Availability
+              .booking-form
+                .form-row
+                  .form-group
+                    label(for="bookingDate") Date
+                    input(type="date" id="bookingDate" required)
+                  .form-group
+                    label(for="bookingTime") Time
+                    select(id="bookingTime" required)
+                      option(value="") Select time
+                .form-row
+                  .form-group
+                    label(for="partySize") Party Size
+                    select(id="partySize" required)
+                      option(value="") Select size
+                      option(value="1") 1 person
+                      option(value="2") 2 people
+                      option(value="3") 3 people
+                      option(value="4") 4 people
+                      option(value="5") 5 people
+                      option(value="6") 6 people
+                      option(value="7") 7 people
+                      option(value="8") 8+ people
+                .form-actions
+                  button.btn-primary(id="checkAvailabilityBtn") Check Availability
+                  button.btn-secondary(id="bookTableBtn" disabled) Book Table
+        
+          .reviews-section
+            h3 Reviews
+            .reviews-list(id="reviewsList")
+              // Reviews will be loaded here
+    
+    include ../partials/footer.pug
+    
+    script(src="/assets/js/config.js")
+    script(src="/assets/js/utils/storage.js")
+    script(src="/assets/js/utils/ui.js")
+    script(src="/assets/js/utils/api.js")
+    script(src="/assets/js/utils/auth.js")
+    script(src="/assets/js/utils/access-control.js")
+    script(src="/assets/js/main.js")
+    script(src="/assets/js/restaurants.js")

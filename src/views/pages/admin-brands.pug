@@ -1,0 +1,138 @@
+doctype html
+html(lang="en")
+  head
+    meta(charset="UTF-8")
+    meta(name="viewport", content="width=device-width, initial-scale=1.0")
+    title Manage Brands - RestBoo
+    link(rel="stylesheet", href="/assets/css/style.css")
+  
+  body(data-requires-auth)
+    header
+      include ../partials/header.pug
+    
+    main
+      .brands-container
+        .brands-header
+          h1 Manage Brands
+          p Create and manage restaurant brands
+        
+        .brands-actions
+          button.btn-primary(id="addBrandBtn") Add New Brand
+          button.btn-secondary(id="exportBrandsBtn") Export Brands
+        
+        .brands-filters
+          .search-bar
+            input(type="text" id="brandSearch" placeholder="Search brands...")
+            button.btn-secondary(id="searchBtn") Search
+        
+        .brands-list
+          .loading-indicator(id="brandsLoading")
+            p Loading brands...
+        
+        .empty-state(id="noBrands" style="display: none;")
+          .empty-icon 🏷️
+          h3 No Brands Found
+          p Start by adding your first restaurant brand.
+          button.btn-primary(id="addFirstBrandBtn") Add Your First Brand
+    
+    // Brand Modal
+    .modal(id="brandModal" style="display: none;")
+      .modal-content
+        .modal-header
+          h2(id="modalTitle") Add New Brand
+          button.close-btn(id="closeModalBtn") ×
+        
+        .modal-body
+          .brand-form
+            .form-row
+              .form-group
+                label(for="brandName") Brand Name *
+                input(type="text" id="brandName" name="brandName" required placeholder="Enter brand name")
+              .form-group
+                label(for="brandWebsite") Website
+                input(type="url" id="brandWebsite" name="brandWebsite" placeholder="https://example.com")
+            
+            .form-group
+              label(for="brandDescription") Description
+              textarea(id="brandDescription" name="brandDescription" rows="3" placeholder="Describe your brand...")
+            
+            .form-group
+              label(for="brandLogo") Brand Logo
+              .file-upload
+                input(type="file" id="brandLogo" name="brandLogo" accept="image/*")
+                label(for="brandLogo" class="file-upload-label")
+                  span.upload-icon 📷
+                  span.upload-text Choose Logo
+                span.file-name(id="logoFileName") No file chosen
+            
+            .form-group
+              label(for="brandGallery") Gallery Images
+              .file-upload
+                input(type="file" id="brandGallery" name="brandGallery" accept="image/*" multiple)
+                label(for="brandGallery" class="file-upload-label")
+                  span.upload-icon 🖼️
+                  span.upload-text Choose Images
+                span.file-name(id="galleryFileName") No files chosen
+            
+            .form-actions
+              button.btn-primary(id="saveBrandBtn") Save Brand
+              button.btn-secondary(id="cancelBrandBtn") Cancel
+    
+    // Brand Details Modal
+    .modal(id="brandDetailsModal" style="display: none;")
+      .modal-content
+        .modal-header
+          h2 Brand Details
+          button.close-btn(id="closeDetailsModalBtn") ×
+        
+        .modal-body
+          .brand-details
+            .detail-section
+              h3 Brand Information
+              .detail-item
+                strong Name:
+                span(id="detailBrandName") Loading...
+              .detail-item
+                strong Website:
+                span(id="detailBrandWebsite") Loading...
+              .detail-item
+                strong Description:
+                span(id="detailBrandDescription") Loading...
+              .detail-item
+                strong Created:
+                span(id="detailBrandCreated") Loading...
+            
+            .detail-section
+              h3 Statistics
+              .detail-item
+                strong Restaurants:
+                span(id="detailRestaurantCount") 0
+              .detail-item
+                strong Total Bookings:
+                span(id="detailBookingCount") 0
+              .detail-item
+                strong Active Staff:
+                span(id="detailStaffCount") 0
+            
+            .detail-section
+              h3 Brand Gallery
+              .brand-gallery(id="brandGalleryImages")
+                // Gallery images will be loaded here
+            
+            .detail-section
+              h3 Actions
+              .brand-actions
+                button.btn-primary(id="editBrandBtn") Edit Brand
+                button.btn-secondary(id="manageRestaurantsBtn") Manage Restaurants
+                button.btn-danger(id="deleteBrandBtn") Delete Brand
+    
+    include ../partials/footer.pug
+    
+    script(src="/assets/js/config.js")
+    script(src="/assets/js/utils/storage.js")
+    script(src="/assets/js/utils/ui.js")
+    script(src="/assets/js/utils/api.js")
+    script(src="/assets/js/utils/auth.js")
+    script(src="/assets/js/utils/access-control.js")
+    script(src="/assets/js/main.js")
+    script(src="/assets/js/admin-brands.js")

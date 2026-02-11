@@ -114,14 +114,8 @@ function updateAuthenticationUI() {
             displayName.textContent = currentUser.firstName || currentUser.email || 'User';
         }
         
-        // Update welcome name on home page
-        const welcomeName = document.querySelector('.user-welcome-name');
-        if (welcomeName) {
-            welcomeName.textContent = currentUser.firstName || currentUser.email || 'User';
-        }
-        
-        // Update dashboard links based on user type
-        updateDashboardLinks(currentUser.userType);
+        // Show role-specific navigation
+        updateRoleBasedNavigation(currentUser.userType, currentUser.role);
         
     } else {
         // Show auth elements, hide user elements
@@ -131,6 +125,35 @@ function updateAuthenticationUI() {
     
     // Handle page-specific auth redirects
     handlePageAuthRedirects();
+}
+
+/**
+ * Update role-based navigation
+ */
+function updateRoleBasedNavigation(userType, role) {
+    // Hide all role-specific sections first
+    document.querySelectorAll('[data-user-role]').forEach(el => {
+        el.style.display = 'none';
+    });
+    
+    if (userType === 'customer') {
+        // Show customer navigation
+        document.querySelectorAll('[data-user-role="customer"]').forEach(el => {
+            el.style.display = 'block';
+        });
+    } else if (userType === 'partner') {
+        if (role === 'superAdmin') {
+            // Show SuperAdmin navigation
+            document.querySelectorAll('[data-user-role="superAdmin"]').forEach(el => {
+                el.style.display = 'block';
+            });
+        } else if (role === 'adminStaff') {
+            // Show AdminStaff navigation
+            document.querySelectorAll('[data-user-role="adminStaff"]').forEach(el => {
+                el.style.display = 'block';
+            });
+        }
+    }
 }
 
 /**

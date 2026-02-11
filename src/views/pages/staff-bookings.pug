@@ -1,0 +1,190 @@
+doctype html
+html(lang="en")
+  head
+    meta(charset="UTF-8")
+    meta(name="viewport", content="width=device-width, initial-scale=1.0")
+    title Manage Bookings - RestBoo
+    link(rel="stylesheet", href="/assets/css/style.css")
+  
+  body(data-requires-auth)
+    header
+      include ../partials/header.pug
+    
+    main
+      .bookings-container
+        .bookings-header
+          h1 Manage Bookings
+          p View and manage restaurant reservations
+        
+        .bookings-filters
+          .filter-tabs
+            button.btn-tab.active(data-status="all") All Bookings
+            button.btn-tab(data-status="pending") Pending
+            button.btn-tab(data-status="confirmed") Confirmed
+            button.btn-tab(data-status="completed") Completed
+            button.btn-tab(data-status="cancelled") Cancelled
+          
+          .filter-controls
+            .search-bar
+              input(type="text" id="bookingSearch" placeholder="Search by customer name, restaurant...")
+              button.btn-secondary(id="searchBtn") Search
+            .filter-row
+              .filter-group
+                label(for="dateFilter") Date
+                input(type="date" id="dateFilter")
+              .filter-group
+                label(for="timeFilter") Time
+                select(id="timeFilter")
+                  option(value="") All Times
+                  option(value="morning") Morning (11:00-14:00)
+                  option(value="afternoon") Afternoon (14:00-17:00)
+                  option(value="evening") Evening (17:00-21:00)
+              .filter-group
+                label(for="partySizeFilter") Party Size
+                select(id="partySizeFilter")
+                  option(value="") All Sizes
+                  option(value="1") 1 person
+                  option(value="2") 2 people
+                  option(value="3-4") 3-4 people
+                  option(value="5+") 5+ people
+        
+        .bookings-actions
+          button.btn-primary(id="addBookingBtn") Add Manual Booking
+          button.btn-secondary(id="exportBookingsBtn") Export Bookings
+          button.btn-secondary(id="printScheduleBtn") Print Schedule
+        
+        .bookings-list
+          .loading-indicator(id="bookingsLoading")
+            p Loading bookings...
+        
+        .empty-state(id="noBookings" style="display: none;")
+          .empty-icon 📅
+          h3 No Bookings Found
+          p No bookings match your current filters.
+          button.btn-secondary(id="clearFiltersBtn") Clear Filters
+    
+    // Booking Details Modal
+    .modal(id="bookingModal" style="display: none;")
+      .modal-content
+        .modal-header
+          h2 Booking Details
+          button.close-btn(id="closeDetailsModalBtn") ×
+        
+        .modal-body
+          .booking-details
+            .detail-section
+              h3 Customer Information
+              .detail-item
+                strong Name:
+                span(id="detailCustomerName") Loading...
+              .detail-item
+                strong Email:
+                span(id="detailCustomerEmail") Loading...
+              .detail-item
+                strong Phone:
+                span(id="detailCustomerPhone") Loading...
+            
+            .detail-section
+              h3 Booking Information
+              .detail-item
+                strong Restaurant:
+                span(id="detailRestaurant") Loading...
+              .detail-item
+                strong Date:
+                span(id="detailBookingDate") Loading...
+              .detail-item
+                strong Time:
+                span(id="detailBookingTime") Loading...
+              .detail-item
+                strong Party Size:
+                span(id="detailPartySize") Loading...
+              .detail-item
+                strong Table:
+                span(id="detailTableNumber") Loading...
+              .detail-item
+                strong Status:
+                span.booking-status(id="detailBookingStatus") Loading...
+            
+            .detail-section
+              h3 Special Requests
+              p(id="detailSpecialRequests") None
+            
+            .detail-section
+              h3 Actions
+              .booking-actions
+                button.btn-success(id="approveBookingBtn") Approve
+                button.btn-warning(id="modifyBookingBtn") Modify
+                button.btn-danger(id="rejectBookingBtn") Reject
+                button.btn-secondary(id="completeBookingBtn") Mark Completed
+                button.btn-secondary(id="cancelBookingBtn") Cancel
+    
+    // Add Booking Modal
+    .modal(id="addBookingModal" style="display: none;")
+      .modal-content
+        .modal-header
+          h2 Add Manual Booking
+          button.close-btn(id="closeAddModalBtn") ×
+        
+        .modal-body
+          .booking-form
+            .form-row
+              .form-group
+                label(for="customerName") Customer Name *
+                input(type="text" id="customerName" required placeholder="Enter customer name")
+              .form-group
+                label(for="customerEmail") Email *
+                input(type="email" id="customerEmail" required placeholder="Enter email address")
+              .form-group
+                label(for="customerPhone") Phone
+                input(type="tel" id="customerPhone" placeholder="Enter phone number")
+            
+            .form-row
+              .form-group
+                label(for="bookingRestaurant") Restaurant *
+                select(id="bookingRestaurant" required)
+                  option(value="") Select Restaurant
+                  // Restaurant options will be loaded dynamically
+              .form-group
+                label(for="bookingDate") Date *
+                input(type="date" id="bookingDate" required)
+              .form-group
+                label(for="bookingTime") Time *
+                select(id="bookingTime" required)
+                  option(value="") Select time
+                  // Time options will be loaded dynamically
+            
+            .form-row
+              .form-group
+                label(for="bookingPartySize") Party Size *
+                select(id="bookingPartySize" required)
+                  option(value="") Select size
+                  option(value="1") 1 person
+                  option(value="2") 2 people
+                  option(value="3") 3 people
+                  option(value="4") 4 people
+                  option(value="5") 5 people
+                  option(value="6") 6 people
+                  option(value="7") 7 people
+                  option(value="8") 8+ people
+              .form-group
+                label(for="tableNumber") Table Number
+                input(type="text" id="tableNumber" placeholder="Assign table (optional)")
+            
+            .form-group
+              label(for="bookingNotes") Special Requests
+              textarea(id="bookingNotes" rows="3" placeholder="Any special requirements...")
+            
+            .form-actions
+              button.btn-primary(id="saveBookingBtn") Create Booking
+              button.btn-secondary(id="cancelAddBookingBtn") Cancel
+    
+    include ../partials/footer.pug
+    
+    script(src="/assets/js/config.js")
+    script(src="/assets/js/utils/storage.js")
+    script(src="/assets/js/utils/ui.js")
+    script(src="/assets/js/utils/api.js")
+    script(src="/assets/js/utils/auth.js")
+    script(src="/assets/js/utils/access-control.js")
+    script(src="/assets/js/main.js")
+    script(src="/assets/js/staff-bookings.js")

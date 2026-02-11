@@ -11,6 +11,9 @@ document.addEventListener('DOMContentLoaded', function() {
         initializeNavigation();
         initializeGlobalEvents();
         
+        // Update UI based on authentication state
+        updateAuthenticationUI();
+        
         // Initialize access control if user is authenticated
         if (typeof AuthService !== 'undefined' && AuthService.isAuthenticated()) {
             AccessControl.initialize();
@@ -56,23 +59,134 @@ function initializeGlobalEvents() {
     logoutButtons.forEach(button => {
         button.addEventListener('click', (e) => {
             e.preventDefault();
-            AuthService.logout();
-        });
-    });
-    
-    // Add user menu toggle functionality
-    const userMenuToggles = document.querySelectorAll('[data-toggle="user-menu"]');
-    userMenuToggles.forEach(toggle => {
-        toggle.addEventListener('click', (e) => {
-            e.preventDefault();
-            const menu = document.querySelector(toggle.getAttribute('data-target'));
-            if (menu) {
-                menu.style.display = menu.style.display === 'none' ? 'block' : 'none';
+            if (typeof AuthService !== 'undefined') {
+                AuthService.logout();
             }
         });
     });
     
+    // Add user menu toggle functionality
+    const userMenuToggles = document.querySelectorAll('[data-action="user-menu-toggle"]');
+    userMenuToggles.forEach(toggle => {
+        toggle.addEventListener('click', (e) => {
+            e.preventDefault();
+            const dropdown = document.querySelector('[data-dropdown="user-menu"]');
+            if (dropdown) {
+                dropdown.style.display = dropdown.style.display === 'none' ? 'block' : 'none';
+            }
+        });
+    });
+    
+    // Close dropdown when clicking outside
+    document.addEventListener('click', (e) => {
+        const dropdown = document.querySelector('[data-dropdown="user-menu"]');
+        const toggle = document.querySelector('[data-action="user-menu-toggle"]');
+        
+        if (dropdown && toggle && !dropdown.contains(e.target) && !toggle.contains(e.target)) {
+            dropdown.style.display = 'none';
+        }
+    });
+    
     console.log('Global events initialized');
+}
+
+/**
+ * Update UI based on authentication state
+ */
+function updateAuthenticationUI() {
+    if (typeof AuthService === 'undefined') return;
+    
+    const isAuthenticated = AuthService.isAuthenticated();
+    const currentUser = AuthService.getCurrentUser();
+    
+    // Toggle navigation elements based on auth state
+    const authElements = document.querySelectorAll('[data-auth-required="false"]');
+    const userElements = document.querySelectorAll('[data-auth-required="true"]');
+    
+    if (isAuthenticated && currentUser) {
+        // Show user elements, hide auth elements
+        authElements.forEach(el => el.style.display = 'none');
+        userElements.forEach(el => el.style.display = 'block');
+        
+        // Update user display name
+        const displayName = document.querySelector('.user-display-name');
+        if (displayName) {
+            displayName.textContent = currentUser.firstName || currentUser.email || 'User';
+        }
+        
+        // Update welcome name on home page
+        const welcomeName = document.querySelector('.user-welcome-name');
+        if (welcomeName) {
+            welcomeName.textContent = currentUser.firstName || currentUser.email || 'User';
+        }
+        
+        // Update dashboard links based on user type
+        updateDashboardLinks(currentUser.userType);
+        
+    } else {
+        // Show auth elements, hide user elements
+        authElements.forEach(el => el.style.display = 'block');
+        userElements.forEach(el => el.style.display = 'none');
+    }
+    
+    // Handle page-specific auth redirects
+    handlePageAuthRedirects();
+}
+
+/**
+ * Update dashboard links based on user type
+ */
+function updateDashboardLinks(userType) {
+    const dashboardLinks = document.querySelectorAll('[data-dashboard-link]');
+    dashboardLinks.forEach(link => {
+        if (userType === 'partner') {
+            link.href = '/views/pages/admin-dashboard.html';
+        } else {
+            link.href = '/views/pages/customer-dashboard.html';
+        }
+    });
+}
+
+/**
+ * Handle page-specific authentication redirects
+ */
+function handlePageAuthRedirects() {
+    const currentPath = window.location.pathname;
+    const isAuthenticated = AuthService && AuthService.isAuthenticated();
+    
+    // Redirect logged-in users away from auth pages
+    if (isAuthenticated) {
+        const currentUser = AuthService.getCurrentUser();
+        const userType = currentUser?.userType;
+        
+        if (currentPath.includes('/login.html') || currentPath.includes('/register.html')) {
+            // Redirect to appropriate dashboard
+            if (userType === 'partner') {
+                window.location.href = '/views/pages/admin-dashboard.html';
+            } else {
+                window.location.href = '/views/pages/customer-dashboard.html';
+            }
+            return;
+        }
+    }
+    
+    // Redirect non-authenticated users from protected pages
+    if (!isAuthenticated && isProtectedPage(currentPath)) {
+        window.location.href = '/views/pages/login.html';
+        return;
+    }
+}
+
+/**
+ * Check if current page requires authentication
+ */
+function isProtectedPage(path) {
+    const protectedPaths = [
+        '/admin-dashboard.html',
+        '/customer-dashboard.html'
+    ];
+    
+    return protectedPaths.some(protectedPath => path.includes(protectedPath));
 }
 
 // Enhanced utility functions using new centralized systems

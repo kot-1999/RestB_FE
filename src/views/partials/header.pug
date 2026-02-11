@@ -2,3 +2,26 @@ nav.navbar
   .nav-container
     .nav-logo
       a(href="/") RestB
+    
+    .nav-menu
+      // Navigation for non-authenticated users
+      .nav-auth(data-auth-required="false")
+        a.nav-link(href="/views/pages/login.html") Login
+        a.nav-link(href="/views/pages/register.html") Register
+      
+      // Navigation for authenticated users
+      .nav-user(data-auth-required="true" style="display: none;")
+        .user-info
+          span.user-name Welcome, 
+            span.user-display-name Guest
+        .nav-actions
+          a.nav-link(href="#" data-action="user-menu-toggle") Account
+            span.dropdown-arrow ▼
+          .user-dropdown(data-dropdown="user-menu" style="display: none;")
+            if AuthService && AuthService.isCustomer()
+              a.dropdown-item(href="/views/pages/customer-dashboard.html") Dashboard
+            if AuthService && AuthService.isPartner()
+              a.dropdown-item(href="/views/pages/admin-dashboard.html") Dashboard
+            .dropdown-divider
+            a.dropdown-item(href="#" data-action="logout") Logout
+          button.nav-btn.logout-btn(data-action="logout") Logout

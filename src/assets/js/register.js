@@ -2,6 +2,20 @@
 document.addEventListener('DOMContentLoaded', function() {
     console.log('Register page loaded');
     
+    // Check if user is already logged in
+    if (typeof AuthService !== 'undefined' && AuthService.isAuthenticated()) {
+        const currentUser = AuthService.getCurrentUser();
+        if (currentUser) {
+            // Redirect to appropriate dashboard
+            if (currentUser.userType === 'partner') {
+                window.location.href = '/views/pages/admin-dashboard.html';
+            } else {
+                window.location.href = '/views/pages/customer-dashboard.html';
+            }
+            return;
+        }
+    }
+    
     // Only run on register page
     if (!document.querySelector('.register-form')) return;
     

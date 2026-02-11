@@ -1,25 +1,17 @@
-doctype html
-html(lang="en")
-  head
-    meta(charset="UTF-8")
-    meta(name="viewport", content="width=device-width, initial-scale=1.0")
-    title RestB - Restaurant Booking
-    link(rel="stylesheet", href="/assets/css/style.css")
-  
-  body
-    header
-      include ../partials/header.pug
-    
-    main
-      .landing
-        h1 Welcome to RestB
-        p Restaurant booking made simple
-        
-        .login-section
-          a(href="/views/pages/login.html" class="login-btn") Login
-          |  
-          a(href="/views/pages/register.html" class="login-btn") Register
-    
-    include ../partials/footer.pug
-    
-    script(src="/assets/js/main.js")
+extends ../layouts/base.pug
+
+block head
+  title RestB - Restaurant Booking
+
+block content
+  .landing
+    h1 Welcome to RestB
+    p Restaurant booking made simple
+
+    .login-section
+      a.login-btn(href="/views/pages/login.html") Login
+      |  
+      a.login-btn(href="/views/pages/register.html") Register
+      br
+      a.login-btn(href="/views/pages/restaurants.html") Browse Restaurants
+

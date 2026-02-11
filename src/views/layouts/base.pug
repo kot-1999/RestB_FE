@@ -6,16 +6,19 @@ html(lang="en")
     title RestB Application
     link(rel="stylesheet", href="/assets/css/style.css")
     block head
-    
+
   body
+    block vars
+
     header
       include ../partials/header.pug
-    
+
     main
       block content
-    
+
     footer
       include ../partials/footer.pug
-    
+
+    script(src="/assets/js/config.js")
     script(src="/assets/js/main.js")
     block scripts

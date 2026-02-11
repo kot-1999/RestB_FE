@@ -1,0 +1,21 @@
+extends ../layouts/base.pug
+
+block head
+  title Restaurant Details - RestB
+
+block content
+  .restaurant-details-page
+    h1#restaurant-name Sakura Sushi
+    p#restaurant-location 📍 Tallaght
+
+    h2 Available Times
+    .time-slots
+      button.time-slot(type="button") 17:00
+      button.time-slot(type="button") 18:00
+      button.time-slot(type="button") 19:00
+      button.time-slot(type="button") 20:00
+
+    button#book-now.book-btn(type="button" disabled) Continue Booking
+
+block scripts
+  script(src="/assets/js/restaurant-details.js")

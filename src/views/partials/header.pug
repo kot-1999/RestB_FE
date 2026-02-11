@@ -1,4 +1,12 @@
-nav.navbar
-  .nav-container
-    .nav-logo
-      a(href="/") RestB
+// header.pug
+// Temporary role for development
+- const role = (typeof userRole !== 'undefined') ? userRole : 'guest'
+
+if role === 'admin'
+  include navbar-admin.pug
+else if role === 'staff'
+  include navbar-staff.pug
+else if role === 'user'
+  include navbar-user.pug
+else
+  include navbar-guest.pug

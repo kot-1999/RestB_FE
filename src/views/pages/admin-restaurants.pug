@@ -1,0 +1,43 @@
+extends ../layouts/base.pug
+
+block head
+  title Admin Restaurants - RestB
+
+block content
+  .admin-restaurants-page
+    .page-header
+      h1 Restaurants (Admin)
+      p Manage your locations, hours, and availability.
+
+      .header-actions
+        a.btn-primary(href="#") + Add Restaurant
+
+    // LIST / CARDS
+    section.admin-rest-list
+      // RESTAURANT 1
+      article.admin-rest-card
+        .card-left
+          img.rest-thumb(src="/assets/img/restaurant3.jpeg" alt="Bella Italia")
+        .card-mid
+          h3 Bella Italia
+          p.meta Brand: La benetti
+          p.meta Location: Dublin City Centre
+          p.meta Status: Active
+        .card-right
+          a.btn-secondary(href="#") Edit
+          a.btn-secondary(href="#") View bookings
+          a.btn-danger(href="#") Disable
+
+      // RESTAURANT 2 (NEW BELOW)
+      article.admin-rest-card
+        .card-left
+          img.rest-thumb(src="/assets/img/restaurant2.jpg" alt="Sakura Sushi")
+        .card-mid
+          h3 Sakura Sushi
+          p.meta Brand: La benetti
+          p.meta Location: Tallaght
+          p.meta Status: Active
+        .card-right
+          a.btn-secondary(href="#") Edit
+          a.btn-secondary(href="#") View bookings
+          a.btn-danger(href="#") Disable

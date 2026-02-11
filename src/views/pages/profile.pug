@@ -1,0 +1,40 @@
+extends ../layouts/base.pug
+
+block head
+  title Profile - RestB
+
+block content
+  .profile-page
+    h1 My Profile
+
+    .profile-container
+      .profile-form
+        .form-group
+          label First Name
+          input#firstName(type="text")
+
+        .form-group
+          label Last Name
+          input#lastName(type="text")
+
+        .form-group
+          label Email
+          input#email(type="email")
+
+        .form-group
+          label Phone Number
+          input#phone(type="text")
+
+        .form-group
+          label Role
+          input#role(type="text" disabled)
+
+        button#save-profile.save-btn(type="button") Update Profile Details
+
+      .profile-avatar
+        img#avatar(src="/assets/img/restaurant2.jpg" alt="avatar")
+        br
+        input#avatarUpload(type="file" accept="image/*")
+
+block scripts
+  script(src="/assets/js/profile.js")

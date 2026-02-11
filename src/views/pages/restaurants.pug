@@ -1,0 +1,85 @@
+extends ../layouts/base.pug
+
+block head
+  title Restaurants - RestB
+
+block content
+  .restaurants-page
+    // HERO / BANNER
+    section.rest-hero
+      .rest-hero-inner
+        h1 Find & Book your Perfect table
+        p Discover restaurants and make instant reservations
+        form.rest-search(action="/views/pages/restaurants" method="get")
+          input#q(type="search" name="q" placeholder="Search restaurants, cuisine, location..." autocomplete="off")
+          button(type="submit" aria-label="Search") 🔍
+
+    // FILTER / SORT BAR (UI only for now)
+    section.rest-filters
+      .filters-inner
+        .filter-group
+          label(for="sort") Sort by
+          select#sort(name="sort")
+            option(value="") Recommended
+            option(value="rating") Rating
+            option(value="distance") Distance
+            option(value="availability") Available at once
+
+        .filter-group
+          label(for="location") Location
+          select#location(name="location")
+            option(value="") Any
+            option Dublin City Centre
+            option Tallaght
+            option Blanchardstown
+
+        .filter-group
+          label(for="date") Date
+          input#date(type="date" name="date")
+
+        .filter-group
+          label(for="category") Category
+          select#category(name="category")
+            option(value="") Any
+            option Italian
+            option Japanese
+            option Steakhouse
+
+    // CARDS GRID
+    section.rest-results
+      .cards-grid
+        // CARD 1
+        article.restaurant-card
+          .card-img
+            img(src="/assets/img/restaurant1.JPG" alt="Bella Italia food")
+          .card-body
+            h3 Bella Italia
+            p.meta Brand: La benetti
+            p.meta Location: Dublin City Centre
+            p.meta Rating: ★★★★★ (55 votes)
+            p.meta Categories: Italian Cuisine, Family
+            a.book-btn(href="/views/pages/restaurant-book?restaurant=Bella%20Italia") Book here
+        // CARD 2
+        article.restaurant-card
+          .card-img
+            img(src="/assets/img/restaurant2.jpg" alt="Sakura Sushi food")
+          .card-body
+            h3 Sakura Sushi
+            p.meta Brand: La benetti
+            p.meta Location: Tallaght
+            p.meta Rating: ★★★★☆ (30 votes)
+            p.meta Categories: Japanese, Sushi, Ramen
+            a.book-btn(href="/views/pages/restaurant-book?restaurant=Bella%20Italia") Book here
+
+        // CARD 3
+        article.restaurant-card
+          .card-img
+            img(src="/assets/img/restaurant3.jpeg" alt="The Steakhouse food")
+          .card-body
+            h3 The Steakhouse
+            p.meta Brand: La benetti
+            p.meta Location: Blanchardstown
+            p.meta Rating: ★★★★☆ (25 votes)
+            p.meta Categories: Steak, Grill, Burgers
+            a.book-btn(href="/views/pages/restaurant-book?restaurant=Bella%20Italia") Book here
+

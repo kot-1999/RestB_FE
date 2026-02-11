@@ -4,15 +4,15 @@
 // Backend configurations
 const backends = {
     github: {
-        url: 'https://automatic-adventure-5p6rj7465jwh5rv-3000.app.github.dev',
+        url: 'https://fuzzy-robot-9xgwjww546rf7g4r-3000.app.github.dev',
         timeout: 15000
     },
     local: {
-        url: 'http://localhost:3000',
+        url: 'https://fuzzy-robot-9xgwjww546rf7g4r-3000.app.github.dev',
         timeout: 10000
     },
     production: {
-        url: 'https://api.restb.com', // TODO: Replace with actual production URL
+        url: 'https://fuzzy-robot-9xgwjww546rf7g4r-3000.app.github.dev', // TODO: Replace with actual production URL
         timeout: 20000
     }
 };

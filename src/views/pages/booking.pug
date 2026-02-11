@@ -1,0 +1,23 @@
+extends ../layouts/base.pug
+
+block head
+  title Booking - RestB
+
+block content
+  .booking-page
+    h1 Confirm Booking
+
+    p
+      strong Restaurant:
+      span#booking-restaurant  -
+
+    p
+      strong Time:
+      span#booking-time  -
+
+    label(for="guests") Guests
+    input#guests(type="number" min="1" value="2")
+    button#confirm-booking(type="button") Confirm Booking
+
+block scripts
+  script(src="/assets/js/booking.js")

@@ -213,4 +213,580 @@ main {
   .login-form {
     padding: 2rem;
   }
+
+}
+  /* Restaurants page */
+
+.restaurants-page {
+  max-width: 1100px;
+  margin: 40px auto;
+  padding: 20px;
+}
+
+.restaurant-list {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 25px;
+}
+
+.restaurant-card {
+  background: white;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 4px 14px rgba(0,0,0,0.12);
+  transition: transform 0.2s ease;
+}
+
+.restaurant-card:hover {
+  transform: translateY(-5px);
+}
+
+.restaurant-card img {
+  width: 100%;
+  height: 180px;
+  object-fit: cover;
+}
+
+.restaurant-info {
+  padding: 16px;
+}
+
+.restaurant-info h3 {
+  margin: 0 0 6px 0;
+}
+
+.view-btn {
+  display: inline-block;
+  margin-top: 10px;
+  padding: 8px 14px;
+  background: #2c7be5;
+  color: white;
+  text-decoration: none;
+  border-radius: 6px;
+}
+
+.view-btn:hover {
+  background: #1a5fc2;
+}
+.restaurant-card img {
+  width: 100%;
+  height: 180px;
+  object-fit: cover;
+  display: block;
+  border-radius: 12px 12px 0 0;
+}
+
+.restaurant-details {
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 2rem 1rem;
+}
+
+.restaurant-hero img {
+  width: 100%;
+  max-height: 320px;
+  object-fit: cover;
+  border-radius: 14px;
+  display: block;
+}
+
+.restaurant-meta {
+  margin: 1rem 0 2rem;
+  font-size: 1rem;
+  opacity: 0.9;
+}
+
+.time-slots {
+  display: flex;
+  gap: 0.75rem;
+  flex-wrap: wrap;
+  margin-top: 1rem;
+}
+
+.time-slot {
+  padding: 0.75rem 1rem;
+  border-radius: 10px;
+  border: 1px solid #ccc;
+  background: white;
+  cursor: pointer;
+}
+
+.time-slot:hover {
+  border-color: #2c7be5;
+}
+.time-slot.selected {
+  background: #2c7be5;
+  color: white;
+  border-color: #2c7be5;
+}
+
+.book-btn {
+  margin-top: 1.5rem;
+  padding: 0.9rem 1.4rem;
+  background: #2c7be5;
+  color: white;
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+}
+
+.book-btn:disabled {
+  background: #aaa;
+  cursor: not-allowed;
+}
+.time-slot {
+  padding: 10px 18px;
+  border-radius: 8px;
+  border: 1px solid #ccc;
+  background: white;
+  cursor: pointer;
+  margin-right: 10px;
+  transition: 0.2s;
+}
+
+.time-slot:hover {
+  background: #f2f2f2;
+}
+
+.time-slot.selected {
+  background: #2f4050;
+  color: white;
+  border-color: #2f4050;
+}
+
+.book-btn {
+  margin-top: 20px;
+  padding: 12px 22px;
+  border-radius: 8px;
+  border: none;
+  background: #2f4050;
+  color: white;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.book-btn:disabled {
+  background: #999;
+  cursor: not-allowed;
+}
+
+.profile-page {
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 48px 16px;
+}
+
+.profile-card {
+  background: #fff;
+  border-radius: 16px;
+  padding: 32px;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.08);
+}
+
+.profile-header h1 {
+  margin: 0 0 18px;
+}
+
+.profile-grid {
+  display: grid;
+  grid-template-columns: 1fr 240px;
+  gap: 28px;
+  align-items: start;
+}
+
+.profile-form .form-group {
+  margin-bottom: 14px;
+}
+
+.profile-form label {
+  display: block;
+  margin-bottom: 6px;
+  font-weight: 600;
+}
+
+.profile-form input {
+  width: 100%;
+  padding: 10px 12px;
+  border: 1px solid #d7d7d7;
+  border-radius: 10px;
+}
+
+.profile-save {
+  margin-top: 10px;
+  padding: 10px 14px;
+  border: 0;
+  border-radius: 10px;
+  cursor: pointer;
+}
+
+.profile-avatar {
+  text-align: center;
+}
+
+.avatar {
+  width: 140px;
+  height: 140px;
+  border-radius: 999px;
+  object-fit: cover;
+  border: 3px solid #eee;
+}
+
+.avatar-edit {
+  display: inline-block;
+  margin-top: 10px;
+  cursor: pointer;
+  text-decoration: underline;
+}
+
+.profile-danger {
+  margin-top: 24px;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+
+.delete-btn {
+  padding: 10px 14px;
+  border: 0;
+  border-radius: 10px;
+  cursor: pointer;
+  background: #d9534f;
+  color: white;
+}
+
+.role-note {
+  margin: 0;
+  opacity: 0.8;
+}
+
+/* mobile */
+@media (max-width: 720px) {
+  .profile-grid {
+    grid-template-columns: 1fr;
+  }
+}
+/* =========================
+   RESTAURANTS PAGE (MOCKUP STYLE)
+   ========================= */
+
+.restaurants-page {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 24px 16px 48px;
+}
+
+.rest-hero {
+  background: #e9e9e9;
+  border-radius: 10px;
+  padding: 44px 16px;
+  margin-top: 16px;
+}
+
+.rest-hero-inner {
+  max-width: 720px;
+  margin: 0 auto;
+  text-align: center;
+}
+
+.rest-hero h1 {
+  font-size: 40px;
+  margin: 0 0 10px;
+  font-weight: 800;
+}
+
+.rest-hero p {
+  margin: 0 0 18px;
+  opacity: 0.75;
+}
+
+.rest-search {
+  display: flex;
+  gap: 10px;
+  justify-content: center;
+  align-items: center;
+}
+
+.rest-search input[type="search"] {
+  width: min(560px, 100%);
+  padding: 12px 14px;
+  border: 1px solid #cfcfcf;
+  border-radius: 999px;
+  outline: none;
+}
+
+.rest-search button {
+  padding: 10px 14px;
+  border: 1px solid #cfcfcf;
+  border-radius: 999px;
+  background: white;
+  cursor: pointer;
+}
+
+.rest-filters {
+  margin-top: 14px;
+  background: #f2f2f2;
+  border-radius: 10px;
+  padding: 14px 12px;
+}
+
+.filters-inner {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(140px, 1fr));
+  gap: 12px;
+}
+
+.filter-group {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.filter-group label {
+  font-size: 12px;
+  opacity: 0.75;
+}
+
+.filter-group select,
+.filter-group input[type="date"] {
+  padding: 10px 10px;
+  border: 1px solid #d7d7d7;
+  border-radius: 8px;
+  background: white;
+}
+
+.rest-results {
+  margin-top: 18px;
+}
+
+.cards-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(240px, 1fr));
+  gap: 18px;
+}
+
+.restaurant-card {
+  border: 1px solid #e1e1e1;
+  border-radius: 12px;
+  overflow: hidden;
+  background: white;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.06);
+}
+
+.card-img img {
+  width: 100%;
+  height: 180px;      /* key: fixes your “massive” images */
+  object-fit: cover;  /* key: crops nicely */
+  display: block;
+}
+
+.card-body {
+  padding: 12px 12px 14px;
+}
+
+.card-body h3 {
+  margin: 0 0 6px;
+  font-size: 18px;
+}
+
+.card-body .meta {
+  margin: 4px 0;
+  font-size: 13px;
+  opacity: 0.85;
+}
+
+.book-btn {
+  display: inline-block;
+  margin-top: 10px;
+  padding: 10px 14px;
+  border-radius: 8px;
+  background: #1f1f1f;
+  color: white;
+  text-decoration: none;
+}
+
+/* Responsive */
+@media (max-width: 900px) {
+  .cards-grid {
+    grid-template-columns: 1fr;
+  }
+  .filters-inner {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+.restaurant-book { max-width: 980px; margin: 0 auto; padding: 2rem 1rem; }
+.rb-card { background: #fff; border-radius: 14px; padding: 1.25rem; box-shadow: 0 8px 28px rgba(0,0,0,0.08); }
+
+.rb-hero { display: grid; grid-template-columns: 1.2fr 1fr; gap: 1.25rem; align-items: start; }
+.rb-hero-img { width: 100%; height: 320px; object-fit: cover; border-radius: 12px; }
+.rb-hero-info h1 { margin: 0 0 .5rem; }
+.rb-hero-info p { margin: .25rem 0; color: #555; }
+
+.rb-booking { margin-top: 1.5rem; }
+.rb-row { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-bottom: 1rem; }
+.rb-field label { display:block; font-weight: 600; margin-bottom: .35rem; }
+.rb-field input { width:100%; padding:.65rem .75rem; border: 1px solid #ddd; border-radius: 10px; }
+
+.rb-times { display:flex; gap:.75rem; flex-wrap: wrap; margin: .75rem 0 1rem; }
+.time-slot { padding:.65rem 1rem; border-radius: 12px; border: 1px solid #ddd; background:#fff; cursor:pointer; }
+.time-slot.active { border-color: #1e73ff; outline: 2px solid rgba(30,115,255,0.25); }
+
+.rb-btn { padding:.9rem 1.1rem; border: none; border-radius: 12px; cursor:pointer; }
+#rb-confirm.rb-btn { background:#1e73ff; color:#fff; }
+#rb-confirm.rb-btn:disabled { background:#aaa; cursor:not-allowed; }
+
+.rb-msg { margin-top: .75rem; color: #1b7a2a; font-weight: 600; }
+
+@media (max-width: 760px) {
+  .rb-hero { grid-template-columns: 1fr; }
+  .rb-row { grid-template-columns: 1fr; }
+  .rb-hero-img { height: 240px; }
+}
+.admin-restaurants { max-width: 1100px; margin: 0 auto; padding: 2rem 1rem; }
+.admin-toolbar { display:flex; justify-content:flex-end; margin-bottom: 1rem; }
+.admin-btn { padding:.7rem 1rem; border-radius:12px; border:1px solid #ddd; background:#fff; cursor:pointer; }
+
+.admin-restaurant-card { background:#f2f2f2; border-radius: 14px; padding: 1rem; margin-top: 1rem; }
+.admin-top { display:grid; grid-template-columns: 1.6fr 1fr; gap: 1rem; }
+.admin-fields .field { margin-bottom: .75rem; }
+.admin-fields label { display:block; font-weight: 600; margin-bottom: .25rem; }
+.admin-fields input { width: 100%; padding:.55rem .7rem; border: 1px solid #ddd; border-radius: 10px; background:#fff; }
+
+.admin-banner img { width:100%; height: 220px; object-fit: cover; border-radius: 12px; }
+
+.admin-gallery { display:flex; gap:.75rem; flex-wrap: wrap; align-items:center; }
+.admin-gallery img { width: 180px; height: 110px; object-fit: cover; border-radius: 12px; }
+.gallery-add { width: 180px; height: 110px; border-radius: 12px; border: 2px dashed #bbb; background:#fff; cursor:pointer; }
+
+.admin-employees { margin-top: .5rem; }
+.emp-row { display:grid; grid-template-columns: 1fr 1fr 1fr auto; gap:.75rem; align-items:center; padding:.75rem; background:#fff; border-radius: 12px; }
+.emp-actions button { margin-left:.5rem; }
+
+.invite-row { display:flex; gap:.75rem; margin-top: .75rem; }
+.invite-row input { flex:1; padding:.55rem .7rem; border: 1px solid #ddd; border-radius: 10px; background:#fff; }
+
+.admin-actions { display:flex; gap:.75rem; justify-content:flex-end; margin-top: 1rem; }
+.admin-actions button { padding:.7rem 1rem; border-radius: 12px; border:1px solid #ddd; background:#fff; cursor:pointer; }
+.admin-actions .primary { background:#1e73ff; color:#fff; border:none; }
+.admin-actions .danger { background:#ff4d4d; color:#fff; border:none; }
+
+@media (max-width: 860px) {
+  .admin-top { grid-template-columns: 1fr; }
+  .emp-row { grid-template-columns: 1fr; }
+}
+
+/* ---- Restaurant Book Page ---- */
+.rb-wrap{
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 32px 16px;
+  display: grid;
+  grid-template-columns: 1.3fr 0.9fr;
+  gap: 24px;
+}
+.rb-hero img{
+  width: 100%;
+  height: 320px;
+  object-fit: cover;
+  border-radius: 14px;
+  display:block;
+}
+.rb-gallery{
+  display:flex;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+.rb-gallery img{
+  width: 140px;
+  height: 90px;
+  object-fit: cover;
+  border-radius: 10px;
+}
+
+.rb-panel{
+  background: #fff;
+  border: 1px solid #eee;
+  border-radius: 14px;
+  padding: 18px;
+}
+.rb-row{ margin: 14px 0; }
+.rb-row label{ display:block; font-weight: 600; margin-bottom: 6px; }
+
+.rb-times{ display:flex; gap:10px; flex-wrap: wrap; }
+.time-slot{
+  border: 1px solid #ddd;
+  background: #fff;
+  padding: 10px 14px;
+  border-radius: 10px;
+  cursor:pointer;
+}
+.time-slot.active{
+  border-color: #2d6cdf;
+}
+
+.rb-hint{ color:#666; margin-top:10px; }
+
+/* Admin */
+.restaurants-admin{
+  max-width: 1000px;
+  margin: 0 auto;
+  padding: 32px 16px;
+}
+.admin-actions{ margin: 16px 0 24px; }
+.admin-list{ display:grid; gap: 12px; }
+.admin-card{
+  background:#fff;
+  border:1px solid #eee;
+  border-radius: 12px;
+  padding: 16px;
+  display:flex;
+  justify-content: space-between;
+  gap: 12px;
+}
+.admin-btn{
+  border:1px solid #ddd;
+  background:#f7f7f7;
+  padding: 8px 12px;
+  border-radius: 10px;
+  cursor:pointer;
+  margin-left: 8px;
+}
+.admin-btn.danger{ border-color:#f2b8b5; background:#ffeceb; }
+
+.admin-restaurant {
+  background: #f5f5f5;
+  padding: 24px;
+  margin-bottom: 40px;
+  border-radius: 10px;
+  border: 1px solid #ddd;
+}
+/* Restaurant cards - stop images exploding */
+.admin-rest-card .card-img {
+  width: 100%;
+  height: 180px;         /* pick 160–240px depending on your design */
+  overflow: hidden;
+  border-radius: 12px;   /* optional */
+}
+
+.admin-rest-card .card-img img {
+  width: 100%;
+  height: 100%;
+  display: block;
+  object-fit: cover;     /* crops nicely instead of stretching */
+}
+/* Fix admin restaurant thumbnails */
+.admin-rest-card .card-left {
+  width: 180px;          /* choose 140–220px */
+  height: 120px;         /* choose 90–160px */
+  overflow: hidden;
+  border-radius: 12px;
+  flex: 0 0 auto;
+}
+
+.admin-rest-card .card-left img,
+.admin-rest-card img.rest-thumb {
+  width: 100%;
+  height: 100%;
+  display: block;
+  object-fit: cover;
 }

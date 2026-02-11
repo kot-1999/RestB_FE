@@ -2,17 +2,20 @@
 document.addEventListener('DOMContentLoaded', function() {
     console.log('RestB Frontend loaded');
     
-    // Initialize authentication state
-    initializeAuth();
-    
-    // Global functionality that runs on all pages
-    initializeNavigation();
-    initializeGlobalEvents();
-    
-    // Initialize access control if user is authenticated
-    if (AuthService.isAuthenticated()) {
-        AccessControl.initialize();
-    }
+    // Wait a tick to ensure all scripts are loaded
+    setTimeout(() => {
+        // Initialize authentication state
+        initializeAuth();
+        
+        // Global functionality that runs on all pages
+        initializeNavigation();
+        initializeGlobalEvents();
+        
+        // Initialize access control if user is authenticated
+        if (typeof AuthService !== 'undefined' && AuthService.isAuthenticated()) {
+            AccessControl.initialize();
+        }
+    }, 100);
 });
 
 /**

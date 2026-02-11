@@ -1,0 +1,69 @@
+doctype html
+html(lang="en")
+  head
+    meta(charset="UTF-8")
+    meta(name="viewport", content="width=device-width, initial-scale=1.0")
+    title Admin Dashboard - RestB
+    link(rel="stylesheet", href="/assets/css/style.css")
+  
+  body(data-requires-auth)
+    header
+      include ../partials/header.pug
+    
+    main
+      .admin-container
+        h1 Admin Dashboard
+        
+        .admin-welcome
+          p Welcome to the RestB Admin Dashboard!
+        
+        // Super Admin Views
+        .admin-section(data-user-role="superAdmin")
+          h2 Super Admin Panel
+          .menu-grid
+            .menu-item
+              h3 User Management
+              button(data-permission="manage_admins") Manage Admin Staff
+              button(data-permission="view_customers") View All Customers
+            .menu-item
+              h3 System Management
+              button(data-permission="view_system_settings") System Settings
+              button(data-permission="manage_system") System Configuration
+              button(data-permission="export_data") Export Data
+              button(data-permission="manage_admins") Manage Admins
+        
+        // Admin Staff Views (both superAdmin and adminStaff can see these)
+        .admin-section(data-user-role="superAdmin,adminStaff")
+          h2 Admin Panel
+          .menu-grid
+            .menu-item
+              h3 Customer Management
+              button(data-permission="view_customers") View Customers
+              button(data-permission="manage_customers") Manage Customers
+            .menu-item
+              h3 Booking Management
+              button(data-permission="view_all_bookings") View All Bookings
+              button(data-permission="manage_bookings") Manage Bookings
+        
+        .user-info
+          h3 Current User
+          .user-details
+            p Name: 
+              span#user-name Loading...
+            p Email: 
+              span#user-email Loading...
+            p Role: 
+              span#user-role Loading...
+            p User Type: 
+              span#user-type Loading...
+    
+    include ../partials/footer.pug
+    
+    script(src="/assets/js/config.js")
+    script(src="/assets/js/utils/storage.js")
+    script(src="/assets/js/utils/ui.js")
+    script(src="/assets/js/utils/api.js")
+    script(src="/assets/js/utils/auth.js")
+    script(src="/assets/js/utils/access-control.js")
+    script(src="/assets/js/main.js")
+    script(src="/assets/js/admin.js")

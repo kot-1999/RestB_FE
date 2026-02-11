@@ -78,9 +78,9 @@ async function handleLogin(e) {
             // Redirect based on user type
             setTimeout(() => {
                 if (userType === 'partner') {
-                    window.location.href = '/pages/admin.html';
+                    window.location.href = '/views/pages/admin-dashboard.html';
                 } else {
-                    window.location.href = '/index.html';
+                    window.location.href = '/views/pages/customer-dashboard.html';
                 }
             }, 1500);
         } else {

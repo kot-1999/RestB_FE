@@ -103,9 +103,9 @@ async function handleRegister(e) {
             // Redirect to login or dashboard after successful registration
             setTimeout(() => {
                 if (userType === 'partner') {
-                    window.location.href = '/pages/admin.html';
+                    window.location.href = '/views/pages/admin-dashboard.html';
                 } else {
-                    window.location.href = '/index.html';
+                    window.location.href = '/views/pages/customer-dashboard.html';
                 }
             }, 2000);
         } else {

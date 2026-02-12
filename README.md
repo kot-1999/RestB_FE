@@ -77,32 +77,55 @@ That's it!
 
 ## Pages overview
 
-`/auth/login`             User, Admin, Staff
+### IMPLEMENTED (Watch api docs)
+`/api/ b2c | b2b /auth/login`             USER, ADMIN, EMPLOYEE
+`/api/ b2c | b2b /auth/register`          USER, ADMIN, EMPLOYEE
+`/api/ b2c | b2b /auth/forgotPassword`    USER, ADMIN, EMPLOYEE
+`/api/ b2c | b2b /auth/resetPassword`     USER, ADMIN, EMPLOYEE
 
-`/auth/register`          User, Admin, Staff
+Fir this two UPDATE must be added, and phone number field must be created
+`/api/b2c/user`                           USER, ADMIN, EMPLOYEE (GET, DELETE)
+`/api/b2b/admin`                          USER, ADMIN, EMPLOYEE (GET, DELETE)
 
-`/auth/forgotPassword`
+### COMMON
+`api/b2c/bookings/:id`
+- UPDATE (USER, ADMIN, EMPLOYEE) Update booking status
 
+### B2C
 
-`/restaurants`            User (browse all restaurant locations)
+`/api/b2c/restaurants/`
+- GET (PUBLIC) List of restaurants (restaurants, addresses, brands, booking_daily_summary)
 
-`/restaurants/:id`        User (view & book a specific restaurant)
+`api/b2c/restaurants/:id`
+- GET (PUBLIC) Restaurant details (restaurants, addresses, brands, booking_daily_summary)
 
-`/brands/:id`             User (view brand info + all its restaurants)
+`api/b2c/bookings`
+- GET (USER) List of user's bookings (bookings, restaurants, brands)
+- POST (USER) Create new booking
 
-`/profile`                User (profile, settings)
+### B2B
 
-`/profile/bookings`       User (own bookings)
+`/api/b2b/auth/employee`
+- POST (ADMIN) Send invitation to a new admin
+- DELETE (ADMIN) Delete employee admin (admins)
 
-`/admin`                  Admin/Staff (dashboard)
+`/api/b2b/auth/employee/register`
+- POST (EMPLOYEE) Register new employee (admins)
 
-`/admin/brand`            Admin/Staff (manage brand info)
+`/api/b2b/bookings`
+- GET (ADMIN, EMPLOYEE) List of restaurants with short stats about bookings (restaurants, addresses, brands, bookings_daily_summary)
 
-`/admin/restaurants`      Admin (manage all restaurants under the brand)
+`/api/b2b/bookings/:id`
+- GET (ADMIN, EMPLOYEE) Details of restaurant bookings (restaurants, addresses, brands, bookings)
+- POST (ADMIN, EMPLOYEE) CAN BE ADDED IN FUTURE Add new bookings manually
+- DELETE (ADMIN, EMPLOYEE) CAN BE ADDED IN FUTURE Add new bookings manually
 
-`/admin/restaurants/:id`  Admin (restaurant settings, booking rules, employees)
+`/api/b2b/restaurants`
+- GET (ADMIN, EMPLOYEE) List of restaurant details with brand, employees (restaurants, addresses, brands, restaurant_staff)
 
-`/admin/bookings`         Admin/Staff (all bookings across brand)
+`/api/b2b/brands/:id`
+- UPDATE Update brand name / logo
+
 
 # Page Details
 

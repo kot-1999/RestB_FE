@@ -4,6 +4,7 @@ export default class ApiRequest {
     static checkResponse = async (response) => {
         if (!response.ok) {
             // Throw an error if status is not 2xx
+
             const text = await response.json()
 
             throw new Error(`${response.status}: ${text.messages}`)
@@ -78,11 +79,38 @@ export default class ApiRequest {
         try {
             const authData = LocalStorage.get('auth')
             if (!authData?.token) {
-                throw new Error('Token is required for this action')
+                throw new Error('logout - Token is required for this action')
             }
 
             const response = await fetch(
                 `http://localhost:3000/api/${authData?.role ? 'b2b' : 'b2c'}/v1/authorization/logout`, {
+                    headers: {
+                        'Content-Type': 'application/json',
+                        ...(authData.token && { Authorization: `Bearer ${authData.token}` }),
+                    },
+                    method: 'GET'
+                });
+            await ApiRequest.checkResponse(response)
+            LocalStorage.set('auth', null)
+            const res = await response.json()
+
+            showSuccess(res.message)
+            return res
+        } catch (err) {
+            showError(err)
+            return null
+        }
+    }
+
+    static async getProfile(id) {
+        try {
+            const authData = LocalStorage.get('auth')
+            if (!authData?.token) {
+                throw new Error('getProfile - Token is required for this action')
+            }
+
+            const response = await fetch(
+                `http://localhost:3000/api/${authData?.role ? 'b2b' : 'b2c'}/v1/${authData?.role ? 'admin' : 'user'}/${id ?? authData.id}`, {
                     headers: {
                         'Content-Type': 'application/json',
                         ...(authData.token && { Authorization: `Bearer ${authData.token}` }),

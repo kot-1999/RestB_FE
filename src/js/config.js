@@ -8,6 +8,6 @@ export const Template =  {
         login: () => document.getElementById('login-component-template').innerHTML,
         register: () => document.getElementById('register-component-template').innerHTML,
         forgotPassword: () => document.getElementById('forgot-password-component-template').innerHTML,
-
+        dummyProfileTemplate: () => document.getElementById('dummy-profile-template').innerHTML,
     }
 }

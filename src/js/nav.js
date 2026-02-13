@@ -50,7 +50,10 @@ function loadPage(template, loader, navId) {
         behavior: 'auto'
     })
 }
-
+const logout = () => {
+    ApiRequest.logout().catch(error =>   console.log(error.message))
+    loadHome()
+}
 // Handles page reload. Assures that page will reload on same page
 function renderFromHash() {
     const routes = {
@@ -61,15 +64,12 @@ function renderFromHash() {
         },
         '#signout': {
             template: Template.page.home(),
-            loader: () => {
-                ApiRequest.logout().catch(error =>   console.log(error.message))
-                loadHome()
-            },
+            loader: logout,
             nav: '#navMain'
         },
         '#profile': {
             template: Template.page.profile,
-            loader: () => { console.log('profile')},
+            loader: loadProfile,
             nav: '#profile'
         }
     }

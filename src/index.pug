@@ -8,7 +8,7 @@ html(lang="en")
     script(src='https://code.jquery.com/jquery-3.7.1.min.js')
   body
     nav
-      include components/nav
+      include pages/components/nav
 
     content#content
       include pages/home
@@ -24,13 +24,15 @@ html(lang="en")
         include pages/home
     div(style="display:none")
       template#login-component-template
-        include components/authForms/login
+        include pages/components/authForms/login
     div(style="display:none")
       template#register-component-template
-        include components/authForms/register
+        include pages/components/authForms/register
     div(style="display:none")
       template#forgot-password-component-template
-        include components/authForms/forgotPassword
-
+        include pages/components/authForms/forgotPassword
+    div(style="display:none")
+      template#dummy-profile-template
+        include pages/components/dummyProfileTemplate
     script(src='https://cdn.jsdelivr.net/npm/sweetalert2@11')
     script(type="module" src="./js/main.js")

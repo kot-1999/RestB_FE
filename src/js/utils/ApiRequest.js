@@ -1,6 +1,7 @@
 import {LocalStorage, showError, showSuccess} from "./helpers.js";
 
 export default class ApiRequest {
+    static baseUrl = 'http://localhost:3000/api'
     static checkResponse = async (response) => {
         if (!response.ok) {
             // Throw an error if status is not 2xx
@@ -13,7 +14,7 @@ export default class ApiRequest {
     static async register(body, userType = 'b2c') {
         try {
             const response = await fetch(
-                `http://localhost:3000/api/${userType}/v1/authorization/register`, {
+                `${this.baseUrl}/${userType}/v1/authorization/register`, {
                     headers: {
                         'Content-Type': 'application/json',
                     },
@@ -35,7 +36,7 @@ export default class ApiRequest {
     static async login(body, userType = 'b2c') {
         try {
             const response = await fetch(
-                `http://localhost:3000/api/${userType}/v1/authorization/login`, {
+                `${this.baseUrl}/${userType}/v1/authorization/login`, {
                     headers: {
                         'Content-Type': 'application/json',
                     },
@@ -58,7 +59,7 @@ export default class ApiRequest {
     static async forgotPassword(body, userType = 'b2c') {
         try {
             const response = await fetch(
-                `http://localhost:3000/api/${userType}/v1/authorization/forgot-password`, {
+                `${this.baseUrl}/${userType}/v1/authorization/forgot-password`, {
                     headers: {
                         'Content-Type': 'application/json',
                     },
@@ -83,7 +84,7 @@ export default class ApiRequest {
             }
 
             const response = await fetch(
-                `http://localhost:3000/api/${authData?.role ? 'b2b' : 'b2c'}/v1/authorization/logout`, {
+                `${this.baseUrl}/${authData?.role ? 'b2b' : 'b2c'}/v1/authorization/logout`, {
                     headers: {
                         'Content-Type': 'application/json',
                         ...(authData.token && { Authorization: `Bearer ${authData.token}` }),
@@ -110,7 +111,7 @@ export default class ApiRequest {
             }
 
             const response = await fetch(
-                `http://localhost:3000/api/${authData?.role ? 'b2b' : 'b2c'}/v1/${authData?.role ? 'admin' : 'user'}/${id ?? authData.id}`, {
+                `${this.baseUrl}/${authData?.role ? 'b2b' : 'b2c'}/v1/${authData?.role ? 'admin' : 'user'}/${id ?? authData.id}`, {
                     headers: {
                         'Content-Type': 'application/json',
                         ...(authData.token && { Authorization: `Bearer ${authData.token}` }),

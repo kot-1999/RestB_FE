@@ -63,7 +63,7 @@ function renderFromHash() {
             nav: '#signin'
         },
         '#signout': {
-            template: Template.page.home(),
+            template: Template.page.home,
             loader: logout,
             nav: '#navMain'
         },

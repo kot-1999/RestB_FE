@@ -64,8 +64,8 @@ function renderFromHash() {
 
     // Load main page if url hash is not available
     const route = routes[window.location.hash] || {
-        template: '<h1>Main Page</h1>',
-        loader: () => {},
+        template: Template.page.home,
+        loader: () => { console.log('home')},
         nav: '#navMain'
     }
 

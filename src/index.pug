@@ -20,9 +20,12 @@ html(lang="en")
         include pages/profile
     div(style="display:none")
       template#login-component-template
-        include components/login
+        include components/authForms/login
     div(style="display:none")
       template#register-component-template
-        include components/register
+        include components/authForms/register
+    div(style="display:none")
+      template#forgot-password-component-template
+        include components/authForms/forgotPassword
 
     script(type="module" src="./js/main.js")

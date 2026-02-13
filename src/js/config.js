@@ -6,7 +6,7 @@ export const Template =  {
     component: {
         login: () => document.getElementById('login-component-template').innerHTML,       // select the template
         register: () => document.getElementById('register-component-template').innerHTML,       // select the template
-
+        forgotPassword: () => document.getElementById('forgot-password-component-template').innerHTML,       // select the template
 
     }
 }

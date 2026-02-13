@@ -1,6 +1,8 @@
 // Show page content
 import {Template} from "./config.js";
 import loadAuth from "./pages/auth.js"
+import loadHome from "./pages/home.js"
+import ApiRequest from "./utils/ApiRequest.js";
 
 function showContent() {
     $('#content').css('visibility', 'visible')
@@ -51,9 +53,12 @@ function renderFromHash() {
             nav: '#signin'
         },
         '#signout': {
-            template: Template.page.auth,
-            loader: () => { console.log('signout')},
-            nav: '#signout'
+            template: Template.page.home(),
+            loader: () => {
+                ApiRequest.logout().catch(error =>   console.log(error.message))
+                loadHome()
+            },
+            nav: '#navMain'
         },
         '#profile': {
             template: Template.page.profile,
@@ -65,7 +70,7 @@ function renderFromHash() {
     // Load main page if url hash is not available
     const route = routes[window.location.hash] || {
         template: Template.page.home,
-        loader: () => { console.log('home')},
+        loader: loadHome,
         nav: '#navMain'
     }
 

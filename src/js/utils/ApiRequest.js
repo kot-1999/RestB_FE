@@ -1,4 +1,5 @@
 import LocalStorage from './../utils/LocalStorage.js';
+
 export default class ApiRequest {
     static checkResponse = async (response) => {
         if (!response.ok) {
@@ -19,11 +20,7 @@ export default class ApiRequest {
         await ApiRequest.checkResponse(response)
         const res = await response.json()
 
-        if (res.status === 200) {
-            LocalStorage.set('auth', res.user ?? res.admin)
-        }
-        console.log('!!!!!!!!!!!!', LocalStorage.get('auth'))
-
+        LocalStorage.set('auth', res.user ?? res.admin)
         return res
     }
 
@@ -39,10 +36,7 @@ export default class ApiRequest {
         await ApiRequest.checkResponse(response)
         const res = await response.json()
 
-        if (res.status === 200) {
-            LocalStorage.set('auth', res.user ?? res.admin)
-        }
-
+        LocalStorage.set('auth', res.user ?? res.admin)
         return res
     }
 
@@ -55,6 +49,26 @@ export default class ApiRequest {
                 method: 'POST',
                 body: JSON.stringify(body)
             });
+        await ApiRequest.checkResponse(response)
+        return await response.json()
+    }
+
+    static async logout() {
+        const authData = LocalStorage.get('auth')
+        if (!authData?.token) {
+            throw new Error('Token is required for this action')
+        }
+
+        const response = await fetch(
+            `http://localhost:3000/api/${authData?.role ? 'b2b' : 'b2c'}/v1/authorization/logout`, {
+                headers: {
+                    'Content-Type': 'application/json',
+                    ...(authData.token && { Authorization: `Bearer ${authData.token}` }),
+                },
+                method: 'GET'
+            });
+        LocalStorage.set('auth', null)
+        console.log('User was logged out', LocalStorage.get('auth'))
         await ApiRequest.checkResponse(response)
         return await response.json()
     }

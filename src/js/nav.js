@@ -2,6 +2,8 @@
 import {Template} from "./config.js";
 import loadAuth from "./pages/auth.js"
 import loadHome from "./pages/home.js"
+import loadProfile from "./pages/profile.js"
+
 import ApiRequest from "./utils/ApiRequest.js";
 
 function showContent() {

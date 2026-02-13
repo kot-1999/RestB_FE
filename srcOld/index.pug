@@ -1,0 +1,62 @@
+doctype html
+html(lang="en")
+  head
+    meta(charset="UTF-8")
+    meta(name="viewport", content="width=device-width, initial-scale=1.0")
+    title RestBoo - Restaurant Booking
+    link(rel="stylesheet", href="./css/styles.css")
+    script(src='https://code.jquery.com/jquery-3.7.1.min.js')
+  body
+    header
+      //include views/partials/header
+
+    main
+      //.landing
+      //  // Content for non-authenticated users
+      //  .landing-content(data-auth-required="false")
+      //    h1 Welcome to RestB
+      //    p Restaurant booking made simple
+      //
+      //    .login-section
+      //      a(href="/views/pages/login.html" class="login-btn") Login
+      //      |
+      //      a(href="/views/pages/register.html" class="login-btn") Register
+      //
+      //  // Content for authenticated users
+      //  .user-landing(data-auth-required="true" style="display: none;")
+      //    .welcome-section
+      //      h1 Welcome back,
+      //        span.user-welcome-name Guest
+      //      p What would you like to do today?
+      //
+      //      .action-cards
+      //        if AuthService && AuthService.isCustomer()
+      //          .action-card
+      //            h3 Browse Restaurants
+      //            p Discover amazing restaurants in your area
+      //            a.btn-primary(href="/views/pages/customer-dashboard.html") Go to Dashboard
+      //
+      //          .action-card
+      //            h3 My Bookings
+      //            p View and manage your restaurant reservations
+      //            a.btn-secondary(href="/views/pages/customer-dashboard.html#bookings") View Bookings
+      //
+      //        if AuthService && AuthService.isPartner()
+      //          .action-card
+      //            h3 Restaurant Management
+      //            p Manage your restaurant details and menu
+      //            a.btn-primary(href="/views/pages/admin-dashboard.html") Manage Restaurant
+      //
+      //          .action-card
+      //            h3 Bookings Overview
+      //            p View and manage customer reservations
+      //            a.btn-secondary(href="/views/pages/admin-dashboard.html#bookings") View Bookings
+      //
+      //          .action-card
+      //            h3 Staff Management
+      //            p Manage your restaurant staff and permissions
+      //            a.btn-secondary(href="/views/pages/admin-dashboard.html#staff") Manage Staff
+    footer
+      //include views/partials/footer
+
+    script(src="/js/main.js")

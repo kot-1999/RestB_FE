@@ -4,11 +4,11 @@ html(lang="en")
     meta(charset="UTF-8")
     meta(name="viewport", content="width=device-width, initial-scale=1.0")
     title My Bookings - RestBoo
-    link(rel="stylesheet", href="/assets/css/style.css")
+    link(rel="stylesheet", href="/assets/css/styles.css")
   
   body
     header
-      include ../partials/header.pug
+      include ../partials/header
     
     main
       .bookings-container
@@ -138,7 +138,7 @@ html(lang="en")
               button.btn-primary(id="submitReviewBtn") Submit Review
               button.btn-secondary(id="cancelReviewBtn") Cancel
     
-    include ../partials/footer.pug
+    include ../partials/footer
     
     script(src="/assets/js/config.js")
     script(src="/assets/js/utils/storage.js")

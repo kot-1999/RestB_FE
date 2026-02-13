@@ -1,3 +1,4 @@
+import LocalStorage from './../utils/LocalStorage.js';
 export default class ApiRequest {
     static checkResponse = async (response) => {
         if (!response.ok) {
@@ -16,7 +17,14 @@ export default class ApiRequest {
                 body: JSON.stringify(body)
         });
         await ApiRequest.checkResponse(response)
-        return await response.json()
+        const res = await response.json()
+
+        if (res.status === 200) {
+            LocalStorage.set('auth', res.user ?? res.admin)
+        }
+        console.log('!!!!!!!!!!!!', LocalStorage.get('auth'))
+
+        return res
     }
 
     static async login(body, userType = 'b2c') {
@@ -29,7 +37,13 @@ export default class ApiRequest {
                 body: JSON.stringify(body)
             });
         await ApiRequest.checkResponse(response)
-        return await response.json()
+        const res = await response.json()
+
+        if (res.status === 200) {
+            LocalStorage.set('auth', res.user ?? res.admin)
+        }
+
+        return res
     }
 
     static async forgotPassword(body, userType = 'b2c') {

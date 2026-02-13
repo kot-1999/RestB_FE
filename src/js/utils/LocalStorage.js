@@ -1,4 +1,4 @@
-class StorageManager {
+export default class LocalStorage {
     static set(key, value) {
         localStorage.setItem(key, JSON.stringify(value));
     }
@@ -8,4 +8,3 @@ class StorageManager {
         return value ? JSON.parse(value) : null;
     }
 }
-window.StorageManager = StorageManager;

@@ -5,6 +5,7 @@ import loadHome from "./pages/home.js"
 import loadProfile from "./pages/profile.js"
 
 import ApiRequest from "./utils/ApiRequest.js";
+import {showError} from "./utils/helpers.js";
 
 function showContent() {
     $('#content').css('visibility', 'visible')
@@ -12,28 +13,32 @@ function showContent() {
 
 // First load on when document DOM is ready
 $(document).ready(function () {
-    renderFromHash()
-    showContent()
+    try {
+        renderFromHash()
+        showContent()
 
-    // Navigation clicks ONLY change hash
-    $(document).on('click', '#signin', () => {
-        location.hash = '#signin'
-    })
+        // Navigation clicks ONLY change hash
+        $(document).on('click', '#signin', () => {
+            location.hash = '#signin'
+        })
 
-    $(document).on('click', '#signout', () => {
-        location.hash = '#signout'
-    })
+        $(document).on('click', '#signout', () => {
+            location.hash = '#signout'
+        })
 
-    $(document).on('click', '#profile', () => {
-        location.hash = '#profile'
-    })
+        $(document).on('click', '#profile', () => {
+            location.hash = '#profile'
+        })
+    } catch (err) {
+        showError(err)
+    }
 })
 
 // Load page
 function loadPage(template, loader, navId) {
-    $('.navItem').removeClass('navActive')
+    $('.navItem')?.removeClass('navActive')
 
-    $(navId).addClass('navActive')
+    $(navId)?.addClass('navActive')
 
     $('#content').empty()
         .append(template())

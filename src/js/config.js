@@ -1,13 +1,13 @@
 export const Template =  {
     page: {
-        auth: () => document.getElementById('auth-template').innerHTML,       // select the template
-        profile: () => document.getElementById('profile-template').innerHTML, // select the template
+        auth: () => document.getElementById('auth-template').innerHTML,
+        profile: () => document.getElementById('profile-template').innerHTML,
         home: () => document.getElementById('home-template').innerHTML,
     },
     component: {
-        login: () => document.getElementById('login-component-template').innerHTML,       // select the template
-        register: () => document.getElementById('register-component-template').innerHTML,       // select the template
-        forgotPassword: () => document.getElementById('forgot-password-component-template').innerHTML,       // select the template
+        login: () => document.getElementById('login-component-template').innerHTML,
+        register: () => document.getElementById('register-component-template').innerHTML,
+        forgotPassword: () => document.getElementById('forgot-password-component-template').innerHTML,
 
     }
 }

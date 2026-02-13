@@ -12,4 +12,17 @@ html(lang="en")
 
     content#content
 
+    div(style="display:none")
+      template#auth-template
+        include pages/auth
+    div(style="display:none")
+      template#profile-template
+        include pages/profile
+    div(style="display:none")
+      template#login-component-template
+        include components/login
+    div(style="display:none")
+      template#register-component-template
+        include components/register
+
     script(type="module" src="./js/main.js")

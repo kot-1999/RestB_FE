@@ -1,4 +1,7 @@
 // Show page content
+import {Template} from "./config.js";
+import loadAuth from "./pages/auth.js"
+
 function showContent() {
     $('#content').css('visibility', 'visible')
 }
@@ -29,7 +32,7 @@ function loadPage(template, loader, navId) {
     $(navId).addClass('navActive')
 
     $('#content').empty()
-        .append(template)
+        .append(template())
 
     loader()
 
@@ -43,17 +46,17 @@ function loadPage(template, loader, navId) {
 function renderFromHash() {
     const routes = {
         '#signin': {
-            template: '<h1>SignIn</h1>',
-            loader: () => { console.log('signin')},
+            template: Template.page.auth,
+            loader: loadAuth,
             nav: '#signin'
         },
         '#signout': {
-            template: '<h1>SignOut</h1>',
+            template: Template.page.auth,
             loader: () => { console.log('signout')},
             nav: '#signout'
         },
         '#profile': {
-            template: '<h1>Profile</h1>',
+            template: Template.page.profile,
             loader: () => { console.log('profile')},
             nav: '#profile'
         }
@@ -61,8 +64,8 @@ function renderFromHash() {
 
     // Load main page if url hash is not available
     const route = routes[window.location.hash] || {
-        template: mainPage,
-        loader: loadMain,
+        template: '<h1>Main Page</h1>',
+        loader: () => {},
         nav: '#navMain'
     }
 

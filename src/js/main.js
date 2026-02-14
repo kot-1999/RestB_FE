@@ -1,5 +1,5 @@
 import './nav.js'
 
 ( () => {
-   console.log('Hello there')
+   console.log('Hello from main.js')
 })()

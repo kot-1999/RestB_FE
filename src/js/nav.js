@@ -17,11 +17,11 @@ function updateNavigationAuth() {
     const isAuthenticated = authData && authData.token
     
     // Show/hide sign in button
-    $('#navProjects').toggle(!isAuthenticated)
+    $('#navSignIn').toggle(!isAuthenticated)
     
     // Show/hide sign out and profile buttons
-    $('#navTechStack').toggle(isAuthenticated)
-    $('#navLibrary').toggle(isAuthenticated)
+    $('#navSignOut').toggle(isAuthenticated)
+    $('#navProfile').toggle(isAuthenticated)
 }
 
 // First load on when document DOM is ready

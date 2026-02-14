@@ -1,5 +1,15 @@
 import {Template} from "../config.js";
 import ApiRequest from "../utils/ApiRequest.js";
+import {LocalStorage} from "../utils/helpers.js";
+
+// Update navigation visibility after authentication
+function updateNavigationAfterAuth() {
+    // This function will be called from the parent nav.js
+    // We need to access it from the global scope or use a custom event
+    if (typeof window.updateNavigationAuth === 'function') {
+        window.updateNavigationAuth();
+    }
+}
 
 // Generic function to toggle active button in a group and update hidden input and form
 function setupButtonGroup(buttonSelector, hiddenInputSelector, dataAttr) {
@@ -49,12 +59,14 @@ const load = () => {
                     lastName: $('#lastName').val(),
                     phone: $('#phone').val(),
                 }, userType)
+                if (res) updateNavigationAfterAuth()
             }
             else if (authType === 'login') {
                 res = await ApiRequest.login({
                     email: $('#email').val(),
                     password: $('#password').val(),
                 }, userType)
+                if (res) updateNavigationAfterAuth()
             }
             else if (authType === 'forgotPassword') {
                 res = await ApiRequest.forgotPassword({

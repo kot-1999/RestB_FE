@@ -5,10 +5,23 @@ import loadHome from "./pages/home.js"
 import loadProfile from "./pages/profile.js"
 
 import ApiRequest from "./utils/ApiRequest.js";
-import {showError} from "./utils/helpers.js";
+import {showError, LocalStorage} from "./utils/helpers.js";
 
 function showContent() {
     $('#content').css('visibility', 'visible')
+}
+
+// Update navigation visibility based on authentication status
+function updateNavigationAuth() {
+    const authData = LocalStorage.get('auth')
+    const isAuthenticated = authData && authData.token
+    
+    // Show/hide sign in button
+    $('#navProjects').toggle(!isAuthenticated)
+    
+    // Show/hide sign out and profile buttons
+    $('#navTechStack').toggle(isAuthenticated)
+    $('#navLibrary').toggle(isAuthenticated)
 }
 
 // First load on when document DOM is ready
@@ -16,6 +29,10 @@ $(document).ready(function () {
     try {
         renderFromHash()
         showContent()
+        updateNavigationAuth()
+
+        // Expose updateNavigationAuth to global scope for other modules
+        window.updateNavigationAuth = updateNavigationAuth
 
         // Navigation clicks ONLY change hash
         $(document).on('click', '#signin', () => {
@@ -51,8 +68,10 @@ function loadPage(template, loader, navId) {
     })
 }
 const logout = () => {
-    ApiRequest.logout().catch(error =>   console.log(error.message))
-    loadHome()
+    ApiRequest.logout().then(() => {
+        updateNavigationAuth()
+        loadHome()
+    }).catch(error => console.log(error.message))
 }
 // Handles page reload. Assures that page will reload on same page
 function renderFromHash() {

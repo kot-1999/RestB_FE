@@ -119,7 +119,7 @@ export default class ApiRequest {
                     method: 'GET'
                 });
             await ApiRequest.checkResponse(response)
-            LocalStorage.set('auth', null)
+            // LocalStorage.set('auth', null)
             const res = await response.json()
 
             showSuccess(res.message)

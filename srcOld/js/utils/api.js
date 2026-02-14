@@ -57,7 +57,7 @@ class ApiService {
     }
 
     // Authentication endpoints
-    static async postLogin(email, password, userType) {
+    static async postLogin(email, password) {
         const endpoint = userType === 'partner' 
             ? '/api/b2b/v1/authorization/login'
             : '/api/b2c/v1/authorization/login';

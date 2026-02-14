@@ -4,11 +4,11 @@ html(lang="en")
     meta(charset="UTF-8")
     meta(name="viewport", content="width=device-width, initial-scale=1.0")
     title Login - RestB
-    link(rel="stylesheet", href="/assets/css/style.css")
+    link(rel="stylesheet", href="/assets/css/styles.css")
   
   body
     header
-      include ../partials/header.pug
+      include ../partials/header
     
     main
       .login-container
@@ -42,7 +42,7 @@ html(lang="en")
               | • 
               a(href="/views/pages/register.html") Create Account
     
-    include ../partials/footer.pug
+    include ../partials/footer
     
     script(src="/assets/js/config.js")
     script(src="/assets/js/utils/storage.js")

@@ -4,11 +4,11 @@ html(lang="en")
     meta(charset="UTF-8")
     meta(name="viewport", content="width=device-width, initial-scale=1.0")
     title Staff Dashboard - RestBoo
-    link(rel="stylesheet", href="/assets/css/style.css")
+    link(rel="stylesheet", href="/assets/css/styles.css")
   
   body(data-requires-auth)
     header
-      include ../partials/header.pug
+      include ../partials/header
     
     main
       .staff-dashboard
@@ -78,7 +78,7 @@ html(lang="en")
             .action-item
               a.btn-secondary(href="/views/pages/customer-profile.html") My Profile
     
-    include ../partials/footer.pug
+    include ../partials/footer
     
     script(src="/assets/js/config.js")
     script(src="/assets/js/utils/storage.js")

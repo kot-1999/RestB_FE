@@ -4,11 +4,11 @@ html(lang="en")
     meta(charset="UTF-8")
     meta(name="viewport", content="width=device-width, initial-scale=1.0")
     title Manage Bookings - RestBoo
-    link(rel="stylesheet", href="/assets/css/style.css")
+    link(rel="stylesheet", href="/assets/css/styles.css")
   
   body(data-requires-auth)
     header
-      include ../partials/header.pug
+      include ../partials/header
     
     main
       .bookings-container
@@ -178,7 +178,7 @@ html(lang="en")
               button.btn-primary(id="saveBookingBtn") Create Booking
               button.btn-secondary(id="cancelAddBookingBtn") Cancel
     
-    include ../partials/footer.pug
+    include ../partials/footer
     
     script(src="/assets/js/config.js")
     script(src="/assets/js/utils/storage.js")

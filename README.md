@@ -12,22 +12,13 @@ A simple website built with Pug templates that compiles to HTML.
 
 ```
 RestB_FE/
-├── src/
-│   ├── views/           # Pug templates
-│   │   ├── layouts/     # Base layouts
-│   │   │   └── base.pug
-│   │   ├── pages/       # Page templates
-│   │   │   ├── index.pug
-│   │   │   └── login.pug
-│   │   └── partials/    # Reusable parts
-│   │       ├── header.pug
-│   │       └── footer.pug
-│   └── assets/          # CSS and JavaScript
-│       ├── css/
-│       │   └── style.css
-│       └── js/
-│           ├── main.js
-│           └── login.js
+|  src/
+|     ├ index.pug
+|     ├ css/
+|     │   └ main.css
+|     ├ js/
+|     │   └ app.js
+|     └ assets/
 ├── dist/                # Built website (deploy this)
 ├── package.json         # Project settings
 ├── package-lock.json    # Dependency lock

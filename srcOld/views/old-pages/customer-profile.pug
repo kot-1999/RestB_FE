@@ -4,11 +4,11 @@ html(lang="en")
     meta(charset="UTF-8")
     meta(name="viewport", content="width=device-width, initial-scale=1.0")
     title Customer Profile - RestBoo
-    link(rel="stylesheet", href="/assets/css/style.css")
+    link(rel="stylesheet", href="/assets/css/styles.css")
   
   body
     header
-      include ../partials/header.pug
+      include ../partials/header
     
     main
       .dashboard-container
@@ -72,7 +72,7 @@ html(lang="en")
                 p Permanently delete your account and all associated data
                 button.btn-danger(type="button" id="deleteAccountBtn") Delete Account
     
-    include ../partials/footer.pug
+    include ../partials/footer
     
     script(src="/assets/js/config.js")
     script(src="/assets/js/utils/storage.js")

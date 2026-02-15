@@ -11,11 +11,31 @@ function showContent() {
     $('#content').css('visibility', 'visible')
 }
 
+const STATE = {
+    NO_AUTH: 'No-auth',
+    USER: 'User',
+    EMPLOYEE: 'Employee',
+    ADMIN: 'Admin'
+}
+
+function getState() {
+    const authData = LocalStorage.get('auth')
+    if (!authData) {
+        return STATE.NO_AUTH
+    }
+    else if(!authData?.role) {
+        return STATE.USER
+    } else if (authData.role === STATE.ADMIN || authData.role === STATE.EMPLOYEE) {
+        return authData.role
+    }
+
+}
+
 // Update navigation visibility based on authentication status
 function updateNavigationAuth() {
     const authData = LocalStorage.get('auth')
     // const isAuthenticated = authData && authData.token // old method
-    const isAuthenticated = !!(authData && authData.token) // fixed now it returns boolean 
+    const isAuthenticated = !!(authData && authData.token) // fixed now it returns boolean
     
     // Show/hide sign in and sign up buttons
     $('#navSignIn').toggle(!isAuthenticated)
@@ -81,32 +101,41 @@ const logout = () => {
 }
 // Handles page reload. Assures that page will reload on same page
 function renderFromHash() {
-    const routes = {
-        '#signin': {
-            template: Template.page.auth,
-            loader: loadAuth,
-            nav: '#signin'
-        },
-        '#signout': {
-            template: Template.page.home,
-            loader: logout,
-            nav: '#home'
-        },
-        '#profile': {
-            template: Template.page.profile,
-            loader: loadProfile,
-            nav: '#profile'
+    try {
+        const routes = {
+            '#signin': {
+                template: Template.page.auth,
+                loader: loadAuth,
+                nav: '#signin'
+            },
+            '#signout': {
+                template: Template.page.home,
+                loader: logout,
+                nav: '#home'
+            },
+            '#profile': {
+                template: Template.page.profile,
+                loader: loadProfile,
+                nav: '#profile'
+            },
+            '#restaurants': {
+                template: Template.page.restaurant,
+                loader: loadReastaurant,
+                nav: '#profile'
+            }
         }
-    }
 
-    // Load main page if url hash is not available
-    const route = routes[window.location.hash] || {
-        template: Template.page.home,
-        loader: loadHome,
-        nav: '#home'
-    }
+        // Load main page if url hash is not available
+        const route = routes[window.location.hash] || {
+            template: Template.page.home,
+            loader: loadHome,
+            nav: '#home'
+        }
 
-    loadPage(route.template, route.loader, route.nav)
+        loadPage(route.template, route.loader, route.nav)
+    } catch (err) {
+        showError(err)
+    }
 }
 
 // Handles nav toggle

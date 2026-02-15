@@ -90,7 +90,7 @@ function renderFromHash() {
         '#signout': {
             template: Template.page.home,
             loader: logout,
-            nav: '#navLogo'
+            nav: '#home'
         },
         '#profile': {
             template: Template.page.profile,
@@ -103,7 +103,7 @@ function renderFromHash() {
     const route = routes[window.location.hash] || {
         template: Template.page.home,
         loader: loadHome,
-        nav: '#navLogo'
+        nav: '#home'
     }
 
     loadPage(route.template, route.loader, route.nav)

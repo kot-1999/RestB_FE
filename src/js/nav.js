@@ -17,16 +17,9 @@ function updateNavigationAuth() {
     // const isAuthenticated = authData && authData.token // old method
     const isAuthenticated = !!(authData && authData.token) // fixed now it returns boolean 
     
-    console.log('Auth data:', authData)
-    console.log('Is authenticated:', isAuthenticated)
-    console.log('Elements found:', {
-        navSignIn: $('#navSignIn').length,
-        navSignOut: $('#navSignOut').length, 
-        navProfile: $('#navProfile').length
-    })
-    
-    // Show/hide sign in button
+    // Show/hide sign in and sign up buttons
     $('#navSignIn').toggle(!isAuthenticated)
+    $('#navSignUp').toggle(!isAuthenticated)
     
     // Show/hide sign out and profile buttons
     $('#navSignOut').toggle(isAuthenticated)
@@ -46,6 +39,10 @@ $(document).ready(function () {
         // Navigation clicks ONLY change hash
         $(document).on('click', '#signin', () => {
             location.hash = '#signin'
+        })
+
+        $(document).on('click', '#signup', () => {
+            location.hash = '#signup'
         })
 
         $(document).on('click', '#signout', () => {

@@ -85,7 +85,7 @@ body {
     flex-direction: column;
     width: 200px;
     height: auto;
-    display: none;
+    display: flex;
     padding: 0;
     margin: 0;
 

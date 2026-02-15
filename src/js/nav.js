@@ -14,7 +14,16 @@ function showContent() {
 // Update navigation visibility based on authentication status
 function updateNavigationAuth() {
     const authData = LocalStorage.get('auth')
-    const isAuthenticated = authData && authData.token
+    // const isAuthenticated = authData && authData.token // old method
+    const isAuthenticated = !!(authData && authData.token) // fixed now it returns boolean 
+    
+    console.log('Auth data:', authData)
+    console.log('Is authenticated:', isAuthenticated)
+    console.log('Elements found:', {
+        navSignIn: $('#navSignIn').length,
+        navSignOut: $('#navSignOut').length, 
+        navProfile: $('#navProfile').length
+    })
     
     // Show/hide sign in button
     $('#navSignIn').toggle(!isAuthenticated)
@@ -84,7 +93,7 @@ function renderFromHash() {
         '#signout': {
             template: Template.page.home,
             loader: logout,
-            nav: '#navMain'
+            nav: '#navLogo'
         },
         '#profile': {
             template: Template.page.profile,
@@ -97,7 +106,7 @@ function renderFromHash() {
     const route = routes[window.location.hash] || {
         template: Template.page.home,
         loader: loadHome,
-        nav: '#navMain'
+        nav: '#navLogo'
     }
 
     loadPage(route.template, route.loader, route.nav)

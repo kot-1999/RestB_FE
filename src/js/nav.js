@@ -77,7 +77,7 @@ const logout = () => {
     ApiRequest.logout().then(() => {
         updateNavigationAuth()
         loadHome()
-    }).catch(error => console.log(error.message))
+    })
 }
 // Handles page reload. Assures that page will reload on same page
 function renderFromHash() {

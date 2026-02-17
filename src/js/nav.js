@@ -1,11 +1,11 @@
 // Show page content
-import {Template} from "./config.js";
+import { Template } from "./config.js";
 import loadAuth from "./pages/auth.js"
 import loadHome from "./pages/home.js"
 import loadProfile from "./pages/profile.js"
 
 import ApiRequest from "./utils/ApiRequest.js";
-import {showError, LocalStorage} from "./utils/helpers.js";
+import { showError, LocalStorage } from "./utils/helpers.js";
 
 function showContent() {
     $('#content').css('visibility', 'visible')
@@ -23,7 +23,7 @@ function getState() {
     if (!authData) {
         return STATE.NO_AUTH
     }
-    else if(!authData?.role) {
+    else if (!authData?.role) {
         return STATE.USER
     } else if (authData.role === STATE.ADMIN || authData.role === STATE.EMPLOYEE) {
         return authData.role
@@ -36,11 +36,11 @@ function updateNavigationAuth() {
     const authData = LocalStorage.get('auth')
     // const isAuthenticated = authData && authData.token // old method
     const isAuthenticated = !!(authData && authData.token) // fixed now it returns boolean
-    
+
     // Show/hide sign in and sign up buttons
     $('#navSignIn').toggle(!isAuthenticated)
     $('#navSignUp').toggle(!isAuthenticated)
-    
+
     // Show/hide sign out and profile buttons
     $('#navSignOut').toggle(isAuthenticated)
     $('#navProfile').toggle(isAuthenticated)
@@ -120,8 +120,8 @@ function renderFromHash() {
             },
             '#restaurants': {
                 template: Template.page.restaurant,
-                loader: loadReastaurant,
-                nav: '#profile'
+                loader: loadHome,  // Use existing home loader
+                nav: '#restaurants'
             }
         }
 
@@ -144,7 +144,7 @@ $(document).on('click', '#navToggle', function () {
 })
 
 // Close naw if clicked outside
-$(document).on('click', function(e) {
+$(document).on('click', function (e) {
     const $navMenu = $('#navMenu')
     const $toggle = $('#navToggle')
 

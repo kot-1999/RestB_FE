@@ -1,4 +1,5 @@
-import {LocalStorage, showError, showSuccess} from "./helpers.js";
+import { LocalStorage, showError, showSuccess } from "./helpers.js";
+import { mockResponses } from "./mockData.js";
 
 export default class ApiRequest {
     static baseUrl = 'http://localhost:3000/api'
@@ -15,12 +16,12 @@ export default class ApiRequest {
         try {
             const response = await fetch(
                 `${this.baseUrl}/${userType}/v1/authorization/register`, {
-                    headers: {
-                        'Content-Type': 'application/json',
-                    },
-                    method: 'POST',
-                    body: JSON.stringify(body)
-                });
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                method: 'POST',
+                body: JSON.stringify(body)
+            });
             await ApiRequest.checkResponse(response)
             const res = await response.json()
 
@@ -37,12 +38,12 @@ export default class ApiRequest {
         try {
             const response = await fetch(
                 `${this.baseUrl}/${userType}/v1/authorization/login`, {
-                    headers: {
-                        'Content-Type': 'application/json',
-                    },
-                    method: 'POST',
-                    body: JSON.stringify(body)
-                });
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                method: 'POST',
+                body: JSON.stringify(body)
+            });
             await ApiRequest.checkResponse(response)
             const res = await response.json()
 
@@ -60,12 +61,12 @@ export default class ApiRequest {
         try {
             const response = await fetch(
                 `${this.baseUrl}/${userType}/v1/authorization/forgot-password`, {
-                    headers: {
-                        'Content-Type': 'application/json',
-                    },
-                    method: 'POST',
-                    body: JSON.stringify(body)
-                });
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                method: 'POST',
+                body: JSON.stringify(body)
+            });
             await ApiRequest.checkResponse(response)
             const res = await response.json()
             showSuccess(res.message)
@@ -85,12 +86,12 @@ export default class ApiRequest {
 
             const response = await fetch(
                 `${this.baseUrl}/${authData?.role ? 'b2b' : 'b2c'}/v1/authorization/logout`, {
-                    headers: {
-                        'Content-Type': 'application/json',
-                        ...(authData.token && { Authorization: `Bearer ${authData.token}` }),
-                    },
-                    method: 'GET'
-                });
+                headers: {
+                    'Content-Type': 'application/json',
+                    ...(authData.token && { Authorization: `Bearer ${authData.token}` }),
+                },
+                method: 'GET'
+            });
             await ApiRequest.checkResponse(response)
             LocalStorage.set('auth', null)
             const res = await response.json()
@@ -112,12 +113,12 @@ export default class ApiRequest {
 
             const response = await fetch(
                 `${this.baseUrl}/${authData?.role ? 'b2b' : 'b2c'}/v1/${authData?.role ? 'admin' : 'user'}/${id ?? authData.id}`, {
-                    headers: {
-                        'Content-Type': 'application/json',
-                        ...(authData.token && { Authorization: `Bearer ${authData.token}` }),
-                    },
-                    method: 'GET'
-                });
+                headers: {
+                    'Content-Type': 'application/json',
+                    ...(authData.token && { Authorization: `Bearer ${authData.token}` }),
+                },
+                method: 'GET'
+            });
             await ApiRequest.checkResponse(response)
             const res = await response.json()
 
@@ -128,4 +129,48 @@ export default class ApiRequest {
             return null
         }
     }
+
+
+    static async getRestaurants() {
+    console.log('calling getRestaurants')
+    
+    try {
+        // Make a real HTTP request (will show in Network tab)
+        const response = await fetch(`${this.baseUrl}/b2c/restaurants`, {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        });
+        
+        // If the real API doesn't exist, fall back to mock data
+        if (!response.ok) {
+            throw new Error('API not available, using mock data');
+        }
+        
+        const data = await response.json();
+        return {
+            success: true,
+            data: data,
+            message: 'Restaurants fetched successfully'
+        };
+        
+    } catch (error) {
+        console.log('Falling back to mock data:', error.message);
+        
+        // Fallback to mock data after a delay
+        return new Promise((resolve) => {
+            setTimeout(() => {
+                const restaurants = mockResponses.getRestaurants();
+                resolve({
+                    success: true,
+                    data: restaurants,
+                    message: 'Restaurants fetched successfully (mock)'
+                });
+            }, 1000);
+        });
+    }
+}
+
+
 }

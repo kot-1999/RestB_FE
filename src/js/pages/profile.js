@@ -7,7 +7,7 @@ export default async function () {
     if (!res) {
         return
     }
-    console.log('!!!!!!!!', res)
+    console.log('loading from profile.js', res)
     $('#dataCard').append(Mustache.render(Template.component.dummyProfileTemplate(), res))
 
 }

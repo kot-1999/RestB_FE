@@ -1,0 +1,15 @@
+.restaurant-card
+    .restaurant-banner
+        img(src="{{restaurant.bannerURL}}" alt="{{restaurant.name}}")
+    .restaurant-content
+        h3.restaurant-name {{restaurant.name}}
+        p.restaurant-description {{restaurant.description}}
+        .restaurant-brand
+            img.brand-logo(src="{{restaurant.brand.logoURL}}" alt="{{restaurant.brand.name}}")
+            span.brand-name {{restaurant.brand.name}}
+        .restaurant-address
+            span.address {{restaurant.address.building}} {{restaurant.address.street}}, {{restaurant.address.city}}
+            span.postcode {{restaurant.address.postcode}}
+        .restaurant-availability
+            span.available-date Available: {{restaurant.availability.date}}
+            span.guest-limit Up to {{restaurant.availability.autoConfirmGuestsLimit}} guests

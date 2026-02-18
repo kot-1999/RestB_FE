@@ -1,4 +1,5 @@
 import {LocalStorage, showError, showSuccess} from "./helpers.js";
+import {mockResponses} from "./mockData.js";
 
 export default class ApiRequest {
     static baseUrl = 'http://localhost:3000/api'

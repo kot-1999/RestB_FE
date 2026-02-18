@@ -24,7 +24,7 @@ export default class ApiRequest {
             await ApiRequest.checkResponse(response)
             const res = await response.json()
 
-            LocalStorage.set('auth', res.user ?? res.admin)
+            LocalStorage.set('auth', !!res.user ? res.user : res.admin)
             showSuccess(res.message)
             return res
         } catch (err) {
@@ -82,7 +82,6 @@ export default class ApiRequest {
             if (!authData?.token) {
                 throw new Error('logout - Token is required for this action')
             }
-
             const response = await fetch(
                 `${this.baseUrl}/${authData?.role ? 'b2b' : 'b2c'}/v1/authorization/logout`, {
                     headers: {
@@ -91,8 +90,10 @@ export default class ApiRequest {
                     },
                     method: 'GET'
                 });
-            await ApiRequest.checkResponse(response)
+
             LocalStorage.set('auth', null)
+            console.log('Local Storage empty: ', LocalStorage.get('auth'))
+            await ApiRequest.checkResponse(response)
             const res = await response.json()
 
             showSuccess(res.message)
@@ -109,7 +110,6 @@ export default class ApiRequest {
             if (!authData?.token) {
                 throw new Error('getProfile - Token is required for this action')
             }
-
             const response = await fetch(
                 `${this.baseUrl}/${authData?.role ? 'b2b' : 'b2c'}/v1/${authData?.role ? 'admin' : 'user'}/${id ?? authData.id}`, {
                     headers: {

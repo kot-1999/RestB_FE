@@ -121,12 +121,15 @@ function renderFromHash() {
         }
 
         // Load main page if url hash is not available
-        const route = routes[window.location.hash] || {
-            template: Template.page.home,
-            loader: loadHome,
-            nav: '#home'
+        if (!routes[window.location.hash]) {
+            window.location.hash = '#home'
+            routes[window.location.hash] = {
+                template: Template.page.home,
+                loader: loadHome,
+                nav: '#home'
+            }
         }
-
+        const route = routes[window.location.hash]
         loadPage(route.template, route.loader, route.nav)
     } catch (err) {
         showError(err)

@@ -1,10 +1,15 @@
 import {Template} from "../config.js";
 import ApiRequest from "../utils/ApiRequest.js";
-import {LocalStorage} from "../utils/helpers.js";
+import {LocalStorage, showError} from "../utils/helpers.js";
 
 
 // Generic function to toggle active button in a group and update hidden input and form
 function setupButtonGroup(buttonSelector, hiddenInputSelector, dataAttr) {
+    const authData = LocalStorage.get('auth')
+    if (authData) {
+        showError(`Log Out First.\nLogged in as: ${authData.email}` )
+        return
+    }
     $(buttonSelector).on('click', function () {
         // Remove active from all buttons in this group
         $(buttonSelector).removeClass('active')
@@ -51,14 +56,12 @@ const load = () => {
                     lastName: $('#lastName').val(),
                     phone: $('#phone').val(),
                 }, userType)
-                if (res) updateNavigationAfterAuth()
             }
             else if (authType === 'login') {
                 res = await ApiRequest.login({
                     email: $('#email').val(),
                     password: $('#password').val(),
                 }, userType)
-                if (res) updateNavigationAfterAuth()
             }
             else if (authType === 'forgotPassword') {
                 res = await ApiRequest.forgotPassword({
@@ -68,10 +71,6 @@ const load = () => {
         } catch (err) {
             console.log(err)
         }
-
-        console.log('Submitting form data:', res)
-
-        // Example AJAX request to backend
     })
 }
 

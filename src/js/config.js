@@ -9,5 +9,6 @@ export const Template =  {
         register: () => document.getElementById('register-component-template').innerHTML,
         forgotPassword: () => document.getElementById('forgot-password-component-template').innerHTML,
         dummyProfileTemplate: () => document.getElementById('dummy-profile-template').innerHTML,
+        restaurantCard: () => document.getElementById('restaurant-card-template').innerHTML,
     }
 }

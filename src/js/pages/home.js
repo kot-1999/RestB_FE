@@ -1,12 +1,15 @@
-import { renderRestaurantCards } from './components/restaurantCardRenderer.js';
-import { mockResponses } from '../utils/mockData.js';
+import ApiRequest from "../utils/ApiRequest.js";
+import Mustache from "../utils/mustache.js";
+import {Template} from "../config.js";
 
 export default async function () {
     console.log('Loading home page...');
-    
-    // Use mock data directly
-    const restaurants = mockResponses.getRestaurants();
-    
-    // Render restaurants
-    $('.restaurants-container').html(renderRestaurantCards(restaurants));
+
+    const res = await ApiRequest.getRestaurants();
+
+    const restaurantCardTemplate = Template.component.restaurantCard()
+
+    res.restaurants.forEach((restaurant) => {
+        $('.restaurants-container').append(Mustache.render(restaurantCardTemplate, restaurant));
+    })
 }

@@ -131,46 +131,31 @@ export default class ApiRequest {
     }
 
 
-    static async getRestaurants() {
-    console.log('calling getRestaurants')
-    
-    try {
-        // Make a real HTTP request (will show in Network tab)
-        const response = await fetch(`${this.baseUrl}/b2c/restaurants`, {
-            method: 'GET',
-            headers: {
-                'Content-Type': 'application/json'
-            }
-        });
-        
-        // If the real API doesn't exist, fall back to mock data
-        if (!response.ok) {
-            throw new Error('API not available, using mock data');
+    static async getRestaurants(queryParams) {
+        try {
+            // Make a real HTTP request (will show in Network tab)
+            // const response = await fetch(`${this.baseUrl}/b2c/restaurants`, {
+            //     method: 'GET',
+            //     headers: {
+            //         'Content-Type': 'application/json'
+            //     }
+            // });
+            //
+            // // If the real API doesn't exist, fall back to mock data
+            // if (!response.ok) {
+            //     throw new Error('API not available, using mock data');
+            // }
+            //
+            // const data = await response.json();
+            // return {
+            //     success: true,
+            //     data: data,
+            //     message: 'Restaurants fetched successfully'
+            // };
+            return mockResponses.getRestaurants()
+        } catch (error) {
+            showError(err)
+            return null
         }
-        
-        const data = await response.json();
-        return {
-            success: true,
-            data: data,
-            message: 'Restaurants fetched successfully'
-        };
-        
-    } catch (error) {
-        console.log('Falling back to mock data:', error.message);
-        
-        // Fallback to mock data after a delay
-        return new Promise((resolve) => {
-            setTimeout(() => {
-                const restaurants = mockResponses.getRestaurants();
-                resolve({
-                    success: true,
-                    data: restaurants,
-                    message: 'Restaurants fetched successfully (mock)'
-                });
-            }, 1000);
-        });
     }
-}
-
-
 }

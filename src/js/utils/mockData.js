@@ -148,7 +148,7 @@ const mockData = {
 export const mockResponses = {
     // GET /api/b2c/restaurants/
     getRestaurants: () => {
-        return mockData.restaurants;
+        return mockData;
     },
     
 };

@@ -1,0 +1,25 @@
+div
+    h1 Auth
+
+    form#authForm
+        h2 User type
+        button(type="button" class="user-type-btn active" data-type="b2c") User
+        button(type="button" class="user-type-btn" data-type="b2b") Partner
+
+        h2 Choose Auth type
+        button(type="button" class="auth-btn active" data-auth="login") Login
+        button(type="button" class="auth-btn" data-auth="register") Register
+
+        div#auth01
+
+        button(type="button" class="auth-btn" data-auth="forgotPassword") Forgot Password
+
+        // Hidden inputs to store selections
+        input(type="hidden" id="userType" name="userType" value="b2c")
+        input(type="hidden" id="authType" name="authType" value="login")
+
+
+        button(type="submit") Submit
+
+
+

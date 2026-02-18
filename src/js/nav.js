@@ -36,14 +36,14 @@ function updateNavigationAuth() {
     const authData = LocalStorage.get('auth')
     // const isAuthenticated = authData && authData.token // old method
     const isAuthenticated = !!(authData && authData.token) // fixed now it returns boolean
-    
+    console.log(`updateNavigationAuth: ${authData}`)
     // Show/hide sign in and sign up buttons
-    $('#navSignIn').toggle(!isAuthenticated)
-    $('#navSignUp').toggle(!isAuthenticated)
-    
-    // Show/hide sign out and profile buttons
-    $('#navSignOut').toggle(isAuthenticated)
-    $('#navProfile').toggle(isAuthenticated)
+    // $('#navSignIn').toggle(!isAuthenticated)
+    // $('#navSignUp').toggle(!isAuthenticated)
+    //
+    // // Show/hide sign out and profile buttons
+    // $('#navSignOut').toggle(isAuthenticated)
+    // $('#navProfile').toggle(isAuthenticated)
 }
 
 // First load on when document DOM is ready
@@ -51,10 +51,6 @@ $(document).ready(function () {
     try {
         renderFromHash()
         showContent()
-        updateNavigationAuth()
-
-        // Expose updateNavigationAuth to global scope for other modules
-        window.updateNavigationAuth = updateNavigationAuth
 
         // Navigation clicks ONLY change hash
         $(document).on('click', '#signin', () => {
@@ -95,7 +91,6 @@ function loadPage(template, loader, navId) {
 }
 const logout = () => {
     ApiRequest.logout().then(() => {
-        updateNavigationAuth()
         loadHome()
     })
 }
@@ -118,9 +113,9 @@ function renderFromHash() {
                 loader: loadProfile,
                 nav: '#profile'
             },
-            '#restaurants': {
-                template: Template.page.restaurant,
-                loader: loadReastaurant,
+            '#home': {
+                template: Template.page.home,
+                loader: loadHome,
                 nav: '#profile'
             }
         }

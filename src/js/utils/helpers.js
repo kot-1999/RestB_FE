@@ -10,7 +10,7 @@ export class LocalStorage {
 }
 
 export function showError(err) {
-
+    console.error(err)
     Swal.fire({
         icon: 'error',
         title: 'Error',

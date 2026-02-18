@@ -1,0 +1,93 @@
+extends ../layouts/base.pug
+
+block head
+  title Dashboard - RestB
+
+block content
+  .dashboard-page
+    .dashboard-wrap
+      .dash-header
+        .dash-title
+          h1 Dashboard
+          p.dash-sub Your weekly activity at a glance.
+
+        .dash-brand
+          .dash-brand-field
+            label(for="brand") Brand name
+            select#brand(name="brand")
+              option(value="La Benetti" selected) La Benetti
+              option(value="Independent") Independent
+              option(value="Chain") Chain
+
+          .dash-avatar(title="Admin")
+            img(src="/assets/img/default-avatar.png" alt="Admin avatar")
+
+      // ===== KPI cards =====
+      .dash-kpis
+        .kpi
+          p.kpi-label Total bookings
+          p.kpi-value 128
+          p.kpi-meta +12% this week
+        .kpi
+          p.kpi-label Pending bookings
+          p.kpi-value 14
+          p.kpi-meta Needs review
+        .kpi
+          p.kpi-label Cancelled
+          p.kpi-value 6
+          p.kpi-meta This week
+        .kpi
+          p.kpi-label People booked
+          p.kpi-value 312
+          p.kpi-meta Covers (guests)
+
+      // ===== Chart card =====
+      .dash-card
+        .dash-card-head
+          h2 Weekly bookings
+          .dash-card-actions
+            button.dash-chip.is-active(type="button") Week
+            button.dash-chip(type="button") Month
+
+        .dash-chart
+          // If you already use Chart.js, switch this to <canvas id="bookingsChart">
+          // otherwise keep as placeholder for now
+          .chart-placeholder
+            span Chart goes here
+
+      // ===== Filters row (like your mock) =====
+      .dash-filters
+        .filter-row
+          .filter-group
+            label Show Only:
+            select
+              option(value="all" selected) All
+              option(value="approved") Approved
+              option(value="pending") Pending
+              option(value="cancelled") Cancelled
+
+          .filter-group
+            label Show For:
+            .check-row
+              label.check
+                input(type="checkbox" checked)
+                span Pizza/Pasta
+              label.check
+                input(type="checkbox")
+                span Pizza World
+              label.check
+                input(type="checkbox")
+                span Sushi / Ramen
+
+          .filter-group.right
+            label Status:
+            .check-row
+              label.check
+                input(type="checkbox")
+                span Cancelled by Admin
+              label.check
+                input(type="checkbox")
+                span Cancelled by User
+
+block scripts
+  // script(src="/assets/js/dashboard.js")

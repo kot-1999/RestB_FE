@@ -560,9 +560,11 @@ main {
 
 .cards-grid {
   display: grid;
-  grid-template-columns: repeat(3, minmax(240px, 1fr));
-  gap: 18px;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 22px;
+  align-items: stretch;
 }
+
 
 .restaurant-card {
   border: 1px solid #e1e1e1;
@@ -789,4 +791,113 @@ main {
   height: 100%;
   display: block;
   object-fit: cover;
+}
+
+/* Hide all navs by default */
+.nav-shell { display: none; }
+
+/* Show the one JS selects */
+.nav-shell.is-active { display: block; }
+
+/* Restaurants page polish */
+.restaurants-page { max-width: 1100px; margin: 0 auto; padding: 24px 16px; }
+
+.rest-hero { background: #f3f3f3; border-radius: 18px; padding: 34px 18px; }
+.rest-hero-inner { max-width: 760px; margin: 0 auto; text-align: center; }
+.rest-hero h1 { margin: 0 0 10px; font-size: 44px; line-height: 1.05; }
+.rest-hero p { margin: 0 0 18px; color: #555; }
+
+.rest-search { display: flex; gap: 10px; justify-content: center; align-items: center; }
+.rest-search input {
+  width: min(720px, 100%);
+  padding: 14px 18px;
+  border-radius: 999px;
+  border: 1px solid #ddd;
+  outline: none;
+}
+.rest-search button {
+  width: 52px; height: 52px;
+  border-radius: 999px;
+  border: 1px solid #ddd;
+  background: #fff;
+  cursor: pointer;
+}
+
+.rest-filters { margin-top: 16px; background: #f7f7f7; border-radius: 14px; padding: 14px; }
+.filters-inner { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; }
+.filter-group label { display:block; font-size: 12px; color:#666; margin-bottom: 6px; }
+.filter-group select, .filter-group input {
+  width: 100%;
+  padding: 12px 12px;
+  border-radius: 12px;
+  border: 1px solid #ddd;
+  background: #fff;
+}
+
+.rest-results { margin-top: 18px; }
+.cards-grid { display:grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
+
+.restaurant-card { background:#fff; border: 1px solid #eee; border-radius: 16px; overflow: hidden; }
+.card-img { height: 170px; overflow: hidden; }
+.card-img img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.card-body { padding: 14px; }
+
+@media (max-width: 900px) {
+  .filters-inner { grid-template-columns: 1fr 1fr; }
+  .cards-grid { grid-template-columns: 1fr; }
+  .rest-hero h1 { font-size: 34px; }
+}
+
+/* PAGE CENTERING */
+.profile-page{
+  display:flex;
+  justify-content:center;
+  padding: 60px 20px;
+}
+
+/* layout wrapper */
+.profile-layout{
+  display:flex;
+  align-items:center;
+  gap:40px;
+  max-width:1000px;
+  width:100%;
+}
+
+/* avatar column */
+.profile-avatar-floating{
+  width:170px;
+  flex-shrink:0;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  gap:14px;
+}
+
+/* avatar image */
+.profile-avatar{
+  width:140px;
+  height:140px;
+  border-radius:50%;
+  object-fit:cover;
+  border:6px solid rgba(255,255,255,0.75);
+  box-shadow:0 20px 40px rgba(0,0,0,0.35);
+}
+
+/* change button */
+.avatar-btn{
+  background: linear-gradient(135deg,#aef0db,#2c9288);
+  color:#06311f;
+  border:none;
+  padding:10px 16px;
+  border-radius:999px;
+  font-weight:700;
+  cursor:pointer;
+  box-shadow:0 10px 25px rgba(44,146,136,.35);
+}
+
+/* card sizing */
+.profile-card{
+  flex:1;
+  max-width:700px;
 }

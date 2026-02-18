@@ -160,6 +160,12 @@ function showSuccess(message) {
   document.querySelector('.login-form form')?.appendChild(div);
 }
 
+localStorage.setItem("restb_user", JSON.stringify({
+  email,
+  role: userType === "partner" ? "admin" : "user"
+}));
+
+
 function removeMessages() {
   document.querySelector('.error-message')?.remove();
   document.querySelector('.success-message')?.remove();

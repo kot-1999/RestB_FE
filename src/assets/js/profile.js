@@ -58,3 +58,16 @@ document.addEventListener("DOMContentLoaded", () => {
     reader.readAsDataURL(file);
   });
 });
+const input = document.getElementById("avatarInput");
+const avatar = document.getElementById("profileAvatar");
+
+input.addEventListener("change", () => {
+  const file = input.files[0];
+  if(!file) return;
+
+  const reader = new FileReader();
+  reader.onload = e => {
+    avatar.src = e.target.result;
+  };
+  reader.readAsDataURL(file);
+});

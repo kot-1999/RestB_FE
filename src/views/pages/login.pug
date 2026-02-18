@@ -1,36 +1,38 @@
 extends ../layouts/base.pug
 
 block head
-  title Login 
+  title Login - RestB
 
 block content
   .login-container
     .login-form
       h2 Login to test
 
+      // User type tabs
       .user-type-selector
         .user-type-tabs
-          button.user-type-tab.active(type="button" data-type="user") Customer Login
-          button.user-type-tab(type="button" data-type="partner") Partner Login
+          button.user-type-tab.restb-btn.active(type="button" data-type="user") Customer Login
+          button.user-type-tab.restb-btn(type="button" data-type="partner") Partner Login
 
-      form
-        input(type="hidden" id="userType" name="userType" value="user")
+      // Login form
+      form.login-form-inner(action="#" method="post")
+        input#userType(type="hidden" name="userType" value="user")
 
         .form-group
           label(for="email") Email
-          input(type="email" id="email" name="email" required placeholder="Enter your email")
+          input#email(type="email" name="email" required placeholder="Enter your email" autocomplete="email")
 
         .form-group
           label(for="password") Password
-          input(type="password" id="password" name="password" required placeholder="Enter your password")
+          input#password(type="password" name="password" required placeholder="Enter your password" autocomplete="current-password")
 
-        button.login-submit(type="submit") Login
+        button.restb-btn(type="submit") Login
 
         .login-links
           a(href="/") Back to Home
-          | • 
+          |  •
           a(href="#") Forgot Password?
-          | • 
+          |  •
           a(href="/views/pages/register") Create Account
 
 block scripts

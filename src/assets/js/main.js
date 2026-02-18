@@ -77,3 +77,49 @@ const Utils = {
         }, 3000);
     }
 };
+
+function getRole() {
+  // pick ONE key and stick to it
+  // Example: localStorage.setItem("restb_user", JSON.stringify({ role: "admin" }))
+  const raw = localStorage.getItem("restb_user");
+  if (!raw) return "guest";
+
+  try {
+    const user = JSON.parse(raw);
+    return user?.role || "guest";
+  } catch {
+    return "guest";
+  }
+}
+
+function renderNavbar() {
+  const role = getRole();
+
+  // map backend roles -> your nav names
+  const nav =
+    role === "admin" ? "admin" :
+    role === "staff" || role === "employee" ? "staff" :
+    role === "user" || role === "customer" ? "user" :
+    "guest";
+
+  document.querySelectorAll(".nav-shell").forEach(el => {
+    el.classList.toggle("is-active", el.dataset.nav === nav);
+  });
+
+  console.log("[NAV]", { role, nav });
+}
+
+document.addEventListener("DOMContentLoaded", () => {
+  renderNavbar();
+});
+
+document.addEventListener("DOMContentLoaded", () => {
+  // Example: get role from localStorage (change this to your real source later)
+  const role = localStorage.getItem("restb_role") || "guest";
+
+  document.querySelectorAll(".nav-shell").forEach(el => el.classList.remove("is-active"));
+
+  const active = document.querySelector(`.nav-shell[data-nav="${role}"]`);
+  if (active) active.classList.add("is-active");
+  else document.querySelector(`.nav-shell[data-nav="guest"]`)?.classList.add("is-active");
+});

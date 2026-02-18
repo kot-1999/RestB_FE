@@ -4,37 +4,69 @@ block head
   title Profile - RestB
 
 block content
+  - const avatarUrl = (typeof user !== 'undefined' && user && user.avatarUrl) ? user.avatarUrl : "/assets/img/default-avatar.png"
+
   .profile-page
-    h1 My Profile
+    .profile-layout
 
-    .profile-container
-      .profile-form
-        .form-group
-          label First Name
-          input#firstName(type="text")
+      // LEFT SIDE — avatar column
+      .profile-avatar-floating
+        img#profileAvatar.profile-avatar(src=avatarUrl alt="Profile avatar")
 
-        .form-group
-          label Last Name
-          input#lastName(type="text")
+        form#avatarForm(method="post" action="/api/users/me/avatar" enctype="multipart/form-data")
+          input#avatarInput(type="file" name="avatar" accept="image/*" hidden)
+          button.avatar-btn(type="button" id="avatarBtn") Change photo
 
-        .form-group
-          label Email
-          input#email(type="email")
+      // RIGHT SIDE — actual card
+      .profile-card
+        .profile-title
+          h1 My Profile
+          p.profile-sub Keep your details up to date for quicker bookings.
 
-        .form-group
-          label Phone Number
-          input#phone(type="text")
+        form.profile-form(action="/views/pages/profile" method="post")
+          .profile-grid
+            .profile-field
+              label(for="firstName") First Name
+              input#firstName(type="text" name="firstName" value="Adam")
 
-        .form-group
-          label Role
-          input#role(type="text" disabled)
+            .profile-field
+              label(for="lastName") Last Name
+              input#lastName(type="text" name="lastName" value="Versodi")
 
-        button#save-profile.save-btn(type="button") Update Profile Details
+            .profile-field
+              label(for="email") Email
+              input#email(type="email" name="email" value="adam@gmail.com")
 
-      .profile-avatar
-        img#avatar(src="/assets/img/restaurant2.jpg" alt="avatar")
-        br
-        input#avatarUpload(type="file" accept="image/*")
+            .profile-field
+              label(for="phone") Phone Number
+              input#phone(type="tel" name="phone" value="+44123123123")
+
+            .profile-field.profile-span-2
+              label(for="role") Role
+              input#role(type="text" name="role" value="user" readonly)
+
+          .profile-actions
+            button.profile-btn(type="submit") Update Profile Details
 
 block scripts
-  script(src="/assets/js/profile.js")
+  script.
+    document.addEventListener("DOMContentLoaded", () => {
+      const btn = document.getElementById("avatarBtn");
+      const input = document.getElementById("avatarInput");
+      const img = document.getElementById("profileAvatar");
+      const form = document.getElementById("avatarForm");
+
+      if (!btn || !input || !img) return;
+
+      btn.addEventListener("click", () => input.click());
+
+      input.addEventListener("change", () => {
+        const file = input.files && input.files[0];
+        if (!file) return;
+
+        img.src = URL.createObjectURL(file);
+
+        // When backend is ready:
+        // form.submit();
+      });
+    });

@@ -1,12 +1,14 @@
-// header.pug
-// Temporary role for development
-- const role = (typeof userRole !== 'undefined') ? userRole : 'guest'
+// src/views/partials/header.pug
+// Render all navbars once. JS/CSS will decide which one shows.
 
-if role === 'admin'
-  include navbar-admin.pug
-else if role === 'staff'
-  include navbar-staff.pug
-else if role === 'user'
-  include navbar-user.pug
-else
+.nav-shell(data-nav="guest")
   include navbar-guest.pug
+
+.nav-shell(data-nav="user")
+  include navbar-user.pug
+
+.nav-shell(data-nav="staff")
+  include navbar-staff.pug
+
+.nav-shell(data-nav="admin")
+  include navbar-admin.pug

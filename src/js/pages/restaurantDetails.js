@@ -1,4 +1,3 @@
-import ApiRequest from "../utils/ApiRequest";
 
 export default async function () {
 

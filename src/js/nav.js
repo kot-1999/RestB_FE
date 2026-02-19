@@ -3,7 +3,8 @@ import { Template } from "./config.js";
 import loadAuth from "./pages/auth.js"
 import loadHome from "./pages/home.js"
 import loadProfile from "./pages/profile.js"
-
+import loadRestaurantDetails from "./pages/restaurantDetails.js"
+import loadDashboard from "./pages/dashboard.js"
 import ApiRequest from "./utils/ApiRequest.js";
 import { showError, LocalStorage } from "./utils/helpers.js";
 
@@ -68,6 +69,14 @@ $(document).ready(function () {
         $(document).on('click', '#profile', () => {
             location.hash = '#profile'
         })
+
+        $(document).on('click', '#restaurant-details', () => {
+            location.hash = '#restaurant-details'
+        })
+
+        $(document).on('click', '#dashboard', () => {
+            location.hash = '#dashboard'
+        })
     } catch (err) {
         showError(err)
     }
@@ -116,7 +125,17 @@ function renderFromHash() {
             '#home': {
                 template: Template.page.home,
                 loader: loadHome,
-                nav: '#profile'
+                nav: '#home'
+            },
+            '#restaurant-details': {
+                template: Template.page.restaurantDetails,
+                loader: loadRestaurantDetails,
+                nav: '#restaurant-details'
+            },
+            '#dashboard': {
+                template: Template.page.dashboard,
+                loader: loadDashboard,
+                nav: '#dashboard'
             }
         }
 

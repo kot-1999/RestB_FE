@@ -4,6 +4,7 @@ export const Template =  {
         profile: () => document.getElementById('profile-template').innerHTML,
         home: () => document.getElementById('home-template').innerHTML,
         restaurantDetails: () => document.getElementById('restaurant-details-template').innerHTML,
+        dashboard: () => document.getElementById('dashboard-template').innerHTML,
     },
     component: {
         login: () => document.getElementById('login-component-template').innerHTML,

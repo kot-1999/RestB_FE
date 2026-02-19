@@ -1,4 +1,7 @@
+import ApiRequest from "../utils/ApiRequest";
+
 export default async function () {
+
     document.addEventListener("DOMContentLoaded", () => {
         // Optional: read query params like ?restaurant=...&img=...&tags=...&location=...
         const params = new URLSearchParams(window.location.search);

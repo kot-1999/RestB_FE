@@ -4,6 +4,7 @@ import loadAuth from "./pages/auth.js"
 import loadHome from "./pages/home.js"
 import loadProfile from "./pages/profile.js"
 import loadRestaurantDetails from "./pages/restaurantDetails.js"
+import loadDashboard from "./pages/dashboard.js"
 import ApiRequest from "./utils/ApiRequest.js";
 import { showError, LocalStorage } from "./utils/helpers.js";
 
@@ -132,8 +133,8 @@ function renderFromHash() {
                 nav: '#restaurant-details'
             },
             '#dashboard': {
-                template: () => '<h1>Dashboard</h1>',
-                loader: () => { console.log('Dashboard')},
+                template: Template.page.dashboard,
+                loader: loadDashboard,
                 nav: '#dashboard'
             }
         }

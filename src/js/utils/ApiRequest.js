@@ -107,7 +107,7 @@ export default class ApiRequest {
         }
     }
 
-    static async getProfile() {
+    static async getProfile(id = null) {
         try {
             const authData = LocalStorage.get('auth')
             if (!authData?.token) {

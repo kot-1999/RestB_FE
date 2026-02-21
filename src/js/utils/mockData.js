@@ -147,64 +147,91 @@ const mockData = {
     // Mock booking data
     bookings: [
         {
-            bookingID: "550e8400-e29b-41d4-a716-446655440000",
-            restaurantID: "123e4567-e89b-12d3-a456-426614174000",
-            userID: "789e0123-e45b-67d8-a456-426614174000",
+            id: "550e8400-e29b-41d4-a716-446655440000",
             guestsNumber: 4,
             bookingTime: "2024-02-20T19:00:00Z",
-            status: "confirmed",
-            createdAt: "2024-02-15T10:30:00Z",
-            discussion: {
-                authorID: "789e0123-e45b-67d8-a456-426614174000",
-                authorType: "user",
-                message: "Please prepare a table near the window"
-            },
+            status: "CONFIRMED",
+            discussion: [
+                {
+                    authorID: "789e0123-e45b-67d8-a456-426614174000",
+                    authorType: "USER",
+                    message: "Please prepare a table near the window",
+                    createdAt: "2024-02-15T10:30:00Z"
+                }
+            ],
             restaurant: {
-                restaurantID: "123e4567-e89b-12d3-a456-426614174000",
+                id: "123e4567-e89b-12d3-a456-426614174000",
                 name: "The Golden Dragon",
-                cuisine: "Chinese",
-                rating: 4.5
-            }
+                description: "Authentic Chinese cuisine with a modern twist in an elegant setting",
+                bannerURL: "https://picsum.photos/seed/golden-dragon/800/400.jpg",
+                brand: {
+                    id: "brand1",
+                    name: "Dragon Restaurants",
+                    logoURL: "https://picsum.photos/seed/dragon-logo/100/100.jpg"
+                }
+            },
+            createdAt: "2024-02-15T10:30:00Z",
+            updatedAt: "2024-02-15T10:30:00Z"
         },
         {
-            bookingID: "550e8400-e29b-41d4-a716-446655440001",
-            restaurantID: "123e4567-e89b-12d3-a456-426614174001",
-            userID: "789e0123-e45b-67d8-a456-426614174000",
+            id: "550e8400-e29b-41d4-a716-446655440001",
             guestsNumber: 2,
             bookingTime: "2024-02-22T20:30:00Z",
-            status: "pending",
-            createdAt: "2024-02-16T14:20:00Z",
-            discussion: {
-                authorID: "789e0123-e45b-67d8-a456-426614174000",
-                authorType: "user",
-                message: "Celebrating anniversary"
-            },
+            status: "PENDING",
+            discussion: [
+                {
+                    authorID: "789e0123-e45b-67d8-a456-426614174000",
+                    authorType: "USER",
+                    message: "Celebrating anniversary",
+                    createdAt: "2024-02-16T14:20:00Z"
+                }
+            ],
             restaurant: {
-                restaurantID: "123e4567-e89b-12d3-a456-426614174001",
+                id: "123e4567-e89b-12d3-a456-426614174001",
                 name: "Bella Italia",
-                cuisine: "Italian",
-                rating: 4.2
-            }
+                description: "Traditional Italian restaurant serving authentic pasta and pizza dishes",
+                bannerURL: "https://picsum.photos/seed/bella-italia/800/400.jpg",
+                brand: {
+                    id: "brand2",
+                    name: "Italian Dining Group",
+                    logoURL: "https://picsum.photos/seed/italian-logo/100/100.jpg"
+                }
+            },
+            createdAt: "2024-02-16T14:20:00Z",
+            updatedAt: null
         },
         {
-            bookingID: "550e8400-e29b-41d4-a716-446655440002",
-            restaurantID: "123e4567-e89b-12d3-a456-426614174002",
-            userID: "789e0123-e45b-67d8-a456-426614174000",
+            id: "550e8400-e29b-41d4-a716-446655440002",
             guestsNumber: 6,
             bookingTime: "2024-02-25T18:00:00Z",
-            status: "cancelled",
-            createdAt: "2024-02-10T09:15:00Z",
-            discussion: {
-                authorID: "789e0123-e45b-67d8-a456-426614174000",
-                authorType: "user",
-                message: "Large group booking"
-            },
+            status: "CANCELLED",
+            discussion: [
+                {
+                    authorID: "789e0123-e45b-67d8-a456-426614174000",
+                    authorType: "USER",
+                    message: "Large group booking",
+                    createdAt: "2024-02-10T09:15:00Z"
+                },
+                {
+                    authorID: "123e4567-e89b-12d3-a456-426614174002",
+                    authorType: "RESTAURANT",
+                    message: "We can accommodate your group in our private dining area",
+                    createdAt: "2024-02-10T10:30:00Z"
+                }
+            ],
             restaurant: {
-                restaurantID: "123e4567-e89b-12d3-a456-426614174002",
+                id: "123e4567-e89b-12d3-a456-426614174002",
                 name: "Spice Garden",
-                cuisine: "Indian",
-                rating: 4.7
-            }
+                description: "Award-winning Indian restaurant featuring traditional and contemporary dishes",
+                bannerURL: "https://picsum.photos/seed/spice-garden/800/400.jpg",
+                brand: {
+                    id: "brand3",
+                    name: "Spice Hospitality",
+                    logoURL: "https://picsum.photos/seed/spice-logo/100/100.jpg"
+                }
+            },
+            createdAt: "2024-02-10T09:15:00Z",
+            updatedAt: "2024-02-12T15:45:00Z"
         }
     ]
 };
@@ -245,15 +272,8 @@ export const mockResponses = {
         const startIndex = (page - 1) * limit;
         const endIndex = startIndex + limit;
         
-        return {
-            bookings: filteredBookings.slice(startIndex, endIndex),
-            pagination: {
-                page: page,
-                limit: limit,
-                total: filteredBookings.length,
-                totalPages: Math.ceil(filteredBookings.length / limit)
-            }
-        };
+        // Return array directly (matching backend response structure)
+        return filteredBookings.slice(startIndex, endIndex);
     },
     
 };

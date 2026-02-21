@@ -5,11 +5,6 @@ import {LocalStorage, showError} from "../utils/helpers.js";
 
 // Generic function to toggle active button in a group and update hidden input and form
 function setupButtonGroup(buttonSelector, hiddenInputSelector, dataAttr) {
-    const authData = LocalStorage.get('auth')
-    if (authData) {
-        showError(`Log Out First.\nLogged in as: ${authData.email}` )
-        return
-    }
     $(buttonSelector).on('click', function () {
         // Remove active from all buttons in this group
         $(buttonSelector).removeClass('active')
@@ -32,6 +27,11 @@ function setupButtonGroup(buttonSelector, hiddenInputSelector, dataAttr) {
 }
 
 const load = () => {
+    const authData = LocalStorage.get('auth')
+    if (authData?.token) {
+        showError(new Error(`Log Out First.`) )
+        return
+    }
     $('#auth01').append(Template.component.login())
 
     // Setup both button groups

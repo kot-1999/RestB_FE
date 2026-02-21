@@ -161,4 +161,32 @@ export default class ApiRequest {
             return null
         }
     }
+
+    static async getBookings(queryParams) {
+        try {
+            // Make a real HTTP request (will show in Network tab)
+            // const response = await fetch(`${this.baseUrl}/b2c/v1/booking/`, {
+            //     method: 'GET',
+            //     headers: {
+            //         'Content-Type': 'application/json'
+            //     }
+            // });
+            //
+            // // If the real API doesn't exist, fall back to mock data
+            // if (!response.ok) {
+            //     throw new Error('API not available, using mock data');
+            // }
+            //
+            // const data = await response.json();
+            // return {
+            //     success: true,
+            //     data: data,
+            //     message: 'Bookings fetched successfully'
+            // };
+            return mockResponses.getBookings(queryParams)
+        } catch (error) {
+            showError(error)
+            return null
+        }
+    }
 }

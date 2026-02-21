@@ -12,6 +12,49 @@ export default class ApiRequest {
             throw new Error(`${response.status}: ${text.messages}`)
         }
     }
+
+    static async uploadFile(file) {
+        try {
+            const authData = LocalStorage.get('auth')
+            if (!authData?.token) {
+                throw new Error('uploadFile - Token is required for this action')
+            }
+
+            // Request presigned upload URL
+            const response = await fetch(
+                `${this.baseUrl}/upload-url`, {
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${authData.token}`
+                    },
+                    method: 'PUT',
+                    body: JSON.stringify({
+                        filename: file.name,
+                        contentType: file.type
+                    })
+                });
+
+            await ApiRequest.checkResponse(response)
+
+            const res = await response.json();
+
+            // Upload file directly to S3/RustFS
+            await fetch(res.uploadUrl, {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': file.type
+                },
+                body: file
+            });
+            return res
+        } catch (err) {
+            showError(err)
+            return null
+        }
+    }
+
+
+
     static async register(body, userType = 'b2c') {
         try {
             const response = await fetch(
@@ -94,7 +137,7 @@ export default class ApiRequest {
                 });
 
             LocalStorage.set('auth', null)
-            console.log('Local Storage empty: ', LocalStorage.get('auth'))
+
             await ApiRequest.checkResponse(response)
             LocalStorage.set('auth', null)
             const res = await response.json()
@@ -121,6 +164,39 @@ export default class ApiRequest {
                         ...(authData.token && { Authorization: `Bearer ${authData.token}` }),
                     },
                     method: 'GET'
+                });
+            await ApiRequest.checkResponse(response)
+            const res = await response.json()
+
+            showSuccess(res.message)
+            return res
+        } catch (err) {
+            showError(err)
+            return null
+        }
+    }
+
+    static async updateProfile(data) {
+        try {
+            const authData = LocalStorage.get('auth')
+            if (!authData?.token) {
+                throw new Error('getProfile - Token is required for this action')
+            }
+
+            const response = await fetch(
+                `${this.baseUrl}/${authData?.role ? 'b2b' : 'b2c'}/v1/${authData?.role ? 'admin' : 'user'}`, {
+                    headers: {
+                        'Content-Type': 'application/json',
+                        ...(authData.token && { Authorization: `Bearer ${authData.token}` }),
+                    },
+                    method: 'PATCH',
+                    body:  JSON.stringify({
+                        firstName: data.firstName,
+                        lastName: data.lastName,
+                        email: data.email,
+                        phone: data.phone,
+                        avatarURL: data.avatarURL,
+                    })
                 });
             await ApiRequest.checkResponse(response)
             const res = await response.json()

@@ -62,6 +62,16 @@ export function showSuccess(text) {
         })
 }
 
+export function getFormData(target) {
+    const formData = new FormData(target)
+
+    return Object.fromEntries(
+        Array.from(formData.entries()).map(([key, value]) => {
+            return [key, value]
+        })
+    )
+}
+
 export function authRequired() {
 
 }

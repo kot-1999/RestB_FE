@@ -1,0 +1,11 @@
+
+form#updateProfileForm
+    img#userAvatar(src="{{user.avatarURL}}{{admin.avatarURL}}" width="200")
+    input(type="file" name="avatar" accept="image/*")
+    input(type="text" name="firstName" value="{{user.firstName}}{{admin.firstName}}" required minlength="3" maxlength="255")
+    input(type="text" name="lastName" value="{{user.lastName}}{{admin.lastName}}" required minlength="3" maxlength="255")
+    input(type="email" name="email" value="{{user.email}}{{admin.email}}" required)
+    input(type="text" name="phone" value="{{user.phone}}{{admin.phone}}" required)
+    input(type="text" name="role" value="{{admin.role}}" readonly)
+
+    button(type="submit") Update Profile

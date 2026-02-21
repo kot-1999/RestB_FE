@@ -142,6 +142,70 @@ const mockData = {
                 autoConfirmGuestsLimit: 30
             }
         }
+    ],
+    
+    // Mock booking data
+    bookings: [
+        {
+            bookingID: "550e8400-e29b-41d4-a716-446655440000",
+            restaurantID: "123e4567-e89b-12d3-a456-426614174000",
+            userID: "789e0123-e45b-67d8-a456-426614174000",
+            guestsNumber: 4,
+            bookingTime: "2024-02-20T19:00:00Z",
+            status: "confirmed",
+            createdAt: "2024-02-15T10:30:00Z",
+            discussion: {
+                authorID: "789e0123-e45b-67d8-a456-426614174000",
+                authorType: "user",
+                message: "Please prepare a table near the window"
+            },
+            restaurant: {
+                restaurantID: "123e4567-e89b-12d3-a456-426614174000",
+                name: "The Golden Dragon",
+                cuisine: "Chinese",
+                rating: 4.5
+            }
+        },
+        {
+            bookingID: "550e8400-e29b-41d4-a716-446655440001",
+            restaurantID: "123e4567-e89b-12d3-a456-426614174001",
+            userID: "789e0123-e45b-67d8-a456-426614174000",
+            guestsNumber: 2,
+            bookingTime: "2024-02-22T20:30:00Z",
+            status: "pending",
+            createdAt: "2024-02-16T14:20:00Z",
+            discussion: {
+                authorID: "789e0123-e45b-67d8-a456-426614174000",
+                authorType: "user",
+                message: "Celebrating anniversary"
+            },
+            restaurant: {
+                restaurantID: "123e4567-e89b-12d3-a456-426614174001",
+                name: "Bella Italia",
+                cuisine: "Italian",
+                rating: 4.2
+            }
+        },
+        {
+            bookingID: "550e8400-e29b-41d4-a716-446655440002",
+            restaurantID: "123e4567-e89b-12d3-a456-426614174002",
+            userID: "789e0123-e45b-67d8-a456-426614174000",
+            guestsNumber: 6,
+            bookingTime: "2024-02-25T18:00:00Z",
+            status: "cancelled",
+            createdAt: "2024-02-10T09:15:00Z",
+            discussion: {
+                authorID: "789e0123-e45b-67d8-a456-426614174000",
+                authorType: "user",
+                message: "Large group booking"
+            },
+            restaurant: {
+                restaurantID: "123e4567-e89b-12d3-a456-426614174002",
+                name: "Spice Garden",
+                cuisine: "Indian",
+                rating: 4.7
+            }
+        }
     ]
 };
 // Simple mock responses for API endpoints
@@ -149,6 +213,47 @@ export const mockResponses = {
     // GET /api/b2c/restaurants/
     getRestaurants: () => {
         return mockData;
+    },
+    
+    // GET /b2c/v1/booking/
+    getBookings: (queryParams = {}) => {
+        let filteredBookings = mockData.bookings;
+        
+        // Filter by date range if provided
+        if (queryParams.dateFrom) {
+            filteredBookings = filteredBookings.filter(booking => 
+                new Date(booking.bookingTime) >= new Date(queryParams.dateFrom)
+            );
+        }
+        
+        if (queryParams.dateTo) {
+            filteredBookings = filteredBookings.filter(booking => 
+                new Date(booking.bookingTime) <= new Date(queryParams.dateTo)
+            );
+        }
+        
+        // Filter by statuses if provided
+        if (queryParams.statuses && Array.isArray(queryParams.statuses)) {
+            filteredBookings = filteredBookings.filter(booking => 
+                queryParams.statuses.includes(booking.status)
+            );
+        }
+        
+        // Pagination
+        const page = parseInt(queryParams.page) || 1;
+        const limit = parseInt(queryParams.limit) || 10;
+        const startIndex = (page - 1) * limit;
+        const endIndex = startIndex + limit;
+        
+        return {
+            bookings: filteredBookings.slice(startIndex, endIndex),
+            pagination: {
+                page: page,
+                limit: limit,
+                total: filteredBookings.length,
+                totalPages: Math.ceil(filteredBookings.length / limit)
+            }
+        };
     },
     
 };

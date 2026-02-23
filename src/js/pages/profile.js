@@ -1,13 +1,14 @@
 import ApiRequest from "../utils/ApiRequest.js";
 import {Template} from "../config.js";
 import Mustache from "./../utils/mustache.js"
-import {getFormData} from "../utils/helpers.js";
+import {getFormData, showError} from "../utils/helpers.js";
 
 export default async function () {
 
     const res = await ApiRequest.getProfile()
 
     if (!res) {
+        showError(new Error("No profile found"));
         return
     }
 
@@ -30,7 +31,8 @@ export default async function () {
         }
         ApiRequest.updateProfile({
             ...data,
-            avatarURL: uploadRes?.key || uploadRes?.key === null ? uploadRes.key : undefined
+            // If avatarURL was not updated, then must be set to undefined
+            avatarURL: uploadRes?.publicUrl || uploadRes?.publicUrl === null ? uploadRes.publicUrl : undefined
         })
     });
 }

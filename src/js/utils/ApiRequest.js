@@ -57,6 +57,9 @@ export default class ApiRequest {
 
     static async register(body, userType = 'b2c') {
         try {
+            if (userType === 'b2c') {
+                delete body.brandName
+            }
             const response = await fetch(
                 `${this.baseUrl}/${userType}/v1/authorization/register`, {
                     headers: {

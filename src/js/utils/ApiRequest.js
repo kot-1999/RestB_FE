@@ -57,6 +57,9 @@ export default class ApiRequest {
 
     static async register(body, userType = 'b2c') {
         try {
+            if (userType === 'b2c') {
+                delete body.brandName
+            }
             const response = await fetch(
                 `${this.baseUrl}/${userType}/v1/authorization/register`, {
                     headers: {
@@ -120,6 +123,27 @@ export default class ApiRequest {
         }
     }
 
+    static async resetPassword(token, userType, newPassword) {
+        try {
+            const response = await fetch(
+                `${this.baseUrl}/${userType}/v1/authorization/reset-password`, {
+                    headers: {
+                        'Content-Type': 'application/json',
+                        Authorization: `Bearer ${token}`
+                    },
+                    method: 'POST',
+                    body: JSON.stringify({ newPassword })
+                });
+            await ApiRequest.checkResponse(response)
+            const res = await response.json()
+            showSuccess(res.message)
+            return res
+        } catch (err) {
+            showError(err)
+            return null
+        }
+    }
+
     static async logout() {
         try {
             const authData = LocalStorage.get('auth')
@@ -131,7 +155,7 @@ export default class ApiRequest {
                 `${this.baseUrl}/${authData?.role ? 'b2b' : 'b2c'}/v1/authorization/logout`, {
                     headers: {
                         'Content-Type': 'application/json',
-                        ...(authData.token && { Authorization: `Bearer ${authData.token}` }),
+                        Authorization: `Bearer ${authData.token}`,
                     },
                     method: 'GET'
                 });

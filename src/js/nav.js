@@ -5,6 +5,7 @@ import loadHome from "./pages/home.js"
 import loadProfile from "./pages/profile.js"
 import loadRestaurantDetails from "./pages/restaurantDetails.js"
 import loadDashboard from "./pages/dashboard.js"
+import loadResetPassword from "./pages/resetPassword.js"
 import ApiRequest from "./utils/ApiRequest.js";
 import { showError, LocalStorage } from "./utils/helpers.js";
 
@@ -136,19 +137,25 @@ function renderFromHash() {
                 template: Template.page.dashboard,
                 loader: loadDashboard,
                 nav: '#dashboard'
+            },
+            '#reset-password': {
+                template: Template.page.resetPassword,
+                loader: loadResetPassword
             }
         }
 
         // Load main page if url hash is not available
-        if (!routes[window.location.hash]) {
+        // Extract route without query params
+        const fullHash = window.location.hash || '#home'
+        const routeHash = fullHash.split('?')[0]
+
+        // Load main page if route does not exist
+        if (!routes[routeHash]) {
             window.location.hash = '#home'
-            routes[window.location.hash] = {
-                template: Template.page.home,
-                loader: loadHome,
-                nav: '#home'
-            }
+            return
         }
-        const route = routes[window.location.hash]
+
+        const route = routes[routeHash]
         loadPage(route.template, route.loader, route.nav)
     } catch (err) {
         showError(err)

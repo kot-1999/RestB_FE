@@ -22,6 +22,14 @@ function setupButtonGroup(buttonSelector, hiddenInputSelector, dataAttr) {
         } else if (value === 'forgotPassword') {
             $('#auth01').empty().append(Template.component.forgotPassword())
         }
+
+        const userType = $('#userType').val()
+
+        if (userType === 'b2c') {
+            $('label[for="brandName"], #brandName').hide();
+        } else {
+            $('label[for="brandName"], #brandName').show()
+        }
         console.log(value)
     })
 }
@@ -55,6 +63,7 @@ const load = () => {
                     firstName: $('#firstName').val(),
                     lastName: $('#lastName').val(),
                     phone: $('#phone').val(),
+                    brandName: $('#brandName').val(),
                 }, userType)
             }
             else if (authType === 'login') {

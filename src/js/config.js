@@ -5,6 +5,7 @@ export const Template =  {
         home: () => document.getElementById('home-template').innerHTML,
         restaurantDetails: () => document.getElementById('restaurant-details-template').innerHTML,
         dashboard: () => document.getElementById('dashboard-template').innerHTML,
+        resetPassword: () => document.getElementById('reset-password-template').innerHTML,
     },
     component: {
         login: () => document.getElementById('login-component-template').innerHTML,

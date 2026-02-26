@@ -237,25 +237,20 @@ export default class ApiRequest {
     static async getRestaurants(queryParams) {
         try {
             // Make a real HTTP request (will show in Network tab)
-            // const response = await fetch(`${this.baseUrl}/b2c/restaurants`, {
-            //     method: 'GET',
-            //     headers: {
-            //         'Content-Type': 'application/json'
-            //     }
-            // });
-            //
-            // // If the real API doesn't exist, fall back to mock data
-            // if (!response.ok) {
-            //     throw new Error('API not available, using mock data');
-            // }
-            //
-            // const data = await response.json();
-            // return {
-            //     success: true,
-            //     data: data,
-            //     message: 'Restaurants fetched successfully'
-            // };
-            return mockResponses.getRestaurants()
+            const response = await fetch(`${this.baseUrl}/b2c/v1/restaurant`, {
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            });
+
+            // If the real API doesn't exist, fall back to mock data
+            if (!response.ok) {
+                throw new Error('API not available, using mock data');
+            }
+
+            const res = await response.json();
+            return res;
         } catch (error) {
             showError(err)
             return null

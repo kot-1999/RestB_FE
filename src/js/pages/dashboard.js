@@ -39,16 +39,39 @@ export default function () {
         
         // Get filter selections
         const showOnly = [];
+        const selectedRestaurants = [];
+        
         $('input[name="showOnly"]:checked').each(function() {
             showOnly.push($(this).val());
         });
+        
+        // Handle restaurant selection logic
+        const allRestaurantsChecked = $('input[name="restaurant"][value="all"]').is(':checked');
+        if (allRestaurantsChecked) {
+            // If "All Restaurants" is checked, show all restaurants
+            // No need to filter, use all data
+        } else {
+            // If "All Restaurants" is unchecked, get selected individual restaurants
+            $('input[name="restaurant"]:checked').each(function() {
+                if ($(this).val() !== 'all') {
+                    selectedRestaurants.push($(this).val());
+                }
+            });
+        }
+        
+        // Filter restaurants
+        const filteredData = allRestaurantsChecked 
+            ? dashboardData.data 
+            : selectedRestaurants.length === 0 
+                ? [] // Show nothing if no restaurants selected
+                : dashboardData.data.filter(r => selectedRestaurants.includes(r.restaurant.name));
         
         // Create complete date range and fill missing dates with zeros
         const dateRange = generateDateRange(dashboardData.range.timeFrom, dashboardData.range.timeTo);
         const dataMap = new Map();
         
         // Map existing data by date
-        dashboardData.data.forEach(restaurant => {
+        filteredData.forEach(restaurant => {
             restaurant.summaries.forEach(day => {
                 const dateKey = day.date.split('T')[0];
                 if (!dataMap.has(dateKey)) {
@@ -69,8 +92,16 @@ export default function () {
         });
         
         // Generate datasets for each restaurant
-        const colors = ['#3b82f6', '#10b981', '#f59e0b'];
-        dashboardData.data.forEach((restaurant, index) => {
+        const colors = [
+            '#3b82f6', '#10b981', '#f59e0b', '#ef4444', '#8b5cf6', 
+            '#ec4899', '#14b8a6', '#f97316', '#6366f1', '#84cc16',
+            '#06b6d4', '#a855f7', '#0ea5e9', '#22c55e', '#eab308',
+            '#dc2626', '#7c3aed', '#db2777', '#0891b2', '#16a34a',
+            '#ca8a04', '#b91c1c', '#6d28d9', '#be185d', '#0e7490'
+        ];
+        
+        filteredData.forEach((restaurant, index) => {
+            const color = colors[index % colors.length];
             const filteredData = [];
             
             dateRange.forEach(date => {
@@ -82,7 +113,6 @@ export default function () {
                     if (showOnly.includes('approved')) value += dayData.totalApprovedBookings;
                     if (showOnly.includes('pending')) value += dayData.totalPendingBookings;
                 }
-                // If no data for this date, value stays 0
                 
                 filteredData.push(value);
             });
@@ -90,10 +120,13 @@ export default function () {
             datasets.push({
                 label: restaurant.restaurant.name,
                 data: filteredData,
-                borderColor: colors[index % colors.length],
-                backgroundColor: colors[index % colors.length] + '20',
+                borderColor: color,
+                backgroundColor: color + '20',
                 tension: 0.4,
-                fill: true
+                fill: false,
+                borderWidth: 2,
+                pointRadius: 3,
+                pointHoverRadius: 5
             });
         });
         
@@ -118,11 +151,34 @@ export default function () {
     function updateKPIs() {
         if (!dashboardData) return;
         
+        // Get selected restaurants
+        const selectedRestaurants = [];
+        
+        // Handle restaurant selection logic
+        const allRestaurantsChecked = $('input[name="restaurant"][value="all"]').is(':checked');
+        if (allRestaurantsChecked) {
+            // If "All Restaurants" is checked, use all data
+        } else {
+            // If "All Restaurants" is unchecked, get selected individual restaurants
+            $('input[name="restaurant"]:checked').each(function() {
+                if ($(this).val() !== 'all') {
+                    selectedRestaurants.push($(this).val());
+                }
+            });
+        }
+        
+        // Filter data for KPIs
+        const filteredData = allRestaurantsChecked 
+            ? dashboardData.data 
+            : selectedRestaurants.length === 0 
+                ? [] // Show nothing if no restaurants selected
+                : dashboardData.data.filter(r => selectedRestaurants.includes(r.restaurant.name));
+        
         let totalBookings = 0;
         let pendingBookings = 0;
         let totalGuests = 0;
         
-        dashboardData.data.forEach(restaurant => {
+        filteredData.forEach(restaurant => {
             restaurant.summaries.forEach(day => {
                 totalBookings += day.totalApprovedBookings;
                 pendingBookings += day.totalPendingBookings;
@@ -134,6 +190,30 @@ export default function () {
         $('.kpi-value').eq(1).text(pendingBookings);
         $('.kpi-value').eq(2).text('6'); // Mock cancelled is not in the api schema so just hardcoded for now
         $('.kpi-value').eq(3).text(totalGuests);
+    }
+    
+    // Populate restaurant checkboxes
+    function populateRestaurantFilter() {
+        const restaurantFilter = $('#restaurantFilter');
+        restaurantFilter.empty();
+        
+        // Add "All Restaurants" option
+        restaurantFilter.append(`
+            <label class="check">
+                <input type="checkbox" name="restaurant" value="all" checked>
+                <span>All Restaurants</span>
+            </label>
+        `);
+        
+        // Add individual restaurant options
+        dashboardData.data.forEach(restaurant => {
+            restaurantFilter.append(`
+                <label class="check">
+                    <input type="checkbox" name="restaurant" value="${restaurant.restaurant.name}">
+                    <span>${restaurant.restaurant.name}</span>
+                </label>
+            `);
+        });
     }
     
     // Initialize chart
@@ -167,12 +247,25 @@ export default function () {
     
     // Initialize
     loadDashboardData(currentPeriod);
+    populateRestaurantFilter();
     updateKPIs();
     updateChart();
     updateDynamicText();
     
     // Handle filter changes
-    $(document).on('change', 'input[name="showOnly"]', function() {
+    $(document).on('change', 'input[name="showOnly"], input[name="restaurant"]', function() {
+        // Handle "All Restaurants" checkbox logic
+        if ($(this).attr('name') === 'restaurant' && $(this).val() === 'all') {
+            if ($(this).is(':checked')) {
+                // If "All Restaurants" is checked, uncheck all individual restaurants
+                $('input[name="restaurant"][value!="all"]').prop('checked', false);
+            }
+        } else if ($(this).attr('name') === 'restaurant' && $(this).val() !== 'all') {
+            // If individual restaurant is checked, uncheck "All Restaurants"
+            $('input[name="restaurant"][value="all"]').prop('checked', false);
+        }
+        
+        updateKPIs();
         updateChart();
     });
     

@@ -286,11 +286,22 @@ export const mockResponses = {
         const daysDiff = Math.ceil((timeTo - timeFrom) / (1000 * 60 * 60 * 24)) + 1;
         
         // Generate data for each restaurant
-        const restaurants = [
-            { id: "123e4567-e89b-12d3-a456-426614174001", name: "Pizza/Pasta", baseBookings: 150, variance: 50 },
-            { id: "123e4567-e89b-12d3-a456-426614174002", name: "Pizza World", baseBookings: 100, variance: 40 },
-            { id: "123e4567-e89b-12d3-a456-426614174003", name: "Sushi / Ramen", baseBookings: 60, variance: 25 }
+        const restaurantNames = [
+            'Rest 1', 'Rest 2', 'Rest 3', 'Rest 4', 'Rest 5', 
+            'Rest 6', 'Rest 7', 'Rest 8', 'Rest 9', 'Rest 10'
         ];
+        
+        const restaurantCount = Math.floor(Math.random() * 10) + 1; // 1-10 restaurants
+        
+        const restaurants = [];
+        for (let i = 0; i < restaurantCount; i++) {
+            restaurants.push({
+                id: `123e4567-e89b-12d3-a456-426614174${String(i + 1).padStart(3, '0')}`,
+                name: restaurantNames[i],
+                baseBookings: Math.floor(Math.random() * 120) + 60, // 60-180 base bookings
+                variance: Math.floor(Math.random() * 30) + 20 // 20-50 variance
+            });
+        }
         
         const data = restaurants.map(restaurant => {
             const summaries = [];

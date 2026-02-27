@@ -44,41 +44,36 @@ div.dashboard-page
                     button.dash-chip(type="button") Month
 
             .dash-chart
-                // If you already use Chart.js, switch this to <canvas id="bookingsChart">
-                // otherwise keep as placeholder for now
-                .chart-placeholder
-                    span Chart goes here
+                canvas#bookingsChart(width="400" height="400")
 
         // ===== Filters row (like your mock) =====
         .dash-filters
             .filter-row
                 .filter-group
                     label Show Only:
-                    select
-                        option(value="all" selected) All
-                        option(value="approved") Approved
-                        option(value="pending") Pending
-                        option(value="cancelled") Cancelled
+                    .check-row
+                        label.check
+                            input(type="checkbox" name="showOnly" value="approved" checked)
+                            span Approved Bookings
+                        label.check
+                            input(type="checkbox" name="showOnly" value="pending" checked)
+                            span Pending Bookings
+                        label.check
+                            input(type="checkbox" name="showOnly" value="cancelledAdmin")
+                            span Cancel. by Admin
+                        label.check
+                            input(type="checkbox" name="showOnly" value="cancelledUser")
+                            span Cancel. by User
 
                 .filter-group
                     label Show For:
                     .check-row
                         label.check
-                            input(type="checkbox" checked)
+                            input(type="checkbox" name="showFor" value="Pizza/Pasta" checked)
                             span Pizza/Pasta
                         label.check
-                            input(type="checkbox")
+                            input(type="checkbox" name="showFor" value="Pizza World" checked)
                             span Pizza World
                         label.check
-                            input(type="checkbox")
+                            input(type="checkbox" name="showFor" value="Sushi / Ramen" checked)
                             span Sushi / Ramen
-
-                .filter-group.right
-                    label Status:
-                    .check-row
-                        label.check
-                            input(type="checkbox")
-                            span Cancelled by Admin
-                        label.check
-                            input(type="checkbox")
-                            span Cancelled by User

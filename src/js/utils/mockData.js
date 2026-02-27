@@ -282,189 +282,67 @@ export const mockResponses = {
         const timeTo = queryParams.timeTo ? new Date(queryParams.timeTo) : new Date();
         const timeFrom = queryParams.timeFrom ? new Date(queryParams.timeFrom) : new Date(timeTo.getTime() - 7 * 24 * 60 * 60 * 1000);
         
+        // Calculate number of days
+        const daysDiff = Math.ceil((timeTo - timeFrom) / (1000 * 60 * 60 * 24)) + 1;
+        
+        // Generate data for each restaurant
+        const restaurants = [
+            { id: "123e4567-e89b-12d3-a456-426614174001", name: "Pizza/Pasta", baseBookings: 50, variance: 15 },
+            { id: "123e4567-e89b-12d3-a456-426614174002", name: "Pizza World", baseBookings: 35, variance: 12 },
+            { id: "123e4567-e89b-12d3-a456-426614174003", name: "Sushi / Ramen", baseBookings: 20, variance: 8 }
+        ];
+        
+        const data = restaurants.map(restaurant => {
+            const summaries = [];
+            
+            for (let i = 0; i < daysDiff; i++) {
+                const currentDate = new Date(timeFrom);
+                currentDate.setDate(timeFrom.getDate() + i);
+                
+                // Generate realistic booking numbers with ups and downs
+                const dayOfWeek = currentDate.getDay();
+                const isWeekend = dayOfWeek === 0 || dayOfWeek === 6;
+                
+                // Weekend effect: higher bookings
+                const weekendMultiplier = isWeekend ? 1.3 : 1.0;
+                
+                // Random variation for realistic ups and downs
+                const randomVariation = 0.7 + Math.random() * 0.6; // 70% to 130%
+                
+                // Calculate bookings
+                const approvedBookings = Math.round(restaurant.baseBookings * weekendMultiplier * randomVariation);
+                const pendingBookings = Math.round(approvedBookings * 0.1 + Math.random() * 5); // ~10% of approved + random
+                const totalGuests = Math.round(approvedBookings * (2.5 + Math.random() * 1.5)); // 2.5-4 guests per booking
+                
+                summaries.push({
+                    date: currentDate.toISOString(),
+                    totalApprovedBookings: approvedBookings,
+                    totalPendingBookings: pendingBookings,
+                    totalGuests: totalGuests,
+                    autoConfirmGuestsLimit: restaurant.baseBookings < 30 ? 15 : 25
+                });
+            }
+            
+            return {
+                restaurant: {
+                    id: restaurant.id,
+                    name: restaurant.name
+                },
+                summaries: summaries
+            };
+        });
+        
         return {
             brand: {
                 id: "550e8400-e29b-41d4-a716-446655440001",
                 name: "La Benetti",
                 logoURL: "https://picsum.photos/seed/la-benetti-logo/100/100.jpg"
             },
-            data: [
-                {
-                    restaurant: {
-                        id: "123e4567-e89b-12d3-a456-426614174001",
-                        name: "Pizza/Pasta"
-                    },
-                    summaries: [
-                        {
-                            date: "2024-02-20T00:00:00Z",
-                            totalApprovedBookings: 45,
-                            totalPendingBookings: 8,
-                            totalGuests: 128,
-                            autoConfirmGuestsLimit: 20
-                        },
-                        {
-                            date: "2024-02-21T00:00:00Z",
-                            totalApprovedBookings: 52,
-                            totalPendingBookings: 12,
-                            totalGuests: 145,
-                            autoConfirmGuestsLimit: 20
-                        },
-                        {
-                            date: "2024-02-22T00:00:00Z",
-                            totalApprovedBookings: 38,
-                            totalPendingBookings: 6,
-                            totalGuests: 98,
-                            autoConfirmGuestsLimit: 20
-                        },
-                        {
-                            date: "2024-02-23T00:00:00Z",
-                            totalApprovedBookings: 61,
-                            totalPendingBookings: 15,
-                            totalGuests: 178,
-                            autoConfirmGuestsLimit: 20
-                        },
-                        {
-                            date: "2024-02-24T00:00:00Z",
-                            totalApprovedBookings: 55,
-                            totalPendingBookings: 9,
-                            totalGuests: 156,
-                            autoConfirmGuestsLimit: 20
-                        },
-                        {
-                            date: "2024-02-25T00:00:00Z",
-                            totalApprovedBookings: 48,
-                            totalPendingBookings: 11,
-                            totalGuests: 134,
-                            autoConfirmGuestsLimit: 20
-                        },
-                        {
-                            date: "2024-02-26T00:00:00Z",
-                            totalApprovedBookings: 42,
-                            totalPendingBookings: 7,
-                            totalGuests: 112,
-                            autoConfirmGuestsLimit: 20
-                        }
-                    ]
-                },
-                {
-                    restaurant: {
-                        id: "123e4567-e89b-12d3-a456-426614174002",
-                        name: "Pizza World"
-                    },
-                    summaries: [
-                        {
-                            date: "2024-02-20T00:00:00Z",
-                            totalApprovedBookings: 32,
-                            totalPendingBookings: 5,
-                            totalGuests: 89,
-                            autoConfirmGuestsLimit: 15
-                        },
-                        {
-                            date: "2024-02-21T00:00:00Z",
-                            totalApprovedBookings: 41,
-                            totalPendingBookings: 8,
-                            totalGuests: 112,
-                            autoConfirmGuestsLimit: 15
-                        },
-                        {
-                            date: "2024-02-22T00:00:00Z",
-                            totalApprovedBookings: 28,
-                            totalPendingBookings: 4,
-                            totalGuests: 76,
-                            autoConfirmGuestsLimit: 15
-                        },
-                        {
-                            date: "2024-02-23T00:00:00Z",
-                            totalApprovedBookings: 47,
-                            totalPendingBookings: 10,
-                            totalGuests: 134,
-                            autoConfirmGuestsLimit: 15
-                        },
-                        {
-                            date: "2024-02-24T00:00:00Z",
-                            totalApprovedBookings: 35,
-                            totalPendingBookings: 6,
-                            totalGuests: 98,
-                            autoConfirmGuestsLimit: 15
-                        },
-                        {
-                            date: "2024-02-25T00:00:00Z",
-                            totalApprovedBookings: 39,
-                            totalPendingBookings: 7,
-                            totalGuests: 108,
-                            autoConfirmGuestsLimit: 15
-                        },
-                        {
-                            date: "2024-02-26T00:00:00Z",
-                            totalApprovedBookings: 33,
-                            totalPendingBookings: 5,
-                            totalGuests: 91,
-                            autoConfirmGuestsLimit: 15
-                        }
-                    ]
-                },
-                {
-                    restaurant: {
-                        id: "123e4567-e89b-12d3-a456-426614174003",
-                        name: "Sushi / Ramen"
-                    },
-                    summaries: [
-                        {
-                            date: "2024-02-20T00:00:00Z",
-                            totalApprovedBookings: 18,
-                            totalPendingBookings: 3,
-                            totalGuests: 45,
-                            autoConfirmGuestsLimit: 25
-                        },
-                        {
-                            date: "2024-02-21T00:00:00Z",
-                            totalApprovedBookings: 22,
-                            totalPendingBookings: 4,
-                            totalGuests: 58,
-                            autoConfirmGuestsLimit: 25
-                        },
-                        {
-                            date: "2024-02-22T00:00:00Z",
-                            totalApprovedBookings: 15,
-                            totalPendingBookings: 2,
-                            totalGuests: 38,
-                            autoConfirmGuestsLimit: 25
-                        },
-                        {
-                            date: "2024-02-23T00:00:00Z",
-                            totalApprovedBookings: 28,
-                            totalPendingBookings: 6,
-                            totalGuests: 72,
-                            autoConfirmGuestsLimit: 25
-                        },
-                        {
-                            date: "2024-02-24T00:00:00Z",
-                            totalApprovedBookings: 20,
-                            totalPendingBookings: 3,
-                            totalGuests: 51,
-                            autoConfirmGuestsLimit: 25
-                        },
-                        {
-                            date: "2024-02-25T00:00:00Z",
-                            totalApprovedBookings: 24,
-                            totalPendingBookings: 5,
-                            totalGuests: 63,
-                            autoConfirmGuestsLimit: 25
-                        },
-                        {
-                            date: "2024-02-26T00:00:00Z",
-                            totalApprovedBookings: 19,
-                            totalPendingBookings: 3,
-                            totalGuests: 48,
-                            autoConfirmGuestsLimit: 25
-                        }
-                    ]
-                }
-            ],
+            data: data,
             range: {
                 timeFrom: timeFrom.toISOString(),
                 timeTo: timeTo.toISOString()
             }
         };
-    }
+    },
 };

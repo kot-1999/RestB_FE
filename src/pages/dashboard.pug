@@ -20,19 +20,19 @@ div.dashboard-page
         .dash-kpis
             .kpi
                 p.kpi-label Total bookings
-                p.kpi-value 128
+                p.kpi-value 0(Default)
                 p.kpi-meta +12% this week
             .kpi
                 p.kpi-label Pending bookings
-                p.kpi-value 14
+                p.kpi-value 0(Default)
                 p.kpi-meta Needs review
             .kpi
                 p.kpi-label Cancelled
-                p.kpi-value 6
+                p.kpi-value 0(Default)
                 p.kpi-meta This week
             .kpi
                 p.kpi-label People booked
-                p.kpi-value 312
+                p.kpi-value 0(Default)
                 p.kpi-meta Covers (guests)
 
         // ===== Chart card =====
@@ -40,9 +40,8 @@ div.dashboard-page
             .dash-card-head
                 h2 Weekly bookings
                 .dash-card-actions
-                    button.dash-chip.is-active(type="button") Week
-                    button.dash-chip(type="button") Month
-
+                    button.dash-chip.is-active(type="button") Past 7 days
+                    button.dash-chip(type="button") Past 30 days
             .dash-chart
                 canvas#bookingsChart(width="400" height="400")
 

@@ -1,5 +1,5 @@
 export default function () {
-    console.log('🚀 Dashboard script loaded');
+    console.log('Dashboard script loaded');
     
     // Simple chart data
     const data = {
@@ -24,25 +24,12 @@ export default function () {
         const ctx = document.getElementById('bookingsChart');
         if (!ctx) return;
         
-        // Get checked restaurants
-        const checked = [];
-        $('input[name="showFor"]:checked').each(function() {
-            checked.push($(this).val());
-        });
-        
-        // Filter datasets
-        const filteredData = {
-            labels: data.labels,
-            datasets: data.datasets.filter(d => checked.includes(d.label))
-        };
-        
         if (chart) {
-            chart.data = filteredData;
             chart.update();
         } else if (typeof Chart !== 'undefined') {
             chart = new Chart(ctx, {
                 type: 'line',
-                data: filteredData,
+                data: data,
                 options: {
                     responsive: true,
                     maintainAspectRatio: false,
@@ -59,8 +46,8 @@ export default function () {
     // Initialize
     updateChart();
     
-    // Handle changes
-    $('input[name="showFor"], .dash-chip').on('change click', function() {
+    // Handle time period buttons
+    $('.dash-chip').on('click', function() {
         $('.dash-chip').removeClass('is-active');
         $(this).addClass('is-active');
         updateChart();

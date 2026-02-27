@@ -2,8 +2,8 @@ div.dashboard-page
     .dashboard-wrap
         .dash-header
             .dash-title
-                h1 Dashboard
-                p.dash-sub Your weekly activity at a glance.
+                h1#dashboardTitle Dashboard
+                p#dashboardSub Your weekly activity at a glance.
 
             .dash-brand
                 .dash-brand-field
@@ -21,7 +21,7 @@ div.dashboard-page
             .kpi
                 p.kpi-label Total bookings
                 p.kpi-value 0(Default)
-                p.kpi-meta +12% this week
+                p.kpi-meta#totalBookingsMeta This week
             .kpi
                 p.kpi-label Pending bookings
                 p.kpi-value 0(Default)
@@ -29,16 +29,16 @@ div.dashboard-page
             .kpi
                 p.kpi-label Cancelled
                 p.kpi-value 0(Default)
-                p.kpi-meta This week
+                p.kpi-meta#cancelledMeta This week
             .kpi
                 p.kpi-label People booked
                 p.kpi-value 0(Default)
-                p.kpi-meta Covers (guests)
+                p.kpi-meta#guestsMeta Covers (guests)
 
         // ===== Chart card =====
         .dash-card
             .dash-card-head
-                h2 Weekly bookings
+                h2#chartTitle Weekly bookings
                 .dash-card-actions
                     button.dash-chip.is-active(type="button") Past 7 days
                     button.dash-chip(type="button") Past 30 days

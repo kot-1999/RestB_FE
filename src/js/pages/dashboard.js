@@ -169,6 +169,7 @@ export default function () {
     loadDashboardData(currentPeriod);
     updateKPIs();
     updateChart();
+    updateDynamicText();
     
     // Handle filter changes
     $(document).on('change', 'input[name="showOnly"]', function() {
@@ -199,5 +200,25 @@ export default function () {
         loadDashboardData(currentPeriod);
         updateKPIs();
         updateChart();
+        updateDynamicText();
     });
+    
+    // Update dynamic text based on period
+    function updateDynamicText() {
+        if (currentPeriod === '7days') {
+            $('#dashboardTitle').text('Dashboard');
+            $('#dashboardSub').text('Your weekly activity at a glance.');
+            $('#chartTitle').text('Weekly bookings');
+            $('#totalBookingsMeta').text('Past 7 days');
+            $('#cancelledMeta').text('Past 7 days');
+            $('#guestsMeta').text('Covers (guests)');
+        } else {
+            $('#dashboardTitle').text('Dashboard');
+            $('#dashboardSub').text('Your monthly activity at a glance.');
+            $('#chartTitle').text('Monthly bookings');
+            $('#totalBookingsMeta').text('Past 30 days');
+            $('#cancelledMeta').text('Past 30 days');
+            $('#guestsMeta').text('Covers (guests)');
+        }
+    }
 }

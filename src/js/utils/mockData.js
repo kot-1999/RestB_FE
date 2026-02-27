@@ -287,9 +287,9 @@ export const mockResponses = {
         
         // Generate data for each restaurant
         const restaurants = [
-            { id: "123e4567-e89b-12d3-a456-426614174001", name: "Pizza/Pasta", baseBookings: 50, variance: 15 },
-            { id: "123e4567-e89b-12d3-a456-426614174002", name: "Pizza World", baseBookings: 35, variance: 12 },
-            { id: "123e4567-e89b-12d3-a456-426614174003", name: "Sushi / Ramen", baseBookings: 20, variance: 8 }
+            { id: "123e4567-e89b-12d3-a456-426614174001", name: "Pizza/Pasta", baseBookings: 150, variance: 50 },
+            { id: "123e4567-e89b-12d3-a456-426614174002", name: "Pizza World", baseBookings: 100, variance: 40 },
+            { id: "123e4567-e89b-12d3-a456-426614174003", name: "Sushi / Ramen", baseBookings: 60, variance: 25 }
         ];
         
         const data = restaurants.map(restaurant => {
@@ -304,22 +304,31 @@ export const mockResponses = {
                 const isWeekend = dayOfWeek === 0 || dayOfWeek === 6;
                 
                 // Weekend effect: higher bookings
-                const weekendMultiplier = isWeekend ? 1.3 : 1.0;
+                const weekendMultiplier = isWeekend ? 1.4 : 1.0;
                 
                 // Random variation for realistic ups and downs
-                const randomVariation = 0.7 + Math.random() * 0.6; // 70% to 130%
+                const randomVariation = 0.6 + Math.random() * 0.8; // 60% to 140%
+                
+                // Add occasional zero booking days (5% chance)
+                const isZeroDay = Math.random() < 0.07;
                 
                 // Calculate bookings
-                const approvedBookings = Math.round(restaurant.baseBookings * weekendMultiplier * randomVariation);
-                const pendingBookings = Math.round(approvedBookings * 0.1 + Math.random() * 5); // ~10% of approved + random
-                const totalGuests = Math.round(approvedBookings * (2.5 + Math.random() * 1.5)); // 2.5-4 guests per booking
+                let approvedBookings = 0;
+                if (!isZeroDay) {
+                    approvedBookings = Math.round(restaurant.baseBookings * weekendMultiplier * randomVariation);
+                    // Cap at 300 max
+                    approvedBookings = Math.min(approvedBookings, 300);
+                }
+                
+                const pendingBookings = isZeroDay ? 0 : Math.round(approvedBookings * 0.1 + Math.random() * 8); // ~10% of approved + random
+                const totalGuests = isZeroDay ? 0 : Math.round(approvedBookings * (2.5 + Math.random() * 1.5)); // 2.5-4 guests per booking
                 
                 summaries.push({
                     date: currentDate.toISOString(),
                     totalApprovedBookings: approvedBookings,
                     totalPendingBookings: pendingBookings,
                     totalGuests: totalGuests,
-                    autoConfirmGuestsLimit: restaurant.baseBookings < 30 ? 15 : 25
+                    autoConfirmGuestsLimit: restaurant.baseBookings < 100 ? 15 : 25
                 });
             }
             

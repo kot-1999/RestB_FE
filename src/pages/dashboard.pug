@@ -2,8 +2,8 @@ div.dashboard-page
     .dashboard-wrap
         .dash-header
             .dash-title
-                h1 Dashboard
-                p.dash-sub Your weekly activity at a glance.
+                h1#dashboardTitle Dashboard
+                p#dashboardSub Your weekly activity at a glance.
 
             .dash-brand
                 .dash-brand-field
@@ -20,65 +20,50 @@ div.dashboard-page
         .dash-kpis
             .kpi
                 p.kpi-label Total bookings
-                p.kpi-value 128
-                p.kpi-meta +12% this week
+                p.kpi-value 0(Default)
+                p.kpi-meta#totalBookingsMeta This week
             .kpi
                 p.kpi-label Pending bookings
-                p.kpi-value 14
+                p.kpi-value 0(Default)
                 p.kpi-meta Needs review
             .kpi
                 p.kpi-label Cancelled
-                p.kpi-value 6
-                p.kpi-meta This week
+                p.kpi-value 0(Default)
+                p.kpi-meta#cancelledMeta This week
             .kpi
                 p.kpi-label People booked
-                p.kpi-value 312
-                p.kpi-meta Covers (guests)
+                p.kpi-value 0(Default)
+                p.kpi-meta#guestsMeta Covers (guests)
 
         // ===== Chart card =====
         .dash-card
             .dash-card-head
-                h2 Weekly bookings
+                h2#chartTitle Weekly bookings
                 .dash-card-actions
-                    button.dash-chip.is-active(type="button") Week
-                    button.dash-chip(type="button") Month
-
+                    button.dash-chip.is-active(type="button") Past 7 days
+                    button.dash-chip(type="button") Past 30 days
             .dash-chart
-                // If you already use Chart.js, switch this to <canvas id="bookingsChart">
-                // otherwise keep as placeholder for now
-                .chart-placeholder
-                    span Chart goes here
+                canvas#bookingsChart(width="400" height="400")
 
         // ===== Filters row (like your mock) =====
         .dash-filters
             .filter-row
                 .filter-group
-                    label Show Only:
-                    select
-                        option(value="all" selected) All
-                        option(value="approved") Approved
-                        option(value="pending") Pending
-                        option(value="cancelled") Cancelled
-
+                    label Restaurant:
+                    .check-row#restaurantFilter
+                        // Dynamically populated by JS
                 .filter-group
-                    label Show For:
+                    label Show Only:
                     .check-row
                         label.check
-                            input(type="checkbox" checked)
-                            span Pizza/Pasta
+                            input(type="checkbox" name="showOnly" value="approved" checked)
+                            span Approved Bookings
                         label.check
-                            input(type="checkbox")
-                            span Pizza World
+                            input(type="checkbox" name="showOnly" value="pending" checked)
+                            span Pending Bookings
                         label.check
-                            input(type="checkbox")
-                            span Sushi / Ramen
-
-                .filter-group.right
-                    label Status:
-                    .check-row
+                            input(type="checkbox" name="showOnly" value="cancelledAdmin")
+                            span Canceled by Admin
                         label.check
-                            input(type="checkbox")
-                            span Cancelled by Admin
-                        label.check
-                            input(type="checkbox")
-                            span Cancelled by User
+                            input(type="checkbox" name="showOnly" value="cancelledUser")
+                            span Canceled by User

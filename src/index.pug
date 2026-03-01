@@ -1,53 +1,54 @@
-doctype html
-html(lang="en")
-  head
-    meta(charset="UTF-8")
-    meta(name="viewport", content="width=device-width, initial-scale=1.0")
-    title RestBoo - Restaurant Booking
-    link(rel="stylesheet", href="./css/styles.css")
-    script(src='https://code.jquery.com/jquery-3.7.1.min.js')
-  body
-    nav
-      include pages/components/nav
+head
+  meta(charset="UTF-8")
+  meta(name="viewport", content="width=device-width, initial-scale=1.0")
+  title RestBoo - Restaurant Booking
 
-    content#content
+  // Styles
+  link(rel="stylesheet" href="/css/styles.css")
+
+  // jQuery — must come BEFORE any script that uses it
+  script(src="https://code.jquery.com/jquery-3.7.1.min.js")
+
+body
+  nav
+    include pages/components/nav
+
+  content#content
+    include pages/home
+
+  // Templates hidden
+  div(style="display:none")
+    template#auth-template
+      include pages/auth
+    template#profile-template
+      include pages/profile
+    template#home-template
       include pages/home
+    template#restaurant-details-template
+      include pages/restaurantDetails
+    template#dashboard-template
+      include pages/dashboard
+    template#login-component-template
+      include pages/components/authForms/login
+    template#register-component-template
+      include pages/components/authForms/register
+    template#restaurant-card-template
+      include pages/components/restaurantCard
+    template#dummy-profile-template
+      include pages/components/dummyProfileTemplate
+    template#mybooking-template
+      include pages/mybooking
+    template#admin-restaurants-template
+      include pages/adminrestaurants
+  template#reset-password-component-template
+      include pages/components/authForms/resetPassword
 
-    div(style="display:none")
-      template#auth-template
-        include pages/auth
-    div(style="display:none")
-      template#profile-template
-        include pages/profile
-    div(style="display:none")
-      template#home-template
-        include pages/home
-    div(style="display:none")
-      template#restaurant-details-template
-        include pages/restaurantDetails
-    div(style="display:none")
-      template#dashboard-template
-        include pages/dashboard
-    div(style="display:none")
-      template#login-component-template
-        include pages/components/authForms/login
-    div(style="display:none")
-      template#register-component-template
-        include pages/components/authForms/register
-    div(style="display:none")
-      template#forgot-password-component-template
-        include pages/components/authForms/forgotPassword
-    div(style="display:none")
-      template#restaurant-card-template
-        include pages/components/restaurantCard
+  // Scripts
+  // 1. SweetAlert
+  script(src="https://cdn.jsdelivr.net/npm/sweetalert2@11")
 
+  // 2. Any non-module scripts that rely on jQuery
+  script(src="/js/pages/auth.js")  
 
-
-    div(style="display:none")
-      template#dummy-profile-template
-        include pages/components/dummyProfileTemplate
-
-
-
-    script(src='https://cdn.jsdelivr.net/npm/sweetalert2@11')
-    script(type="module" src="./js/main.js")
+  // 3. Main module script (type="module")
+  script(type="module" src="/js/main.js")

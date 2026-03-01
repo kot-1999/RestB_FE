@@ -1,16 +1,36 @@
-export const Template =  {
-    page: {
-        auth: () => document.getElementById('auth-template').innerHTML,
-        profile: () => document.getElementById('profile-template').innerHTML,
-        home: () => document.getElementById('home-template').innerHTML,
-        restaurantDetails: () => document.getElementById('restaurant-details-template').innerHTML,
-        dashboard: () => document.getElementById('dashboard-template').innerHTML,
-    },
-    component: {
-        login: () => document.getElementById('login-component-template').innerHTML,
-        register: () => document.getElementById('register-component-template').innerHTML,
-        forgotPassword: () => document.getElementById('forgot-password-component-template').innerHTML,
-        dummyProfileTemplate: () => document.getElementById('dummy-profile-template').innerHTML,
-        restaurantCard: () => document.getElementById('restaurant-card-template').innerHTML,
-    }
-}
+// src/js/config.js
+const byId = (id) => document.getElementById(id);
+
+const getTemplateString = (id) => {
+  const el = byId(id);
+  return el ? el.innerHTML.trim() : "";
+};
+
+const getTemplateFragment = (id) => {
+  const el = byId(id);
+  if (!el || !el.content) return document.createDocumentFragment();
+  return el.content.cloneNode(true);
+};
+
+export const Template = {
+  page: {
+    auth: () => getTemplateString("auth-template"),
+    profile: () => getTemplateString("profile-template"),
+    home: () => getTemplateString("home-template"),
+    restaurantDetails: () => getTemplateString("restaurant-details-template"),
+    dashboard: () => getTemplateString("dashboard-template"),
+    mybooking: () => getTemplateString("mybooking-template"),
+    adminrestaurants: () => getTemplateString("adminrestaurants-template"),
+  },
+
+  component: {
+    login: () => getTemplateFragment("login-component-template"),
+    register: () => getTemplateFragment("register-component-template"),
+    forgotPassword: () => getTemplateFragment("forgot-password-component-template"),
+    dummyProfileTemplate: () => getTemplateFragment("dummy-profile-template"),
+
+    // Mustache templates
+    restaurantCard: () => getTemplateString("restaurant-card-template"),
+    bookingCard: () => getTemplateString("booking-card-template"),
+  },
+};

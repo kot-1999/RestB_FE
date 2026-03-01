@@ -1,0 +1,75 @@
+//- mybookings.pug
+main.mybookings-page
+  .mb-container
+
+    //- Header
+    .mb-header
+      h1 My Bookings
+      p.mb-subtitle View and manage your upcoming reservations.
+
+    //- Tabs (Optional)
+    .mb-tabs
+      .mb-tabs-inner
+        button.mb-tab.active
+          | Upcoming
+          span.mb-count 2
+        button.mb-tab
+          | Past
+          span.mb-count 0
+
+    //- Search
+    .mb-search
+      input(type="search", placeholder="Search by restaurant...")
+
+    //- Bookings List
+    #bookings-container.mb-list
+
+    //- Empty / Error States
+    #bookings-empty.mb-empty(hidden)
+      h2 No bookings yet
+      p Once you book a table, it will appear here.
+
+    #bookings-error.mb-error(hidden)
+      h2 Could not load bookings
+      button#retryBookings(type="button") Retry
+
+    //- Cancel Confirmation Modal
+    #cancelModal.mb-modal
+      .mb-modal-backdrop
+      .mb-modal-content
+        h3 Cancel Booking?
+        p Are you sure you want to cancel this booking? This action cannot be undone.
+        .mb-modal-actions
+          button.mb-modal-cancel No, Keep
+          button.mb-modal-confirm Yes, Cancel
+
+    //- Toast Notification
+    #toast.mb-toast(hidden)
+      | Booking canceled
+      button#undoToast Undo
+
+    //- Mustache Template for Booking Cards
+    script(type="text/template", id="booking-card-template"). 
+      <div class="mb-card {{statusClass}}">
+        <div class="mb-card-head">
+          <h3>{{restaurantName}}</h3>
+          <span class="mb-badge {{badgeClass}}">{{status}}</span>
+        </div>
+        <div class="mb-meta">{{date}} at {{time}} • {{guests}} guests</div>
+
+        {{#canCancel}}
+        <button class="mb-btn" data-id="{{id}}">Cancel</button>
+        {{/canCancel}}
+
+        {{#canMessage}}
+        <button class="mb-message-btn" data-id="{{id}}">Message</button>
+
+        <div class="mb-message-area" style="display:none; margin-top: 8px;">
+          <input type="text" class="mb-message-input" placeholder="Type your message…">
+          <button class="mb-message-send">Send</button>
+        </div>
+        {{/canMessage}}
+      </div>
+
+  //- JS module
+  script(type="module" src="/src/js/pages/mybooking.js")

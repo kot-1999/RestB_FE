@@ -20,7 +20,7 @@
     "cpy-cli": "^7.0.0",
     "html-minifier-terser": "^7.2.0",
     "nodemon": "^3.0.2",
-    "pug": "^3.0.2",
+    "pug": "^3.0.3",
     "pug-cli": "^1.0.0-alpha6",
     "serve": "^14.2.1",
     "terser": "^5.46.0"
@@ -31,5 +31,9 @@
     "static-site"
   ],
   "author": "",
-  "license": "MIT"
+  "license": "MIT",
+  "dependencies": {
+    "acorn": "^8.16.0",
+    "acorn-globals": "^7.0.1"
+  }
 }

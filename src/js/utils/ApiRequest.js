@@ -284,4 +284,40 @@ export default class ApiRequest {
             return null
         }
     }
+static async getDashboard(queryParams) {
+        try {
+            // Make a real HTTP request (will show in Network tab)
+            // const authData = LocalStorage.get('auth')
+            // if (!authData?.token) {
+            //     throw new Error('getDashboard - Token is required for this action')
+            // }
+            //
+            // const queryString = new URLSearchParams(queryParams).toString()
+            // const response = await fetch(`${this.baseUrl}/b2b/v1/dashboard?${queryString}`, {
+            //     method: 'GET',
+            //     headers: {
+            //         'Content-Type': 'application/json',
+            //         'Authorization': `Bearer ${authData.token}`
+            //     }
+            // });
+            //
+            // // If the real API doesn't exist, fall back to mock data
+            // if (!response.ok) {
+            //     throw new Error('API not available, using mock data');
+            // }
+            //
+            // const data = await response.json();
+            // return {
+            //     success: true,
+            //     data: data,
+            //     message: 'Dashboard data fetched successfully'
+            // };
+
+            // For now, return mock response
+            return mockResponses.getDashboard(queryParams)
+        } catch (error) {
+            showError(error)
+            return null
+        }
+    }
 }

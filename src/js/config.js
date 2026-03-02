@@ -6,6 +6,8 @@ export const Template =  {
         restaurantDetails: () => document.getElementById('restaurant-details-template').innerHTML,
         dashboard: () => document.getElementById('dashboard-template').innerHTML,
         resetPassword: () => document.getElementById('reset-password-template').innerHTML,
+        mybooking: () => document.getElementById("mybooking-template").innerHTML,
+        adminrestaurants: () => document.getElementById("admin-restaurants-template").innerHTML,
     },
     component: {
         login: () => document.getElementById('login-component-template').innerHTML,

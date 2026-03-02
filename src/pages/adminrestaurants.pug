@@ -1,0 +1,56 @@
+main#admin-restaurants-root
+    .ar-container
+        .ar-header
+            h1 Admin: Manage Restaurants
+            p.ar-subtitle Edit restaurant details and update galleries.
+
+        button#ar-new-btn Create New Restaurant
+
+        // Container for restaurant cards
+        #restaurants-container
+
+        // Empty state
+        #restaurants-empty(hidden)
+            h2 No restaurants yet
+            p Click "Create New Restaurant" to add one.
+
+    // Hidden template for each restaurant card
+    div(style="display:none")
+        template#restaurant-card-template
+            .ar-card(data-id="{{id}}")
+                .ar-card-header
+                    h2.ar-name(contenteditable="true") {{name}}
+                    button.ar-remove-btn Remove Restaurant
+
+                .ar-field
+                    label Auto-approve max guests:
+                    input.ar-autoapprove(type="number", value="{{autoApprove}}")
+
+                .ar-field
+                    label Restaurant types:
+                    input.ar-types(type="text", value="{{types}}")
+
+                .ar-field
+                    label Address:
+                    input.ar-address(type="text", value="{{address}}")
+
+                .ar-field
+                    label Opening time:
+                    input.ar-opening(type="time", value="{{opening}}")
+
+                .ar-field
+                    label Closing time:
+                    input.ar-closing(type="time", value="{{closing}}")
+
+                .ar-field.ar-gallery-field
+                    label Gallery Images:
+                    .ar-gallery-dropzone
+                        span Drag & drop images here or click to upload
+                        input.ar-gallery-input(type="file" accept="image/*" multiple)
+                    .ar-gallery-preview
+
+                button.ar-submit-btn Submit Changes
+
+    // Lightbox overlay
+    .ar-lightbox-overlay
+        img(src="" alt="Full-size image")

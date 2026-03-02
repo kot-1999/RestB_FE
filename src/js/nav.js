@@ -8,6 +8,8 @@ import loadDashboard from "./pages/dashboard.js"
 import loadResetPassword from "./pages/resetPassword.js"
 import ApiRequest from "./utils/ApiRequest.js";
 import { showError, LocalStorage } from "./utils/helpers.js";
+import loadMyBookings from "./pages/myBooking.js";
+import loadAdminRestaurants from "./pages/adminRestaurants.js";
 
 function showContent() {
     $('#content').css('visibility', 'visible')
@@ -78,6 +80,14 @@ $(document).ready(function () {
         $(document).on('click', '#dashboard', () => {
             location.hash = '#dashboard'
         })
+
+        $(document).on('click', '#adminrestaurants', () => {
+            location.hash = '#adminrestaurants'
+        })
+
+        $(document).on('click', '#mybooking', () => {
+            location.hash = '#mybooking'
+        })
     } catch (err) {
         showError(err)
     }
@@ -141,7 +151,18 @@ function renderFromHash() {
             '#reset-password': {
                 template: Template.page.resetPassword,
                 loader: loadResetPassword
-            }
+            },
+            "#mybooking": {
+                template: Template.page.mybooking,
+                loader: loadMyBookings,
+                nav: '#mybooking',
+            },
+
+            "#adminrestaurants": {
+                template: Template.page.adminrestaurants,
+                loader: loadAdminRestaurants,
+                nav: "#adminrestaurants",
+            },
         }
 
         // Load main page if url hash is not available

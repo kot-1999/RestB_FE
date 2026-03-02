@@ -2,7 +2,7 @@ import {getFormData, showError} from "../utils/helpers.js";
 import ApiRequest from "../utils/ApiRequest.js";
 
 export default function () {
-    $('#resetPasswordForm').submit(async function ( e) {
+    $('#authForm').submit(async function ( e) {
         e.preventDefault();
 
         const hash = window.location.hash

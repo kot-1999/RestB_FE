@@ -8,6 +8,8 @@ export default async function () {
         return
     }
     console.log('loading from profile.js', res)
-    $('#dataCard').append(Mustache.render(Template.component.dummyProfileTemplate(), res))
+    $('#dataCard').html(
+  Mustache.render(Template.component.dummyProfileTemplate(), res)
+)
 
 }

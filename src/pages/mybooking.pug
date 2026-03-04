@@ -1,75 +1,118 @@
 //- mybookings.pug
 main.mybookings-page
-    .mb-container
+  .mb-container
 
-        //- Header
-        .mb-header
-            h1 My Bookings
-            p.mb-subtitle View and manage your upcoming reservations.
+    // Header
+    .mb-header
+      h1 Admin Bookings
+      p.mb-subtitle Manage and review restaurant reservations.
 
-        //- Tabs (Optional)
-        .mb-tabs
-            .mb-tabs-inner
-                button.mb-tab.active
-                    | Upcoming
-                    span.mb-count 2
-                button.mb-tab
-                    | Past
-                    span.mb-count 0
+    // Top Tabs (Upcoming / Past)
+    .mb-tabs
+      .mb-tabs-inner
+        button.mb-tab.active(type="button", data-filter="upcoming") Upcoming
+        button.mb-tab(type="button", data-filter="past") Past
+        .mb-tab-indicator
 
-        //- Search
-        .mb-search
-            input(type="search", placeholder="Search by restaurant...")
+    // Status Filter Tabs
+    .mb-status-tabs
+      .mb-tabs-inner
+        button.mb-status-tab.active(type="button", data-status="all") All
+        button.mb-status-tab(type="button", data-status="confirmed") Confirmed
+        button.mb-status-tab(type="button", data-status="pending") Pending
+        button.mb-status-tab(type="button", data-status="cancelled") Cancelled
+        .mb-tab-indicator
 
-        //- Bookings List
-        #bookings-container.mb-list
+    // Search
+    .mb-search
+      input(type="search", placeholder="Search restaurant or customer...")
 
-        //- Empty / Error States
-        #bookings-empty.mb-empty(hidden)
-            h2 No bookings yet
-            p Once you book a table, it will appear here.
+    // Bookings List
+    #bookings-container.mb-list
 
-        #bookings-error.mb-error(hidden)
-            h2 Could not load bookings
-            button#retryBookings(type="button") Retry
+    // Empty State
+    #bookings-empty.mb-empty(hidden)
+      h2 No bookings found
 
-        //- Cancel Confirmation Modal
-        #cancelModal.mb-modal
-            .mb-modal-backdrop
-            .mb-modal-content
-                h3 Cancel Booking?
-                p Are you sure you want to cancel this booking? This action cannot be undone.
-                .mb-modal-actions
-                    button.mb-modal-cancel No, Keep
-                    button.mb-modal-confirm Yes, Cancel
+    // Cancel Confirmation Modal
+    #cancelModal.mb-modal
+      .mb-modal-backdrop
+      .mb-modal-content
+        h3 Cancel Booking?
+        p This action cannot be undone.
+        .mb-modal-actions
+          button.mb-modal-cancel(type="button") Keep
+          button.mb-modal-confirm(type="button") Confirm Booking Cancellation
 
-        //- Toast Notification
-        #toast.mb-toast(hidden)
-            | Booking canceled
-            button#undoToast Undo
+    // User Details Modal
+    #userModal.mb-modal
+      .mb-modal-backdrop
+      .mb-modal-content
+        h3 Customer Details
+        .mb-user-modal-body
+          p
+            strong Name:
+            span#modalUserName
+          p
+            strong Email:
+            span#modalUserEmail
+          p
+            strong Phone:
+            span#modalUserPhone
+        .mb-modal-actions
+          button#closeUserModal.mb-modal-cancel(type="button") Close
 
-        //- Mustache Template for Booking Cards
-        script(type="text/template", id="booking-card-template").
-            <div class="mb-card {{statusClass}}">
-            <div class="mb-card-head">
+    // Mustache Template for booking cards
+    script(type="text/template", id="booking-card-template"). 
+      <div class="mb-card {{statusClass}}" 
+           data-status="{{status}}" 
+           data-date="{{dateISO}}">
+
+        <div class="mb-card-head">
+          <div class="mb-head-left">
             <h3>{{restaurantName}}</h3>
-            <span class="mb-badge {{badgeClass}}">{{status}}</span>
-            </div>
-            <div class="mb-meta">{{date}} at {{time}} • {{guests}} guests</div>
+            <span class="mb-ref">Ref: {{reference}}</span>
+          </div>
+          <span class="mb-badge {{badgeClass}}">
+            {{status}}
+          </span>
+        </div>
 
-                    {{#canCancel}}
-            <button class="mb-btn" data-id="{{id}}">Cancel</button>
-                    {{/canCancel}}
+        <div class="mb-card-body">
 
-                    {{#canMessage}}
+          <div class="mb-user">
+            <span class="mb-user-label">Customer:</span>
+            <button class="mb-user-link"
+              data-user-id="{{userId}}"
+              data-name="{{customerName}}"
+              data-email="{{customerEmail}}"
+              data-phone="{{customerPhone}}">
+              {{customerName}}
+            </button>
+          </div>
+
+          <div class="mb-meta">
+            {{date}} at {{time}} • {{guests}} guests
+          </div>
+
+          {{#specialRequest}}
+          <div class="mb-note">
+            <strong>Request:</strong> {{specialRequest}}
+          </div>
+          {{/specialRequest}}
+
+          <div class="mb-card-actions">
+
+            {{#isPending}}
+              <button class="mb-confirm-btn" data-id="{{id}}">Confirm</button>
+              <button class="mb-cancel-btn" data-id="{{id}}">Cancel</button>
+            {{/isPending}}
+
             <button class="mb-message-btn" data-id="{{id}}">Message</button>
 
-            <div class="mb-message-area" style="display:none; margin-top: 8px;">
-            <input type="text" class="mb-message-input" placeholder="Type your message…">
-            <button class="mb-message-send">Send</button>
-            </div>
-                    {{/canMessage}}
-            </div>
+          </div>
+        </div>
+      </div>
 
-    //- JS module
-    script(type="module" src="/src/js/pages/mybooking.js")
+  // Include the JS module
+  script(type="module" src="/src/js/pages/mybooking.js")

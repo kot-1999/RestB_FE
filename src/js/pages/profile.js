@@ -1,38 +1,55 @@
-import ApiRequest from "../utils/ApiRequest.js";
-import {Template} from "../config.js";
-import Mustache from "./../utils/mustache.js"
-import {getFormData, showError} from "../utils/helpers.js";
+// profile.js
+export default function profilePage(container) {
+  const editBtn = container.querySelector('.edit-profile');
+  const modal = container.querySelector('#editProfileModal');
+  const closeModal = container.querySelector('#closeModal');
 
-export default async function () {
+  const avatarHero = container.querySelector('#userAvatar');
+  const avatarPreview = container.querySelector('#userAvatarPreview');
+  const avatarInput = container.querySelector('#avatarInput');
+  const avatarBtn = container.querySelector('#avatarBtn');
 
-    const res = await ApiRequest.getProfile()
+  const form = container.querySelector('#updateProfileForm');
 
-    if (!res) {
-        showError(new Error("No profile found"));
-        return
-    }
+  // ----- MODAL OPEN/CLOSE -----
+  editBtn.addEventListener('click', () => {
+    modal.style.display = 'flex';
+    // Sync avatar preview with hero
+    avatarPreview.src = avatarHero.style.backgroundImage.replace(/url\((['"])?(.*?)\1\)/gi, '$2');
+  });
 
-    $('#dummyProfile').replaceWith(Mustache.render(Template.component.dummyProfileTemplate(), res))
+  closeModal.addEventListener('click', () => modal.style.display = 'none');
 
+  window.addEventListener('click', (e) => {
+    if (e.target === modal) modal.style.display = 'none';
+  });
 
-    $('#updateProfileForm').submit(async function (e) {
-        e.preventDefault();
+  // ----- AVATAR UPLOAD -----
+  avatarBtn.addEventListener('click', () => avatarInput.click());
 
-        // Parse form
-        const data = getFormData(e.target)
+  avatarInput.addEventListener('change', () => {
+    const file = avatarInput.files && avatarInput.files[0];
+    if (!file) return;
+    const url = URL.createObjectURL(file);
+    avatarPreview.src = url;
+    avatarHero.style.backgroundImage = `url(${url})`; // sync with hero avatar
+  });
 
-        // Upload
-        let uploadRes = undefined
-        if (data?.avatar?.name)
-            uploadRes = await ApiRequest.uploadFile(data.avatar)
+  // ----- FORM SUBMIT (mock) -----
+  form.addEventListener('submit', (e) => {
+    e.preventDefault();
+    const data = {
+      firstName: form.firstName.value,
+      lastName: form.lastName.value,
+      email: form.email.value,
+      phone: form.phone.value,
+      avatarURL: avatarHero.style.backgroundImage.replace(/url\((['"])?(.*?)\1\)/gi, '$2')
+    };
 
-        if (uploadRes?.publicUrl) {
-            $('#userAvatar').attr('src', uploadRes.publicUrl)
-        }
-        ApiRequest.updateProfile({
-            ...data,
-            // If avatarURL was not updated, then must be set to undefined
-            avatarURL: uploadRes?.publicUrl || uploadRes?.publicUrl === null ? uploadRes.publicUrl : undefined
-        })
-    });
+    // Mock save
+    console.log('Profile updated:', data);
+    alert('Profile updated (mock)!');
+
+    modal.style.display = 'none';
+  });
 }

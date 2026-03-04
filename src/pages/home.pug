@@ -1,7 +1,129 @@
-h1 Welcome to Restaurant Booking
+// ===================================
+// HOME PAGE
+// ===================================
 
-.restaurants-loading(style="display: none;")
-    p Loading restaurants...
+.section-wrapper
 
-.restaurants-container
-    // Restaurant cards will be inserted here by JavaScript
+  // HERO SECTION
+  section.rest-hero
+    .container
+      h1.page-title Find & Book Your Perfect Table
+      p.page-subtitle
+        | Discover top-rated restaurants and make instant reservations
+        | with a seamless booking experience.
+
+  // FILTER BAR
+  section.rest-filters
+    .container.filters-container
+      .filters-inner
+        // Availability
+        .filter-group
+          label(for="availableNow") Availability
+          .checkbox-row
+            input#availableNow(type="checkbox" name="availableNow")
+            span Available Now
+
+        // Date
+        .filter-group
+          label(for="date") Date
+          input#date(type="date" name="date")
+
+        // Type
+        .filter-group
+          label(for="type") Type
+          select#type(name="type")
+            option(value="") All Types
+            option(value="italian") Italian
+            option(value="japanese") Japanese
+            option(value="indian") Indian
+            option(value="mexican") Mexican
+            option(value="steakhouse") Steakhouse
+            option(value="thai") Thai
+            option(value="vegan") Vegan
+            option(value="seafood") Seafood
+            option(value="brunch") Brunch
+
+        // Guests
+        .filter-group
+          label(for="guests") Guests
+          select#guests(name="guests")
+            option(value="") Any
+            option(value="1") 1 Person
+            option(value="2") 2 People
+            option(value="3") 3 People
+            option(value="4") 4 People
+            option(value="5") 5 People
+            option(value="6") 6 People
+            option(value="7") 7 People
+            option(value="8") 8+ People
+
+  // RESULTS SECTION
+  section.rest-results
+    .container
+      p#results-count.meta Showing available restaurants
+
+      // FLEX GRID
+      .restaurants-grid
+        // CARD 1
+        .restaurant-card
+          .card-image(style="background-image: url('https://images.unsplash.com/photo-1555396273-367ea4eb4db5')")
+          .card-content
+            h3 The Olive Kitchen
+            p.meta Italian • €€ • Dublin City
+            p.availability Available Today • 1.2 km away
+
+        // CARD 2
+        .restaurant-card
+          .card-image(style="background-image: url('https://images.unsplash.com/photo-1546069901-ba9599a7e63c')")
+          .card-content
+            h3 Sakura Lounge
+            p.meta Japanese • €€€ • Temple Bar
+            p.availability Available Now • 0.8 km away
+
+        // CARD 3
+        .restaurant-card
+          .card-image(style="background-image: url('https://images.unsplash.com/photo-1546069901-ba9599a7e63c')")
+          .card-content
+            h3 Spice Route
+            p.meta Indian • €€ • Ranelagh
+            p.availability Available Today • 2.1 km away
+
+        // CARD 4
+        .restaurant-card
+          .card-image(style="background-image: url('https://images.unsplash.com/photo-1504674900247-0877df9cc836')")
+          .card-content
+            h3 The Grill House
+            p.meta Steakhouse • €€€ • Ballsbridge
+            p.availability Fully Booked • 1.5 km away
+
+        // CARD 5
+        .restaurant-card
+          .card-image(style="background-image: url('https://images.unsplash.com/photo-1529042410759-befb1204b468')")
+          .card-content
+            h3 Ocean Breeze
+            p.meta Seafood • €€€ • Howth
+            p.availability Available Now • 3.2 km away
+
+        // CARD 6
+        .restaurant-card
+          .card-image(style="background-image: url('https://images.unsplash.com/photo-1499028344343-cd173ffc68a9')")
+          .card-content
+            h3 Green Garden
+            p.meta Vegan • €€ • Portobello
+            p.availability Available Today • 10.8 km away
+
+        // CARD 7
+        .restaurant-card
+          .card-image(style="background-image: url('https://images.unsplash.com/photo-1529042410759-befb1204b468')")
+          .card-content
+            h3 Ocean Breeze
+            p.meta Seafood • €€€ • Howth
+            p.availability Available Now • 3.2 km away
+
+        // CARD 8
+        .restaurant-card
+          .card-image(style="background-image: url('https://images.unsplash.com/photo-1499028344343-cd173ffc68a9')")
+          .card-content
+            h3 Green Garden
+            p.meta Vegan • €€ • Portobello
+            p.availability Available Today • 9.8 km away

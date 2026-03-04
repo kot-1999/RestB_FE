@@ -1,6 +1,137 @@
-div
-    h2 Wellcome back
+// ===================================
+// PROFILE PAGE
+// ===================================
 
-    img#preview(style="max-width:300px; margin-top:20px;")
+.section-wrapper
 
-    div#dummyProfile
+  // HERO SECTION
+  section.profile-hero
+    .container
+      .hero-inner
+        .avatar(style="background-image: url('https://via.placeholder.com/150')" id="userAvatar")
+        .user-info
+          h1 John Doe
+          p.meta Food Enthusiast • Dublin, Ireland
+          button.edit-profile Edit Profile
+
+  // STATS SECTION
+  section.profile-stats
+    .container
+      .stats-inner
+        .stat
+          h2 12
+          p Reservations
+        .stat
+          h2 37
+          p Reviews
+        .stat
+          h2 8
+          p Saved Restaurants
+
+  // UPCOMING RESERVATIONS
+  section.upcoming-reservations
+    .container
+      h2.section-title Upcoming Reservations
+      .cards-grid
+        // CARD 1
+        .reservation-card
+          .card-image(style="background-image: url('https://via.placeholder.com/300')")
+          .card-content
+            h3 The Olive Kitchen
+            p.meta Italian • €€ • Dublin City
+            p.date 14 Mar, 7:00 PM
+            button.cancel Cancel
+        // CARD 2
+        .reservation-card
+          .card-image(style="background-image: url('https://via.placeholder.com/300')")
+          .card-content
+            h3 Sakura Lounge
+            p.meta Japanese • €€€ • Temple Bar
+            p.date 18 Mar, 8:30 PM
+            button.cancel Cancel
+
+  // FAVORITE RESTAURANTS
+  section.saved-restaurants
+    .container
+      h2.section-title Favorite Restaurants
+      .cards-grid
+        // CARD 1
+        .restaurant-card
+          .card-image(style="background-image: url('https://via.placeholder.com/300')")
+          .card-content
+            h3 Spice Route
+            p.meta Indian • €€ • Ranelagh
+            p.distance 2.4 km away
+        // CARD 2
+        .restaurant-card
+          .card-image(style="background-image: url('https://via.placeholder.com/300')")
+          .card-content
+            h3 The Grill House
+            p.meta Steakhouse • €€€ • Ballsbridge
+            p.distance 1.2 km away
+        // CARD 3
+        .restaurant-card
+          .card-image(style="background-image: url('https://via.placeholder.com/300')")
+          .card-content
+            h3 Ocean Breeze
+            p.meta Seafood • €€€ • Howth
+            p.distance 12 km away
+
+  // USER REVIEWS
+  section.user-reviews
+    .container
+      h2.section-title My Reviews
+      .review-card
+        h3 The Olive Kitchen
+        p "Amazing ambiance, the pasta was perfect!"
+        .rating 4.5 ★
+      .review-card
+        h3 Sakura Lounge
+        p "Loved the sushi, a bit pricey but worth it."
+        .rating 4.7 ★
+
+  // ============================
+  // EDIT PROFILE MODAL
+  // ============================
+  #editProfileModal.modal
+    .modal-content
+      span#closeModal.close &times;
+      h2 Edit Profile
+
+      form#updateProfileForm
+        // Avatar upload
+        .form-group
+          label Avatar
+          img#userAvatarPreview(src="https://via.placeholder.com/150" alt="Avatar Preview")
+          button#avatarBtn(type="button") Change Avatar
+          input#avatarInput(type="file" name="avatar" hidden)
+
+        // First & Last Name
+        .form-group
+          label(for="firstName") First Name
+          input#firstName(type="text" name="firstName" value="John")
+        .form-group
+          label(for="lastName") Last Name
+          input#lastName(type="text" name="lastName" value="Doe")
+
+        // Email & Phone
+        .form-group
+          label(for="email") Email
+          input#email(type="email" name="email" value="johndoe@example.com")
+        .form-group
+          label(for="phone") Phone
+          input#phone(type="tel" name="phone" value="+353 123 4567")
+
+        // Submit
+        button(type="submit") Save Changes
+
+// ============================
+// STYLES (optional quick example)
+// ============================
+style.
+  .modal { display:none; position:fixed; top:0; left:0; width:100%; height:100%; background: rgba(0,0,0,0.5); justify-content:center; align-items:center; }
+  .modal-content { background:#fff; padding:20px; border-radius:10px; width:400px; max-width:90%; position:relative; }
+  .close { position:absolute; top:10px; right:15px; cursor:pointer; font-size:24px; }
+  .form-group { margin-bottom:15px; display:flex; flex-direction:column; }
+  .form-group label { margin-bottom:5px; }
+  .form-group input { padding:8px; font-size:14px; }

@@ -1,75 +1,442 @@
-//- mybookings.pug
-main.mybookings-page
-    .mb-container
+//- mybooking.pug
+//- Bookings management page - shows all bookings with their statuses
 
-        //- Header
-        .mb-header
-            h1 My Bookings
-            p.mb-subtitle View and manage your upcoming reservations.
+include components/nav
 
-        //- Tabs (Optional)
-        .mb-tabs
-            .mb-tabs-inner
-                button.mb-tab.active
-                    | Upcoming
-                    span.mb-count 2
-                button.mb-tab
-                    | Past
-                    span.mb-count 0
+link(rel='stylesheet' href='https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600&family=Playfair+Display:wght@600&display=swap')
 
-        //- Search
-        .mb-search
-            input(type="search", placeholder="Search by restaurant...")
+style.
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
-        //- Bookings List
-        #bookings-container.mb-list
+  :root {
+    --coral: #F26B5B;
+    --green: #3DB87A;
+    --amber: #F59E0B;
+    --bg: #EDECEA;
+    --card: #F5F4F2;
+    --border: #D9D7D4;
+    --text: #1A1A1A;
+    --muted: #7A7875;
+    --white: #FFFFFF;
+    --radius: 10px;
+  }
 
-        //- Empty / Error States
-        #bookings-empty.mb-empty(hidden)
-            h2 No bookings yet
-            p Once you book a table, it will appear here.
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    min-height: 100vh;
+  }
 
-        #bookings-error.mb-error(hidden)
-            h2 Could not load bookings
-            button#retryBookings(type="button") Retry
+  .bk-main {
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 28px 20px;
+  }
 
-        //- Cancel Confirmation Modal
-        #cancelModal.mb-modal
-            .mb-modal-backdrop
-            .mb-modal-content
-                h3 Cancel Booking?
-                p Are you sure you want to cancel this booking? This action cannot be undone.
-                .mb-modal-actions
-                    button.mb-modal-cancel No, Keep
-                    button.mb-modal-confirm Yes, Cancel
+  /* FILTER BAR */
+  .bk-filter {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 14px 20px;
+    font-size: 0.85rem;
+    color: var(--muted);
+    margin-bottom: 24px;
+    display: flex;
+    gap: 12px;
+    align-items: center;
+    flex-wrap: wrap;
+  }
 
-        //- Toast Notification
-        #toast.mb-toast(hidden)
-            | Booking canceled
-            button#undoToast Undo
+  .bk-filter select,
+  .bk-filter input[type="date"] {
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 6px 10px;
+    font-size: 0.82rem;
+    font-family: 'DM Sans', sans-serif;
+    background: var(--white);
+    color: var(--text);
+    outline: none;
+  }
 
-        //- Mustache Template for Booking Cards
-        script(type="text/template", id="booking-card-template").
-            <div class="mb-card {{statusClass}}">
-            <div class="mb-card-head">
-            <h3>{{restaurantName}}</h3>
-            <span class="mb-badge {{badgeClass}}">{{status}}</span>
-            </div>
-            <div class="mb-meta">{{date}} at {{time}} • {{guests}} guests</div>
+  .bk-filter label {
+    font-weight: 600;
+    font-size: 0.78rem;
+    text-transform: uppercase;
+    letter-spacing: 0.4px;
+  }
 
-                    {{#canCancel}}
-            <button class="mb-btn" data-id="{{id}}">Cancel</button>
-                    {{/canCancel}}
+  /* CARD */
+  .bk-card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 24px;
+    margin-bottom: 18px;
+    animation: fadeUp 0.35s ease both;
+  }
 
-                    {{#canMessage}}
-            <button class="mb-message-btn" data-id="{{id}}">Message</button>
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(10px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
 
-            <div class="mb-message-area" style="display:none; margin-top: 8px;">
-            <input type="text" class="mb-message-input" placeholder="Type your message…">
-            <button class="mb-message-send">Send</button>
-            </div>
-                    {{/canMessage}}
-            </div>
+  /* FIELDS GRID */
+  .bk-fields {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 12px;
+    margin-bottom: 16px;
+  }
 
-    //- JS module
-    script(type="module" src="/src/js/pages/mybooking.js")
+  .bk-field {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+  }
+
+  .bk-label {
+    font-size: 0.72rem;
+    font-weight: 600;
+    color: var(--muted);
+    text-transform: uppercase;
+    letter-spacing: 0.6px;
+  }
+
+  .bk-input {
+    background: var(--white);
+    border: 1px solid var(--border);
+    border-radius: 7px;
+    padding: 8px 12px;
+    font-size: 0.88rem;
+    font-family: 'DM Sans', sans-serif;
+    color: var(--text);
+    outline: none;
+  }
+
+  .bk-input:focus { border-color: var(--coral); }
+
+  .bk-span2 { grid-column: span 2; }
+
+  /* DIVIDER */
+  .bk-divider {
+    border: none;
+    border-top: 1px solid var(--border);
+    margin: 14px 0;
+  }
+
+  /* MESSAGES */
+  .bk-messages {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin-bottom: 14px;
+  }
+
+  .bk-msg {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+  }
+
+  .bk-msg.manager {
+    justify-content: flex-end;
+    flex-direction: row-reverse;
+  }
+
+  .bk-avatar {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background: var(--border);
+    flex-shrink: 0;
+    object-fit: cover;
+  }
+
+  .bk-avatar-placeholder {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background: var(--border);
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.7rem;
+    font-weight: 600;
+    color: var(--muted);
+  }
+
+  .bk-bubble {
+    background: var(--white);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 10px 14px;
+    font-size: 0.85rem;
+    max-width: 60%;
+  }
+
+  .bk-bubble strong {
+    display: block;
+    font-size: 0.75rem;
+    font-weight: 600;
+    color: var(--muted);
+    margin-bottom: 3px;
+  }
+
+  .bk-msg.manager .bk-bubble {
+    background: #FFF6F5;
+    border-color: #F5C4BE;
+  }
+
+  /* ACTIONS ROW */
+  .bk-actions {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 10px;
+    flex-wrap: wrap;
+  }
+
+  .bk-msg-input {
+    flex: 1;
+    min-width: 180px;
+    background: var(--white);
+    border: 1px solid var(--border);
+    border-radius: 7px;
+    padding: 8px 12px;
+    font-size: 0.85rem;
+    font-family: 'DM Sans', sans-serif;
+    color: var(--text);
+    outline: none;
+  }
+
+  .bk-msg-input:focus { border-color: var(--coral); }
+
+  /* BADGES */
+  .bk-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 7px 16px;
+    border-radius: 20px;
+    font-size: 0.82rem;
+    font-weight: 600;
+    white-space: nowrap;
+  }
+
+  .bk-badge::before {
+    content: '';
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    background: rgba(255,255,255,0.7);
+  }
+
+  .bk-badge.approved         { background: var(--green);  color: #fff; }
+  .bk-badge.pending          { background: var(--amber);  color: #fff; }
+  .bk-badge.cancelled-manager { background: var(--coral); color: #fff; }
+  .bk-badge.cancelled-user   { background: var(--coral);  color: #fff; }
+
+  /* ACTION BUTTONS */
+  .bk-btn {
+    padding: 8px 18px;
+    border-radius: 8px;
+    font-size: 0.85rem;
+    font-weight: 600;
+    font-family: 'DM Sans', sans-serif;
+    border: none;
+    cursor: pointer;
+    transition: background 0.2s;
+  }
+
+  .bk-btn-approve { background: #1A1A1A; color: #fff; }
+  .bk-btn-approve:hover { background: var(--green); }
+  .bk-btn-cancel  { background: #1A1A1A; color: #fff; }
+  .bk-btn-cancel:hover  { background: var(--coral); }
+
+main.bk-main
+
+  //- Filter bar
+  .bk-filter
+    label Status:
+    select
+      option(value='') All
+      option(value='Approved') Approved
+      option(value='Pending') Pending
+      option(value='Cancelled') Cancelled
+    label From:
+    input(type='date')
+    label To:
+    input(type='date')
+
+  //-
+    ─────────────────────────────────────────
+    CARD 1 — Cancelled by Manager
+    ─────────────────────────────────────────
+  .bk-card
+    .bk-fields
+      .bk-field
+        span.bk-label Date
+        input.bk-input(type='text' value='19/03/2026' readonly)
+      .bk-field
+        span.bk-label Time
+        input.bk-input(type='text' value='19:00' readonly)
+      .bk-field
+        span.bk-label Number of people
+        input.bk-input(type='text' value='3' readonly)
+      .bk-field
+        span.bk-label Restaurant
+        input.bk-input(type='text' value='Pizza/Pasta' readonly)
+      .bk-field.bk-span2
+        span.bk-label Location
+        input.bk-input(type='text' value='UK, London, Haydons rd 123' readonly)
+      .bk-field
+        span.bk-label Phone
+        input.bk-input(type='text' value='+123123123123' readonly)
+      .bk-field.bk-span2
+        span.bk-label Email
+        input.bk-input(type='text' value='user@user.com' readonly)
+
+    hr.bk-divider
+
+    .bk-messages
+      .bk-msg
+        .bk-avatar-placeholder U
+        .bk-bubble
+          strong User:
+          | Can we have seats by the window
+      .bk-msg.manager
+        .bk-avatar-placeholder M
+        .bk-bubble
+          strong Emanuel Versodi:
+          | Our apologies, we don't have enough space on that day
+
+    .bk-actions
+      span.bk-badge.cancelled-manager Cancelled by Manager
+
+  //-
+    ─────────────────────────────────────────
+    CARD 2 — Approved
+    ─────────────────────────────────────────
+  .bk-card
+    .bk-fields
+      .bk-field
+        span.bk-label Date
+        input.bk-input(type='text' value='20/03/2026' readonly)
+      .bk-field
+        span.bk-label Time
+        input.bk-input(type='text' value='19:00' readonly)
+      .bk-field
+        span.bk-label Number of people
+        input.bk-input(type='text' value='7' readonly)
+      .bk-field
+        span.bk-label Restaurant
+        input.bk-input(type='text' value='Pizza/Pasta' readonly)
+      .bk-field.bk-span2
+        span.bk-label Location
+        input.bk-input(type='text' value='UK, London, Haydons rd 123' readonly)
+      .bk-field
+        span.bk-label Phone
+        input.bk-input(type='text' value='+123123123123' readonly)
+      .bk-field.bk-span2
+        span.bk-label Email
+        input.bk-input(type='text' value='user@user.com' readonly)
+
+    hr.bk-divider
+
+    .bk-messages
+      .bk-msg
+        .bk-avatar-placeholder U
+        .bk-bubble
+          strong User:
+          | Can we have seats by the window
+
+    .bk-actions
+      span.bk-badge.approved Approved
+
+  //-
+    ─────────────────────────────────────────
+    CARD 3 — Pending (with approve/cancel actions)
+    ─────────────────────────────────────────
+  .bk-card
+    .bk-fields
+      .bk-field
+        span.bk-label Date
+        input.bk-input(type='text' value='20/03/2026' readonly)
+      .bk-field
+        span.bk-label Time
+        input.bk-input(type='text' value='19:00' readonly)
+      .bk-field
+        span.bk-label Number of people
+        input.bk-input(type='text' value='7' readonly)
+      .bk-field
+        span.bk-label Restaurant
+        input.bk-input(type='text' value='Pizza/Pasta' readonly)
+      .bk-field.bk-span2
+        span.bk-label Location
+        input.bk-input(type='text' value='UK, London, Haydons rd 123' readonly)
+      .bk-field
+        span.bk-label Phone
+        input.bk-input(type='text' value='+123123123123' readonly)
+      .bk-field.bk-span2
+        span.bk-label Email
+        input.bk-input(type='text' value='user@user.com' readonly)
+
+    hr.bk-divider
+
+    .bk-messages
+      .bk-msg
+        .bk-avatar-placeholder U
+        .bk-bubble
+          strong User:
+          | Can we have seats by the window
+
+    .bk-actions
+      .bk-avatar-placeholder M
+      input.bk-msg-input(type='text' placeholder='Leave your message here')
+      button.bk-btn.bk-btn-approve Approve
+      button.bk-btn.bk-btn-cancel Cancel
+      span.bk-badge.pending Pending
+
+  //-
+    ─────────────────────────────────────────
+    CARD 4 — Cancelled by User
+    ─────────────────────────────────────────
+  .bk-card
+    .bk-fields
+      .bk-field
+        span.bk-label Date
+        input.bk-input(type='text' value='20/03/2026' readonly)
+      .bk-field
+        span.bk-label Time
+        input.bk-input(type='text' value='19:00' readonly)
+      .bk-field
+        span.bk-label Number of people
+        input.bk-input(type='text' value='7' readonly)
+      .bk-field
+        span.bk-label Restaurant
+        input.bk-input(type='text' value='Pizza/Pasta' readonly)
+      .bk-field.bk-span2
+        span.bk-label Location
+        input.bk-input(type='text' value='UK, London, Haydons rd 123' readonly)
+      .bk-field
+        span.bk-label Phone
+        input.bk-input(type='text' value='+123123123123' readonly)
+      .bk-field.bk-span2
+        span.bk-label Email
+        input.bk-input(type='text' value='user@user.com' readonly)
+
+    hr.bk-divider
+
+    .bk-messages
+      .bk-msg
+        .bk-avatar-placeholder U
+        .bk-bubble
+          strong User:
+          | Can we have seats by the window
+
+    .bk-actions
+      span.bk-badge.cancelled-user Cancelled by User

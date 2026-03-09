@@ -10,6 +10,7 @@ import ApiRequest from "./utils/ApiRequest.js";
 import { showError, LocalStorage } from "./utils/helpers.js";
 import loadMyBookings from "./pages/myBooking.js";
 import loadAdminRestaurants from "./pages/adminRestaurants.js";
+import registerEmployee from "./pages/registerEmployee.js";
 
 function showContent() {
     $('#content').css('visibility', 'visible')
@@ -151,6 +152,10 @@ function renderFromHash() {
             '#reset-password': {
                 template: Template.page.resetPassword,
                 loader: loadResetPassword
+            },
+            '#register-employee': {
+                template: Template.page.registerEmployee,
+                loader: registerEmployee
             },
             "#mybooking": {
                 template: Template.page.mybooking,

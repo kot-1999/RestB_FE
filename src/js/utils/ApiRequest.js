@@ -144,6 +144,27 @@ export default class ApiRequest {
         }
     }
 
+    static async registerEmployee(token, body) {
+        try {
+            const response = await fetch(
+                `${this.baseUrl}/b2b/v1/authorization/employee/register`, {
+                    headers: {
+                        'Content-Type': 'application/json',
+                        Authorization: `Bearer ${token}`
+                    },
+                    method: 'POST',
+                    body: JSON.stringify(body)
+                });
+            await ApiRequest.checkResponse(response)
+            const res = await response.json()
+            showSuccess(res.message)
+            return res
+        } catch (err) {
+            showError(err)
+            return null
+        }
+    }
+
     static async logout() {
         try {
             const authData = LocalStorage.get('auth')

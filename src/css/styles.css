@@ -2354,3 +2354,17 @@ input[readonly] {
         font-size: 13px;
     }
 }
+
+.field-group {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 12px;
+}
+
+.field-group label {
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: #666;
+  margin-bottom: 3px;
+}
+

@@ -539,179 +539,7 @@ body{
     }
 }
 
-/* =========================================================
-   PROFILE PAGE — FINAL CLEAN VERSION
-========================================================= */
 
-.profile-page{
-    max-width: 1200px;
-    margin: 0 auto;
-    padding: 28px 16px 60px;
-    display: flex;
-    justify-content: center;
-    position: relative;
-}
-
-/* CARD (final version) */
-.profile-card{
-    position: relative;
-    width: min(760px, 92vw);
-    margin: 0 auto;
-    padding: 48px 48px 40px;
-    background: rgba(255,255,255,0.96);
-    border-radius: 28px;
-    border: 1px solid rgba(0,0,0,0.08);
-    box-shadow: 0 25px 70px rgba(0,0,0,0.35);
-    backdrop-filter: blur(6px);
-}
-
-/* ≡ FLOATING AVATAR SYSTEM (final version) */
-.profile-avatar-wrapper{
-    position: absolute;
-    left: -150px;
-    top: 140px;
-    display: grid;
-    gap: 12px;
-    justify-items: center;
-    z-index: 5;
-}
-
-.profile-avatar,
-.profile-avatar-wrapper img,
-.avatar-img{
-    width: 110px;
-    height: 110px;
-    border-radius: 999px;
-    object-fit: cover;
-    display: block;
-    border: 4px solid rgba(255,255,255,0.95);
-    box-shadow: 0 14px 30px rgba(0,0,0,0.18);
-}
-
-/* Avatar action button */
-.avatar-upload,
-.avatar-btn{
-    background: linear-gradient(135deg, #aef0db, #2c9288);
-    border: none;
-    color: #06311f;
-    font-weight: 800;
-    padding: 10px 14px;
-    border-radius: 999px;
-    cursor: pointer;
-    box-shadow: 0 14px 28px rgba(44,146,136,0.35);
-    transition: transform .15s ease, box-shadow .15s ease;
-}
-
-.avatar-btn:hover,
-.avatar-upload:hover{
-    transform: translateY(-1px);
-    box-shadow: 0 18px 36px rgba(44,146,136,0.42);
-}
-
-/* On mobile, avatar sits ABOVE card */
-@media (max-width: 900px){
-    .profile-avatar-wrapper{
-        position: static;
-        margin-bottom: 14px;
-    }
-    .profile-card{
-        width: min(760px, 94vw);
-        padding-top: 30px;
-    }
-}
-
-/* ==========================
-   PROFILE CARD CONTENT
-========================== */
-
-.profile-title h1{
-    font-size: 34px;
-    margin: 0 0 4px;
-    letter-spacing: -0.4px;
-    color: #0f172a;
-    font-weight: 800;
-}
-
-.profile-sub{
-    margin: 0;
-    font-weight: 600;
-    color: rgba(15,23,42,0.70);
-}
-
-/* Grid form layout */
-.profile-form{ margin-top: 8px; }
-
-.profile-grid{
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 14px;
-}
-
-.profile-span-2{ grid-column: span 2; }
-
-.profile-field label{
-    display: block;
-    font-weight: 800;
-    font-size: 13px;
-    color: #1f2937;
-    margin-bottom: 6px;
-}
-
-.profile-field input{
-    width: 100%;
-    padding: 12px;
-    border-radius: 14px;
-    border: 1px solid rgba(0,0,0,0.14);
-    background: #fff;
-    outline: none;
-    color: #111827;
-}
-
-.profile-field input:focus{
-    border-color: rgba(44,146,136,0.55);
-    box-shadow: 0 0 0 4px rgba(53,255,191,0.16);
-}
-
-/* readonly fields */
-.profile-field input[readonly]{
-    background: rgba(15,23,42,0.04);
-    border-color: rgba(0,0,0,0.10);
-    color: rgba(15,23,42,0.70);
-}
-
-/* Actions */
-.profile-actions{
-    margin-top: 18px;
-    display: flex;
-    justify-content: flex-end;
-}
-
-.profile-btn{
-    border: none;
-    padding: 12px 18px;
-    border-radius: 999px;
-    font-weight: 900;
-    cursor: pointer;
-
-    background: linear-gradient(135deg, #aef0db, #2c9288);
-    color: #06311f;
-
-    box-shadow: 0 16px 34px rgba(44,146,136,0.35);
-    transition: transform .15s ease, box-shadow .15s ease;
-}
-
-.profile-btn:hover{
-    transform: translateY(-1px);
-    box-shadow: 0 18px 40px rgba(44,146,136,0.45);
-}
-
-/* Mobile layout */
-@media (max-width: 760px){
-    .profile-grid{ grid-template-columns: 1fr; }
-    .profile-span-2{ grid-column: 1 / 2; }
-    .profile-actions{ justify-content: stretch; }
-    .profile-btn{ width: 100%; }
-}
 
 /* ===============================
    DASHBOARD (Cleaned Final)
@@ -971,445 +799,7 @@ label.check input{
     .dash-brand-field select{ min-width: 0; width: 100%; }
 }
 
-/* ===== Cross-page tweaks (kept) ===== */
-/* Restaurants filters: force readable inputs/selects on light controls in dark areas */
-.rest-filters select,
-.rest-filters input[type="date"],
-.rest-filters input[type="search"]{
-    color: #0f172a !important;
-    background: rgba(255,255,255,0.96) !important;
-    border: 1px solid rgba(0,0,0,0.12) !important;
-}
-.rest-filters select option{
-    color: #0f172a !important;
-    background: #ffffff !important;
-}
-/* Restaurants page: results count readable on dark bg */
-.rest-results #results-count{
-    color: rgba(255,255,255,0.78) !important;
-}
 
-/* =========================================================
-   RESTAURANTS PAGE (Cleaned)
-========================================================= */
-
-.restaurants-page{
-    max-width: 1200px;
-    margin: 0 auto;
-    padding: 26px 16px 60px;
-}
-
-/* Cards Grid */
-.cards-grid{
-    display: grid;
-    grid-template-columns: repeat(3, minmax(240px, 1fr));
-    gap: 18px;
-}
-
-@media (max-width: 980px){
-    .cards-grid{ grid-template-columns: repeat(2, minmax(240px, 1fr)); }
-}
-@media (max-width: 640px){
-    .cards-grid{ grid-template-columns: 1fr; }
-}
-
-/* Card */
-.restaurant-card{
-    position: relative;
-    background: var(--white);
-    border-radius: var(--r-lg);
-    overflow: hidden;
-    box-shadow: var(--shadow-md);
-    border: 1px solid rgba(0,0,0,0.06);
-}
-
-/* Whole-card clickable link (but allow buttons to work) */
-.card-link{
-    position: absolute;
-    inset: 0;
-    z-index: 1;
-}
-
-.card-actions,
-.book-btn{
-    position: relative;
-    z-index: 2;
-}
-
-/* Card Image */
-.restaurant-card .card-img{
-    width: 100%;
-    aspect-ratio: 4 / 3;
-    overflow: hidden;
-}
-.restaurant-card .card-img img{
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    display: block;
-}
-
-/* Text Content */
-.restaurant-card .card-body{
-    padding: 14px 14px 12px;
-}
-
-.restaurant-card h3{
-    margin: 6px 0 6px;
-    font-size: 18px;
-}
-
-.restaurant-card .meta{
-    margin: 3px 0;
-    font-size: 13px;
-    line-height: 1.25;
-    color: var(--muted);
-}
-
-/* Chips */
-.chip-row{
-    display: flex;
-    flex-wrap: wrap;
-    gap: 8px;
-    margin-top: 10px; /* last version wins */
-}
-
-.chip{
-    display: inline-flex;
-    align-items: center;
-    gap: 8px; /* updated in last block */
-    padding: 7px 12px; /* updated */
-    border-radius: var(--r-pill);
-    font-size: 12px;
-    font-weight: 750; /* last block */
-    letter-spacing: .15px;
-
-    background: rgba(53,255,191,0.14);
-    border: 1px solid rgba(53,255,191,0.35);
-    color: rgba(6,36,30,0.92);
-
-    box-shadow:
-            0 8px 18px rgba(0,0,0,.06),
-            inset 0 1px 0 rgba(255,255,255,.6);
-
-    transition: transform .12s ease, background .12s ease, box-shadow .12s ease;
-}
-
-.chip::before{
-    content: "";
-    width: 7px;
-    height: 7px;
-    border-radius: 999px;
-    background: rgba(53,255,191,0.9);
-    box-shadow: 0 0 0 3px rgba(53,255,191,0.18);
-}
-
-.chip:hover{
-    transform: translateY(-1px);
-    background: rgba(53,255,191,0.20);
-    box-shadow:
-            0 12px 22px rgba(0,0,0,.08),
-            inset 0 1px 0 rgba(255,255,255,.7);
-}
-
-/* Book Button */
-.restaurant-card .book-btn{
-    display: inline-block;
-    margin-top: 12px; /* last version wins */
-    padding: 10px 14px;
-    border-radius: var(--r-pill);
-    text-decoration: none;
-
-    background: linear-gradient(135deg, var(--mint-1), var(--mint-2));
-    border: none;
-    color: white;
-    font-weight: 750; /* last version wins */
-
-    box-shadow: 0 10px 22px rgba(63,163,168,0.45);
-    transition: transform .18s ease, box-shadow .18s ease;
-}
-
-.restaurant-card .book-btn:hover{
-    transform: translateY(-2px);
-    box-shadow: 0 12px 28px rgba(44,146,136,0.45);
-}
-
-/* =========================================================
-   RESTAURANT BOOK PAGE (Clean Final Version)
-========================================================= */
-
-.restaurant-book-page{
-    max-width: 1200px;
-    margin: 0 auto;
-    padding: 18px 16px 60px;
-}
-
-/* FULL WIDTH banner (touches viewport edges) */
-.rb-banner{
-    position: relative;
-    width: 100vw;
-    margin-left: calc(50% - 50vw);
-    margin-top: 0;
-    margin-bottom: 22px;
-    overflow: hidden;
-    border-radius: 0;
-}
-
-/* banner image */
-.rb-banner-img{
-    width:100%;
-    height: 210px; /* final version */
-    object-fit: cover;
-    display:block;
-    border-radius: 0;
-    filter: saturate(1.05);
-}
-
-/* subtle readability gradient (no black bar) */
-.rb-banner::after{
-    content:"";
-    position:absolute;
-    inset:0;
-    background: linear-gradient(
-            180deg,
-            rgba(0,0,0,0.00) 0%,
-            rgba(0,0,0,0.10) 55%,
-            rgba(0,0,0,0.42) 100%
-    );
-    pointer-events:none;
-}
-
-/* overlay with no dark background */
-.rb-banner-overlay{
-    position:absolute;
-    inset:0;
-    display:flex;
-    align-items:flex-end;
-    background: none;
-    padding: 0;
-}
-
-/* title text */
-.rb-banner-title{
-    position: relative;
-    z-index: 1;
-    width: min(1200px, 92%);
-    margin: 0 auto;
-    padding-bottom: 18px;
-    color:#fff;
-    font-size: 44px;
-    font-weight: 900;
-    letter-spacing: -0.5px;
-    text-shadow: 0 10px 28px rgba(0,0,0,0.65);
-}
-
-/* Main layout (2 equal-height panels) */
-.rb-main{
-    display:grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 18px;
-    align-items: stretch;
-}
-
-/* Panels */
-.rb-panel{
-    background: var(--white);
-    border-radius: var(--r-md);
-    padding: 18px;
-    border: 1px solid rgba(0,0,0,0.08);
-    box-shadow: var(--shadow-md);
-    display:flex;
-    flex-direction: column;
-}
-
-.rb-panel h2{
-    margin: 6px 0 14px;
-    font-size: 28px;
-}
-
-/* Info text */
-.rb-info p{
-    margin: 6px 0;
-    color: #1f2937;
-}
-
-/* Form fields */
-.rb-field{
-    display:flex;
-    flex-direction: column;
-    gap: 8px;
-    margin-top: 12px;
-}
-
-.rb-field label{
-    font-weight: 800;
-    color: #0f172a;
-    font-size: 13px;
-}
-
-.rb-field input,
-.rb-field textarea{
-    width: 100%;
-    padding: 12px;
-    border-radius: 14px;
-    border: 1px solid rgba(0,0,0,0.14);
-    outline:none;
-    background:#fff;
-}
-
-.rb-field input:focus,
-.rb-field textarea:focus{
-    border-color: rgba(44,146,136,0.55);
-    box-shadow: 0 0 0 4px rgba(53,255,191,0.16);
-}
-
-.rb-details textarea{
-    resize: none;
-    min-height: 140px;
-    max-height: 140px;
-}
-
-.rb-row{
-    display:grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 14px;
-    margin-bottom: 14px;
-}
-
-/* Booking: pin button to bottom */
-.rb-booking-actions{
-    margin-top: auto;
-}
-
-/* Button */
-.rb-btn{
-    width:100%;
-    margin-top: 8px;
-    padding: 14px 16px;
-    border-radius: var(--r-pill);
-    border:none;
-    cursor:pointer;
-
-    font-weight: 900;
-    background: linear-gradient(135deg, var(--mint-1), var(--mint-2));
-    color: #06311f;
-
-    box-shadow: 0 16px 32px rgba(44,146,136,0.35);
-    transition: transform .15s ease, box-shadow .15s ease, opacity .15s ease;
-}
-
-.rb-btn:hover{
-    transform: translateY(-1px);
-    box-shadow: 0 18px 40px rgba(44,146,136,0.45);
-}
-
-.rb-btn:disabled{
-    opacity: 0.55;
-    cursor:not-allowed;
-    transform:none;
-    box-shadow:none;
-}
-
-.rb-msg{
-    margin-top: 10px;
-    font-weight: 800;
-}
-
-/* Gallery */
-.rb-gallery{
-    margin-top: 22px;
-    background: rgba(255,255,255,0.06);
-    border: 1px solid rgba(255,255,255,0.08);
-    border-radius: var(--r-md);
-    padding: 18px;
-}
-
-.rb-section-title h2{
-    margin: 6px 0;
-    color:#fff;
-    font-size: 30px;
-}
-
-.rb-section-title p{
-    margin: 0 0 14px;
-    color: rgba(255,255,255,0.78);
-}
-
-.rb-gallery-grid{
-    display:grid;
-    grid-template-columns: repeat(5, 1fr);
-    gap: 12px;
-}
-
-.rb-shot{
-    border-radius: 16px;
-    overflow:hidden;
-    display:block;
-    box-shadow: 0 16px 40px rgba(0,0,0,0.25);
-    transform: translateZ(0);
-    transition: transform .18s ease;
-}
-
-.rb-shot:hover{
-    transform: translateY(-2px) scale(1.01);
-}
-
-.rb-shot img{
-    width:100%;
-    height: 140px;
-    object-fit: cover;
-    display:block;
-}
-
-/* Reviews */
-.rb-reviews{
-    margin-top: 18px;
-    background: rgba(255,255,255,0.06);
-    border: 1px solid rgba(255,255,255,0.08);
-    border-radius: var(--r-md);
-    padding: 18px;
-}
-
-.rb-review-list{
-    display:grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 12px;
-}
-
-.rb-review{
-    background: rgba(255,255,255,0.94);
-    border-radius: 16px;
-    padding: 14px;
-    border: 1px solid rgba(0,0,0,0.08);
-    box-shadow: 0 14px 32px rgba(0,0,0,0.18);
-}
-
-.rb-review-top{
-    display:flex;
-    justify-content: space-between;
-    align-items:center;
-    margin-bottom: 8px;
-}
-
-.rb-stars{ font-weight: 900; }
-
-.rb-review-text{
-    margin: 0;
-    color: #374151;
-}
-
-/* Responsive */
-@media (max-width: 980px){
-    .rb-main{ grid-template-columns: 1fr; }
-    .rb-gallery-grid{ grid-template-columns: repeat(3, 1fr); }
-    .rb-review-list{ grid-template-columns: 1fr; }
-}
-
-@media (max-width: 520px){
-    .rb-banner-title{ font-size: 32px; }
-    .rb-row{ grid-template-columns: 1fr; }
-    .rb-gallery-grid{ grid-template-columns: repeat(2, 1fr); }
-}
 
 /* =========================================
   My Bookings Page
@@ -2419,3 +1809,562 @@ label.check input{
     max-height: 90%;
     border-radius: 8px;
 }
+
+/* ==========================
+   RESET & BASE LAYOUT
+   ========================== */
+html, body {
+    width: 100%;
+    height: 100%;
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    background: #0a0f1e; /* optional page background */
+    font-family: sans-serif;
+    color: white;
+}
+
+/* ==========================
+   FULL SCREEN FLEX CONTAINER
+   ========================== */
+.profile-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;      /* horizontal center */
+    justify-content: center;  /* vertical center */
+    min-height: 100vh;
+    width: 100%;
+    padding: 20px;
+    text-align: center;
+}
+
+/* ==========================
+   PROFILE CARD
+   ========================== */
+.profile-card {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+
+    width: 500px;
+    max-width: 90%; /* responsive */
+    padding: 40px;
+    border-radius: 20px;
+    background: rgba(10, 15, 30, 0.9);
+    backdrop-filter: blur(10px);
+
+    box-shadow:
+        0 0 0 1px rgba(255,255,255,0.05),
+        0 20px 60px rgba(0,0,0,0.6);
+
+    transition: all 0.25s ease;
+    margin: 0;
+}
+
+.profile-card:hover {
+    box-shadow:
+        0 0 0 1px rgba(255,255,255,0.05),
+        0 30px 70px rgba(0,0,0,0.7);
+}
+
+/* ==========================
+   HEADER
+   ========================== */
+.profile-container h2 {
+    font-size: 34px;
+    font-weight: 700;
+    margin-bottom: 35px;
+
+    background: linear-gradient(90deg, #8fd3c7, #3aa89d);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+/* ==========================
+   FORM
+   ========================== */
+#updateProfileForm {
+    width: 100%;          /* fill the card */
+    display: flex;
+    flex-direction: column;
+    align-items: center;  /* center avatar + inputs */
+}
+
+/* ==========================
+   AVATAR SECTION
+   ========================== */
+.avatar-section {
+    text-align: center;
+    margin-bottom: 35px;
+    position: relative;
+}
+
+#userAvatar {
+    width: 120px;
+    height: 120px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 3px solid rgba(255,255,255,0.1);
+    margin-bottom: 10px;
+    transition: transform 0.2s ease;
+}
+
+#userAvatar:hover {
+    transform: scale(1.05);
+}
+
+.avatar-section input[type="file"] {
+    margin-top: 10px;
+    color: white;
+}
+
+.avatar-section input[type="file"]::file-selector-button {
+    padding: 8px 12px;
+    border: none;
+    border-radius: 8px;
+    background: linear-gradient(90deg, #8fd3c7, #3aa89d);
+    color: #0b1b1a;
+    cursor: pointer;
+}
+
+.avatar-section input[type="file"]::file-selector-button:hover {
+    opacity: 0.9;
+}
+
+/* ==========================
+   FORM FIELDS
+   ========================== */
+.form-fields {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 15px;
+    margin-top: 20px;
+    width: 100%;
+}
+
+.form-fields input {
+    padding: 12px;
+    border-radius: 10px;
+    background: rgba(255,255,255,0.05);
+    border: 1px solid rgba(255,255,255,0.1);
+    color: white;
+    transition: all 0.2s ease;
+}
+
+.form-fields input::placeholder {
+    color: rgba(255,255,255,0.5);
+}
+
+.form-fields input:focus {
+    outline: none;
+    border-color: #4fd1c5;
+}
+
+input[readonly] {
+    background: rgba(255,255,255,0.03);
+}
+
+/* ==========================
+   SUBMIT BUTTON
+   ========================== */
+#updateProfileForm button {
+    margin-top: 25px;
+    width: 100%;
+    padding: 16px;
+    border: none;
+    border-radius: 40px;
+    font-size: 18px;
+    font-weight: 600;
+    background: linear-gradient(90deg, #8fd3c7, #3aa89d);
+    color: #0b1b1a;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+#updateProfileForm button:hover {
+    transform: translateY(-1px);
+}
+
+#updateProfileForm button:active {
+    transform: translateY(0);
+}
+
+/* ==========================
+   RESPONSIVE
+   ========================== */
+@media (max-width: 600px) {
+    .profile-card {
+        width: 90%;
+        padding: 30px;
+    }
+
+    .form-fields {
+        grid-template-columns: 1fr;
+    }
+
+    #userAvatar {
+        width: 100px;
+        height: 100px;
+    }
+}
+
+/* ==========================
+   HOME PAGE
+   ========================== */
+
+   /* ==========================
+   HOME PAGE LAYOUT
+   ========================== */
+.restaurants-page {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 26px 16px 60px;
+}
+
+/* Loading message */
+.restaurants-loading {
+    text-align: center;
+    margin: 40px 0;
+    font-size: 16px;
+    color: rgba(255, 255, 255, 0.7);
+}
+
+/* ==========================
+   CARDS GRID
+   ========================== */
+.restaurants-container {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(240px, 1fr));
+    gap: 18px;
+}
+
+@media (max-width: 980px) {
+    .restaurants-container {
+        grid-template-columns: repeat(2, minmax(240px, 1fr));
+    }
+}
+
+@media (max-width: 640px) {
+    .restaurants-container {
+        grid-template-columns: 1fr;
+    }
+}
+
+/* ==========================
+   RESTAURANT CARD
+   ========================== */
+.restaurant-card {
+    display: flex;
+    flex-direction: column;
+    background: rgba(10, 15, 30, 0.95);
+    border-radius: 20px;
+    overflow: hidden;
+    box-shadow: 0 10px 28px rgba(0, 0, 0, 0.38);
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.restaurant-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 14px 38px rgba(0, 0, 0, 0.45);
+}
+
+/* Banner Image */
+.restaurant-card .restaurant-banner img {
+    width: 100%;
+    height: 160px;
+    object-fit: cover;
+    display: block;
+}
+
+/* Card Content */
+.restaurant-content {
+    padding: 16px 14px 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.restaurant-name {
+    font-size: 18px;
+    font-weight: 700;
+    margin: 0;
+    color: #fff;
+}
+
+.restaurant-description {
+    font-size: 14px;
+    line-height: 1.4;
+    color: rgba(255, 255, 255, 0.75);
+}
+
+/* Brand Info */
+.restaurant-brand {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.brand-logo {
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    object-fit: cover;
+}
+
+.brand-name {
+    font-size: 13px;
+    font-weight: 700;
+    color: rgba(255, 255, 255, 0.9);
+}
+
+/* Address */
+.restaurant-address {
+    font-size: 12px;
+    color: rgba(255, 255, 255, 0.6);
+    display: flex;
+    flex-direction: column;
+}
+
+.restaurant-address span {
+    display: block;
+}
+
+/* Availability / Guests */
+.restaurant-availability {
+    display: flex;
+    justify-content: space-between;
+    font-size: 12px;
+    font-weight: 700;
+    color: #35ffbf;
+}
+
+/* ==========================
+   RESPONSIVE CARD
+   ========================== */
+@media (max-width: 640px) {
+    .restaurant-card .restaurant-banner img {
+        height: 140px;
+    }
+    
+    .restaurant-content {
+        padding: 12px 10px 16px;
+    }
+
+    .restaurant-name {
+        font-size: 16px;
+    }
+
+    .restaurant-description {
+        font-size: 13px;
+    }
+}
+
+/* ==========================
+   FILTER BAR
+   ========================== */
+.restaurants-filter {
+    display: flex;
+    gap: 12px;
+    margin-bottom: 24px;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+
+.restaurants-filter input,
+.restaurants-filter select {
+    padding: 10px 14px;
+    border-radius: 12px;
+    border: 1px solid rgba(255,255,255,0.15);
+    background: rgba(255,255,255,0.05);
+    color: #fff;
+    font-size: 14px;
+    outline: none;
+    transition: all 0.2s ease;
+}
+
+.restaurants-filter input::placeholder {
+    color: rgba(255,255,255,0.6);
+}
+
+.restaurants-filter input:focus,
+.restaurants-filter select:focus {
+    border-color: #4fd1c5;
+    box-shadow: 0 0 0 3px rgba(79,209,197,0.2);
+}
+
+/* ==========================
+   CARDS GRID
+   ========================== */
+.restaurants-container {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(240px, 1fr));
+    gap: 18px;
+    margin-top: 12px;
+}
+
+@media (max-width: 980px) {
+    .restaurants-container {
+        grid-template-columns: repeat(2, minmax(240px, 1fr));
+    }
+}
+
+@media (max-width: 640px) {
+    .restaurants-container {
+        grid-template-columns: 1fr;
+    }
+}
+
+/* ==========================
+   RESTAURANT CARD
+   ========================== */
+.restaurant-card {
+    display: flex;
+    flex-direction: column;
+    background: rgba(10, 15, 30, 0.95);
+    border-radius: 20px;
+    overflow: hidden;
+    box-shadow: 0 10px 28px rgba(0,0,0,0.38);
+    border: 1px solid rgba(255,255,255,0.05);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.restaurant-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 14px 38px rgba(0,0,0,0.45);
+}
+
+/* Banner Image */
+.restaurant-banner img {
+    width: 100%;
+    height: 160px;
+    object-fit: cover;
+    display: block;
+}
+
+/* Card Content */
+.restaurant-content {
+    padding: 16px 14px 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.restaurant-name {
+    font-size: 18px;
+    font-weight: 700;
+    margin: 0;
+    color: #fff;
+}
+
+.restaurant-description {
+    font-size: 14px;
+    line-height: 1.4;
+    color: rgba(255,255,255,0.75);
+}
+
+/* Brand Info */
+.restaurant-brand {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.brand-logo {
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    object-fit: cover;
+}
+
+.brand-name {
+    font-size: 13px;
+    font-weight: 700;
+    color: rgba(255,255,255,0.9);
+}
+
+/* Address */
+.restaurant-address {
+    font-size: 12px;
+    color: rgba(255,255,255,0.6);
+    display: flex;
+    flex-direction: column;
+}
+
+.restaurant-address span {
+    display: block;
+}
+
+/* Availability / Guests */
+.restaurant-availability {
+    display: flex;
+    justify-content: space-between;
+    font-size: 12px;
+    font-weight: 700;
+    color: #35ffbf;
+}
+
+/* ==========================
+   BOOK NOW BUTTON
+   ========================== */
+.book-btn {
+    margin-top: 12px;
+    padding: 10px 14px;
+    border-radius: 32px;
+    text-align: center;
+    text-decoration: none;
+    font-weight: 700;
+    font-size: 14px;
+
+    background: linear-gradient(135deg, #35ffbf, #08b8a7);
+    color: #0b1b1a;
+
+    box-shadow: 0 10px 22px rgba(63,163,168,0.45);
+    transition: transform 0.18s ease, box-shadow 0.18s ease;
+}
+
+.book-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 12px 28px rgba(44,146,136,0.45);
+}
+
+.book-btn:active {
+    transform: translateY(0);
+    box-shadow: 0 10px 22px rgba(63,163,168,0.45);
+}
+
+/* ==========================
+   RESPONSIVE CARD
+   ========================== */
+@media (max-width: 640px) {
+    .restaurant-banner img {
+        height: 140px;
+    }
+    
+    .restaurant-content {
+        padding: 12px 10px 16px;
+    }
+
+    .restaurant-name {
+        font-size: 16px;
+    }
+
+    .restaurant-description {
+        font-size: 13px;
+    }
+}
+
+.field-group {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 12px;
+}
+
+.field-group label {
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: #666;
+  margin-bottom: 3px;
+}
+

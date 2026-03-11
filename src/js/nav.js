@@ -7,7 +7,7 @@ import loadRestaurantDetails from "./pages/restaurantDetails.js"
 import loadDashboard from "./pages/dashboard.js"
 import loadResetPassword from "./pages/resetPassword.js"
 import ApiRequest from "./utils/ApiRequest.js";
-import { showError, LocalStorage } from "./utils/helpers.js";
+import {showError, LocalStorage, updateVisibility} from "./utils/helpers.js";
 import loadMyBookings from "./pages/myBooking.js";
 import loadAdminRestaurants from "./pages/adminRestaurants.js";
 import registerEmployee from "./pages/registerEmployee.js";
@@ -16,40 +16,6 @@ function showContent() {
     $('#content').css('visibility', 'visible')
 }
 
-const STATE = {
-    NO_AUTH: 'No-auth',
-    USER: 'User',
-    EMPLOYEE: 'Employee',
-    ADMIN: 'Admin'
-}
-
-function getState() {
-    const authData = LocalStorage.get('auth')
-    if (!authData) {
-        return STATE.NO_AUTH
-    }
-    else if (!authData?.role) {
-        return STATE.USER
-    } else if (authData.role === STATE.ADMIN || authData.role === STATE.EMPLOYEE) {
-        return authData.role
-    }
-
-}
-
-// Update navigation visibility based on authentication status
-function updateNavigationAuth() {
-    const authData = LocalStorage.get('auth')
-    // const isAuthenticated = authData && authData.token // old method
-    const isAuthenticated = !!(authData && authData.token) // fixed now it returns boolean
-    console.log(`updateNavigationAuth: ${authData}`)
-    // Show/hide sign in and sign up buttons
-    // $('#navSignIn').toggle(!isAuthenticated)
-    // $('#navSignUp').toggle(!isAuthenticated)
-    //
-    // // Show/hide sign out and profile buttons
-    // $('#navSignOut').toggle(isAuthenticated)
-    // $('#navProfile').toggle(isAuthenticated)
-}
 
 // First load on when document DOM is ready
 $(document).ready(function () {
@@ -201,6 +167,17 @@ $(document).on('click', function (e) {
     if ($navMenu.hasClass('open') && !$(e.target).closest($navMenu).length && !$(e.target).is($toggle)) {
         $navMenu.removeClass('open')
     }
+})
+
+// Watch the whole document for added nodes
+const observer = new MutationObserver((mutationsList) => {
+    updateVisibility()
+})
+
+// Start observing
+observer.observe(document.body, {
+    childList: true,  // watch for added/removed elements
+    subtree: true     // watch entire DOM tree
 })
 
 // Reacts on any hash changes

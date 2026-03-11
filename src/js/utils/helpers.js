@@ -1,3 +1,75 @@
+const STATE = {
+    NO_AUTH: 'No-auth',
+    USER: 'User',
+    EMPLOYEE: 'Employee',
+    ADMIN: 'Admin'
+}
+
+
+export function getState() {
+    const authData = LocalStorage.get('auth')
+    if (!authData) {
+        return STATE.NO_AUTH
+    }
+    else if (!authData?.role) {
+        return STATE.USER
+    } else if (authData.role === STATE.ADMIN || authData.role === STATE.EMPLOYEE) {
+        return authData.role
+    }
+
+}
+
+const elements = [
+    {
+        id: 'nav-dashboard',
+        disabledFor: [STATE.USER, STATE.NO_AUTH]
+    },
+    {
+        id: 'nav-profile',
+        disabledFor: [STATE.NO_AUTH]
+    },
+    {
+        id: 'profile-role',
+        disabledFor: [STATE.USER]
+    },
+    {
+        id: 'nav-signin',
+        disabledFor: [STATE.ADMIN, STATE.USER, STATE.EMPLOYEE]
+    },
+    {
+        id: 'nav-signup',
+        disabledFor: [STATE.ADMIN, STATE.USER, STATE.EMPLOYEE]
+    },
+    {
+        id: 'nav-signout',
+        disabledFor: [STATE.NO_AUTH]
+    }
+]
+
+const magicClassName = 'trackable'
+
+// Update navigation visibility based on authentication status
+export function updateVisibility() {
+    const state = getState()
+    console.log(state)
+
+    elements.forEach(({ id, disabledFor }) => {
+        const $el = $('#' + id)
+        console.log($el)
+        if (!$el.length) {
+            return
+        }
+
+        if (disabledFor.includes(state)) {
+            // remove if state is disabled
+            $el.addClass(magicClassName)
+        } else {
+            // add class to all elements
+            $el.removeClass(magicClassName)
+        }
+    })
+}
+
 export class LocalStorage {
     static set(key, value) {
         localStorage.setItem(key, JSON.stringify(value));

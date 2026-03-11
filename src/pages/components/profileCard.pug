@@ -23,7 +23,7 @@ form#updateProfileForm
             label Phone Number
             input(type="text" name="phone" value="{{user.phone}}{{admin.phone}}" required)
 
-        div.field-group
+        div#profile-role.field-group.trackable
             label Role
             input(type="text" name="role" value="{{admin.role}}" readonly)
 

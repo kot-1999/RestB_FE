@@ -255,26 +255,40 @@ export default class ApiRequest {
     }
 
 
-    static async getRestaurants(queryParams) {
+    static async getRestaurants(queryParams = {}) {
         try {
-            // Make a real HTTP request (will show in Network tab)
-            const response = await fetch(`${this.baseUrl}/b2c/v1/restaurant`, {
+            // Build query string from parameters
+            const queryString = new URLSearchParams();
+            
+            // Add query parameters if they exist
+            if (queryParams.search) queryString.append('search', queryParams.search);
+            if (queryParams.radius) queryString.append('radius', queryParams.radius);
+            if (queryParams.brandID) queryString.append('brandID', queryParams.brandID);
+            if (queryParams.date) queryString.append('date', queryParams.date);
+            if (queryParams.categories && Array.isArray(queryParams.categories)) {
+                queryParams.categories.forEach(cat => queryString.append('categories', cat));
+            }
+            if (queryParams.page) queryString.append('page', queryParams.page);
+            if (queryParams.limit) queryString.append('limit', queryParams.limit);
+
+            const url = queryString.toString() 
+                ? `${this.baseUrl}/b2c/v1/restaurant/?${queryString.toString()}`
+                : `${this.baseUrl}/b2c/v1/restaurant/`;
+
+            const response = await fetch(url, {
                 method: 'GET',
                 headers: {
                     'Content-Type': 'application/json'
                 }
             });
 
-            // If the real API doesn't exist, fall back to mock data
-            if (!response.ok) {
-                throw new Error('API not available, using mock data');
-            }
-
+            await ApiRequest.checkResponse(response);
+            
             const res = await response.json();
             return res;
         } catch (error) {
-            showError(err)
-            return null
+            showError(error);
+            return null;
         }
     }
 

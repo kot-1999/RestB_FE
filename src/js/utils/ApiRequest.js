@@ -275,7 +275,6 @@ export default class ApiRequest {
                 ? `${this.baseUrl}/b2c/v1/restaurant/?${queryString.toString()}`
                 : `${this.baseUrl}/b2c/v1/restaurant/`;
 
-            // Make a real HTTP request (will show in Network tab)
             const response = await fetch(url, {
                 method: 'GET',
                 headers: {
@@ -283,7 +282,6 @@ export default class ApiRequest {
                 }
             });
 
-            // Check response and handle errors
             await ApiRequest.checkResponse(response);
             
             const res = await response.json();

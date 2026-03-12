@@ -292,7 +292,7 @@ export default class ApiRequest {
         }
     }
 
-    static async getBookings(queryParams = {}) {
+    static async getBookings(queryParams = {}, restaurantID = null) {
         try {
             const authData = LocalStorage.get('auth');
             const userType = authData?.role ? 'b2b' : 'b2c';
@@ -300,28 +300,78 @@ export default class ApiRequest {
             // Build query string from parameters
             const queryString = new URLSearchParams();
             
+            // Common parameters for both B2C and B2B with restaurantID
+            if (queryParams.statuses && Array.isArray(queryParams.statuses)) {
+                queryParams.statuses.forEach(status => queryString.append('statuses', status));
+            }
+            if (queryParams.page) queryString.append('page', queryParams.page);
+            if (queryParams.limit) queryString.append('limit', queryParams.limit);
+            
+            let url;
             if (userType === 'b2c') {
-                // B2C parameters: dateFrom, dateTo, statuses, page, limit
+                // B2C: User's bookings
+                // Additional parameters: dateFrom, dateTo
                 if (queryParams.dateFrom) queryString.append('dateFrom', queryParams.dateFrom);
                 if (queryParams.dateTo) queryString.append('dateTo', queryParams.dateTo);
-                if (queryParams.statuses && Array.isArray(queryParams.statuses)) {
-                    queryParams.statuses.forEach(status => queryString.append('statuses', status));
-                }
-                if (queryParams.page) queryString.append('page', queryParams.page);
-                if (queryParams.limit) queryString.append('limit', queryParams.limit);
+                
+                url = queryString.toString() 
+                    ? `${this.baseUrl}/b2c/v1/booking/?${queryString.toString()}`
+                    : `${this.baseUrl}/b2c/v1/booking/`;
             } else {
-                // B2B parameters: brandID, statuses, page, limit
-                if (queryParams.brandID) queryString.append('brandID', queryParams.brandID);
-                if (queryParams.statuses && Array.isArray(queryParams.statuses)) {
-                    queryParams.statuses.forEach(status => queryString.append('statuses', status));
+                // B2B: Specific restaurant bookings
+                if (restaurantID) {
+                    url = queryString.toString() 
+                        ? `${this.baseUrl}/b2b/v1/booking/${restaurantID}?${queryString.toString()}`
+                        : `${this.baseUrl}/b2b/v1/booking/${restaurantID}`;
+                } else {
+                    throw new Error('getBookings - restaurantID is required for B2B bookings');
                 }
-                if (queryParams.page) queryString.append('page', queryParams.page);
-                if (queryParams.limit) queryString.append('limit', queryParams.limit);
             }
 
+            const headers = {
+                'Content-Type': 'application/json'
+            };
+
+            // Add authorization header for authenticated users
+            if (authData?.token) {
+                headers.Authorization = `Bearer ${authData.token}`;
+            }
+
+            const response = await fetch(url, {
+                method: 'GET',
+                headers
+            });
+
+            await ApiRequest.checkResponse(response);
+            const res = await response.json();
+            return res;
+        } catch (error) {
+            showError(error);
+            return null;
+        }
+    }
+
+    static async getBookingSummaries(queryParams = {}) {
+        try {
+            const authData = LocalStorage.get('auth');
+            if (!authData?.role) {
+                throw new Error('getBookingSummaries - This endpoint is for B2B users only');
+            }
+
+            // Build query string from parameters
+            const queryString = new URLSearchParams();
+            
+            // B2B parameters: brandID, statuses, page, limit
+            if (queryParams.brandID) queryString.append('brandID', queryParams.brandID);
+            if (queryParams.statuses && Array.isArray(queryParams.statuses)) {
+                queryParams.statuses.forEach(status => queryString.append('statuses', status));
+            }
+            if (queryParams.page) queryString.append('page', queryParams.page);
+            if (queryParams.limit) queryString.append('limit', queryParams.limit);
+
             const url = queryString.toString() 
-                ? `${this.baseUrl}/${userType}/v1/booking/?${queryString.toString()}`
-                : `${this.baseUrl}/${userType}/v1/booking/`;
+                ? `${this.baseUrl}/b2b/v1/booking/?${queryString.toString()}`
+                : `${this.baseUrl}/b2b/v1/booking/`;
 
             const headers = {
                 'Content-Type': 'application/json'

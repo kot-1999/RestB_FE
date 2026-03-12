@@ -292,31 +292,57 @@ export default class ApiRequest {
         }
     }
 
-    static async getBookings(queryParams) {
+    static async getBookings(queryParams = {}) {
         try {
-            // Make a real HTTP request (will show in Network tab)
-            // const response = await fetch(`${this.baseUrl}/b2c/v1/booking/`, {
-            //     method: 'GET',
-            //     headers: {
-            //         'Content-Type': 'application/json'
-            //     }
-            // });
-            //
-            // // If the real API doesn't exist, fall back to mock data
-            // if (!response.ok) {
-            //     throw new Error('API not available, using mock data');
-            // }
-            //
-            // const data = await response.json();
-            // return {
-            //     success: true,
-            //     data: data,
-            //     message: 'Bookings fetched successfully'
-            // };
-            return mockResponses.getBookings(queryParams)
+            const authData = LocalStorage.get('auth');
+            const userType = authData?.role ? 'b2b' : 'b2c';
+            
+            // Build query string from parameters
+            const queryString = new URLSearchParams();
+            
+            if (userType === 'b2c') {
+                // B2C parameters: dateFrom, dateTo, statuses, page, limit
+                if (queryParams.dateFrom) queryString.append('dateFrom', queryParams.dateFrom);
+                if (queryParams.dateTo) queryString.append('dateTo', queryParams.dateTo);
+                if (queryParams.statuses && Array.isArray(queryParams.statuses)) {
+                    queryParams.statuses.forEach(status => queryString.append('statuses', status));
+                }
+                if (queryParams.page) queryString.append('page', queryParams.page);
+                if (queryParams.limit) queryString.append('limit', queryParams.limit);
+            } else {
+                // B2B parameters: brandID, statuses, page, limit
+                if (queryParams.brandID) queryString.append('brandID', queryParams.brandID);
+                if (queryParams.statuses && Array.isArray(queryParams.statuses)) {
+                    queryParams.statuses.forEach(status => queryString.append('statuses', status));
+                }
+                if (queryParams.page) queryString.append('page', queryParams.page);
+                if (queryParams.limit) queryString.append('limit', queryParams.limit);
+            }
+
+            const url = queryString.toString() 
+                ? `${this.baseUrl}/${userType}/v1/booking/?${queryString.toString()}`
+                : `${this.baseUrl}/${userType}/v1/booking/`;
+
+            const headers = {
+                'Content-Type': 'application/json'
+            };
+
+            // Add authorization header for authenticated users
+            if (authData?.token) {
+                headers.Authorization = `Bearer ${authData.token}`;
+            }
+
+            const response = await fetch(url, {
+                method: 'GET',
+                headers
+            });
+
+            await ApiRequest.checkResponse(response);
+            const res = await response.json();
+            return res;
         } catch (error) {
-            showError(error)
-            return null
+            showError(error);
+            return null;
         }
     }
 static async getDashboard(queryParams) {

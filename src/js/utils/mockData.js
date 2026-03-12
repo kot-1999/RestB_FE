@@ -1,38 +1,4 @@
 export const mockResponses = {
-    // GET /b2c/v1/booking/
-    getBookings: (queryParams = {}) => {
-        let filteredBookings = mockData.bookings;
-        
-        // Filter by date range if provided
-        if (queryParams.dateFrom) {
-            filteredBookings = filteredBookings.filter(booking => 
-                new Date(booking.bookingTime) >= new Date(queryParams.dateFrom)
-            );
-        }
-        
-        if (queryParams.dateTo) {
-            filteredBookings = filteredBookings.filter(booking => 
-                new Date(booking.bookingTime) <= new Date(queryParams.dateTo)
-            );
-        }
-        
-        // Filter by statuses if provided
-        if (queryParams.statuses && Array.isArray(queryParams.statuses)) {
-            filteredBookings = filteredBookings.filter(booking => 
-                queryParams.statuses.includes(booking.status)
-            );
-        }
-        
-        // Pagination
-        const page = parseInt(queryParams.page) || 1;
-        const limit = parseInt(queryParams.limit) || 10;
-        const startIndex = (page - 1) * limit;
-        const endIndex = startIndex + limit;
-        
-        // Return array directly (matching backend response structure)
-        return filteredBookings.slice(startIndex, endIndex);
-    },
-    
     // GET /b2b/v1/dashboard
     getDashboard: (queryParams = {}) => {
         // Default to last 7 days if no dates provided

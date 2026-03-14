@@ -13,6 +13,8 @@ export default class ApiRequest {
         }
     }
 
+    // SHARED: File upload
+    // ENDPOINT: PUT /upload-url
     static async uploadFile(file) {
         try {
             const authData = LocalStorage.get('auth')
@@ -55,6 +57,8 @@ export default class ApiRequest {
 
 
 
+    // B2B & B2C: User registration
+    // ENDPOINTS: POST /b2c/v1/authorization/register, POST /b2b/v1/authorization/register
     static async register(body, userType = 'b2c') {
         try {
             if (userType === 'b2c') {
@@ -80,6 +84,8 @@ export default class ApiRequest {
         }
     }
 
+    // B2B & B2C: User login
+    // ENDPOINTS: POST /b2c/v1/authorization/login, POST /b2b/v1/authorization/login
     static async login(body, userType = 'b2c') {
         try {
             const response = await fetch(
@@ -103,6 +109,8 @@ export default class ApiRequest {
         }
     }
 
+    // B2B & B2C: Forgot password
+    // ENDPOINTS: POST /b2c/v1/authorization/forgot-password, POST /b2b/v1/authorization/forgot-password
     static async forgotPassword(body, userType = 'b2c') {
         try {
             const response = await fetch(
@@ -123,6 +131,8 @@ export default class ApiRequest {
         }
     }
 
+    // B2B & B2C: Reset password
+    // ENDPOINTS: POST /b2c/v1/authorization/reset-password, POST /b2b/v1/authorization/reset-password
     static async resetPassword(token, userType, newPassword) {
         try {
             const response = await fetch(
@@ -144,6 +154,8 @@ export default class ApiRequest {
         }
     }
 
+    // B2B: Employee registration
+    // ENDPOINT: POST /b2b/v1/authorization/employee/register
     static async registerEmployee(token, body) {
         try {
             const response = await fetch(
@@ -165,6 +177,8 @@ export default class ApiRequest {
         }
     }
 
+    // B2B & B2C: User logout
+    // ENDPOINTS: GET /b2c/v1/authorization/logout, GET /b2b/v1/authorization/logout
     static async logout() {
         try {
             const authData = LocalStorage.get('auth')
@@ -195,6 +209,8 @@ export default class ApiRequest {
         }
     }
 
+    // B2B & B2C: Get user profile
+    // ENDPOINTS: GET /b2c/v1/user/{userID}, GET /b2b/v1/admin/{adminID}
     static async getProfile(id = null) {
         try {
             const authData = LocalStorage.get('auth')
@@ -221,6 +237,8 @@ export default class ApiRequest {
         }
     }
 
+    // B2B & B2C: Update user profile
+    // ENDPOINTS: PATCH /b2c/v1/user/, PATCH /b2b/v1/admin/
     static async updateProfile(data) {
         try {
             const authData = LocalStorage.get('auth')
@@ -255,6 +273,8 @@ export default class ApiRequest {
     }
 
 
+    // B2C: Get restaurants (missing B2B endpoint)
+    // ENDPOINT: GET /b2c/v1/restaurant/
     static async getRestaurants(queryParams = {}) {
         try {
             // Build query string from parameters
@@ -291,68 +311,145 @@ export default class ApiRequest {
             return null;
         }
     }
-
-    static async getBookings(queryParams) {
+    // B2B & B2C: Get bookings
+    // ENDPOINTS: GET /b2c/v1/booking/, GET /b2b/v1/booking/{restaurantID}
+    static async getBookings(queryParams = {}, restaurantID = null) {
         try {
-            // Make a real HTTP request (will show in Network tab)
-            // const response = await fetch(`${this.baseUrl}/b2c/v1/booking/`, {
-            //     method: 'GET',
-            //     headers: {
-            //         'Content-Type': 'application/json'
-            //     }
-            // });
-            //
-            // // If the real API doesn't exist, fall back to mock data
-            // if (!response.ok) {
-            //     throw new Error('API not available, using mock data');
-            // }
-            //
-            // const data = await response.json();
-            // return {
-            //     success: true,
-            //     data: data,
-            //     message: 'Bookings fetched successfully'
-            // };
-            return mockResponses.getBookings(queryParams)
+            const authData = LocalStorage.get('auth');
+            const userType = authData?.role ? 'b2b' : 'b2c';
+            
+            // Build query string from parameters
+            const queryString = new URLSearchParams();
+            
+            // Common parameters for both B2C and B2B with restaurantID
+            if (queryParams.statuses && Array.isArray(queryParams.statuses)) {
+                queryParams.statuses.forEach(status => queryString.append('statuses', status));
+            }
+            if (queryParams.page) queryString.append('page', queryParams.page);
+            if (queryParams.limit) queryString.append('limit', queryParams.limit);
+            
+            let url;
+            if (userType === 'b2c') {
+                // B2C: User's bookings
+                // Additional parameters: dateFrom, dateTo
+                if (queryParams.dateFrom) queryString.append('dateFrom', queryParams.dateFrom);
+                if (queryParams.dateTo) queryString.append('dateTo', queryParams.dateTo);
+                
+                url = queryString.toString() 
+                    ? `${this.baseUrl}/b2c/v1/booking/?${queryString.toString()}`
+                    : `${this.baseUrl}/b2c/v1/booking/`;
+            } else {
+                // B2B: Specific restaurant bookings
+                if (restaurantID) {
+                    url = queryString.toString() 
+                        ? `${this.baseUrl}/b2b/v1/booking/${restaurantID}?${queryString.toString()}`
+                        : `${this.baseUrl}/b2b/v1/booking/${restaurantID}`;
+                } else {
+                    throw new Error('getBookings - restaurantID is required for B2B bookings');
+                }
+            }
+
+            const headers = {
+                'Content-Type': 'application/json'
+            };
+
+            // Add authorization header for authenticated users
+            if (authData?.token) {
+                headers.Authorization = `Bearer ${authData.token}`;
+            }
+
+            const response = await fetch(url, {
+                method: 'GET',
+                headers
+            });
+
+            await ApiRequest.checkResponse(response);
+            const res = await response.json();
+            return res;
         } catch (error) {
-            showError(error)
-            return null
+            showError(error);
+            return null;
         }
     }
-static async getDashboard(queryParams) {
+    // B2B: Get booking summaries
+    // ENDPOINT: GET /b2b/v1/booking/
+    static async getBookingSummaries(queryParams = {}) {
         try {
-            // Make a real HTTP request (will show in Network tab)
-            // const authData = LocalStorage.get('auth')
-            // if (!authData?.token) {
-            //     throw new Error('getDashboard - Token is required for this action')
-            // }
-            //
-            // const queryString = new URLSearchParams(queryParams).toString()
-            // const response = await fetch(`${this.baseUrl}/b2b/v1/dashboard?${queryString}`, {
-            //     method: 'GET',
-            //     headers: {
-            //         'Content-Type': 'application/json',
-            //         'Authorization': `Bearer ${authData.token}`
-            //     }
-            // });
-            //
-            // // If the real API doesn't exist, fall back to mock data
-            // if (!response.ok) {
-            //     throw new Error('API not available, using mock data');
-            // }
-            //
-            // const data = await response.json();
-            // return {
-            //     success: true,
-            //     data: data,
-            //     message: 'Dashboard data fetched successfully'
-            // };
+            const authData = LocalStorage.get('auth');
+            if (!authData?.role) {
+                throw new Error('getBookingSummaries - This endpoint is for B2B users only');
+            }
 
-            // For now, return mock response
-            return mockResponses.getDashboard(queryParams)
+            // Build query string from parameters
+            const queryString = new URLSearchParams();
+            
+            // B2B parameters: brandID, statuses, page, limit
+            if (queryParams.brandID) queryString.append('brandID', queryParams.brandID);
+            if (queryParams.statuses && Array.isArray(queryParams.statuses)) {
+                queryParams.statuses.forEach(status => queryString.append('statuses', status));
+            }
+            if (queryParams.page) queryString.append('page', queryParams.page);
+            if (queryParams.limit) queryString.append('limit', queryParams.limit);
+
+            const url = queryString.toString() 
+                ? `${this.baseUrl}/b2b/v1/booking/?${queryString.toString()}`
+                : `${this.baseUrl}/b2b/v1/booking/`;
+
+            const headers = {
+                'Content-Type': 'application/json'
+            };
+
+            // Add authorization header for authenticated users
+            if (authData?.token) {
+                headers.Authorization = `Bearer ${authData.token}`;
+            }
+
+            const response = await fetch(url, {
+                method: 'GET',
+                headers
+            });
+
+            await ApiRequest.checkResponse(response);
+            const res = await response.json();
+            return res;
         } catch (error) {
-            showError(error)
-            return null
+            showError(error);
+            return null;
+        }
+    }
+    // B2B: Get dashboard data
+    // ENDPOINT: GET /b2b/v1/dashboard/
+    static async getDashboard(queryParams = {}) {
+        try {
+            const authData = LocalStorage.get('auth');
+            if (!authData?.token) {
+                throw new Error('getDashboard - Token is required for this action');
+            }
+
+            // Build query string for timeFrom and timeTo parameters
+            const queryString = new URLSearchParams(queryParams).toString();
+            const url = `${this.baseUrl}/b2b/v1/dashboard/${queryString ? `?${queryString}` : ''}`;
+            
+            const headers = {
+                'Content-Type': 'application/json'
+            };
+
+            // Add authorization header for authenticated users
+            if (authData?.token) {
+                headers.Authorization = `Bearer ${authData.token}`;
+            }
+
+            const response = await fetch(url, {
+                method: 'GET',
+                headers
+            });
+
+            await ApiRequest.checkResponse(response);
+            const res = await response.json();
+            return res;
+        } catch (error) {
+            showError(error);
+            return null;
         }
     }
 }

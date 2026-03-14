@@ -173,7 +173,7 @@ export default class ApiRequest {
             }
 
             const response = await fetch(
-                `${this.baseUrl}/${(authData?.role === 'Admin' || authData?.role === 'Employee') ? 'b2b' : 'b2c'}/v1/authorization/logout`, {
+                `${this.baseUrl}/${authData?.role ? 'b2b' : 'b2c'}/v1/authorization/logout`, {
                     headers: {
                         'Content-Type': 'application/json',
                         Authorization: `Bearer ${authData.token}`,
@@ -203,7 +203,7 @@ export default class ApiRequest {
             }
 
             const response = await fetch(
-                `${this.baseUrl}/${(authData?.role === 'Admin' || authData?.role === 'Employee') ? 'b2b' : 'b2c'}/v1/${(authData?.role === 'Admin' || authData?.role === 'Employee') ? 'admin' : 'user'}/${id ?? authData.id}`, {
+                `${this.baseUrl}/${authData?.role ? 'b2b' : 'b2c'}/v1/${authData?.role ? 'admin' : 'user'}/${id ?? authData.id}`, {
                     headers: {
                         'Content-Type': 'application/json',
                         ...(authData.token && { Authorization: `Bearer ${authData.token}` }),
@@ -229,7 +229,7 @@ export default class ApiRequest {
             }
 
             const response = await fetch(
-                `${this.baseUrl}/${(authData?.role === 'Admin' || authData?.role === 'Employee') ? 'b2b' : 'b2c'}/v1/${(authData?.role === 'Admin' || authData?.role === 'Employee') ? 'admin' : 'user'}`, {
+                `${this.baseUrl}/${authData?.role ? 'b2b' : 'b2c'}/v1/${authData?.role ? 'admin' : 'user'}`, {
                     headers: {
                         'Content-Type': 'application/json',
                         ...(authData.token && { Authorization: `Bearer ${authData.token}` }),
@@ -295,7 +295,7 @@ export default class ApiRequest {
     static async getBookings(queryParams = {}, restaurantID = null) {
         try {
             const authData = LocalStorage.get('auth');
-            const userType = (authData?.role === 'Admin' || authData?.role === 'Employee') ? 'b2b' : 'b2c';
+            const userType = authData?.role ? 'b2b' : 'b2c';
             
             // Build query string from parameters
             const queryString = new URLSearchParams();
@@ -354,7 +354,7 @@ export default class ApiRequest {
     static async getBookingSummaries(queryParams = {}) {
         try {
             const authData = LocalStorage.get('auth');
-            if (!authData?.role || (authData.role !== 'Admin' && authData.role !== 'Employee')) {
+            if (!authData?.role) {
                 throw new Error('getBookingSummaries - This endpoint is for B2B users only');
             }
 

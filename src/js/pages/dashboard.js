@@ -1,4 +1,5 @@
 import { mockResponses } from '../utils/mockData.js';
+import ApiRequest from '../utils/ApiRequest.js';
 
 export default function () {
     console.log('Dashboard script loaded');
@@ -7,7 +8,7 @@ export default function () {
     let currentPeriod = '7days'; // '7days' or '30days'
     
     // Load dashboard data with date range
-    function loadDashboardData(period) {
+    async function loadDashboardData(period) {
         const now = new Date();
         let timeFrom, timeTo;
         
@@ -21,18 +22,41 @@ export default function () {
             timeTo = now;
         }
         
-        // Call API with date range
-        dashboardData = mockResponses.getDashboard({
-            timeFrom: timeFrom.toISOString(),
-            timeTo: timeTo.toISOString()
-        });
-        
-        console.log(`Loaded ${period} data:`, dashboardData.range);
+        try {
+            // Call real API with date range
+            dashboardData = await ApiRequest.getDashboard({
+                timeFrom: timeFrom.toISOString(),
+                timeTo: timeTo.toISOString()
+            });
+            
+            console.log(`Loaded ${period} data:`, dashboardData.range);
+            
+            // Check if there's no data
+            if (!dashboardData.data || dashboardData.data.length === 0) {
+                Swal.fire({
+                    icon: 'info',
+                    title: 'No Data Available',
+                    text: 'No booking data found for the selected period. Try a different time range or check back later.',
+                    confirmButtonColor: '#3b82f6'
+                });
+            }
+        } catch (error) {
+            console.error('Failed to load dashboard data:', error);
+            // Show error Swal instead of falling back to mock data
+            Swal.fire({
+                icon: 'error',
+                title: 'Failed to Load Dashboard',
+                text: 'Unable to load dashboard data. Please try again later.',
+                confirmButtonColor: '#3b82f6'
+            });
+        }
     }
     
     // Process data for chart
     function processChartData() {
-        if (!dashboardData) return { labels: [], datasets: [] };
+        if (!dashboardData || !dashboardData.data || dashboardData.data.length === 0) {
+            return { labels: [], datasets: [] };
+        }
         
         const labels = [];
         const datasets = [];
@@ -49,7 +73,7 @@ export default function () {
             ? dashboardData.data 
             : selectedRestaurants.length === 0 
                 ? [] 
-                : dashboardData.data.filter(r => selectedRestaurants.includes(r.restaurant.name));
+                : dashboardData.data.filter(r => selectedRestaurants.includes(r.name));
         
         // Map data by date and restaurant
         const dateRange = generateDateRange(dashboardData.range.timeFrom, dashboardData.range.timeTo);
@@ -58,7 +82,7 @@ export default function () {
             restaurant.summaries.forEach(day => {
                 const dateKey = day.date.split('T')[0];
                 if (!dataMap.has(dateKey)) dataMap.set(dateKey, {});
-                dataMap.get(dateKey)[restaurant.restaurant.name] = day;
+                dataMap.get(dateKey)[restaurant.name] = day;
             });
         });
         
@@ -76,13 +100,13 @@ export default function () {
             const color = colors[index % colors.length];
             const filteredData = dateRange.map(date => {
                 const dateKey = date.toISOString().split('T')[0];
-                const dayData = dataMap.get(dateKey)?.[restaurant.restaurant.name];
-                return dayData ? (showOnly.includes('approved') ? dayData.totalApprovedBookings : 0) + 
+                const dayData = dataMap.get(dateKey)?.[restaurant.name];
+                return dayData ? (showOnly.includes('approved') ? dayData.totalApprovedAndConfirmedBookings : 0) + 
                               (showOnly.includes('pending') ? dayData.totalPendingBookings : 0) : 0;
             });
             
             datasets.push({
-                label: restaurant.restaurant.name,
+                label: restaurant.name,
                 data: filteredData,
                 borderColor: color,
                 backgroundColor: color + '20',
@@ -113,7 +137,14 @@ export default function () {
     
     // Update KPIs from API data
     function updateKPIs() {
-        if (!dashboardData) return;
+        if (!dashboardData || !dashboardData.data || dashboardData.data.length === 0) {
+            // Reset KPIs to zero when no data
+            $('.kpi-value').eq(0).text('0');
+            $('.kpi-value').eq(1).text('0');
+            $('.kpi-value').eq(2).text('0');
+            $('.kpi-value').eq(3).text('0');
+            return;
+        }
         
         const allRestaurantsChecked = $('input[name="restaurant"][value="all"]').is(':checked');
         const selectedRestaurants = allRestaurantsChecked 
@@ -124,20 +155,21 @@ export default function () {
             ? dashboardData.data 
             : selectedRestaurants.length === 0 
                 ? [] 
-                : dashboardData.data.filter(r => selectedRestaurants.includes(r.restaurant.name));
+                : dashboardData.data.filter(r => selectedRestaurants.includes(r.name));
         
         const totals = filteredData.reduce((acc, restaurant) => {
             restaurant.summaries.forEach(day => {
-                acc.bookings += day.totalApprovedBookings;
+                acc.bookings += day.totalApprovedAndConfirmedBookings;
                 acc.pending += day.totalPendingBookings;
-                acc.guests += day.totalGuests;
+                acc.cancelled += day.totalCanceledBookings;
+                acc.guests += day.totalApprovedAndConfirmedGuests;
             });
             return acc;
-        }, { bookings: 0, pending: 0, guests: 0 });
+        }, { bookings: 0, pending: 0, cancelled: 0, guests: 0 });
         
         $('.kpi-value').eq(0).text(totals.bookings);
         $('.kpi-value').eq(1).text(totals.pending);
-        $('.kpi-value').eq(2).text('6');
+        $('.kpi-value').eq(2).text(totals.cancelled);
         $('.kpi-value').eq(3).text(totals.guests);
     }
     
@@ -154,15 +186,22 @@ export default function () {
             </label>
         `);
         
-        // Add individual restaurant options
-        dashboardData.data.forEach(restaurant => {
+        // Add individual restaurant options only if data exists
+        if (dashboardData && dashboardData.data && dashboardData.data.length > 0) {
+            dashboardData.data.forEach(restaurant => {
+                restaurantFilter.append(`
+                    <label class="check">
+                        <input type="checkbox" name="restaurant" value="${restaurant.name}">
+                        <span>${restaurant.name}</span>
+                    </label>
+                `);
+            });
+        } else {
+            // Show message when no restaurants
             restaurantFilter.append(`
-                <label class="check">
-                    <input type="checkbox" name="restaurant" value="${restaurant.restaurant.name}">
-                    <span>${restaurant.restaurant.name}</span>
-                </label>
+                <div class="text-muted text-sm mt-2">No restaurants found</div>
             `);
-        });
+        }
     }
     
     // Initialize chart
@@ -195,11 +234,15 @@ export default function () {
     }
     
     // Initialize
-    loadDashboardData(currentPeriod);
-    populateRestaurantFilter();
-    updateKPIs();
-    updateChart();
-    updateDynamicText();
+    initializeDashboard();
+    
+    async function initializeDashboard() {
+        await loadDashboardData(currentPeriod);
+        populateRestaurantFilter();
+        updateKPIs();
+        updateChart();
+        updateDynamicText();
+    }
     
     // Handle filter changes
     $(document).on('change', 'input[name="showOnly"], input[name="restaurant"]', function() {
@@ -214,12 +257,12 @@ export default function () {
     });
     
     // Handle time period buttons
-    $('.dash-chip').on('click', function() {
+    $('.dash-chip').on('click', async function() {
         $('.dash-chip').removeClass('is-active');
         $(this).addClass('is-active');
         
         currentPeriod = $(this).text().toLowerCase().trim().includes('7') ? '7days' : '30days';
-        loadDashboardData(currentPeriod);
+        await loadDashboardData(currentPeriod);
         updateKPIs();
         updateChart();
         updateDynamicText();

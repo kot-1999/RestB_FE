@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "build": "npm run clean && npm run build:html && npm run build:copy",
-    "build:copy": "cpy \"src/**/*.{css,js,png,jpg,svg,webp}\" dist/ --parents",
+    "build:copy": "cpy \"src/**/*.{css,js,png,svg,webp,gif,ico,jpg,jpeg,JPG,JPEG}\" dist/ --parents",
     "build:html": "pug src/ --out dist/ --basedir src/",
     "clean": "rm -rf dist",
     "compile-pug": "pug src/ --out dist/src/ --basedir src/",
@@ -13,7 +13,8 @@
     "dev": "npm run build && npx serve dist -p 3055",
     "devmon": "npm run build && (npm run watch & npx serve dist -p 3055)",
     "build:watch": "npm run build && npm run watch",
-    "watch": "nodemon --watch src --watch src/assets --watch dist --ext pug,css,js,html --exec 'npm run build'"
+    "watch": "nodemon --watch src --watch src/assets --watch dist --ext pug,css,js,html --exec 'npm run build'",
+    "start": "npm run dev"
   },
   "devDependencies": {
     "clean-css-cli": "^5.6.3",

@@ -173,7 +173,7 @@ export default class ApiRequest {
             }
 
             const response = await fetch(
-                `${this.baseUrl}/${authData?.role ? 'b2b' : 'b2c'}/v1/authorization/logout`, {
+                `${this.baseUrl}/${(authData?.role === 'Admin' || authData?.role === 'Employee') ? 'b2b' : 'b2c'}/v1/authorization/logout`, {
                     headers: {
                         'Content-Type': 'application/json',
                         Authorization: `Bearer ${authData.token}`,
@@ -203,7 +203,7 @@ export default class ApiRequest {
             }
 
             const response = await fetch(
-                `${this.baseUrl}/${authData?.role ? 'b2b' : 'b2c'}/v1/${authData?.role ? 'admin' : 'user'}/${id ?? authData.id}`, {
+                `${this.baseUrl}/${(authData?.role === 'Admin' || authData?.role === 'Employee') ? 'b2b' : 'b2c'}/v1/${(authData?.role === 'Admin' || authData?.role === 'Employee') ? 'admin' : 'user'}/${id ?? authData.id}`, {
                     headers: {
                         'Content-Type': 'application/json',
                         ...(authData.token && { Authorization: `Bearer ${authData.token}` }),
@@ -229,7 +229,7 @@ export default class ApiRequest {
             }
 
             const response = await fetch(
-                `${this.baseUrl}/${authData?.role ? 'b2b' : 'b2c'}/v1/${authData?.role ? 'admin' : 'user'}`, {
+                `${this.baseUrl}/${(authData?.role === 'Admin' || authData?.role === 'Employee') ? 'b2b' : 'b2c'}/v1/${(authData?.role === 'Admin' || authData?.role === 'Employee') ? 'admin' : 'user'}`, {
                     headers: {
                         'Content-Type': 'application/json',
                         ...(authData.token && { Authorization: `Bearer ${authData.token}` }),
@@ -291,11 +291,11 @@ export default class ApiRequest {
             return null;
         }
     }
-
+    //getBookings b2c (user bookings) and b2b (bookings for a specific restaurant)
     static async getBookings(queryParams = {}, restaurantID = null) {
         try {
             const authData = LocalStorage.get('auth');
-            const userType = authData?.role ? 'b2b' : 'b2c';
+            const userType = (authData?.role === 'Admin' || authData?.role === 'Employee') ? 'b2b' : 'b2c';
             
             // Build query string from parameters
             const queryString = new URLSearchParams();
@@ -350,11 +350,11 @@ export default class ApiRequest {
             return null;
         }
     }
-
+    //getBookingSummaries b2b only endpoint
     static async getBookingSummaries(queryParams = {}) {
         try {
             const authData = LocalStorage.get('auth');
-            if (!authData?.role) {
+            if (!authData?.role || (authData.role !== 'Admin' && authData.role !== 'Employee')) {
                 throw new Error('getBookingSummaries - This endpoint is for B2B users only');
             }
 
@@ -395,40 +395,38 @@ export default class ApiRequest {
             return null;
         }
     }
-static async getDashboard(queryParams) {
+    //getDashboard b2b only endpoint
+    static async getDashboard(queryParams = {}) {
         try {
-            // Make a real HTTP request (will show in Network tab)
-            // const authData = LocalStorage.get('auth')
-            // if (!authData?.token) {
-            //     throw new Error('getDashboard - Token is required for this action')
-            // }
-            //
-            // const queryString = new URLSearchParams(queryParams).toString()
-            // const response = await fetch(`${this.baseUrl}/b2b/v1/dashboard?${queryString}`, {
-            //     method: 'GET',
-            //     headers: {
-            //         'Content-Type': 'application/json',
-            //         'Authorization': `Bearer ${authData.token}`
-            //     }
-            // });
-            //
-            // // If the real API doesn't exist, fall back to mock data
-            // if (!response.ok) {
-            //     throw new Error('API not available, using mock data');
-            // }
-            //
-            // const data = await response.json();
-            // return {
-            //     success: true,
-            //     data: data,
-            //     message: 'Dashboard data fetched successfully'
-            // };
+            const authData = LocalStorage.get('auth');
+            if (!authData?.token) {
+                throw new Error('getDashboard - Token is required for this action');
+            }
 
-            // For now, return mock response
-            return mockResponses.getDashboard(queryParams)
+            // Build query string for timeFrom and timeTo parameters
+            const queryString = new URLSearchParams(queryParams).toString();
+            const url = `${this.baseUrl}/b2b/v1/dashboard/${queryString ? `?${queryString}` : ''}`;
+            
+            const headers = {
+                'Content-Type': 'application/json'
+            };
+
+            // Add authorization header for authenticated users
+            if (authData?.token) {
+                headers.Authorization = `Bearer ${authData.token}`;
+            }
+
+            const response = await fetch(url, {
+                method: 'GET',
+                headers
+            });
+
+            await ApiRequest.checkResponse(response);
+            const res = await response.json();
+            return res;
         } catch (error) {
-            showError(error)
-            return null
+            showError(error);
+            return null;
         }
     }
 }

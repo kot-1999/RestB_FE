@@ -13,6 +13,8 @@ export default class ApiRequest {
         }
     }
 
+    // SHARED: File upload
+    // ENDPOINT: PUT /upload-url
     static async uploadFile(file) {
         try {
             const authData = LocalStorage.get('auth')
@@ -55,6 +57,8 @@ export default class ApiRequest {
 
 
 
+    // B2B & B2C: User registration
+    // ENDPOINTS: POST /b2c/v1/authorization/register, POST /b2b/v1/authorization/register
     static async register(body, userType = 'b2c') {
         try {
             if (userType === 'b2c') {
@@ -80,6 +84,8 @@ export default class ApiRequest {
         }
     }
 
+    // B2B & B2C: User login
+    // ENDPOINTS: POST /b2c/v1/authorization/login, POST /b2b/v1/authorization/login
     static async login(body, userType = 'b2c') {
         try {
             const response = await fetch(
@@ -103,6 +109,8 @@ export default class ApiRequest {
         }
     }
 
+    // B2B & B2C: Forgot password
+    // ENDPOINTS: POST /b2c/v1/authorization/forgot-password, POST /b2b/v1/authorization/forgot-password
     static async forgotPassword(body, userType = 'b2c') {
         try {
             const response = await fetch(
@@ -123,6 +131,8 @@ export default class ApiRequest {
         }
     }
 
+    // B2B & B2C: Reset password
+    // ENDPOINTS: POST /b2c/v1/authorization/reset-password, POST /b2b/v1/authorization/reset-password
     static async resetPassword(token, userType, newPassword) {
         try {
             const response = await fetch(
@@ -144,6 +154,8 @@ export default class ApiRequest {
         }
     }
 
+    // B2B: Employee registration
+    // ENDPOINT: POST /b2b/v1/authorization/employee/register
     static async registerEmployee(token, body) {
         try {
             const response = await fetch(
@@ -165,6 +177,8 @@ export default class ApiRequest {
         }
     }
 
+    // B2B & B2C: User logout
+    // ENDPOINTS: GET /b2c/v1/authorization/logout, GET /b2b/v1/authorization/logout
     static async logout() {
         try {
             const authData = LocalStorage.get('auth')
@@ -195,6 +209,8 @@ export default class ApiRequest {
         }
     }
 
+    // B2B & B2C: Get user profile
+    // ENDPOINTS: GET /b2c/v1/user/{userID}, GET /b2b/v1/admin/{adminID}
     static async getProfile(id = null) {
         try {
             const authData = LocalStorage.get('auth')
@@ -221,6 +237,8 @@ export default class ApiRequest {
         }
     }
 
+    // B2B & B2C: Update user profile
+    // ENDPOINTS: PATCH /b2c/v1/user/, PATCH /b2b/v1/admin/
     static async updateProfile(data) {
         try {
             const authData = LocalStorage.get('auth')
@@ -255,6 +273,8 @@ export default class ApiRequest {
     }
 
 
+    // B2C: Get restaurants (missing B2B endpoint)
+    // ENDPOINT: GET /b2c/v1/restaurant/
     static async getRestaurants(queryParams = {}) {
         try {
             // Build query string from parameters
@@ -291,7 +311,8 @@ export default class ApiRequest {
             return null;
         }
     }
-    //getBookings b2c (user bookings) and b2b (bookings for a specific restaurant)
+    // B2B & B2C: Get bookings
+    // ENDPOINTS: GET /b2c/v1/booking/, GET /b2b/v1/booking/{restaurantID}
     static async getBookings(queryParams = {}, restaurantID = null) {
         try {
             const authData = LocalStorage.get('auth');
@@ -350,7 +371,8 @@ export default class ApiRequest {
             return null;
         }
     }
-    //getBookingSummaries b2b only endpoint
+    // B2B: Get booking summaries
+    // ENDPOINT: GET /b2b/v1/booking/
     static async getBookingSummaries(queryParams = {}) {
         try {
             const authData = LocalStorage.get('auth');
@@ -395,7 +417,8 @@ export default class ApiRequest {
             return null;
         }
     }
-    //getDashboard b2b only endpoint
+    // B2B: Get dashboard data
+    // ENDPOINT: GET /b2b/v1/dashboard/
     static async getDashboard(queryParams = {}) {
         try {
             const authData = LocalStorage.get('auth');

@@ -1,11 +1,30 @@
-
 form#updateProfileForm
-    img#userAvatar(src="{{user.avatarURL}}{{admin.avatarURL}}" width="200")
-    input(type="file" name="avatar" accept="image/*")
-    input(type="text" name="firstName" value="{{user.firstName}}{{admin.firstName}}" required minlength="3" maxlength="255")
-    input(type="text" name="lastName" value="{{user.lastName}}{{admin.lastName}}" required minlength="3" maxlength="255")
-    input(type="email" name="email" value="{{user.email}}{{admin.email}}" required)
-    input(type="text" name="phone" value="{{user.phone}}{{admin.phone}}" required)
-    input(type="text" name="role" value="{{admin.role}}" readonly)
+
+    div.avatar-section
+        label Profile Picture
+        img#userAvatar(src="{{user.avatarURL}}{{admin.avatarURL}}" width="200")
+        input(type="file" name="avatar" accept="image/*")
+
+    div.form-fields
+
+        div.field-group
+            label First Name
+            input(type="text" name="firstName" value="{{user.firstName}}{{admin.firstName}}" required minlength="3" maxlength="255")
+
+        div.field-group
+            label Last Name
+            input(type="text" name="lastName" value="{{user.lastName}}{{admin.lastName}}" required minlength="3" maxlength="255")
+
+        div.field-group
+            label Email
+            input(type="email" name="email" value="{{user.email}}{{admin.email}}" required)
+
+        div.field-group
+            label Phone Number
+            input(type="text" name="phone" value="{{user.phone}}{{admin.phone}}" required)
+
+        div#profile-role.field-group.trackable
+            label Role
+            input(type="text" name="role" value="{{admin.role}}" readonly)
 
     button(type="submit") Update Profile

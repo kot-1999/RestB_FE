@@ -8,6 +8,8 @@ export const Template =  {
         resetPassword: () => document.getElementById('reset-password-template').innerHTML,
         mybooking: () => document.getElementById("mybooking-template").innerHTML,
         adminrestaurants: () => document.getElementById("admin-restaurants-template").innerHTML,
+        registerEmployee: () => document.getElementById("register-employee-template").innerHTML,
+
     },
     component: {
         login: () => document.getElementById('login-component-template').innerHTML,

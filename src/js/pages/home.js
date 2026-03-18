@@ -7,6 +7,7 @@ export default async function () {
 
     const res = await ApiRequest.getRestaurants();
 
+
     const restaurantCardTemplate = Template.component.restaurantCard()
 
     res.restaurants.forEach((restaurant) => {

@@ -1,64 +1,71 @@
 section.dashboard-page.home-page
-    .dashboard-wrap
-        .dash-header
-            .dash-title
-                h1 RestBoo
-                p.dash-sub Discover and book standout restaurants near you, with live opening status, curated vibes, and effortless filtering.
+    .home-layout
+        aside.home-sidebar
+            .home-sidebar-panel
+                .home-sidebar-head
+                    h1 RestBoo
+                    p.home-sidebar-copy Find the right restaurant for your date, location, and party size — then book in a few clicks.
 
-        .dash-card
-            .dash-card-head
-                h2 Restaurants
-                .dash-card-actions
-                    span.dash-chip.is-active Amount
-                    span.dash-chip.js-restaurant-count 0
+                form.home-filters.js-home-filters
+                    .home-filter-group
+                        label.home-filter-label(for="restaurant-search") Search
+                        input#restaurant-search.home-input.js-filter-search(
+                            type="text"
+                            placeholder="Where? e.g. London Bridge"
+                        )
 
-            .home-filters
-                .home-filter-group.home-filter-group--search
-                    input.home-filter-input.js-filter-search(
-                        type="text"
-                        placeholder="Search restaurants..."
-                    )
+                    .home-filter-group
+                        label.home-filter-label(for="restaurant-date") Date
+                        input#restaurant-date.home-input.js-filter-date(
+                            type="date"
+                        )
 
-                .home-filter-group
-                    select.home-filter-select.js-filter-type
-                        option(value="") All types
+                    .home-filter-group
+                        label.home-filter-label(for="restaurant-guests") Guests
+                        input#restaurant-guests.home-input.js-filter-guests(
+                            type="number"
+                            min="1"
+                            max="20"
+                            value="2"
+                            placeholder="Guests"
+                        )
 
-                .home-filter-group
-                    select.home-filter-select.js-filter-city
-                        option(value="") All cities
+                    .home-filter-group
+                        label.home-filter-label(for="restaurant-radius") Radius
+                        select#restaurant-radius.home-select.js-filter-radius
+                            option(value="20" selected) 20km
+                            option(value="2") 2km
+                            option(value="5") 5km
+                            option(value="10") 10km
+                            option(value="50") 50km
 
-                .home-filter-group
-                    input.home-filter-input.js-filter-date(
-                        type="date"
-                    )
+                    .home-filter-group
+                        label.home-filter-label(for="restaurant-category") Category
+                        select#restaurant-category.home-select.js-category-dropdown
+                            option(value="") Add category
 
-                .home-filter-group
-                    input.home-filter-time.js-filter-time(
-                        type="time"
-                        step="900"
-                        lang="en-GB"
-                    )
+                    .home-category-selected.js-selected-categories
 
-                .home-filter-group
-                    select.home-filter-select.js-filter-guests
-                        option(value="") Any guests
-                        each guestCount in [0,1,2,3,4,5,6,7,8,9,10]
-                            option(value=guestCount)= guestCount + ' guests'
+                    .home-filter-actions
+                        button.home-submit-btn(type="submit") Search
 
-                .home-filter-toggle
-                    label.home-toggle
-                        input.js-filter-open-now(type="checkbox")
-                        span Open now
+        .home-main
+            .dash-card
+                .dash-card-head
+                    h2 Restaurants
+                    .dash-card-actions
+                        span.dash-chip.is-active Amount
+                        span.dash-chip.js-restaurant-count 0
 
-            .restaurants-loading(style="display: none;")
-                .skeleton-grid
-                    each _ in [1, 2, 3]
-                        .skeleton-card
-                            .skeleton-banner
-                            .skeleton-content
-                                .skeleton-line.title
-                                .skeleton-line.desc
-                                .skeleton-line.meta
+                .restaurants-loading(style="display: none;")
+                    .skeleton-grid
+                        each _ in [1, 2, 3]
+                            .skeleton-card
+                                .skeleton-banner
+                                .skeleton-content
+                                    .skeleton-line.title
+                                    .skeleton-line.desc
+                                    .skeleton-line.meta
 
-            .restaurants-results.js-restaurants-results
-                // Filtered sections/cards injected here
+                .restaurants-container
+                    // Restaurant cards injected here

@@ -1,22 +1,21 @@
-a.restaurant-card(href="/restaurants/{{_id}}")
+a.restaurant-card(href="restaurant-details?id={{id}}")
     .restaurant-banner
         img(src="{{bannerURL}}" alt="{{name}}")
         .restaurant-overlay
-            span.restaurant-cta {{ctaLabel}}
+            span.restaurant-cta View
 
     .restaurant-content
-        h3.restaurant-name {{name}}
-
-        .restaurant-tags
-            span.restaurant-tag {{restaurantType}}
-            | {{#isLate}}
-            span.restaurant-tag.restaurant-tag--late 🍸 Late Bar
-            | {{/isLate}}
-
-        .restaurant-meta
-            span.restaurant-status(class="{{statusClass}}") {{statusLabel}}
+        .restaurant-top
+            h3.restaurant-name {{name}}
+            | {{#isAutoApproved}}
+            span.restaurant-badge Available now
+            | {{/isAutoApproved}}
 
         p.restaurant-description {{description}}
+
+        .restaurant-meta-line
+            span.restaurant-type {{restaurantType}}
+            span.restaurant-city {{address.city}}
 
         .restaurant-brand
             img.brand-logo(src="{{brand.logoURL}}" alt="{{brand.name}}")
@@ -26,13 +25,13 @@ a.restaurant-card(href="/restaurants/{{_id}}")
 
         .restaurant-details
             .restaurant-detail-row
-                span.detail-label City
-                span.detail-value {{address.city}}
-
-            .restaurant-detail-row
                 span.detail-label Address
                 span.detail-value {{address.building}} {{address.street}}
 
             .restaurant-detail-row
                 span.detail-label Postcode
                 span.detail-value {{address.postcode}}
+
+            .restaurant-detail-row
+                span.detail-label Hours
+                span.detail-value {{openingHours}}

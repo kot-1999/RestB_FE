@@ -2914,3 +2914,7 @@ input[readonly] {
     transform: translateY(-1px);
     box-shadow: 0 10px 20px rgba(44,146,136,0.25);
 }
+
+.trackable {
+    display: none;
+}

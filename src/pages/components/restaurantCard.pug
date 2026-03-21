@@ -1,4 +1,4 @@
-a.restaurant-card(href="#restaurant-details?id={{id}}")
+a.restaurant-card(href="/restaurant-details?id={{id}}")
     .restaurant-banner
         img(src="{{bannerURL}}" alt="{{name}}")
         .restaurant-overlay
@@ -15,7 +15,6 @@ a.restaurant-card(href="#restaurant-details?id={{id}}")
 
         .restaurant-meta-line
             span.restaurant-type {{restaurantType}}
-            span.restaurant-city {{address.city}}
 
         .restaurant-brand
             img.brand-logo(src="{{brand.logoURL}}" alt="{{brand.name}}")
@@ -26,7 +25,7 @@ a.restaurant-card(href="#restaurant-details?id={{id}}")
         .restaurant-details
             .restaurant-detail-row
                 span.detail-label Address
-                span.detail-value {{address.building}} {{address.street}}
+                span.detail-value {{address.building}} {{address.street}}, {{address.city}}
 
             .restaurant-detail-row
                 span.detail-label Postcode

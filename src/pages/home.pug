@@ -33,16 +33,23 @@ section.dashboard-page.home-page
                     .home-filter-group
                         label.home-filter-label(for="restaurant-radius") Radius
                         select#restaurant-radius.home-select.js-filter-radius
-                            option(value="20" selected) 20km
                             option(value="2") 2km
                             option(value="5") 5km
                             option(value="10") 10km
+                            option(value="20") 20km
                             option(value="50") 50km
+                            option(value="100" selected) 100km
+
 
                     .home-filter-group
                         label.home-filter-label(for="restaurant-category") Category
-                        select#restaurant-category.home-select.js-category-dropdown
-                            option(value="") Add category
+                        input#restaurant-category.home-input.js-category-input(
+                            type="text"
+                            list="restaurant-category-options"
+                            placeholder="Type to add category"
+                            autocomplete="off"
+                        )
+                        datalist#restaurant-category-options.js-category-datalist
 
                     .home-category-selected.js-selected-categories
 

@@ -452,4 +452,22 @@ export default class ApiRequest {
             return null;
         }
     }
+
+    static async getRestaurant(id) {
+        try {
+            const response = await fetch(`${this.baseUrl}/b2c/v1/restaurant/${id}`, {
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            });
+
+            await ApiRequest.checkResponse(response);
+            const res = await response.json();
+            return res;
+        } catch (error) {
+            showError(error);
+            return null;
+        }
+    }
 }

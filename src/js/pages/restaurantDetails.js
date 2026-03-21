@@ -1,4 +1,20 @@
+import ApiRequest from "../utils/ApiRequest.js";
+
 export default async function () {
+
+  const hash = window.location.hash
+
+  const queryString = hash.includes('?')
+      ? hash.substring(hash.indexOf('?'))
+      : ''
+
+  const params = new URLSearchParams(queryString)
+
+  const restaurantID = params.get('id')
+  const restaurant = await ApiRequest.getRestaurant(restaurantID)
+
+  console.log('!!!!!!!!!', restaurantID, restaurant)
+
   document.addEventListener("DOMContentLoaded", () => {
     // ===== Helpers =====
     const $ = (sel) => document.querySelector(sel);

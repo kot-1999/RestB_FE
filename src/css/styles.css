@@ -2014,9 +2014,9 @@ input[readonly] {
 ================================ */
 
 .home-page{
-    max-width: 1200px;
+    width: min(1600px, calc(100vw - 48px));
     margin: 0 auto;
-    padding: 22px 16px 60px;
+    padding: 22px 0 60px;
     overflow: visible;
 }
 
@@ -2026,15 +2026,15 @@ input[readonly] {
 
 .home-layout{
     display: grid;
-    grid-template-columns: 320px minmax(0, 1fr);
-    gap: 18px;
+    grid-template-columns: 280px minmax(0, 1fr);
+    gap: 20px;
     align-items: start;
     overflow: visible;
 }
 
 .home-sidebar{
     position: sticky;
-    top: 18px;
+    top: 16px;
     align-self: start;
     min-width: 0;
 }
@@ -2050,28 +2050,27 @@ input[readonly] {
 .home-sidebar-panel{
     background: rgba(255,255,255,0.06);
     border: 1px solid rgba(255,255,255,0.10);
-    border-radius: 18px;
-    padding: 18px;
-    box-shadow: 0 18px 55px rgba(0,0,0,0.25);
+    border-radius: 16px;
+    padding: 12px 14px;
+    box-shadow: 0 14px 40px rgba(0,0,0,0.22);
 }
 
 .home-sidebar-head{
-    margin-bottom: 16px;
+    margin-bottom: 10px;
 }
 
 .home-sidebar-head h1{
-    margin: 0 0 6px;
-    font-size: 30px;
+    margin: 0 0 4px;
+    font-size: 26px;
     color: #fff;
-    letter-spacing: -0.4px;
+    letter-spacing: -0.3px;
 }
 
 .home-sidebar-copy{
     margin: 0;
-    color: rgba(255,255,255,0.75);
-    font-weight: 600;
-    line-height: 1.5;
-    font-size: 14px;
+    font-size: 12.5px;
+    line-height: 1.35;
+    color: rgba(255,255,255,0.72);
 }
 
 /* ===============================
@@ -2135,46 +2134,46 @@ input[readonly] {
 .home-filters{
     display: flex;
     flex-direction: column;
-    gap: 12px;
+    gap: 8px;
 }
 
 .home-filter-group{
     display: flex;
     flex-direction: column;
-    gap: 6px;
+    gap: 3px;
 }
 
 .home-filter-label{
-    font-size: 12px;
+    font-size: 10px;
     font-weight: 800;
-    color: rgba(255,255,255,0.82);
-    letter-spacing: 0.02em;
+    color: rgba(255,255,255,0.75);
+    letter-spacing: .04em;
 }
 
 .home-input,
 .home-select{
-    height: 38px;
+    height: 32px;
     width: 100%;
-    padding: 0 12px;
-    border-radius: 10px;
-    border: 1px solid rgba(255,255,255,0.12);
+    padding: 0 10px;
+    border-radius: 8px;
+    border: 1px solid rgba(255,255,255,0.10);
     background: rgba(255,255,255,0.08);
     color: #fff;
-    font-size: 13px;
+    font-size: 12.5px;
     font-weight: 600;
     outline: none;
-    transition: border-color .14s ease, background .14s ease, box-shadow .14s ease;
+    transition: all .14s ease;
 }
 
 .home-input::placeholder{
-    color: rgba(255,255,255,0.52);
+    color: rgba(255,255,255,0.45);
 }
 
 .home-input:focus,
 .home-select:focus{
     border-color: rgba(174,240,219,0.6);
     background: rgba(255,255,255,0.12);
-    box-shadow: 0 0 0 3px rgba(44,146,136,0.12);
+    box-shadow: 0 0 0 2px rgba(44,146,136,0.15);
 }
 
 .home-select option{
@@ -2182,36 +2181,62 @@ input[readonly] {
     color: #111827;
 }
 
+/* Category typeahead input */
+.js-category-input{
+    background: linear-gradient(180deg, rgba(255,255,255,0.10), rgba(255,255,255,0.08));
+    border-color: rgba(255,255,255,0.14);
+}
+
+.js-category-input::placeholder{
+    color: rgba(255,255,255,0.48);
+}
+
+/* Selected categories */
 .home-category-selected{
     display: flex;
-    gap: 6px;
+    gap: 8px;
     flex-wrap: wrap;
+    min-height: 10px;
+    margin-top: 2px;
 }
 
 .home-chip{
     display: inline-flex;
     align-items: center;
-    gap: 6px;
-    height: 32px;
-    padding: 0 10px;
+    gap: 7px;
+    height: 30px;
+    padding: 0 10px 0 12px;
     border-radius: 999px;
-    background: rgba(255,255,255,0.12);
-    border: 1px solid rgba(255,255,255,0.12);
+    background: rgba(255,255,255,0.14);
+    border: 1px solid rgba(255,255,255,0.16);
     color: #fff;
-    font-size: 12px;
-    font-weight: 700;
+    font-size: 11px;
+    font-weight: 800;
+    box-shadow: inset 0 1px 0 rgba(255,255,255,0.06);
 }
 
 .home-chip-remove{
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 16px;
+    height: 16px;
     border: none;
-    background: transparent;
+    border-radius: 999px;
+    background: rgba(255,255,255,0.12);
     padding: 0;
     margin: 0;
     cursor: pointer;
-    font-size: 13px;
+    font-size: 11px;
     font-weight: 900;
-    color: rgba(255,255,255,0.78);
+    color: rgba(255,255,255,0.82);
     line-height: 1;
+    transition: background .12s ease, transform .12s ease;
+}
+
+.home-chip-remove:hover{
+    background: rgba(255,255,255,0.20);
+    transform: scale(1.05);
 }
 
 .home-filter-actions{
@@ -2220,21 +2245,20 @@ input[readonly] {
 
 .home-submit-btn{
     width: 100%;
-    height: 38px;
-    padding: 0 14px;
-    border-radius: 10px;
+    height: 32px;
+    border-radius: 8px;
     border: none;
+    font-size: 12.5px;
+    font-weight: 800;
     background: linear-gradient(135deg, #aef0db, #2c9288);
     color: #06311f;
-    font-size: 13px;
-    font-weight: 800;
     cursor: pointer;
     transition: transform .12s ease, box-shadow .12s ease;
 }
 
 .home-submit-btn:hover{
     transform: translateY(-1px);
-    box-shadow: 0 12px 24px rgba(44,146,136,0.22);
+    box-shadow: 0 10px 20px rgba(44,146,136,0.25);
 }
 
 /* ===============================
@@ -2244,7 +2268,7 @@ input[readonly] {
 .home-page .restaurants-container{
     display: grid;
     grid-template-columns: repeat(2, minmax(0, 1fr));
-    gap: 14px;
+    gap: 16px;
 }
 
 /* ===============================
@@ -2375,10 +2399,13 @@ input[readonly] {
     color: #475569;
 }
 
-.restaurant-type::after{
-    content: "•";
-    margin-left: 10px;
-    color: rgba(15,23,42,0.25);
+.restaurant-type{
+    display: inline-flex;
+    align-items: center;
+    padding: 4px 8px;
+    border-radius: 999px;
+    background: rgba(15,23,42,0.05);
+    color: #334155;
 }
 
 .restaurant-brand{
@@ -2485,7 +2512,7 @@ input[readonly] {
 .skeleton-grid{
     display: grid;
     grid-template-columns: repeat(2, minmax(0, 1fr));
-    gap: 14px;
+    gap: 16px;
 }
 
 .skeleton-card{
@@ -2555,6 +2582,23 @@ input[readonly] {
 }
 
 /* ===============================
+   LARGE SCREENS
+================================ */
+
+@media (min-width: 1400px){
+    .home-layout{
+        grid-template-columns: 290px minmax(0, 1fr);
+        gap: 22px;
+    }
+
+    .home-page .restaurants-container,
+    .skeleton-grid{
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: 18px;
+    }
+}
+
+/* ===============================
    RESPONSIVE
 ================================ */
 
@@ -2574,6 +2618,11 @@ input[readonly] {
 }
 
 @media (max-width: 640px){
+    .home-page{
+        width: calc(100vw - 24px);
+        padding: 18px 0 40px;
+    }
+
     .home-page .restaurants-container,
     .skeleton-grid{
         grid-template-columns: 1fr;
@@ -2589,332 +2638,12 @@ input[readonly] {
         gap: 4px;
     }
 
-    .home-page{
-        padding: 18px 12px 40px;
-    }
-
     .home-sidebar-head h1{
         font-size: 28px;
     }
 }
-/* ===============================
-   COMPACT SIDEBAR (PREMIUM)
-================================ */
-
-.home-sidebar-panel{
-    position: sticky;
-    top: 16px;
-
-    background: rgba(255,255,255,0.06);
-    border: 1px solid rgba(255,255,255,0.10);
-    border-radius: 16px;
-
-    padding: 12px 14px; /* tighter */
-
-    box-shadow: 0 14px 40px rgba(0,0,0,0.22);
-}
-
-/* Header */
-.home-sidebar-head{
-    margin-bottom: 10px;
-}
-
-.home-sidebar-head h1{
-    margin: 0 0 4px;
-    font-size: 26px; /* slightly smaller */
-    letter-spacing: -0.3px;
-}
-
-.home-sidebar-copy{
-    margin: 0;
-    font-size: 12.5px;
-    line-height: 1.35;
-    color: rgba(255,255,255,0.72);
-}
-
-/* Filters stack */
-.home-filters{
-    display: flex;
-    flex-direction: column;
-    gap: 8px; /* tighter */
-}
-
-/* Group */
-.home-filter-group{
-    display: flex;
-    flex-direction: column;
-    gap: 3px;
-}
-
-/* Labels */
-.home-filter-label{
-    font-size: 10px;
-    font-weight: 800;
-    color: rgba(255,255,255,0.75);
-    letter-spacing: .04em;
-}
-
-/* Inputs */
-.home-input,
-.home-select{
-    height: 32px; /* compact */
-    padding: 0 10px;
-
-    border-radius: 8px;
-    border: 1px solid rgba(255,255,255,0.10);
-    background: rgba(255,255,255,0.08);
-
-    color: #fff;
-    font-size: 12.5px;
-    font-weight: 600;
-
-    outline: none;
-
-    transition: all .14s ease;
-}
-
-.home-input::placeholder{
-    color: rgba(255,255,255,0.45);
-}
-
-/* Focus */
-.home-input:focus,
-.home-select:focus{
-    border-color: rgba(174,240,219,0.6);
-    background: rgba(255,255,255,0.12);
-    box-shadow: 0 0 0 2px rgba(44,146,136,0.15);
-}
-
-/* Dropdown options */
-.home-select option{
-    background: #fff;
-    color: #111827;
-}
-
-/* Category chips */
-.home-category-selected{
-    display: flex;
-    flex-wrap: wrap;
-    gap: 6px;
-    margin-top: 2px;
-}
-
-.home-chip{
-    display: inline-flex;
-    align-items: center;
-    gap: 5px;
-
-    height: 28px;
-    padding: 0 9px;
-
-    border-radius: 999px;
-
-    background: rgba(255,255,255,0.12);
-    border: 1px solid rgba(255,255,255,0.12);
-
-    color: #fff;
-    font-size: 11px;
-    font-weight: 700;
-}
-
-.home-chip-remove{
-    background: none;
-    border: none;
-    cursor: pointer;
-
-    font-size: 12px;
-    font-weight: 900;
-
-    color: rgba(255,255,255,0.7);
-}
-
-/* Button */
-.home-filter-actions{
-    margin-top: 4px;
-}
-
-.home-submit-btn{
-    width: 100%;
-    height: 32px;
-
-    border-radius: 8px;
-    border: none;
-
-    font-size: 12.5px;
-    font-weight: 800;
-
-    background: linear-gradient(135deg, #aef0db, #2c9288);
-    color: #06311f;
-
-    cursor: pointer;
-
-    transition: transform .12s ease, box-shadow .12s ease;
-}
-
-.home-submit-btn:hover{
-    transform: translateY(-1px);
-    box-shadow: 0 10px 20px rgba(44,146,136,0.25);
-}
-
-/* ===============================
-   COMPACT SIDEBAR (PREMIUM)
-================================ */
-
-.home-sidebar-panel{
-    position: sticky;
-    top: 16px;
-
-    background: rgba(255,255,255,0.06);
-    border: 1px solid rgba(255,255,255,0.10);
-    border-radius: 16px;
-
-    padding: 12px 14px; /* tighter */
-
-    box-shadow: 0 14px 40px rgba(0,0,0,0.22);
-}
-
-/* Header */
-.home-sidebar-head{
-    margin-bottom: 10px;
-}
-
-.home-sidebar-head h1{
-    margin: 0 0 4px;
-    font-size: 26px; /* slightly smaller */
-    letter-spacing: -0.3px;
-}
-
-.home-sidebar-copy{
-    margin: 0;
-    font-size: 12.5px;
-    line-height: 1.35;
-    color: rgba(255,255,255,0.72);
-}
-
-/* Filters stack */
-.home-filters{
-    display: flex;
-    flex-direction: column;
-    gap: 8px; /* tighter */
-}
-
-/* Group */
-.home-filter-group{
-    display: flex;
-    flex-direction: column;
-    gap: 3px;
-}
-
-/* Labels */
-.home-filter-label{
-    font-size: 10px;
-    font-weight: 800;
-    color: rgba(255,255,255,0.75);
-    letter-spacing: .04em;
-}
-
-/* Inputs */
-.home-input,
-.home-select{
-    height: 32px; /* compact */
-    padding: 0 10px;
-
-    border-radius: 8px;
-    border: 1px solid rgba(255,255,255,0.10);
-    background: rgba(255,255,255,0.08);
-
-    color: #fff;
-    font-size: 12.5px;
-    font-weight: 600;
-
-    outline: none;
-
-    transition: all .14s ease;
-}
-
-.home-input::placeholder{
-    color: rgba(255,255,255,0.45);
-}
-
-/* Focus */
-.home-input:focus,
-.home-select:focus{
-    border-color: rgba(174,240,219,0.6);
-    background: rgba(255,255,255,0.12);
-    box-shadow: 0 0 0 2px rgba(44,146,136,0.15);
-}
-
-/* Dropdown options */
-.home-select option{
-    background: #fff;
-    color: #111827;
-}
-
-/* Category chips */
-.home-category-selected{
-    display: flex;
-    flex-wrap: wrap;
-    gap: 6px;
-    margin-top: 2px;
-}
-
-.home-chip{
-    display: inline-flex;
-    align-items: center;
-    gap: 5px;
-
-    height: 28px;
-    padding: 0 9px;
-
-    border-radius: 999px;
-
-    background: rgba(255,255,255,0.12);
-    border: 1px solid rgba(255,255,255,0.12);
-
-    color: #fff;
-    font-size: 11px;
-    font-weight: 700;
-}
-
-.home-chip-remove{
-    background: none;
-    border: none;
-    cursor: pointer;
-
-    font-size: 12px;
-    font-weight: 900;
-
-    color: rgba(255,255,255,0.7);
-}
-
-/* Button */
-.home-filter-actions{
-    margin-top: 4px;
-}
-
-.home-submit-btn{
-    width: 100%;
-    height: 32px;
-
-    border-radius: 8px;
-    border: none;
-
-    font-size: 12.5px;
-    font-weight: 800;
-
-    background: linear-gradient(135deg, #aef0db, #2c9288);
-    color: #06311f;
-
-    cursor: pointer;
-
-    transition: transform .12s ease, box-shadow .12s ease;
-}
-
-.home-submit-btn:hover{
-    transform: translateY(-1px);
-    box-shadow: 0 10px 20px rgba(44,146,136,0.25);
-}
-
 .trackable {
     display: none;
 }
+
+

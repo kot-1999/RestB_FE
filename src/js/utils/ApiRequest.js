@@ -273,39 +273,39 @@ export default class ApiRequest {
     }
 
 
-    // B2C: Get restaurants (missing B2B endpoint)
-    // ENDPOINT: GET /b2c/v1/restaurant/
     static async getRestaurants(queryParams = {}) {
         try {
-            // Build query string from parameters
             const queryString = new URLSearchParams();
-            
-            // Add query parameters if they exist
-            if (queryParams.search) queryString.append('search', queryParams.search);
-            if (queryParams.radius) queryString.append('radius', queryParams.radius);
-            if (queryParams.brandID) queryString.append('brandID', queryParams.brandID);
-            if (queryParams.date) queryString.append('date', queryParams.date);
-            if (queryParams.categories && Array.isArray(queryParams.categories)) {
-                queryParams.categories.forEach(cat => queryString.append('categories', cat));
-            }
-            if (queryParams.page) queryString.append('page', queryParams.page);
-            if (queryParams.limit) queryString.append('limit', queryParams.limit);
 
-            const url = queryString.toString() 
+            if (queryParams.search) queryString.append("search", queryParams.search);
+            if (queryParams.radius) queryString.append("radius", queryParams.radius);
+            if (queryParams.brandID) queryString.append("brandID", queryParams.brandID);
+            if (queryParams.date) queryString.append("date", queryParams.date);
+
+            // ✅ FIXED: categories must be array
+            if (queryParams.categories && Array.isArray(queryParams.categories)) {
+                queryParams.categories.forEach((category) => {
+                    queryString.append("categories[]", category);
+                });
+            }
+
+            if (queryParams.page) queryString.append("page", queryParams.page);
+            if (queryParams.limit) queryString.append("limit", queryParams.limit);
+
+            const url = queryString.toString()
                 ? `${this.baseUrl}/b2c/v1/restaurant/?${queryString.toString()}`
                 : `${this.baseUrl}/b2c/v1/restaurant/`;
 
             const response = await fetch(url, {
-                method: 'GET',
+                method: "GET",
                 headers: {
-                    'Content-Type': 'application/json'
+                    "Content-Type": "application/json"
                 }
             });
 
             await ApiRequest.checkResponse(response);
-            
-            const res = await response.json();
-            return res;
+
+            return await response.json();
         } catch (error) {
             showError(error);
             return null;
@@ -442,6 +442,24 @@ export default class ApiRequest {
             const response = await fetch(url, {
                 method: 'GET',
                 headers
+            });
+
+            await ApiRequest.checkResponse(response);
+            const res = await response.json();
+            return res;
+        } catch (error) {
+            showError(error);
+            return null;
+        }
+    }
+
+    static async getRestaurant(id) {
+        try {
+            const response = await fetch(`${this.baseUrl}/b2c/v1/restaurant/${id}`, {
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json'
+                }
             });
 
             await ApiRequest.checkResponse(response);

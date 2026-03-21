@@ -1,15 +1,36 @@
-div.restaurant-card
+a.restaurant-card(href="/#restaurant-details?id={{id}}")
     .restaurant-banner
         img(src="{{bannerURL}}" alt="{{name}}")
+        .restaurant-overlay
+            span.restaurant-cta View
+
     .restaurant-content
-        h3.restaurant-name {{name}}
+        .restaurant-top
+            h3.restaurant-name {{name}}
+            | {{#isAutoApproved}}
+            span.restaurant-badge Available now
+            | {{/isAutoApproved}}
+
         p.restaurant-description {{description}}
+
+        .restaurant-meta-line
+            span.restaurant-type {{restaurantType}}
+
         .restaurant-brand
             img.brand-logo(src="{{brand.logoURL}}" alt="{{brand.name}}")
-            span.brand-name {{brand.name}}
-        .restaurant-address
-            span.address {{address.building}} {{address.street}}, {{address.city}}
-            span.postcode {{address.postcode}}
-        .restaurant-availability
-            span.available-date Available: {{availability.date}}
-            span.guest-limit Up to {{availability.autoConfirmGuestsLimit}} guests
+            .restaurant-brand-text
+                span.restaurant-brand-label Brand
+                span.brand-name {{brand.name}}
+
+        .restaurant-details
+            .restaurant-detail-row
+                span.detail-label Address
+                span.detail-value {{address.building}} {{address.street}}, {{address.city}}
+
+            .restaurant-detail-row
+                span.detail-label Postcode
+                span.detail-value {{address.postcode}}
+
+            .restaurant-detail-row
+                span.detail-label Hours
+                span.detail-value {{openingHours}}

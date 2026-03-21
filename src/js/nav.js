@@ -40,10 +40,6 @@ $(document).ready(function () {
             location.hash = '#profile'
         })
 
-        $(document).on('click', '#restaurant-details', () => {
-            location.hash = '#restaurant-details'
-        })
-
         $(document).on('click', '#dashboard', () => {
             location.hash = '#dashboard'
         })

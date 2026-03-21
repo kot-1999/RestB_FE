@@ -10,6 +10,8 @@ export default function () {
     const $container = $(".restaurants-container");
     const $loading = $(".restaurants-loading");
     const $count = $(".js-restaurant-count");
+    const $categoryInput = $(".js-category-input");
+
     const template = Template.component.restaurantCard();
 
     init();
@@ -17,12 +19,20 @@ export default function () {
     function init() {
         setDefaultDate();
         setDefaultGuests();
-        renderCategoryDropdown();
+        renderCategorySuggestions();
         renderSelectedCategories();
 
         $form.off("submit").on("submit", async (event) => {
             event.preventDefault();
             await loadRestaurants();
+        });
+
+        $categoryInput.off("change").on("change", handleCategoryInput);
+        $categoryInput.off("keydown").on("keydown", function (event) {
+            if (event.key === "Enter") {
+                event.preventDefault();
+                handleCategoryInput.call(this);
+            }
         });
 
         loadRestaurants();
@@ -35,10 +45,13 @@ export default function () {
         try {
             const { filters, guestNumber } = getFilters();
             const response = await ApiRequest.getRestaurants(filters);
+
             const restaurants = response?.restaurants || [];
+            const total = response?.pagination?.total ?? restaurants.length;
 
             renderRestaurants({
                 restaurants,
+                total,
                 guestNumber,
                 template,
                 $container,
@@ -77,33 +90,36 @@ function getFilters() {
     };
 }
 
-function renderCategoryDropdown() {
-    const $dropdown = $(".js-category-dropdown");
+function renderCategorySuggestions() {
+    const $datalist = $(".js-category-datalist");
     const categories = Object.values(RestaurantCategories);
 
-    $dropdown.empty();
-    $dropdown.append(`<option value="">Add category</option>`);
+    $datalist.empty();
 
     categories.forEach((category) => {
-        $dropdown.append(
-            `<option value="${escapeHtml(category)}">${escapeHtml(formatCategoryLabel(category))}</option>`
+        $datalist.append(
+            `<option value="${escapeHtml(formatCategoryLabel(category))}"></option>`
         );
     });
+}
 
-    $dropdown.off("change").on("change", function () {
-        const value = ($(this).val() || "").toString();
+function handleCategoryInput() {
+    const inputValue = ($(this).val() || "").toString().trim();
 
-        if (!value) {
-            return;
-        }
+    if (!inputValue) {
+        return;
+    }
 
-        if (!selectedCategories.includes(value)) {
-            selectedCategories.push(value);
-            renderSelectedCategories();
-        }
-
-        $(this).val("");
+    const matchedCategory = Object.values(RestaurantCategories).find((category) => {
+        return formatCategoryLabel(category).toLowerCase() === inputValue.toLowerCase();
     });
+
+    if (matchedCategory && !selectedCategories.includes(matchedCategory)) {
+        selectedCategories.push(matchedCategory);
+        renderSelectedCategories();
+    }
+
+    $(this).val("");
 }
 
 function renderSelectedCategories() {
@@ -111,16 +127,23 @@ function renderSelectedCategories() {
     $wrap.empty();
 
     selectedCategories.forEach((category) => {
+        const label = formatCategoryLabel(category);
+
         const $chip = $(`
             <div class="home-chip">
-                <span>${escapeHtml(formatCategoryLabel(category))}</span>
-                <button type="button" class="home-chip-remove" aria-label="Remove ${escapeHtml(formatCategoryLabel(category))}" data-category="${escapeHtml(category)}">×</button>
+                <span>${escapeHtml(label)}</span>
+                <button
+                    type="button"
+                    class="home-chip-remove"
+                    aria-label="Remove ${escapeHtml(label)}"
+                    data-category="${escapeHtml(category)}"
+                >×</button>
             </div>
         `);
 
         $chip.find(".home-chip-remove").on("click", function () {
             const categoryToRemove = ($(this).data("category") || "").toString();
-            selectedCategories = selectedCategories.filter((categoryItem) => categoryItem !== categoryToRemove);
+            selectedCategories = selectedCategories.filter((item) => item !== categoryToRemove);
             renderSelectedCategories();
         });
 
@@ -128,7 +151,7 @@ function renderSelectedCategories() {
     });
 }
 
-function renderRestaurants({ restaurants, guestNumber, template, $container, $count }) {
+function renderRestaurants({ restaurants, total, guestNumber, template, $container, $count }) {
     $container.empty();
 
     if (!restaurants.length) {
@@ -147,13 +170,13 @@ function renderRestaurants({ restaurants, guestNumber, template, $container, $co
         $container.append(Mustache.render(template, viewModel));
     });
 
-    $count.text(restaurants.length);
+    $count.text(total);
 }
 
 function buildRestaurantViewModel(restaurant, guestNumber) {
     const categories = Array.isArray(restaurant.categories) ? restaurant.categories : [];
     const restaurantType = categories.length
-        ? categories.slice(0, 2).map(formatCategoryLabel).join(" · ")
+        ? categories.map(formatCategoryLabel).join(" · ")
         : "Restaurant";
 
     const autoConfirmGuestsLimit = Number(restaurant.availability?.autoConfirmGuestsLimit ?? 0);
@@ -214,6 +237,14 @@ function formatCategoryLabel(value) {
         .trim();
 }
 
+function formatOpeningHours(timeFrom, timeTo) {
+    if (!timeFrom || !timeTo) {
+        return "Hours unavailable";
+    }
+
+    return `${timeFrom}-${timeTo}`;
+}
+
 function escapeHtml(value) {
     return String(value)
         .replaceAll("&", "&amp;")
@@ -221,12 +252,4 @@ function escapeHtml(value) {
         .replaceAll(">", "&gt;")
         .replaceAll('"', "&quot;")
         .replaceAll("'", "&#039;");
-}
-
-function formatOpeningHours(timeFrom, timeTo) {
-    if (!timeFrom || !timeTo) {
-        return "Hours unavailable";
-    }
-
-    return ` ${timeFrom}–${timeTo}`;
 }

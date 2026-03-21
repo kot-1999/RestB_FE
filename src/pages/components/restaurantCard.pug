@@ -16,12 +16,6 @@ a.restaurant-card(href="/#restaurant-details?id={{id}}")
         .restaurant-meta-line
             span.restaurant-type {{restaurantType}}
 
-        .restaurant-brand
-            img.brand-logo(src="{{brand.logoURL}}" alt="{{brand.name}}")
-            .restaurant-brand-text
-                span.restaurant-brand-label Brand
-                span.brand-name {{brand.name}}
-
         .restaurant-details
             .restaurant-detail-row
                 span.detail-label Address
@@ -34,3 +28,11 @@ a.restaurant-card(href="/#restaurant-details?id={{id}}")
             .restaurant-detail-row
                 span.detail-label Hours
                 span.detail-value {{openingHours}}
+
+            | {{#brand.name}}
+            .restaurant-detail-row.brand-row
+                span.detail-label Brand
+                .brand-info
+                    img.brand-logo-small(src="{{brand.logoURL}}" alt="{{brand.name}}")
+                    span.detail-value {{brand.name}}
+            | {{/brand.name}}

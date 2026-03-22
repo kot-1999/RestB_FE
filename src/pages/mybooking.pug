@@ -1,160 +1,190 @@
 //- mybooking.pug
 //- Bookings management page - shows all bookings with their statuses
 
-.mybookings-page
-  .mb-container
-    .mb-header
-      h1 My Bookings
-      .mb-subtitle Manage and track all your restaurant reservations
-    
-    //- Filter bar
-    .mb-search
-      input#booking-search(type="search" placeholder="Search bookings...")
-    
-    .mb-tabs
-      .mb-tabs-inner
-        button.mb-tab.active(data-status="all")
-          | All
-          span.mb-count#count-all 0
-        button.mb-tab(data-status="pending")
-          | Pending
-          span.mb-count#count-pending 0
-        button.mb-tab(data-status="confirmed")
-          | Confirmed
-          span.mb-count#count-confirmed 0
-        button.mb-tab(data-status="cancelled")
-          | Cancelled
-          span.mb-count#count-cancelled 0
-        .mb-tab-indicator
-    
-    //- Advanced filters
-    .dash-filters
-      .filter-row
-        .filter-group
-          label Status:
-          select#status-filter(multiple)
-            option(value='Pending') Pending
-            option(value='Confirmed') Confirmed
-            option(value='Cancelled') Cancelled
-            option(value='Completed') Completed
-            option(value='Deleted') Deleted
-            option(value='NoShow') No Show
-        
-        .filter-group
-          label Date Range:
-          .date-range
-            input#date-from(type='date' placeholder='From')
-            input#date-to(type='date' placeholder='To')
-        
-        .filter-group.right
-          label Results per page:
-          select#limit-select
-            option(value='10') 10
-            option(value='25') 25
-            option(value='50') 50
-            option(value='100') 100
-          
-          button.mb-btn#filter-apply Apply Filters
-    
-    //- Bookings container
-    .mb-list#bookings-container
-      //- Bookings will be dynamically loaded here
-      .mb-skeleton
-      .mb-skeleton
-      .mb-skeleton
-    
-    //- Pagination
-    .mb-pagination
-      .mb-page-buttons#page-buttons
-        //- Page buttons will be generated dynamically
-      .mb-page-size
-        | Page
-        input#current-page(type="number" min="1" value="1" style="width: 60px; padding: 4px 8px; margin: 0 8px; border-radius: 8px; border: 1px solid #dcdcdc;")
-        | of
-        span#total-pages 1
-    
-    //- Empty state
-    .mb-empty(style="display: none;")
-      h2 No bookings found
-      p Try adjusting your filters or search terms
-    
-    //- Error state
-    .mb-error(style="display: none;")
-      h2 Error loading bookings
-      p Please try again or contact support
+main.mybookings-page
 
-//- Booking card template (hidden)
-template#booking-card-template
-  .mb-card(data-booking-id="" data-status="")
-    .mb-card-head
-      h3.restaurant-name
-      .mb-badge.status-badge
-    
-    .mb-meta
-      .booking-date
-        strong Date:
-        span.date-value
-      .booking-time
-        strong Time:
-        span.time-value
-      .booking-guests
-        strong Guests:
-        span.guests-value
-      .booking-brand
-        strong Brand:
-        span.brand-value
-    
-    .mb-messages
-      //- Discussion messages will be added here
-    
-    .mb-actions
-      form.status-update-form
-        input(type="hidden" name="bookingID")
-        \        .form-row
-          label New Status:
-          select(name="status" required)
-            option(value="") Select Status
-            option(value="Pending") Pending
-            option(value="Confirmed") Confirmed
-            option(value="Cancelled") Cancelled
-            option(value="Completed") Completed
-            option(value="Deleted") Deleted
-            option(value="NoShow") No Show
-        
-        .form-row
-          label Message (optional):
-          textarea(name="message" placeholder="Add a message..." rows="2")
-        
-        .form-actions
-          button.mb-btn(type="submit") Update Status
-          button.mb-btn.cancel-btn(type="button") Cancel
+  //- Filter bar
+  .bk-filter
+    label Status:
+    select
+      option(value='') All
+      option(value='Approved') Approved
+      option(value='Pending') Pending
+      option(value='Cancelled') Cancelled
+    label From:
+    input(type='date')
+    label To:
+    input(type='date')
 
-//- Discussion message template
-template#discussion-message-template
-  .discussion-message
-    .message-avatar
-      img.avatar-img(src="" alt="" style="display: none;")
-      .avatar-fallback
-    .message-content
-      .message-header
-        .author-name
-        .author-type
-        .message-time
-      .message-text
+  //-
+    ─────────────────────────────────────────
+    CARD 1 — Cancelled by Manager
+    ─────────────────────────────────────────
+  .bk-card
+    img.bk-restaurant-img(src='https://picsum.photos/seed/rest1/800/200' alt='Restaurant photo')
+    .bk-fields
+      .bk-field
+        span.bk-label Date
+        input.bk-input(type='text' value='19/03/2026' readonly)
+      .bk-field
+        span.bk-label Time
+        input.bk-input(type='text' value='19:00' readonly)
+      .bk-field
+        span.bk-label Number of people
+        input.bk-input(type='text' value='3' readonly)
+      .bk-field
+        span.bk-label Restaurant
+        input.bk-input(type='text' value='Pizza/Pasta' readonly)
+      .bk-field.bk-span2
+        span.bk-label Location
+        input.bk-input(type='text' value='UK, London, Haydons rd 123' readonly)
+      .bk-field
+        span.bk-label Phone
+        input.bk-input(type='text' value='+123123123123' readonly)
+      .bk-field.bk-span2
+        span.bk-label Email
+        input.bk-input(type='text' value='user@user.com' readonly)
 
-//- Cancel confirmation modal
-template#cancel-modal-template
-  .mb-modal
-    .mb-modal-backdrop
-    .mb-modal-content
-      h3 Confirm Cancellation
-      p Are you sure you want to cancel this booking? This action cannot be undone.
-      .mb-modal-actions
-        button.mb-modal-cancel Cancel
-        button.mb-modal-confirm Confirm Cancellation
+    hr.bk-divider
 
-//- Toast notification
-template#toast-template
-  .mb-toast
-    span.toast-message
-    button.undo-btn Undo
+    .bk-messages
+      .bk-msg
+        .bk-avatar-placeholder U
+        .bk-bubble
+          strong User:
+          | Can we have seats by the window
+      .bk-msg.manager
+        .bk-avatar-placeholder M
+        .bk-bubble
+          strong Emanuel Versodi:
+          | Our apologies, we don't have enough space on that day
+
+    .bk-actions
+      span.bk-badge.cancelled-manager Cancelled by Manager
+
+  //-
+    ─────────────────────────────────────────
+    CARD 2 — Approved
+    ─────────────────────────────────────────
+  .bk-card
+    img.bk-restaurant-img(src='https://picsum.photos/seed/rest1/800/200' alt='Restaurant photo')
+    .bk-fields
+      .bk-field
+        span.bk-label Date
+        input.bk-input(type='text' value='20/03/2026' readonly)
+      .bk-field
+        span.bk-label Time
+        input.bk-input(type='text' value='19:00' readonly)
+      .bk-field
+        span.bk-label Number of people
+        input.bk-input(type='text' value='7' readonly)
+      .bk-field
+        span.bk-label Restaurant
+        input.bk-input(type='text' value='Pizza/Pasta' readonly)
+      .bk-field.bk-span2
+        span.bk-label Location
+        input.bk-input(type='text' value='UK, London, Haydons rd 123' readonly)
+      .bk-field
+        span.bk-label Phone
+        input.bk-input(type='text' value='+123123123123' readonly)
+      .bk-field.bk-span2
+        span.bk-label Email
+        input.bk-input(type='text' value='user@user.com' readonly)
+
+    hr.bk-divider
+
+    .bk-messages
+      .bk-msg
+        .bk-avatar-placeholder U
+        .bk-bubble
+          strong User:
+          | Can we have seats by the window
+
+    .bk-actions
+      span.bk-badge.approved Approved
+
+  //-
+    ─────────────────────────────────────────
+    CARD 3 — Pending (with approve/cancel actions)
+    ─────────────────────────────────────────
+  .bk-card
+    img.bk-restaurant-img(src='https://picsum.photos/seed/rest1/800/200' alt='Restaurant photo')
+    .bk-fields
+      .bk-field
+        span.bk-label Date
+        input.bk-input(type='text' value='20/03/2026' readonly)
+      .bk-field
+        span.bk-label Time
+        input.bk-input(type='text' value='19:00' readonly)
+      .bk-field
+        span.bk-label Number of people
+        input.bk-input(type='text' value='7' readonly)
+      .bk-field
+        span.bk-label Restaurant
+        input.bk-input(type='text' value='Pizza/Pasta' readonly)
+      .bk-field.bk-span2
+        span.bk-label Location
+        input.bk-input(type='text' value='UK, London, Haydons rd 123' readonly)
+      .bk-field
+        span.bk-label Phone
+        input.bk-input(type='text' value='+123123123123' readonly)
+      .bk-field.bk-span2
+        span.bk-label Email
+        input.bk-input(type='text' value='user@user.com' readonly)
+
+    hr.bk-divider
+
+    .bk-messages
+      .bk-msg
+        .bk-avatar-placeholder U
+        .bk-bubble
+          strong User:
+          | Can we have seats by the window
+
+    .bk-actions
+      .bk-avatar-placeholder M
+      input.bk-msg-input(type='text' placeholder='Leave your message here')
+      button.bk-btn.bk-btn-approve Approve
+      button.bk-btn.bk-btn-cancel Cancel
+      span.bk-badge.pending Pending
+
+  //-
+    ─────────────────────────────────────────
+    CARD 4 — Cancelled by User
+    ─────────────────────────────────────────
+  .bk-card
+    img.bk-restaurant-img(src='https://picsum.photos/seed/rest1/800/200' alt='Restaurant photo')
+    .bk-fields
+      .bk-field
+        span.bk-label Date
+        input.bk-input(type='text' value='20/03/2026' readonly)
+      .bk-field
+        span.bk-label Time
+        input.bk-input(type='text' value='19:00' readonly)
+      .bk-field
+        span.bk-label Number of people
+        input.bk-input(type='text' value='7' readonly)
+      .bk-field
+        span.bk-label Restaurant
+        input.bk-input(type='text' value='Pizza/Pasta' readonly)
+      .bk-field.bk-span2
+        span.bk-label Location
+        input.bk-input(type='text' value='UK, London, Haydons rd 123' readonly)
+      .bk-field
+        span.bk-label Phone
+        input.bk-input(type='text' value='+123123123123' readonly)
+      .bk-field.bk-span2
+        span.bk-label Email
+        input.bk-input(type='text' value='user@user.com' readonly)
+
+    hr.bk-divider
+
+    .bk-messages
+      .bk-msg
+        .bk-avatar-placeholder U
+        .bk-bubble
+          strong User:
+          | Can we have seats by the window
+
+    .bk-actions
+      span.bk-badge.cancelled-user Cancelled by User

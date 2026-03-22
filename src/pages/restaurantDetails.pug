@@ -1,101 +1,107 @@
 div.restaurant-book-page
-    // ===== Banner =====
-    section.rb-banner
-        img.rb-banner-img(src="/assets/img/restaurant2.jpg" alt="Restaurant banner")
-        .rb-banner-overlay
-            h1#rb-name.rb-banner-title Sakura Sushi
+    // --- Top Header: Centered Lux Name + Clean Description ---
+    header.rb-page-header
+        h1#rb-name.rb-banner-title Sakura Sushi
+        p#rb-desc.rb-description No description available.
 
-    // ===== Main two-column content =====
-    section.rb-main
-        // --- Left: Details ---
-        .rb-panel.rb-details
-            h2 Details
+    // --- Main Content Wrapper (Flex Layout) ---
+    section.rb-content-wrapper
+        // --- Column 1 (Left): Sticky Booking Card ---
+        aside.rb-sticky-left
+            .rb-panel.rb-booking
+                h2 Book Here
 
-            .rb-info
-                p
-                    strong Rating:
-                    |  ★★★★☆ (4.4 / 5)
-                p
-                    strong Brand:
-                    |  La benetti
-                p
-                    strong Location:
-                    |  Tallaght
-                p
-                    strong Categories:
-                    |  Japanese Cuisine, Sushi, Ramen
+                .rb-row
+                    .rb-field
+                        label(for="rb-date") Date
+                        input#rb-date(type="date")
 
-            .rb-field
-                label(for="rb-desc") Description
-                textarea#rb-desc(rows="5" placeholder="Write a short description about the restaurant...") Restaurant description
+                    .rb-field
+                        label(for="rb-guests") Number of people
+                        input#rb-guests(type="number" min="1" max="20" value="2")
 
-        // --- Right: Booking ---
-        .rb-panel.rb-booking
-            h2 Confirm Booking
+                .rb-row
+                    .rb-field
+                        label(for="rb-time") Start time
+                        input#rb-time(type="time" value="19:00")
 
-            // Date + People on same line
-            .rb-row
-                .rb-field
-                    label(for="rb-date") Date
-                    input#rb-date(type="date")
+                    .rb-field
+                        label(for="rb-until") End time
+                        input#rb-until(type="time")
 
                 .rb-field
-                    label(for="rb-guests") Number of people
-                    input#rb-guests(type="number" min="1" value="2")
+                    label(for="rb-message") Message
+                    textarea#rb-message(rows="4" placeholder="Any special request for the restaurant?")
 
-            // Time + Until on next line
-            .rb-row
-                .rb-field
-                    label(for="rb-time") Time
-                    input#rb-time(type="time" value="19:00")
+                .rb-booking-actions
+                    button#rb-confirm.rb-btn(type="button" disabled) Confirm Booking
+                    p#rb-msg.rb-msg
 
-                .rb-field
-                    label(for="rb-until") Until
-                    input#rb-until(type="time" readonly value="")
+        // --- Main Flow Area (Center + Right Columns) ---
+        section.rb-main-flow
+            // --- Top Row: Info Card and Square Image (Perfectly Aligned) ---
+            .rb-top-row
+                .rb-panel.rb-details
+                    h3 Information
+                    .rb-info
+                        p
+                            strong Brand:
+                            span#rb-brand La benetti
+                        p
+                            strong Location:
+                            span#rb-location Tallaght
+                        p
+                            strong Categories:
+                            span#rb-categories Japanese Cuisine, Sushi, Ramen
+                        p
+                            strong Opening times:
+                            span#rb-hours 09:00 to 22:00
 
-            .rb-booking-actions
-                button#rb-confirm.rb-btn(type="button" disabled) Confirm Booking
-                p#rb-msg.rb-msg
+                .rb-image-container
+                    img.rb-banner-img(src="/assets/img/restaurant2.jpg" alt="Restaurant banner")
 
-    // ===== Gallery =====
-    section.rb-gallery
-        .rb-section-title
-            h2 Gallery
-            p A little peek before you book.
+            // --- Scroll Area: Gallery & Reviews ---
+            // This area now starts directly under the Info card and Image
+            .rb-scroll-area
+                // --- Gallery Section ---
+                section.rb-gallery
+                    .rb-section-title
+                        h2 Gallery
+                        p A little peek before you book.
 
-        .rb-gallery-grid
-            a.rb-shot(href="#")
-                img(src="/assets/img/restaurant2.jpg" alt="Gallery 1")
-            a.rb-shot(href="#")
-                img(src="/assets/img/restaurant3.jpeg" alt="Gallery 2")
-            a.rb-shot(href="#")
-                img(src="/assets/img/restaurant1.JPG" alt="Gallery 3")
-            a.rb-shot(href="#")
-                img(src="/assets/img/restaurant2.jpg" alt="Gallery 4")
-            a.rb-shot(href="#")
-                img(src="/assets/img/restaurant3.jpeg" alt="Gallery 5")
+                    .rb-gallery-grid#rb-gallery-grid
+                        a.rb-shot(href="#")
+                            img(src="/assets/img/restaurant2.jpg" alt="Gallery 1")
+                        a.rb-shot(href="#")
+                            img(src="/assets/img/restaurant3.jpeg" alt="Gallery 2")
+                        a.rb-shot(href="#")
+                            img(src="/assets/img/restaurant1.JPG" alt="Gallery 3")
+                        a.rb-shot(href="#")
+                            img(src="/assets/img/restaurant2.jpg" alt="Gallery 4")
+                        a.rb-shot(href="#")
+                            img(src="/assets/img/restaurant3.jpeg" alt="Gallery 5")
 
-    // ===== Reviews =====
-    section.rb-reviews
-        .rb-section-title
-            h2 Reviews
-            p Recent feedback from diners.
+                // --- Reviews Section ---
+                section.rb-reviews
+                    .rb-section-title
+                        h2 Reviews
+                        p Recent feedback from diners.
 
-        .rb-review-list
-            article.rb-review
-                .rb-review-top
-                    strong Aoife
-                    span.rb-stars ★★★★★
-                p.rb-review-text “Amazing food and super friendly staff — will definitely be back.”
+                    .rb-review-list
+                        article.rb-review
+                            .rb-review-top
+                                strong Aoife
+                                span.rb-stars ★★★★★
+                            p.rb-review-text “Amazing food and super friendly staff — will definitely be back.”
 
-            article.rb-review
-                .rb-review-top
-                    strong Liam
-                    span.rb-stars ★★★★☆
-                p.rb-review-text “Great vibe, quick service. Portions were solid.”
+                        article.rb-review
+                            .rb-review-top
+                                strong Liam
+                                span.rb-stars ★★★★☆
+                            p.rb-review-text “Great vibe, quick service. Portions were solid.”
 
-            article.rb-review
-                .rb-review-top
-                    strong Emma
-                    span.rb-stars ★★★★☆
-                p.rb-review-text “Really nice place for a casual dinner — the ramen was unreal.”
+                        article.rb-review
+                            .rb-review-top
+                                strong Emma
+                                span.rb-stars ★★★★☆
+                            p.rb-review-text “Really nice place for a casual dinner — the ramen was unreal.”

@@ -539,6 +539,133 @@ body{
     }
 }
 
+/* --- AUTH PAGE (HARD GREY REFINEMENT) --- */
+.auth-page-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 80vh;
+    padding: 20px;
+}
+
+.auth-panel {
+    background: var(--bg-panel); /* Charcoal Panel */
+    border: 1px solid var(--border-soft);
+    border-radius: 12px;
+    padding: 40px;
+    width: 100%;
+    max-width: 450px;
+    box-shadow: var(--shadow-lg);
+    text-align: center;
+}
+
+.auth-header h1 {
+    font-size: 2.2rem;
+    margin: 0 0 8px;
+    letter-spacing: 1px;
+}
+
+.auth-subtitle {
+    font-size: 0.85rem;
+    color: var(--text-muted);
+    margin-bottom: 30px;
+}
+
+/* Switcher (Login/Register) */
+.auth-type-switcher {
+    display: flex;
+    background: var(--bg-black);
+    padding: 4px;
+    border-radius: 8px;
+    margin-bottom: 30px;
+    border: 1px solid var(--border-soft);
+}
+
+.auth-type-btn {
+    flex: 1;
+    padding: 10px;
+    background: transparent;
+    border: none;
+    color: var(--text-muted);
+    font-size: 0.7rem;
+    font-weight: 800;
+    letter-spacing: 1px;
+    cursor: pointer;
+    border-radius: 6px;
+    transition: all 0.2s ease;
+}
+
+.auth-type-btn.active {
+    background: #ffffff;
+    color: #000000;
+}
+
+/* Form Inputs */
+.auth-input-group {
+    text-align: left;
+    margin-bottom: 20px;
+}
+
+.auth-input-group label {
+    display: block;
+    font-size: 0.6rem;
+    font-weight: 900;
+    text-transform: uppercase;
+    color: var(--text-muted);
+    margin-bottom: 6px;
+    letter-spacing: 1px;
+}
+
+.auth-input-group input {
+    width: 100%;
+    background: var(--bg-input);
+    border: 1px solid var(--border-glass);
+    padding: 12px;
+    border-radius: 6px;
+    color: #ffffff;
+    outline: none;
+    transition: border-color 0.2s;
+}
+
+.auth-input-group input:focus {
+    border-color: #ffffff;
+}
+
+/* Submit & Links */
+.auth-submit-btn {
+    width: 100%;
+    padding: 14px;
+    background: #ffffff;
+    color: #000000;
+    border: none;
+    border-radius: 4px;
+    font-weight: 900;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    cursor: pointer;
+    margin-top: 10px;
+    transition: all 0.3s ease;
+}
+
+.auth-submit-btn:hover {
+    background: #e0e0e0;
+    transform: translateY(-2px);
+}
+
+.auth-link-btn {
+    background: transparent;
+    border: none;
+    color: var(--text-muted);
+    font-size: 0.7rem;
+    margin-top: 20px;
+    cursor: pointer;
+    text-decoration: underline;
+    transition: color 0.2s;
+}
+
+.auth-link-btn:hover {
+    color: #ffffff;
+}
 
 
 /* ===============================
@@ -2010,640 +2137,1484 @@ input[readonly] {
 }
 
 /* ===============================
-   HOME PAGE
+   GLOBAL THEME & FONTS
 ================================ */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Playfair+Display:ital,wght@0,800;1,800&display=swap');
 
-.home-page{
-    width: min(1600px, calc(100vw - 48px));
-    margin: 0 auto;
-    padding: 22px 0 60px;
-    overflow: visible;
-}
-
-/* ===============================
-   LAYOUT
-================================ */
-
-.home-layout{
-    display: grid;
-    grid-template-columns: 280px minmax(0, 1fr);
-    gap: 20px;
-    align-items: start;
-    overflow: visible;
-}
-
-.home-sidebar{
-    position: sticky;
-    top: 16px;
-    align-self: start;
-    min-width: 0;
-}
-
-.home-main{
-    min-width: 0;
-}
-
-/* ===============================
-   SIDEBAR
-================================ */
-
-.home-sidebar-panel{
-    background: rgba(255,255,255,0.06);
-    border: 1px solid rgba(255,255,255,0.10);
-    border-radius: 16px;
-    padding: 12px 14px;
-    box-shadow: 0 14px 40px rgba(0,0,0,0.22);
-}
-
-.home-sidebar-head{
-    margin-bottom: 10px;
-}
-
-.home-sidebar-head h1{
-    margin: 0 0 4px;
-    font-size: 26px;
+body {
+    background: #0a0b10;
     color: #fff;
-    letter-spacing: -0.3px;
-}
-
-.home-sidebar-copy{
     margin: 0;
-    font-size: 12.5px;
-    line-height: 1.35;
-    color: rgba(255,255,255,0.72);
+    font-family: 'Inter', sans-serif;
 }
 
 /* ===============================
-   MAIN PANEL
+   HOME PAGE LAYOUT
 ================================ */
 
-.home-page .dash-card{
-    background: rgba(255,255,255,0.06);
-    border: 1px solid rgba(255,255,255,0.10);
-    border-radius: 18px;
-    padding: 18px;
-    box-shadow: 0 18px 55px rgba(0,0,0,0.25);
+.home-page {
+    width: min(1600px, calc(100vw - 40px));
+    margin: 0 auto;
+    padding: 20px 0 60px;
 }
 
-.home-page .dash-card-head{
+.home-layout {
+    display: grid;
+    grid-template-columns: 280px 1fr;
+    gap: 25px;
+    align-items: start;
+}
+
+/* ===============================
+   STICKY SIDEBAR (SEARCH)
+================================ */
+
+.home-sidebar {
+    position: sticky;
+    top: 20px;
+    align-self: start;
+}
+
+.home-sidebar-panel {
+    background: #1c1d22;
+    border: 1px solid rgba(255,255,255,0.08);
+    border-radius: 12px;
+    padding: 20px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+}
+
+.home-sidebar-head h1 {
+    font-family: 'Playfair Display', serif;
+    font-size: 2rem;
+    font-weight: 800;
+    margin: 0 0 8px;
+    color: #fff;
+}
+
+.home-sidebar-copy {
+    font-size: 0.85rem;
+    line-height: 1.5;
+    color: rgba(255,255,255,0.6);
+    margin-bottom: 20px;
+}
+
+/* --- SIDEBAR INPUTS --- */
+.home-filter-group {
+    margin-bottom: 15px;
+}
+
+.home-filter-label {
+    font-size: 0.7rem;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    color: rgba(255,255,255,0.4);
+    margin-bottom: 6px;
+    display: block;
+}
+
+.home-input, .home-select {
+    width: 100%;
+    background: rgba(255,255,255,0.03);
+    border: 1px solid rgba(255,255,255,0.1);
+    border-radius: 6px;
+    padding: 10px;
+    color: #fff;
+    font-size: 0.9rem;
+    box-sizing: border-box;
+}
+
+.home-submit-btn {
+    width: 100%;
+    padding: 12px;
+    background: #fff;
+    color: #000;
+    border: none;
+    border-radius: 6px;
+    font-weight: 700;
+    cursor: pointer;
+    margin-top: 10px;
+    transition: opacity 0.2s;
+}
+
+/* ===============================
+   MAIN CONTENT AREA
+================================ */
+
+.home-main {
+    display: flex;
+    flex-direction: column;
+    gap: 25px;
+}
+
+.dash-card-head {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    gap: 12px;
-    margin-bottom: 14px;
+    margin-bottom: 10px;
 }
 
-.home-page .dash-card-head h2{
+.dash-card-head h2 {
+    font-family: 'Playfair Display', serif;
+    font-size: 2.2rem;
     margin: 0;
+}
+
+.dash-chip {
+    background: #1c1d22;
+    border: 1px solid rgba(255,255,255,0.1);
     color: #fff;
-    font-size: 22px;
-}
-
-.home-page .dash-card-actions{
-    display: flex;
-    gap: 10px;
-    align-items: center;
-}
-
-.home-page .dash-chip{
-    border: 1px solid rgba(255,255,255,0.18);
-    background: rgba(255,255,255,0.10);
-    color: rgba(255,255,255,0.85);
-    padding: 9px 12px;
-    border-radius: 999px;
-    font-weight: 900;
-    line-height: 1;
-}
-
-.home-page .dash-chip.is-active{
-    border: none;
-    color: #06311f;
-    background: linear-gradient(135deg, #aef0db, #2c9288);
-    box-shadow: 0 12px 26px rgba(44,146,136,0.28);
-}
-
-.home-page .dash-chip.js-restaurant-count{
-    pointer-events: none;
-    cursor: default;
+    padding: 6px 14px;
+    border-radius: 20px;
+    font-size: 0.8rem;
+    font-weight: 600;
 }
 
 /* ===============================
-   FILTERS
+   RESTAURANT GRID (3 COLUMNS)
 ================================ */
 
-.home-filters{
+.restaurants-container {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
+}
+
+/* ===============================
+   RESTAURANT CARD (HARD GREY STYLE)
+================================ */
+
+.restaurant-card {
+    background: #1c1d22;
+    border: 1px solid rgba(255,255,255,0.08);
+    border-radius: 12px;
+    overflow: hidden;
+    text-decoration: none;
+    color: #fff;
+    transition: transform 0.2s ease, border-color 0.2s ease;
     display: flex;
     flex-direction: column;
-    gap: 8px;
 }
 
-.home-filter-group{
-    display: flex;
-    flex-direction: column;
-    gap: 3px;
+.restaurant-card:hover {
+    transform: translateY(-4px);
+    border-color: rgba(255,255,255,0.2);
 }
 
-.home-filter-label{
-    font-size: 10px;
-    font-weight: 800;
-    color: rgba(255,255,255,0.75);
-    letter-spacing: .04em;
-}
-
-.home-input,
-.home-select{
-    height: 32px;
+.restaurant-banner {
     width: 100%;
-    padding: 0 10px;
-    border-radius: 8px;
-    border: 1px solid rgba(255,255,255,0.10);
-    background: rgba(255,255,255,0.08);
-    color: #fff;
-    font-size: 12.5px;
-    font-weight: 600;
-    outline: none;
-    transition: all .14s ease;
+    aspect-ratio: 1 / 1; /* Keep it square like the details page */
+    overflow: hidden;
+    background: #2a2b30;
 }
 
-.home-input::placeholder{
-    color: rgba(255,255,255,0.45);
+.restaurant-banner img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.4s ease;
 }
 
-.home-input:focus,
-.home-select:focus{
-    border-color: rgba(174,240,219,0.6);
-    background: rgba(255,255,255,0.12);
-    box-shadow: 0 0 0 2px rgba(44,146,136,0.15);
-}
-
-.home-select option{
-    background: #fff;
-    color: #111827;
-}
-
-/* Category typeahead input */
-.js-category-input{
-    background: linear-gradient(180deg, rgba(255,255,255,0.10), rgba(255,255,255,0.08));
-    border-color: rgba(255,255,255,0.14);
-}
-
-.js-category-input::placeholder{
-    color: rgba(255,255,255,0.48);
-}
-
-/* Selected categories */
-.home-category-selected{
-    display: flex;
-    gap: 8px;
-    flex-wrap: wrap;
-    min-height: 10px;
-    margin-top: 2px;
-}
-
-.home-chip{
-    display: inline-flex;
-    align-items: center;
-    gap: 7px;
-    height: 30px;
-    padding: 0 10px 0 12px;
-    border-radius: 999px;
-    background: rgba(255,255,255,0.14);
-    border: 1px solid rgba(255,255,255,0.16);
-    color: #fff;
-    font-size: 11px;
-    font-weight: 800;
-    box-shadow: inset 0 1px 0 rgba(255,255,255,0.06);
-}
-
-.home-chip-remove{
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    width: 16px;
-    height: 16px;
-    border: none;
-    border-radius: 999px;
-    background: rgba(255,255,255,0.12);
-    padding: 0;
-    margin: 0;
-    cursor: pointer;
-    font-size: 11px;
-    font-weight: 900;
-    color: rgba(255,255,255,0.82);
-    line-height: 1;
-    transition: background .12s ease, transform .12s ease;
-}
-
-.home-chip-remove:hover{
-    background: rgba(255,255,255,0.20);
+.restaurant-card:hover .restaurant-banner img {
     transform: scale(1.05);
 }
 
-.home-filter-actions{
-    margin-top: 4px;
+.restaurant-content {
+    padding: 16px;
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
 }
 
-.home-submit-btn{
+.restaurant-name {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.25rem;
+    margin: 0 0 8px 0;
+    line-height: 1.2;
+}
+
+.restaurant-description {
+    font-size: 0.85rem;
+    color: rgba(255,255,255,0.6);
+    line-height: 1.5;
+    margin-bottom: 15px;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+
+/* Meta info styled like the tags on details page */
+.restaurant-details {
+    margin-top: auto;
+    border-top: 1px solid rgba(255,255,255,0.05);
+    padding-top: 12px;
+}
+
+.restaurant-detail-row {
+    display: flex;
+    justify-content: space-between;
+    font-size: 0.75rem;
+    margin-bottom: 6px;
+}
+
+.detail-label {
+    color: rgba(255,255,255,0.4);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.detail-value {
+    font-weight: 500;
+    color: rgba(255,255,255,0.9);
+    text-align: right;
+}
+
+/* ===============================
+   UTILITIES
+================================ */
+.hidden { display: none !important; }
+
+@media (max-width: 1200px) {
+    .restaurants-container { grid-template-columns: repeat(2, 1fr); }
+}
+
+@media (max-width: 800px) {
+    .home-layout { grid-template-columns: 1fr; }
+    .restaurants-container { grid-template-columns: 1fr; }
+}
+
+/*
+   RESTAURANT DETAILS - REFINED DARK LAYOUT V8
+   - Nav Bar: White, smaller height, square buttons, left-aligned options
+   - Header: Name & Description centered
+   - Layout: Sticky Booking (Left) | Main Flow (Right)
+   - Fix: Info Card and Image aligned perfectly, Gallery/Reviews right underneath
+*/
+
+/* --- NAVIGATION BAR --- */
+.nav-container, nav {
+    background: #ffffff !important;
+    padding: 5px 20px;
+    display: flex;
+    justify-content: flex-start;
+    gap: 5px;
+    border-bottom: 1px solid #eee;
     width: 100%;
-    height: 32px;
-    border-radius: 8px;
-    border: none;
-    font-size: 12.5px;
-    font-weight: 800;
-    background: linear-gradient(135deg, #aef0db, #2c9288);
-    color: #06311f;
-    cursor: pointer;
-    transition: transform .12s ease, box-shadow .12s ease;
+    box-sizing: border-box;
+    height: 45px;
+    align-items: center;
 }
 
-.home-submit-btn:hover{
-    transform: translateY(-1px);
-    box-shadow: 0 10px 20px rgba(44,146,136,0.25);
-}
-
-/* ===============================
-   RESTAURANT GRID
-================================ */
-
-.home-page .restaurants-container{
-    display: grid;
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-    gap: 16px;
-}
-
-/* ===============================
-   RESTAURANT CARD
-================================ */
-
-.restaurant-card{
-    display: block;
+.nav-container a, nav a {
+    color: #000000 !important;
     text-decoration: none;
-    color: inherit;
-    background: #fff;
-    border: 1px solid rgba(15,23,42,0.08);
-    border-radius: 14px;
+    padding: 4px 12px;
+    border-radius: 2px;
+    font-weight: 600;
+    font-size: 0.85rem;
+    transition: all 0.2s;
+    height: 30px;
+    display: flex;
+    align-items: center;
+}
+
+.nav-container a.active, nav a.active,
+.nav-container a:hover, nav a:hover {
+    background: #000000 !important;
+    color: #ffffff !important;
+}
+
+/* --- GLOBAL CONTAINER --- */
+.restaurant-book-page {
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 40px 20px;
+    font-family: 'Inter', sans-serif;
+    color: #fff;
+    background: #0a0b10;
+}
+
+/* --- TOP HEADER (CENTERED) --- */
+.rb-page-header {
+    margin-bottom: 40px;
+    padding-bottom: 20px;
+    text-align: center;
+    width: 100%;
+}
+
+#rb-name.rb-banner-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 3.5rem;
+    font-weight: 800;
+    margin: 0 0 10px 0;
+    color: #fff;
+}
+
+#rb-desc.rb-description {
+    font-size: 1rem;
+    line-height: 1.6;
+    color: rgba(255,255,255,0.7);
+    margin: 0 auto;
+    max-width: 800px;
+}
+
+/* --- MAIN CONTENT STRUCTURE (SIDEBAR + FLOW) --- */
+.rb-content-wrapper {
+    display: flex;
+    justify-content: center;
+    gap: 25px;
+    align-items: flex-start;
+}
+
+/* --- STICKY BOOKING (LEFT) --- */
+.rb-sticky-left {
+    position: sticky;
+    top: 20px;
+    z-index: 10;
+    width: 320px;
+    flex-shrink: 0;
+}
+
+/* --- MAIN FLOW AREA (CENTER + RIGHT) --- */
+.rb-main-flow {
+    display: flex;
+    flex-direction: column;
+    gap: 25px;
+    width: 665px; /* Matches 320px + 320px + 25px gap */
+}
+
+/* --- TOP ROW: INFO CARD AND IMAGE --- */
+.rb-top-row {
+    display: flex;
+    gap: 25px;
+    align-items: stretch; /* Critical: Makes Info and Image same height */
+    width: 100%;
+}
+
+/* Unified Card Style */
+.rb-panel {
+    background: #1c1d22;
+    border: 1px solid rgba(255,255,255,0.08);
+    border-radius: 12px;
+    padding: 20px;
+    color: #fff;
+    box-sizing: border-box;
+}
+
+.rb-panel h2, .rb-panel h3 {
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    color: rgba(255,255,255,0.4);
+    margin: 0 0 15px 0;
+    border-bottom: 1px solid rgba(255,255,255,0.05);
+    padding-bottom: 8px;
+}
+
+/* Info Card Specifics */
+.rb-details {
+    width: 320px;
+    flex-shrink: 0;
+}
+
+.rb-info p {
+    margin: 10px 0;
+    font-size: 0.85rem;
+    display: flex;
+    justify-content: space-between;
+    border-bottom: 1px solid rgba(255,255,255,0.03);
+    padding-bottom: 6px;
+}
+
+.rb-info strong { color: rgba(255,255,255,0.4); font-weight: 400; }
+.rb-info span { text-align: right; font-weight: 500; }
+
+/* Image Specifics (Non-Sticky, Aligned) */
+.rb-image-container {
+    width: 320px;
+    flex-shrink: 0;
+    border-radius: 12px;
     overflow: hidden;
-    box-shadow: 0 8px 22px rgba(15,23,42,0.05);
-    transition: transform .14s ease, box-shadow .14s ease, border-color .14s ease;
+    border: 1px solid rgba(255,255,255,0.1);
 }
 
-.restaurant-card:hover{
-    transform: translateY(-2px);
-    box-shadow: 0 14px 30px rgba(15,23,42,0.08);
-    border-color: rgba(15,23,42,0.12);
-}
-
-.restaurant-card:focus-visible{
-    outline: 2px solid #2c9288;
-    outline-offset: 3px;
-}
-
-.restaurant-banner{
-    position: relative;
-    height: 190px;
-    overflow: hidden;
-    background: #e5e7eb;
-}
-
-.restaurant-banner img{
+.rb-banner-img {
     width: 100%;
     height: 100%;
     object-fit: cover;
-    display: block;
-    transition: transform .2s ease, filter .2s ease;
 }
 
-.restaurant-card:hover .restaurant-banner img{
-    transform: scale(1.02);
-    filter: brightness(0.94);
-}
-
-.restaurant-overlay{
-    position: absolute;
-    inset: 0;
-    background: linear-gradient(to top, rgba(15,23,42,0.22), rgba(15,23,42,0.02));
-    display: flex;
-    align-items: flex-end;
-    justify-content: center;
-    padding-bottom: 16px;
-    opacity: 0;
-    transition: opacity .18s ease;
-}
-
-.restaurant-cta{
-    padding: 7px 12px;
-    border-radius: 999px;
-    background: rgba(15,23,42,0.38);
-    color: #fff;
-    font-size: 12px;
-    font-weight: 800;
-    transform: translateY(8px);
-    opacity: 0;
-    transition: all .18s ease;
-}
-
-.restaurant-card:hover .restaurant-overlay{
-    opacity: 1;
-}
-
-.restaurant-card:hover .restaurant-cta{
-    opacity: 1;
-    transform: translateY(0);
-}
-
-.restaurant-content{
-    padding: 13px;
-}
-
-.restaurant-top{
-    display: flex;
-    align-items: flex-start;
-    justify-content: space-between;
-    gap: 8px;
-    margin-bottom: 8px;
-}
-
-.restaurant-name{
-    margin: 0;
-    font-size: 17px;
-    line-height: 1.2;
-    font-weight: 800;
-    color: #0f172a;
-    letter-spacing: -0.2px;
-}
-
-.restaurant-badge{
-    flex-shrink: 0;
-    padding: 5px 8px;
-    border-radius: 999px;
-    background: rgba(34,197,94,0.12);
-    color: #15803d;
-    font-size: 10px;
-    font-weight: 800;
-}
-
-.restaurant-description{
-    margin: 0 0 10px;
-    font-size: 12px;
-    line-height: 1.5;
-    color: rgba(15,23,42,0.68);
-}
-
-.restaurant-meta-line{
-    display: flex;
-    gap: 10px;
-    flex-wrap: wrap;
-    margin-bottom: 12px;
-    font-size: 12px;
-    font-weight: 700;
-    color: #475569;
-}
-
-.restaurant-type{
-    display: inline-flex;
-    align-items: center;
-    padding: 4px 8px;
-    border-radius: 999px;
-    background: rgba(15,23,42,0.05);
-    color: #334155;
-}
-
-.restaurant-brand{
-    display: flex;
-    align-items: center;
-    gap: 9px;
-    margin-bottom: 12px;
-    padding-top: 10px;
-    border-top: 1px solid rgba(15,23,42,0.08);
-}
-
-.brand-logo{
-    width: 28px;
-    height: 28px;
-    border-radius: 999px;
-    object-fit: cover;
-    display: block;
-    border: 1px solid rgba(15,23,42,0.08);
-    background: #fff;
-}
-
-.restaurant-brand-text{
+/* --- SCROLLABLE CONTENT AREA (GALLERY & REVIEWS) --- */
+.rb-scroll-area {
     display: flex;
     flex-direction: column;
-    gap: 1px;
+    gap: 40px;
+    width: 100%;
 }
 
-.restaurant-brand-label{
-    font-size: 10px;
-    font-weight: 700;
-    color: rgba(15,23,42,0.45);
-    text-transform: uppercase;
-    letter-spacing: .4px;
-}
-
-.brand-name{
-    font-size: 12px;
-    font-weight: 700;
-    color: #334155;
-}
-
-.restaurant-details{
+/* Horizontal Gallery */
+.rb-gallery-grid {
     display: flex;
-    flex-direction: column;
-    gap: 8px;
+    overflow-x: auto;
+    gap: 15px;
+    padding-bottom: 10px;
+    scrollbar-width: none;
 }
 
-.restaurant-detail-row{
+.rb-shot {
+    flex: 0 0 220px;
+    aspect-ratio: 1/1;
+    border-radius: 12px;
+    overflow: hidden;
+    background: #1c1d22;
+}
+
+.rb-shot img { width: 100%; height: 100%; object-fit: cover; }
+
+/* Reviews */
+.rb-review-list {
     display: grid;
-    grid-template-columns: 64px 1fr;
-    gap: 8px;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 20px;
+}
+
+.rb-review {
+    background: #1c1d22;
+    padding: 25px;
+    border-radius: 16px;
+    border: 1px solid rgba(255,255,255,0.05);
+}
+
+.rb-review-top { display: flex; justify-content: space-between; margin-bottom: 8px; }
+.rb-stars { color: #ffc107; font-size: 0.85rem; }
+.rb-review-text { font-size: 0.95rem; color: rgba(255,255,255,0.6); margin: 0; line-height: 1.5; }
+
+/* Booking Form Elements */
+.rb-row {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 12px;
+    margin-bottom: 12px;
+}
+
+.rb-field label {
+    font-size: 0.65rem;
+    text-transform: uppercase;
+    color: rgba(255,255,255,0.3);
+    margin-bottom: 4px;
+    display: block;
+}
+
+.rb-field input, .rb-field textarea {
+    width: 100%;
+    background: rgba(255,255,255,0.03);
+    border: 1px solid rgba(255,255,255,0.1);
+    border-radius: 6px;
+    padding: 10px;
+    color: #fff;
+    font-size: 0.9rem;
+}
+
+.rb-btn {
+    width: 100%;
+    padding: 14px;
+    background: #fff;
+    color: #000;
+    border: none;
+    border-radius: 6px;
+    font-weight: 700;
+    cursor: pointer;
+    margin-top: 10px;
+    transition: opacity 0.2s;
+}
+
+@media (max-width: 1100px) {
+    .rb-content-wrapper { flex-direction: column; align-items: center; }
+    .rb-sticky-left { position: static; width: 100%; max-width: 665px; }
+    .rb-main-flow { width: 100%; max-width: 665px; }
+    .rb-top-row { flex-direction: column; }
+    .rb-details, .rb-image-container { width: 100%; height: auto; }
+    .rb-image-container { aspect-ratio: 1/1; }
+}
+
+/* ---------- Theme / Base (deduped) ---------- */
+:root{
+    /* Slate theme vars */
+    --bg-1: rgba(20,28,45,0.92);
+    --bg-2: rgba(10,12,24,0.92);
+
+    --mint-1: #aef0db;
+    --mint-2: #2c9288;
+    --mint-3: #74bfa6;
+
+    --text: #0f172a;
+    --muted: #6b7280;
+
+    --white: rgba(255,255,255,0.96);
+    --white-2: rgba(255,255,255,0.92);
+
+    --glass: rgba(255,255,255,0.10);
+    --glass-border: rgba(255,255,255,0.12);
+
+    --shadow-lg: 0 18px 55px rgba(0,0,0,0.35);
+    --shadow-md: 0 14px 40px rgba(0,0,0,0.18);
+
+    --r-lg: 22px;
+    --r-md: 18px;
+    --r-sm: 14px;
+    --r-pill: 999px;
+
+    /* Additional dark theme set */
+    --bg-main: #121212;
+    --bg-card: #1a1a1a;
+    --border-soft: #2a2a2a;
+
+    --text-primary: #f5f5f5;
+    --text-muted: #a1a1a1;
+
+    --accent: #c2a46d;      /* muted champagne gold */
+    --accent-soft: #8c7a50;
+}
+
+* { box-sizing: border-box; }
+
+body{
+    margin: 0;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    line-height: 1.6;
+    background: linear-gradient(135deg, var(--bg-1), var(--bg-2));
+    color: var(--text);
+}
+
+/* ===============================
+   HOME PAGE STYLES
+================================ */
+
+.home-page {
+    width: min(1600px, calc(100vw - 40px));
+    margin: 0 auto;
+    padding: 20px 0 60px;
+}
+
+.home-layout {
+    display: grid;
+    grid-template-columns: 280px 1fr;
+    gap: 25px;
     align-items: start;
 }
 
-.detail-label{
-    font-size: 10px;
-    font-weight: 700;
-    color: rgba(15,23,42,0.45);
-    text-transform: uppercase;
-    letter-spacing: .4px;
-}
-
-.detail-value{
-    font-size: 12px;
-    line-height: 1.4;
-    font-weight: 600;
-    color: #334155;
-    word-break: break-word;
-}
-
 /* ===============================
-   EMPTY / ERROR STATES
+   STICKY SIDEBAR (SEARCH)
 ================================ */
 
-.restaurant-empty{
-    grid-column: 1 / -1;
-    padding: 24px;
-    border-radius: 14px;
-    background: #fff;
-    border: 1px solid rgba(15,23,42,0.06);
-    text-align: center;
+.home-sidebar {
+    position: sticky;
+    top: 20px;
+    align-self: start;
 }
 
-.restaurant-empty h3{
+.home-sidebar-panel {
+    background: #1c1d22;
+    border: 1px solid rgba(255,255,255,0.08);
+    border-radius: 12px;
+    padding: 20px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+}
+
+.home-sidebar-head h1 {
+    font-family: 'Playfair Display', serif;
+    font-size: 2rem;
+    font-weight: 800;
     margin: 0 0 8px;
-    color: #0f172a;
-    font-size: 18px;
+    color: #fff;
 }
 
-.restaurant-empty p{
+.home-sidebar-copy {
+    font-size: 0.85rem;
+    line-height: 1.5;
+    color: rgba(255,255,255,0.6);
+    margin-bottom: 20px;
+}
+
+/* --- SIDEBAR INPUTS --- */
+.home-filter-group {
+    margin-bottom: 15px;
+}
+
+.home-filter-label {
+    font-size: 0.7rem;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    color: rgba(255,255,255,0.4);
+    margin-bottom: 6px;
+    display: block;
+}
+
+.home-input, .home-select {
+    width: 100%;
+    background: rgba(255,255,255,0.03);
+    border: 1px solid rgba(255,255,255,0.1);
+    border-radius: 6px;
+    padding: 10px;
+    color: #fff;
+    font-size: 0.9rem;
+    box-sizing: border-box;
+}
+
+.home-submit-btn {
+    width: 100%;
+    padding: 12px;
+    background: #fff;
+    color: #000;
+    border: none;
+    border-radius: 6px;
+    font-weight: 700;
+    cursor: pointer;
+    margin-top: 10px;
+    transition: opacity 0.2s;
+}
+
+/* ===============================
+   MAIN CONTENT AREA
+================================ */
+
+.home-main {
+    display: flex;
+    flex-direction: column;
+    gap: 25px;
+}
+
+.dash-card-head {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 10px;
+}
+
+.dash-card-head h2 {
+    font-family: 'Playfair Display', serif;
+    font-size: 2.2rem;
     margin: 0;
-    color: rgba(15,23,42,0.62);
+    color: #fff;
+}
+
+.dash-chip {
+    background: #1c1d22;
+    border: 1px solid rgba(255,255,255,0.1);
+    color: #fff;
+    padding: 6px 14px;
+    border-radius: 20px;
+    font-size: 0.8rem;
     font-weight: 600;
 }
 
 /* ===============================
-   SKELETONS
+   RESTAURANT GRID (3 COLUMNS)
 ================================ */
 
-.restaurants-loading{
+.restaurants-container {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
+}
+
+/* ===============================
+   RESTAURANT CARD (HARD GREY STYLE)
+================================ */
+
+.restaurant-card {
+    background: #1c1d22;
+    border: 1px solid rgba(255,255,255,0.08);
+    border-radius: 12px;
+    overflow: hidden;
+    text-decoration: none;
+    color: #fff;
+    transition: transform 0.2s ease, border-color 0.2s ease;
+    display: flex;
+    flex-direction: column;
+}
+
+.restaurant-card:hover {
+    transform: translateY(-4px);
+    border-color: rgba(255,255,255,0.2);
+}
+
+.restaurant-banner {
+    width: 100%;
+    aspect-ratio: 1 / 1;
+    overflow: hidden;
+    background: #2a2b30;
+    position: relative;
+}
+
+.restaurant-banner img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.4s ease;
+}
+
+.restaurant-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    transition: opacity 0.3s ease, background 0.3s ease;
+}
+
+.restaurant-card:hover .restaurant-overlay {
+    opacity: 1;
+    background: rgba(0, 0, 0, 0.4);
+}
+
+.restaurant-cta {
+    color: #fff;
+    font-weight: 600;
+    font-size: 0.9rem;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.restaurant-card:hover .restaurant-banner img {
+    transform: scale(1.05);
+}
+
+.restaurant-content {
+    padding: 16px;
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+}
+
+.restaurant-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: start;
+    gap: 10px;
+    margin-bottom: 8px;
+}
+
+.restaurant-name {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.25rem;
+    margin: 0;
+    line-height: 1.2;
+    flex: 1;
+}
+
+.restaurant-badge {
+    background: rgba(174, 240, 219, 0.2);
+    color: #aef0db;
+    padding: 4px 8px;
+    border-radius: 4px;
+    font-size: 0.65rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    white-space: nowrap;
+}
+
+.restaurant-description {
+    font-size: 0.85rem;
+    color: rgba(255,255,255,0.6);
+    line-height: 1.5;
+    margin-bottom: 15px;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+
+.restaurant-meta-line {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-bottom: 12px;
+}
+
+.restaurant-type {
+    font-size: 0.75rem;
+    color: rgba(255,255,255,0.5);
+    text-transform: capitalize;
+}
+
+.restaurant-brand {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 12px;
+    padding: 8px;
+    background: rgba(255,255,255,0.03);
+    border-radius: 6px;
+}
+
+.brand-logo {
+    width: 28px;
+    height: 28px;
+    border-radius: 4px;
+    object-fit: cover;
+}
+
+.restaurant-brand-text {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+}
+
+.restaurant-brand-label {
+    font-size: 0.65rem;
+    color: rgba(255,255,255,0.4);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.brand-name {
+    font-size: 0.8rem;
+    color: #fff;
+    font-weight: 500;
+}
+
+/* Meta info styled like the tags on details page */
+.restaurant-details {
+    margin-top: auto;
+    border-top: 1px solid rgba(255,255,255,0.05);
+    padding-top: 12px;
+}
+
+.restaurant-detail-row {
+    display: flex;
+    justify-content: space-between;
+    font-size: 0.75rem;
+    margin-bottom: 6px;
+}
+
+.detail-label {
+    color: rgba(255,255,255,0.4);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.detail-value {
+    font-weight: 500;
+    color: rgba(255,255,255,0.9);
+    text-align: right;
+}
+
+/* ===============================
+   UTILITIES
+================================ */
+.hidden { display: none !important; }
+
+@media (max-width: 1200px) {
+    .restaurants-container { grid-template-columns: repeat(2, 1fr); }
+}
+
+@media (max-width: 800px) {
+    .home-layout { grid-template-columns: 1fr; }
+    .restaurants-container { grid-template-columns: 1fr; }
+}
+
+/* --- TIGHTEN SIDEBAR SEARCH --- */
+.home-sidebar-panel {
+    padding: 15px; /* Reduced from 20px */
+}
+
+.home-sidebar-head h1 {
+    font-size: 1.5rem; /* Smaller header */
+    margin-bottom: 4px;
+}
+
+.home-sidebar-copy {
+    font-size: 0.8rem;
+    margin-bottom: 15px; /* Less gap */
+    line-height: 1.4;
+}
+
+.home-filter-group {
+    margin-bottom: 10px; /* Tighter spacing between inputs */
+}
+
+.home-filter-label {
+    font-size: 0.65rem; /* Smaller labels */
+    margin-bottom: 4px;
+}
+
+.home-input, .home-select {
+    padding: 8px; /* Thinner inputs */
+    font-size: 0.85rem;
+}
+
+.home-submit-btn {
+    padding: 10px;
+    margin-top: 5px;
+}
+
+/* --- TIGHTEN BRAND ON CARD --- */
+.restaurant-brand {
+    background: transparent; /* Remove the background block */
+    padding: 0;
+    margin-bottom: 8px;
+    border-top: 1px solid rgba(255,255,255,0.05);
+    padding-top: 8px;
+}
+
+.brand-logo {
+    width: 20px; /* Much smaller logo */
+    height: 20px;
+}
+
+.brand-name {
+    font-size: 0.75rem; /* Subtle text */
+    color: rgba(255,255,255,0.6);
+}
+
+/* --- SUBTLE BRAND AT BOTTOM --- */
+.brand-row {
+    margin-top: 8px;
+    padding-top: 8px;
+    border-top: 1px dashed rgba(255, 255, 255, 0.1);
+    align-items: center;
+}
+
+.brand-info {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.brand-logo-small {
+    width: 16px; /* Tiny logo for a subtle look */
+    height: 16px;
+    border-radius: 2px;
+    object-fit: cover;
+    opacity: 0.8;
+}
+
+.brand-row .detail-value {
+    color: rgba(255, 255, 255, 0.5); /* Muted text for the brand name */
+    font-size: 0.7rem;
+}
+
+/* --- PAGE COLOR OVERRIDES --- */
+body {
+    background: #0d1117; /* Deep Navy Background */
+}
+
+.home-main {
+    background: #000000; /* Solid Black Container */
+    padding: 20px;
+    border-radius: 12px;
+    border: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+/* Ensure the sidebar matches the new theme */
+.home-sidebar-panel {
+    background: #000000; /* Sidebar matches the main container */
+}
+/* --- COMPACT SQUARE-ISH CARDS --- */
+.restaurant-banner {
+    aspect-ratio: 1.1 / 1; /* Almost square aspect ratio */
+}
+
+.restaurant-content {
+    padding: 8px 12px; /* Even tighter padding */
+}
+
+.restaurant-description {
+    margin-bottom: 6px; /* Reduced gap */
+    -webkit-line-clamp: 1; /* Only show 1 line of description for maximum compactness */
+}
+
+.restaurant-name {
+    font-size: 1.05rem; /* Slightly smaller for better fit */
+}
+
+.restaurant-details {
+    padding-top: 6px; /* Tighter bottom section */
+}
+/* --- CLEAN UP NESTED CONTAINERS --- */
+.home-main {
+    background: transparent; /* Remove the outer box background */
+    border: none;            /* Remove the outer box border */
+    padding: 0;              /* Remove the outer box padding */
+}
+
+.restaurants-container {
+    background: #000000;      /* Keep only the inner box black */
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    border-radius: 12px;
+    padding: 20px;
+}
+
+/* Align the "Restaurants" title to the new container */
+.dash-card-head {
+    padding: 0 5px;
+    margin-bottom: 15px;
+}
+/* --- MATCH BACKGROUNDS & REMOVE CARD BOXES --- */
+.restaurants-container {
+    background: #1c1d22; /* Matches the color around the "Restaurants" title */
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    border-radius: 12px;
+    padding: 24px;
+}
+
+.restaurant-card {
+    background: transparent; /* Removes the black box around the card */
+    border: none;            /* Removes the card's individual border */
+    box-shadow: none;        /* Removes any shadow "boxes" */
+}
+
+.restaurant-card:hover {
+    background: rgba(255, 255, 255, 0.03); /* Subtle highlight on hover */
+    transform: translateY(-4px);
+    border-radius: 8px;
+}
+
+/* Ensure the header area matches as well */
+.dash-card-head {
+    background: #1c1d22;
+    margin-bottom: 0;
+    padding: 20px 24px 10px;
+    border-top-left-radius: 12px;
+    border-top-right-radius: 12px;
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    border-bottom: none;
+}
+
+/* Connect the header and container seamlessly */
+.restaurants-container {
+    border-top-left-radius: 0;
+    border-top-right-radius: 0;
+}
+/* --- SIDEBAR VISIBILITY FIXES --- */
+
+/* 1. Force dark theme for all dropdowns (Select & Datalist) */
+select, input, datalist {
+    color-scheme: dark; /* This is the "magic" line for browser dropdowns */
+}
+
+.home-select option {
+    background-color: #1c1d22; /* Matches sidebar panel */
+    color: #ffffff;
+}
+
+/* 2. Fix Category Chip Visibility */
+.home-chip {
+    background: #2a2b30; /* Darker grey so it stands out from the black sidebar */
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    color: #ffffff;
+    padding: 6px 10px;
+    border-radius: 6px;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    margin-top: 5px;
+    font-weight: 500;
+    font-size: 0.8rem;
+}
+
+.home-chip-remove {
+    background: rgba(255, 255, 255, 0.1);
+    border: none;
+    color: #ff4d4d; /* Red 'x' for clear action */
+    cursor: pointer;
+    border-radius: 4px;
+    width: 18px;
+    height: 18px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 12px;
+    transition: background 0.2s;
+}
+
+.home-chip-remove:hover {
+    background: rgba(255, 77, 77, 0.2);
+}
+
+/* 3. Improve Search Button Contrast */
+.home-submit-btn {
+    background: #ffffff;
+    color: #000000;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    transition: transform 0.1s, background 0.2s;
+}
+
+.home-submit-btn:hover {
+    background: #e0e0e0;
+    transform: translateY(-1px);
+}
+/* --- MATCH CATEGORY SEARCH TO RADIUS DROPDOWN --- */
+
+/* Force the datalist/input to use the same dark theme as the select box */
+.js-category-input {
+    background-color: #2a2b30; /* Same as the Radius dropdown */
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    color: #ffffff;
+    padding: 8px 10px;
+    border-radius: 6px;
+    font-size: 0.85rem;
+    outline: none;
+    transition: border-color 0.2s;
+}
+
+.js-category-input:focus {
+    border-color: var(--accent); /* Highlights when you type */
+}
+
+/* Ensure the browser's native datalist options match the dark theme */
+input::-webkit-calendar-picker-indicator {
+    filter: invert(1); /* Makes the little dropdown arrow white */
+    cursor: pointer;
+}
+
+/* This forces the popup menu to be dark on Chrome/Edge/Safari */
+input[list] {
+    color-scheme: dark;
+}
+/* --- HIDE AMOUNT LABEL & COUNT --- */
+.dash-card-actions {
+    display: none !important; /* Removes the "Amount" label and count entirely */
+}
+
+.dash-card-head {
+    justify-content: flex-start; /* Aligns the "Restaurants" title to the left */
+}
+
+/* --- SLEEK DASHBOARD BADGES --- */
+.dash-card-actions {
+    display: flex !important;
+    align-items: center;
+    gap: 1px; /* Creates a tiny divider line between the two boxes */
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 4px; /* Edgy, subtle rounding instead of bubbly */
+    overflow: hidden;
+}
+
+/* The "Amount" Label Part */
+.dash-chip {
+    background: #aef0db; /* Your mint accent */
+    color: #06311f;
+    padding: 4px 10px;
+    font-size: 0.65rem;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    border: none;
+    border-radius: 0; /* Flat edge to join the number box */
+    margin: 0;
+}
+
+/* The Number Part (520) */
+.js-restaurant-count {
+    display: block !important;
+    background: transparent;
+    color: #ffffff;
+    padding: 4px 12px;
+    font-size: 0.75rem;
+    font-weight: 700;
+    font-family: 'Inter', sans-serif;
+    letter-spacing: 0.5px;
+}
+
+/* Hover effect for the whole badge */
+.dash-card-actions:hover {
+    border-color: rgba(174, 240, 219, 0.4);
+    transition: border-color 0.2s;
+}
+/* --- MOVE BADGE TO THE FAR RIGHT --- */
+.dash-card-head {
+    display: flex !important;
+    justify-content: space-between !important; /* Pushes title to left, badge to right */
+    align-items: center !important;
+    width: 100%;
+    padding: 15px 24px; /* Balanced padding for the header */
+}
+
+/* Ensure the badge stays as a single unit on the right */
+.dash-card-actions {
+    margin-left: auto; /* Extra insurance to keep it pushed right */
+    display: flex !important;
+}
+/* --- MINIMAL WHITE & BLACK SPLIT BADGE --- */
+.dash-card-actions {
+    display: flex !important;
+    align-items: center;
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    border-radius: 4px; /* Sharp, edgy corners */
+    overflow: hidden;
+}
+
+/* The "Amount" Label (Now Clean White) */
+.dash-chip {
+    background: #ffffff; /* Pure white background */
+    color: #000000;      /* Sharp black text */
+    padding: 4px 12px;
+    font-size: 0.65rem;
+    font-weight: 900;
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    border: none;
+    border-radius: 0;
+    margin: 0;
+}
+
+/* The Number Part (e.g., 520) */
+.js-restaurant-count {
+    display: block !important;
+    background: transparent;
+    color: #ffffff;
+    padding: 4px 14px;
+    font-size: 0.8rem;
+    font-weight: 700;
+    font-family: 'Inter', sans-serif;
+    letter-spacing: 0.5px;
+}
+
+/* Subtle Hover Glow */
+.dash-card-actions:hover {
+    border-color: rgba(255, 255, 255, 0.4);
+    box-shadow: 0 0 10px rgba(255, 255, 255, 0.05);
+    transition: all 0.2s ease;
+}
+
+/* --- FORCE WHITE & BLACK BADGE (NO GREEN) --- */
+
+/* Move the entire badge container to the far right */
+.dash-card-head {
+    display: flex !important;
+    justify-content: space-between !important;
+    align-items: center !important;
     width: 100%;
 }
 
-.skeleton-grid{
+/* The sleek white-and-black split badge */
+.dash-card-head .dash-card-actions {
+    display: flex !important;
+    margin-left: auto !important;
+    background: rgba(255, 255, 255, 0.05) !important;
+    border: 1px solid rgba(255, 255, 255, 0.2) !important;
+    border-radius: 4px !important;
+    overflow: hidden !important;
+}
+
+/* Force the "Amount" label to be pure white with black text */
+.dash-card-head .dash-chip {
+    background: #ffffff !important; /* Force pure white */
+    color: #000000 !important;      /* Force sharp black text */
+    padding: 4px 12px !important;
+    font-size: 0.65rem !important;
+    font-weight: 900 !important;
+    text-transform: uppercase !important;
+    letter-spacing: 1.5px !important;
+    border: none !important;
+    border-radius: 0 !important;
+    margin: 0 !important;
+    box-shadow: none !important; /* Remove any green shadows */
+}
+
+/* The number part (e.g., 520) */
+.dash-card-head .js-restaurant-count {
+    display: block !important;
+    background: transparent !important;
+    color: #ffffff !important;
+    padding: 4px 14px !important;
+    font-size: 0.8rem !important;
+    font-weight: 700 !important;
+}
+/* --- CLEAN UNIFIED SPLIT BADGE (NO DOUBLE BOXES) --- */
+
+/* 1. Reset the header container so it's invisible and pushes to the right */
+.dash-card-head {
+    background: transparent !important;
+    border: none !important;
+    display: flex !important;
+    justify-content: space-between !important;
+    align-items: center !important;
+    padding: 10px 0 !important;
+    margin-bottom: 15px !important;
+}
+
+/* 2. The single, clean split badge on the right */
+.dash-card-actions {
+    display: flex !important;
+    background: transparent !important; /* No outer background */
+    border: 1px solid rgba(255, 255, 255, 0.2) !important;
+    border-radius: 4px !important;
+    overflow: hidden !important;
+    padding: 0 !important;
+    margin: 0 !important;
+}
+
+/* 3. The "Amount" side (Solid White) */
+.dash-chip {
+    background: #ffffff !important;
+    color: #000000 !important;
+    padding: 4px 12px !important;
+    font-size: 0.65rem !important;
+    font-weight: 900 !important;
+    text-transform: uppercase !important;
+    letter-spacing: 1px !important;
+    border: none !important;
+    border-radius: 0 !important;
+    margin: 0 !important;
+}
+
+/* 4. The "Number" side (Transparent with White Text) */
+.js-restaurant-count {
+    display: block !important;
+    color: #ffffff !important;
+    background: transparent !important;
+    padding: 4px 12px !important;
+    font-size: 0.75rem !important;
+    font-weight: 700 !important;
+    margin: 0 !important;
+}
+/* --- 1. CATEGORY SEARCH MATCHES RADIUS (HIGH CONTRAST) --- */
+.js-category-input {
+    background-color: #2a2b30 !important;
+    border: 1px solid rgba(255, 255, 255, 0.15) !important;
+    color: #ffffff !important;
+    padding: 10px 12px !important;
+    border-radius: 6px !important;
+    color-scheme: dark !important; /* Forces the browser popup to be dark/white text */
+}
+
+/* --- 2. SLICKER SEARCH BUTTON --- */
+.home-submit-btn {
+    background: #ffffff !important;
+    color: #000000 !important;
+    font-weight: 900 !important;
+    text-transform: uppercase !important;
+    letter-spacing: 2px !important; /* More space for a "luxury" look */
+    padding: 14px !important;
+    border-radius: 4px !important;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1) !important;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.4) !important;
+}
+
+.home-submit-btn:hover {
+    background: #e0e0e0 !important;
+    transform: translateY(-2px) !important;
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.6) !important;
+}
+
+/* --- 3. "PLAY TRAILER" STYLE CATEGORY CHIPS --- */
+.home-category-selected {
+    display: flex;
+    flex-direction: column; /* Stack them so they don't squish */
+    gap: 8px;
+    margin-top: 12px;
+}
+
+.home-chip {
+    background: rgba(255, 255, 255, 0.05) !important; /* Faded "glass" look */
+    border: 1px solid rgba(255, 255, 255, 0.1) !important;
+    color: #ffffff !important;
+    padding: 10px 16px !important; /* Wide and breathable */
+    border-radius: 4px !important;
+    display: flex !important;
+    justify-content: space-between !important;
+    align-items: center !important;
+    font-size: 0.8rem !important;
+    font-weight: 500 !important;
+    letter-spacing: 0.5px !important;
+    transition: background 0.2s !important;
+}
+
+.home-chip:hover {
+    background: rgba(255, 255, 255, 0.1) !important;
+    border-color: rgba(255, 255, 255, 0.2) !important;
+}
+
+/* The White "X" button */
+.home-chip-remove {
+    background: #ffffff !important; /* Solid white box */
+    color: #000000 !important;      /* Black X */
+    width: 20px !important;
+    height: 20px !important;
+    border-radius: 2px !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    font-size: 14px !important;
+    font-weight: 900 !important;
+    line-height: 1 !important;
+    margin-left: 12px !important;
+    transition: transform 0.2s !important;
+}
+
+.home-chip-remove:hover {
+    transform: scale(1.1) !important;
+    background: #f0f0f0 !important;
+}
+/* --- MAKE CATEGORY SELECT LOOK LIKE RADIUS --- */
+.js-category-input {
+    appearance: none; /* Removes default browser styling */
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' fill='white' viewBox='0 0 16 16'%3E%3Cpath d='M7.247 11.14 2.451 5.658C1.885 5.013 2.345 4 3.204 4h9.592a1 1 0 0 1 .753 1.659l-4.796 5.48a1 1 0 0 1-1.506 0z'/%3E%3C/svg%3E" );
+    background-repeat: no-repeat;
+    background-position: right 10px center;
+    padding-right: 30px !important;
+    cursor: pointer;
+    color-scheme: dark; /* This forces the dropdown list to be dark with white text */
+}
+
+/* Ensure the dropdown options match the dark theme */
+.js-category-input option {
+    background-color: #1c1d22;
+    color: #ffffff;
+}
+/* --- 1. RADIUS & GUESTS ON THE SAME LINE --- */
+.home-filter-row-split {
     display: grid;
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-    gap: 16px;
-}
-
-.skeleton-card{
-    background: #fff;
-    border: 1px solid rgba(15,23,42,0.08);
-    border-radius: 14px;
-    overflow: hidden;
-    box-shadow: 0 8px 22px rgba(15,23,42,0.04);
-}
-
-.skeleton-banner{
-    height: 190px;
-    background: #edf1f5;
-    position: relative;
-    overflow: hidden;
-}
-
-.skeleton-content{
-    padding: 13px;
-}
-
-.skeleton-line{
-    height: 10px;
-    background: #edf1f5;
-    border-radius: 6px;
+    grid-template-columns: 1fr 1fr; /* Two equal columns */
+    gap: 12px;
     margin-bottom: 10px;
-    position: relative;
+}
+
+/* Ensure the labels and inputs inside the split row look tight */
+.home-filter-row-split .home-filter-group {
+    margin-bottom: 0; /* Remove bottom margin since the row handles it */
+}
+
+/* --- 2. SMALLER, COMPACT CATEGORY PILLS (4 PER LINE) --- */
+.home-category-selected {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr); /* Force 4 columns */
+    gap: 6px;
+    margin-top: 10px;
+}
+
+.home-chip {
+    padding: 4px 6px !important; /* Tighten internal space */
+    font-size: 0.65rem !important; /* Smaller text to fit */
+    justify-content: center !important; /* Center content */
+    min-width: 0; /* Allow it to shrink */
+    white-space: nowrap;
     overflow: hidden;
+    text-overflow: ellipsis; /* Truncate if name is too long */
 }
 
-.skeleton-line.title{
-    height: 16px;
-    width: 55%;
-    margin-bottom: 14px;
+.home-chip-remove {
+    width: 14px !important; /* Smaller X box */
+    height: 14px !important;
+    font-size: 10px !important;
+    margin-left: 4px !important;
 }
 
-.skeleton-line.desc{
-    width: 74%;
-}
 
-.skeleton-line.meta{
-    width: 46%;
-    margin-bottom: 0;
-}
-
-.skeleton-banner::after,
-.skeleton-line::after{
-    content: "";
-    position: absolute;
-    top: 0;
-    left: -140%;
-    width: 110%;
-    height: 100%;
-    background: linear-gradient(
-            90deg,
-            rgba(255,255,255,0) 0%,
-            rgba(255,255,255,0.75) 50%,
-            rgba(255,255,255,0) 100%
-    );
-    animation: skeleton-shimmer 1.2s infinite;
-}
-
-@keyframes skeleton-shimmer{
-    100%{
-        left: 140%;
-    }
-}
-
-/* ===============================
-   LARGE SCREENS
-================================ */
-
-@media (min-width: 1400px){
-    .home-layout{
-        grid-template-columns: 290px minmax(0, 1fr);
-        gap: 22px;
-    }
-
-    .home-page .restaurants-container,
-    .skeleton-grid{
-        grid-template-columns: repeat(3, minmax(0, 1fr));
-        gap: 18px;
-    }
-}
-
-/* ===============================
-   RESPONSIVE
-================================ */
-
-@media (max-width: 980px){
-    .home-layout{
-        grid-template-columns: 1fr;
-    }
-
-    .home-sidebar{
-        position: static;
-    }
-
-    .home-page .restaurants-container,
-    .skeleton-grid{
-        grid-template-columns: repeat(2, minmax(0, 1fr));
-    }
-}
-
-@media (max-width: 640px){
-    .home-page{
-        width: calc(100vw - 24px);
-        padding: 18px 0 40px;
-    }
-
-    .home-page .restaurants-container,
-    .skeleton-grid{
-        grid-template-columns: 1fr;
-    }
-
-    .restaurant-banner,
-    .skeleton-banner{
-        height: 180px;
-    }
-
-    .restaurant-detail-row{
-        grid-template-columns: 1fr;
-        gap: 4px;
-    }
-
-    .home-sidebar-head h1{
-        font-size: 28px;
-    }
-}
 .trackable {
     display: none;
 }
-
 

@@ -23,7 +23,6 @@ export default function () {
         if (formData.passwordRepeat !== formData.password) {
             showError(new Error('Passwords dont match'))
         }
-        console.log('token:', token)
 
         await ApiRequest.registerEmployee(token, {
             firstName: formData.firstName,

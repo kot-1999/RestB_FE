@@ -53,11 +53,13 @@ html(lang="en")
         include pages/registerEmployee
     div(style="display:none")
       template#mybooking-template
-            include pages/mybooking
+            include pages/bookings
     div(style="display:none")
       template#admin-restaurants-template
             include pages/adminrestaurants
-
+    div(style="display:none")
+      template#bookings-manage
+        include pages/bookingsManage
 
 
     script(src='https://cdn.jsdelivr.net/npm/sweetalert2@11')

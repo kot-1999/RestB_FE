@@ -6,9 +6,10 @@ import loadProfile from "./pages/profile.js"
 import loadRestaurantDetails from "./pages/restaurantDetails.js"
 import loadDashboard from "./pages/dashboard.js"
 import loadResetPassword from "./pages/resetPassword.js"
+import loadManageBookings from "./pages/bookingsManage.js"
 import ApiRequest from "./utils/ApiRequest.js";
 import {showError, LocalStorage, updateVisibility} from "./utils/helpers.js";
-import loadMyBookings from "./pages/myBooking.js";
+import loadBookings from "./pages/bookings.js";
 import loadAdminRestaurants from "./pages/adminRestaurants.js";
 import registerEmployee from "./pages/registerEmployee.js";
 
@@ -48,8 +49,8 @@ $(document).ready(function () {
             location.hash = '#adminrestaurants'
         })
 
-        $(document).on('click', '#mybooking', () => {
-            location.hash = '#mybooking'
+        $(document).on('click', '#navMyBooking', () => {
+            location.hash = '#bookings'
         })
     } catch (err) {
         showError(err)
@@ -119,10 +120,10 @@ function renderFromHash() {
                 template: Template.page.registerEmployee,
                 loader: registerEmployee
             },
-            "#mybooking": {
+            "#bookings": {
                 template: Template.page.mybooking,
-                loader: loadMyBookings,
-                nav: '#mybooking',
+                loader: loadBookings,
+                nav: '#bookings',
             },
 
             "#adminrestaurants": {
@@ -130,6 +131,11 @@ function renderFromHash() {
                 loader: loadAdminRestaurants,
                 nav: "#adminrestaurants",
             },
+            "#manage-bookings": {
+                template: Template.page.manageBookings,
+                loader: loadManageBookings,
+                nav: "#navManageBookings",
+            }
         }
 
         // Load main page if url hash is not available

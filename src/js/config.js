@@ -9,6 +9,7 @@ export const Template =  {
         mybooking: () => document.getElementById("mybooking-template").innerHTML,
         adminrestaurants: () => document.getElementById("admin-restaurants-template").innerHTML,
         registerEmployee: () => document.getElementById("register-employee-template").innerHTML,
+        manageBookings: () => document.getElementById("bookings-manage").innerHTML,
 
     },
     component: {

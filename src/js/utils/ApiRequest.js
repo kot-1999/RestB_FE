@@ -1,5 +1,4 @@
 import {LocalStorage, showError, showSuccess} from "./helpers.js";
-import {mockResponses} from "./mockData.js";
 
 export default class ApiRequest {
     static baseUrl = 'http://localhost:3000/api'
@@ -101,7 +100,6 @@ export default class ApiRequest {
 
             LocalStorage.set('auth', res.user ?? res.admin)
             showSuccess(res.message)
-            console.log(res)
             return res
         } catch (err) {
             showError(err)
@@ -282,7 +280,6 @@ export default class ApiRequest {
             if (queryParams.brandID) queryString.append("brandID", queryParams.brandID);
             if (queryParams.date) queryString.append("date", queryParams.date);
 
-            // ✅ FIXED: categories must be array
             if (queryParams.categories && Array.isArray(queryParams.categories)) {
                 queryParams.categories.forEach((category) => {
                     queryString.append("categories[]", category);
@@ -383,17 +380,13 @@ export default class ApiRequest {
             // Build query string from parameters
             const queryString = new URLSearchParams();
             
-            // B2B parameters: brandID, statuses, page, limit
-            if (queryParams.brandID) queryString.append('brandID', queryParams.brandID);
-            if (queryParams.statuses && Array.isArray(queryParams.statuses)) {
-                queryParams.statuses.forEach(status => queryString.append('statuses', status));
-            }
+            // B2B parameters: page, limit
             if (queryParams.page) queryString.append('page', queryParams.page);
             if (queryParams.limit) queryString.append('limit', queryParams.limit);
 
             const url = queryString.toString() 
-                ? `${this.baseUrl}/b2b/v1/booking/?${queryString.toString()}`
-                : `${this.baseUrl}/b2b/v1/booking/`;
+                ? `${this.baseUrl}/b2b/v1/booking?${queryString.toString()}`
+                : `${this.baseUrl}/b2b/v1/booking`;
 
             const headers = {
                 'Content-Type': 'application/json'

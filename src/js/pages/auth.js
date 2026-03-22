@@ -30,7 +30,6 @@ function setupButtonGroup(buttonSelector, hiddenInputSelector, dataAttr) {
         } else {
             $('label[for="brandName"], #brandName').show()
         }
-        console.log(value)
     })
 }
 
@@ -78,7 +77,7 @@ const load = () => {
                 }, userType)
             }
         } catch (err) {
-            console.log(err)
+            showError(err)
         }
     })
 }

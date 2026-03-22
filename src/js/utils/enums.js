@@ -64,3 +64,11 @@ export const RestaurantCategories = {
     Brunch: "Brunch",
     Dessert: "Dessert"
 };
+
+export const  BookingStatus = {
+    Pending: 'Pending',
+    Cancelled: 'Cancelled',
+    Completed: 'Completed',
+    Approved: 'Approved',
+    NoShow: 'NoShow',
+}

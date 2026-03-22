@@ -24,8 +24,6 @@ export default function () {
         if (formData.passwordRepeat !== formData.password) {
             showError(new Error('Passwords dont match'))
         }
-        console.log('userType:', userType)
-        console.log('token:', token)
 
         await ApiRequest.resetPassword(token, userType, formData.password)
     })

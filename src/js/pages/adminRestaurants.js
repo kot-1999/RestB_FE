@@ -1,8 +1,6 @@
 // Keep jQuery and jQuery UI loaded globally in your HTML before this script
 
 export default function loadAdminRestaurants() {
-    console.log("AdminRestaurants module loaded");
-
     const $container = $("#restaurants-container");
     const $emptyState = $("#restaurants-empty");
     const $template = $("#restaurant-card-template").html();

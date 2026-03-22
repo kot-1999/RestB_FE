@@ -43,6 +43,18 @@ const elements = [
     {
         id: 'nav-signout',
         disabledFor: [STATE.NO_AUTH]
+    },
+    {
+        id: 'nav-manage-restaurants',
+        disabledFor: [STATE.NO_AUTH, STATE.USER]
+    },
+    {
+        id: 'nav-bookings',
+        disabledFor: [STATE.NO_AUTH, STATE.ADMIN, STATE.EMPLOYEE]
+    },
+    {
+        id: 'nav-manage-bookings',
+        disabledFor: [STATE.NO_AUTH, STATE.USER]
     }
 ]
 
@@ -51,11 +63,9 @@ const magicClassName = 'trackable'
 // Update navigation visibility based on authentication status
 export function updateVisibility() {
     const state = getState()
-    console.log(state)
 
     elements.forEach(({ id, disabledFor }) => {
         const $el = $('#' + id)
-        console.log($el)
         if (!$el.length) {
             return
         }

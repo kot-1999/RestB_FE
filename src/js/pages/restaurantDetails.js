@@ -8,8 +8,6 @@ export default async function () {
   const restaurantID = params.get("id");
   const restaurant = await ApiRequest.getRestaurant(restaurantID);
 
-  console.log("!!!!!!!!!", restaurantID, restaurant);
-
   // Helper function to run initialization logic
   const initPage = () => {
     // ===== Helpers =====

@@ -1,9 +1,6 @@
-import { mockResponses } from '../utils/mockData.js';
 import ApiRequest from '../utils/ApiRequest.js';
 
 export default function () {
-    console.log('Dashboard script loaded');
-    
     let dashboardData = null;
     let currentPeriod = '7days'; // '7days' or '30days'
     
@@ -28,9 +25,7 @@ export default function () {
                 timeFrom: timeFrom.toISOString(),
                 timeTo: timeTo.toISOString()
             });
-            
-            console.log(`Loaded ${period} data:`, dashboardData.range);
-            
+
             // Check if there's no data
             if (!dashboardData.data || dashboardData.data.length === 0) {
                 Swal.fire({
@@ -118,7 +113,6 @@ export default function () {
             });
         });
         
-        console.log(`${currentPeriod} labels:`, labels);
         return { labels, datasets };
     }
     

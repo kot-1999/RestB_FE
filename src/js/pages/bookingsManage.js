@@ -1,12 +1,14 @@
 import Mustache from "../utils/mustache.js";
 import ApiRequest from "../utils/ApiRequest.js";
+import {Template} from "../config.js";
 
 export default async function loadBookingsManage() {
     const restaurantList = document.getElementById("restaurant-list");
 
     // Fetch restaurants with daily summary
-    const response = await ApiRequest.getAdminRestaurants({ page: 1, limit: 20 });
-
+    const response = await ApiRequest.getBookingSummaries({ page: 1, limit: 20 });
+    const restaurantBookingCard = Template.component.restaurantBookingCard()
+    // TODO move to restaurantBookingCard.pug
     if (response && response.restaurants && response.restaurants.length > 0) {
         const template = `
             {{#restaurants}}

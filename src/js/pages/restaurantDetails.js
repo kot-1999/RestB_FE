@@ -49,4 +49,6 @@ export default async function loadRestaurantDetails() {
       galleryContainer.style.whiteSpace = 'nowrap';
     }
   }
+
+  // TODO Add on submit function with console.log
 }

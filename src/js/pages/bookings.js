@@ -1,5 +1,11 @@
 import Mustache from "../utils/mustache.js";
 import ApiRequest from "../utils/ApiRequest.js";
+import {BookingStatus} from "../utils/enums.js";
+import {Template} from "../config.js";
+
+// User: Pending -> Canceled, Approved -> Canceled
+// Admin: Pending -> (Approve, Cancel)
+// Approved -> (Cancel, after booking happened (NoShow, Completed))
 
 export default async function loadBookings() {
     const params = new URLSearchParams(window.location.hash.split("?")[1]);
@@ -11,20 +17,23 @@ export default async function loadBookings() {
             `<div class="col-12 text-center text-white"><p>No restaurant selected.</p></div>`;
         return;
     }
-
     // 1. Fetch Today's Bookings
     const today = new Date();
     today.setHours(0, 0, 0, 0);
     const tomorrow = new Date(today);
-    tomorrow.setDate(today.getDate() + 1);
+    tomorrow.setDate(today.getDate() + 5);
 
+    // TODO Add filters
     const response = await ApiRequest.getBookings({
         dateFrom: today.toISOString(),
         dateTo: tomorrow.toISOString(),
+        statuses: [BookingStatus.NoShow, BookingStatus.Completed, BookingStatus.Approved, BookingStatus.Pending, BookingStatus.Cancelled],
         page: 1,
         limit: 50
     }, restaurantID);
 
+    const bookingCardTemplate = Template.component.bookingCard()
+    const brandTemplate = Template.component.brandCard()
     if (response && response.bookings && response.bookings.length > 0) {
         // Update Restaurant Name in the header
         const titleEl = document.getElementById("dashboardTitle");
@@ -32,6 +41,7 @@ export default async function loadBookings() {
             titleEl.innerHTML = `Bookings for <span style="color:var(--accent-white)">${response.restaurant.name}</span>`;
         }
 
+        // TODO move to bookingCard.pug
         const template = `
             {{#bookings}}
             <div class="bookings-grid-item">

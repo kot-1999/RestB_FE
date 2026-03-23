@@ -60,7 +60,15 @@ html(lang="en")
     div(style="display:none")
       template#bookings-manage
         include pages/bookingsManage
-
+    div(style="display:none")
+      template#booking-card-template
+        include pages/components/bookingCard
+    div(style="display:none")
+      template#brand-card-template
+        include pages/components/brandCard
+    div(style="display:none")
+      template#restaurant-booking-card-template
+        include pages/components/restaurantBookingCard
 
     script(src='https://cdn.jsdelivr.net/npm/sweetalert2@11')
     script(type="module" src="./js/main.js")

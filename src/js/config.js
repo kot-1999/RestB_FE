@@ -18,5 +18,8 @@ export const Template =  {
         forgotPassword: () => document.getElementById('forgot-password-component-template').innerHTML,
         dummyProfileTemplate: () => document.getElementById('dummy-profile-template').innerHTML,
         restaurantCard: () => document.getElementById('restaurant-card-template').innerHTML,
+        bookingCard: () => document.getElementById('booking-card-template').innerHTML,
+        brandCard: () => document.getElementById('brand-card-template').innerHTML,
+        restaurantBookingCard: () => document.getElementById('restaurant-booking-card-template').innerHTML,
     }
 }

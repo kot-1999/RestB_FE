@@ -1,1 +1,20 @@
-h1 Bookings Manage
+div.dashboard-page
+    .dashboard-wrap
+        .dash-header
+            .dash-title
+                h1#dashboardTitle Bookings Manage
+                p#dashboardSub Select a restaurant to manage its bookings.
+            .dash-brand
+                .dash-brand-field
+                    label(for="brand") Brand name
+                    select#brand(name="brand")
+                        // Options will be dynamically loaded by JS
+                        option(value="La Benetti" selected) La Benetti
+                        option(value="Independent") Independent
+                        option(value="Chain") Chain
+                .dash-avatar(title="Admin")
+                    img(src="/assets/img/default-avatar.png" alt="Admin avatar")
+
+        .container.py-5
+            .manage-bookings-container#restaurant-list
+                // Restaurant cards will be rendered here by JavaScript

@@ -1,188 +1,26 @@
+div.dashboard-page
+  .dashboard-wrap
+    .dash-header
+      .dash-title
+        h1#dashboardTitle Bookings for <span style="color:var(--text-main)" id="restaurant-name"></span>
+        p#dashboardSub Today's mission control overview.
+      .dash-brand
+        .dash-brand-field
+          label(for="brand") Brand name
+          select#brand(name="brand")
+            // Options will be dynamically loaded by JS
+            option(value="La Benetti" selected) La Benetti
+            option(value="Independent") Independent
+            option(value="Chain") Chain
+        .dash-avatar(title="Admin")
+          img(src="/assets/img/default-avatar.png" alt="Admin avatar")
 
-main.mybookings-page
+    .container.py-5
+      .row.mb-4
+        .col-md-12
+          .filter-bar.p-3.rounded.booking-filter-bar
+            // Filter elements will go here
+            p.text-white Filters (Coming Soon)
 
-  //- Filter bar
-  .bk-filter
-    label Status:
-    select
-      option(value='') All
-      option(value='Approved') Approved
-      option(value='Pending') Pending
-      option(value='Cancelled') Cancelled
-    label From:
-    input(type='date')
-    label To:
-    input(type='date')
-
-  //-
-    ─────────────────────────────────────────
-    CARD 1 — Cancelled by Manager
-    ─────────────────────────────────────────
-  .bk-card
-    img.bk-restaurant-img(src='https://picsum.photos/seed/rest1/800/200' alt='Restaurant photo')
-    .bk-fields
-      .bk-field
-        span.bk-label Date
-        input.bk-input(type='text' value='19/03/2026' readonly)
-      .bk-field
-        span.bk-label Time
-        input.bk-input(type='text' value='19:00' readonly)
-      .bk-field
-        span.bk-label Number of people
-        input.bk-input(type='text' value='3' readonly)
-      .bk-field
-        span.bk-label Restaurant
-        input.bk-input(type='text' value='Pizza/Pasta' readonly)
-      .bk-field.bk-span2
-        span.bk-label Location
-        input.bk-input(type='text' value='UK, London, Haydons rd 123' readonly)
-      .bk-field
-        span.bk-label Phone
-        input.bk-input(type='text' value='+123123123123' readonly)
-      .bk-field.bk-span2
-        span.bk-label Email
-        input.bk-input(type='text' value='user@user.com' readonly)
-
-    hr.bk-divider
-
-    .bk-messages
-      .bk-msg
-        .bk-avatar-placeholder U
-        .bk-bubble
-          strong User:
-          | Can we have seats by the window
-      .bk-msg.manager
-        .bk-avatar-placeholder M
-        .bk-bubble
-          strong Emanuel Versodi:
-          | Our apologies, we don't have enough space on that day
-
-    .bk-actions
-      span.bk-badge.cancelled-manager Cancelled by Manager
-
-  //-
-    ─────────────────────────────────────────
-    CARD 2 — Approved
-    ─────────────────────────────────────────
-  .bk-card
-    img.bk-restaurant-img(src='https://picsum.photos/seed/rest1/800/200' alt='Restaurant photo')
-    .bk-fields
-      .bk-field
-        span.bk-label Date
-        input.bk-input(type='text' value='20/03/2026' readonly)
-      .bk-field
-        span.bk-label Time
-        input.bk-input(type='text' value='19:00' readonly)
-      .bk-field
-        span.bk-label Number of people
-        input.bk-input(type='text' value='7' readonly)
-      .bk-field
-        span.bk-label Restaurant
-        input.bk-input(type='text' value='Pizza/Pasta' readonly)
-      .bk-field.bk-span2
-        span.bk-label Location
-        input.bk-input(type='text' value='UK, London, Haydons rd 123' readonly)
-      .bk-field
-        span.bk-label Phone
-        input.bk-input(type='text' value='+123123123123' readonly)
-      .bk-field.bk-span2
-        span.bk-label Email
-        input.bk-input(type='text' value='user@user.com' readonly)
-
-    hr.bk-divider
-
-    .bk-messages
-      .bk-msg
-        .bk-avatar-placeholder U
-        .bk-bubble
-          strong User:
-          | Can we have seats by the window
-
-    .bk-actions
-      span.bk-badge.approved Approved
-
-  //-
-    ─────────────────────────────────────────
-    CARD 3 — Pending (with approve/cancel actions)
-    ─────────────────────────────────────────
-  .bk-card
-    img.bk-restaurant-img(src='https://picsum.photos/seed/rest1/800/200' alt='Restaurant photo')
-    .bk-fields
-      .bk-field
-        span.bk-label Date
-        input.bk-input(type='text' value='20/03/2026' readonly)
-      .bk-field
-        span.bk-label Time
-        input.bk-input(type='text' value='19:00' readonly)
-      .bk-field
-        span.bk-label Number of people
-        input.bk-input(type='text' value='7' readonly)
-      .bk-field
-        span.bk-label Restaurant
-        input.bk-input(type='text' value='Pizza/Pasta' readonly)
-      .bk-field.bk-span2
-        span.bk-label Location
-        input.bk-input(type='text' value='UK, London, Haydons rd 123' readonly)
-      .bk-field
-        span.bk-label Phone
-        input.bk-input(type='text' value='+123123123123' readonly)
-      .bk-field.bk-span2
-        span.bk-label Email
-        input.bk-input(type='text' value='user@user.com' readonly)
-
-    hr.bk-divider
-
-    .bk-messages
-      .bk-msg
-        .bk-avatar-placeholder U
-        .bk-bubble
-          strong User:
-          | Can we have seats by the window
-
-    .bk-actions
-      .bk-avatar-placeholder M
-      input.bk-msg-input(type='text' placeholder='Leave your message here')
-      button.bk-btn.bk-btn-approve Approve
-      button.bk-btn.bk-btn-cancel Cancel
-      span.bk-badge.pending Pending
-
-  //-
-    ─────────────────────────────────────────
-    CARD 4 — Cancelled by User
-    ─────────────────────────────────────────
-  .bk-card
-    img.bk-restaurant-img(src='https://picsum.photos/seed/rest1/800/200' alt='Restaurant photo')
-    .bk-fields
-      .bk-field
-        span.bk-label Date
-        input.bk-input(type='text' value='20/03/2026' readonly)
-      .bk-field
-        span.bk-label Time
-        input.bk-input(type='text' value='19:00' readonly)
-      .bk-field
-        span.bk-label Number of people
-        input.bk-input(type='text' value='7' readonly)
-      .bk-field
-        span.bk-label Restaurant
-        input.bk-input(type='text' value='Pizza/Pasta' readonly)
-      .bk-field.bk-span2
-        span.bk-label Location
-        input.bk-input(type='text' value='UK, London, Haydons rd 123' readonly)
-      .bk-field
-        span.bk-label Phone
-        input.bk-input(type='text' value='+123123123123' readonly)
-      .bk-field.bk-span2
-        span.bk-label Email
-        input.bk-input(type='text' value='user@user.com' readonly)
-
-    hr.bk-divider
-
-    .bk-messages
-      .bk-msg
-        .bk-avatar-placeholder U
-        .bk-bubble
-          strong User:
-          | Can we have seats by the window
-
-    .bk-actions
-      span.bk-badge.cancelled-user Cancelled by User
+      .bookings-grid#bookings-list
+        // Booking cards will be rendered here by JavaScript

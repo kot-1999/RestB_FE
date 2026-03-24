@@ -1,26 +1,41 @@
 div.dashboard-page
-  .dashboard-wrap
-    .dash-header
-      .dash-title
-        h1#dashboardTitle Bookings for <span style="color:var(--text-main)" id="restaurant-name"></span>
-        p#dashboardSub Today's mission control overview.
-      .dash-brand
-        .dash-brand-field
-          label(for="brand") Brand name
-          select#brand(name="brand")
-            // Options will be dynamically loaded by JS
-            option(value="La Benetti" selected) La Benetti
-            option(value="Independent") Independent
-            option(value="Chain") Chain
-        .dash-avatar(title="Admin")
-          img(src="/assets/img/default-avatar.png" alt="Admin avatar")
+  .bookings-layout-container
+    // Left Sticky Sidebar - Aligned to top
+    aside.home-sidebar
+      .home-sidebar-panel
+        .home-sidebar-head
+          h1 RestBoo
+        p.home-sidebar-copy Filter bookings.
 
-    .container.py-5
-      .row.mb-4
-        .col-md-12
-          .filter-bar.p-3.rounded.booking-filter-bar
-            // Filter elements will go here
-            p.text-white Filters (Coming Soon)
+        .home-filter-group
+          label.home-filter-label(for="filter-from") START DATE
+          input#filter-from.home-input(type="date")
+
+        .home-filter-group
+          label.home-filter-label(for="filter-to") END DATE
+          input#filter-to.home-input(type="date")
+
+        .home-filter-group
+          label.home-filter-label(for="filter-status") STATUS
+          select#filter-status.home-select
+            option(value="") All Statuses
+            option(value="Pending") Pending
+            option(value="Approved") Approved
+            option(value="Completed") Completed
+            option(value="Cancelled") Cancelled
+            option(value="NoShow") No Show
+
+        button#apply-filters.home-submit-btn APPLY FILTERS
+
+    // Right Content Area - Contains header and cards
+    main.bookings-main-content
+      .dash-header
+        .dash-title
+          h1#dashboardTitle Bookings for <span style="color:var(--accent-white)" id="restaurant-name"></span>                    p#dashboardSub Today\'s mission control overview.
+          include components/brandLogo.pug
+
+          +brandLogoComponent("La Benetti")
+
 
       .bookings-grid#bookings-list
         // Booking cards will be rendered here by JavaScript

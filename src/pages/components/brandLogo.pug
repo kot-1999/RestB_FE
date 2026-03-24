@@ -1,0 +1,6 @@
+mixin brandLogoComponent(brandName, brandLogoURL)
+    .dash-brand-minimal
+        .dash-brand-label BRAND
+        .dash-brand-logo
+            img(src=brandLogoURL || "/assets/img/default-avatar.png" alt=brandName)
+        .dash-brand-name #{brandName}

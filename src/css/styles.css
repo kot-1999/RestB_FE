@@ -3613,21 +3613,22 @@ input[list] {
     margin-left: 4px !important;
 }
 
-/* =========================================
+/* ============================================================
    HARD GREY AESTHETIC - UNIFIED DESIGN SYSTEM
-   ========================================= */
+   Cleaned & Optimized Version
+   ============================================================ */
 
 :root {
     /* Core Palette */
-    --bg-deep: #0d1117;       /* Deep Navy Background */
-    --bg-panel: #1c1d22;      /* Charcoal Panel Background */
-    --bg-black: #000000;      /* Solid Black for Containers */
-    --bg-input: #2a2b30;      /* Lighter Grey for Inputs */
+    --bg-deep: #0d1117;
+    --bg-panel: #1c1d22;
+    --bg-black: #000000;
+    --bg-input: #2a2b30;
 
     /* Accents */
-    --accent-white: #ffffff;   /* Primary Accent */
-    --accent-yellow: #FFD700;  /* Action Accent (Confirm) */
-    --accent-muted: #6c757d;   /* Muted Grey Accent */
+    --accent-white: #ffffff;
+    --accent-yellow: #FFD700;
+    --accent-muted: #6c757d;
 
     /* Typography */
     --text-main: #f5f5f5;
@@ -3637,11 +3638,9 @@ input[list] {
     /* Borders & Shadows */
     --border-glass: rgba(255, 255, 255, 0.1);
     --border-soft: rgba(255, 255, 255, 0.05);
-    --shadow-sm: 0 4px 15px rgba(0, 0, 0, 0.4);
-    --shadow-lg: 0 18px 55px rgba(0, 0, 0, 0.35);
 }
 
-/* ---------- Base Setup ---------- */
+/* --- Base Setup --- */
 @import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Playfair+Display:ital,wght@0,800;1,800&display=swap");
 
 * { box-sizing: border-box; }
@@ -3654,16 +3653,16 @@ body {
     line-height: 1.6;
 }
 
-h1, h2, h3, .nav-logo {
+h1, h2, h3, h4, .nav-logo {
     font-family: "Playfair Display", serif;
     font-weight: 800;
 }
 
 a { text-decoration: none; color: inherit; }
 
-/* =========================================
+/* ============================================================
    LAYOUT COMPONENTS
-   ========================================= */
+   ============================================================ */
 
 .dashboard-page {
     background: var(--bg-deep);
@@ -3674,13 +3673,13 @@ a { text-decoration: none; color: inherit; }
 
 .dashboard-wrap {
     flex-grow: 1;
-    padding: 20px;
-    max-width: 1400px;
+    padding: 10px 15px;
+    max-width: 1650px;
     margin: 0 auto;
     width: 100%;
 }
 
-/* Header (Mission Control Style) */
+/* Dashboard Top Header */
 .dash-header {
     background: var(--bg-panel);
     border: 1px solid var(--border-soft);
@@ -3704,9 +3703,14 @@ a { text-decoration: none; color: inherit; }
     margin: 4px 0 0;
 }
 
-.dash-brand {
+.dash-brand-minimal {
     display: flex;
     align-items: center;
+    background: var(--bg-input);
+    border: 1px solid var(--border-glass);
+    border-radius: 8px;
+    padding: 8px 12px;
+    gap: 15px;
 }
 
 .dash-brand-field label {
@@ -3714,815 +3718,404 @@ a { text-decoration: none; color: inherit; }
     color: var(--text-muted);
     text-transform: uppercase;
     letter-spacing: 0.5px;
-    margin-bottom: 5px;
+    margin-bottom: 2px;
     display: block;
 }
 
 .dash-brand-field select {
-    background: var(--bg-input);
-    border: 1px solid var(--border-glass);
-    border-radius: 6px;
-    padding: 6px 10px;
+    background: transparent;
+    border: none;
+    padding: 0;
     color: var(--text-main);
     font-size: 0.85rem;
     outline: none;
-    color-scheme: dark;
+    -webkit-appearance: none; /* Remove default arrow on Chrome/Safari */
+    -moz-appearance: none;    /* Remove default arrow on Firefox */
+    appearance: none;         /* Remove default arrow */
+    cursor: pointer;
 }
 
 .dash-avatar {
-    width: 40px;
-    height: 40px;
+    width: 36px;
+    height: 36px;
     border-radius: 50%;
     overflow: hidden;
-    border: 2px solid var(--accent-white);
-    margin-left: 15px;
+    border: 2px solid var(--accent-yellow);
+    flex-shrink: 0;
 }
 
-.dash-avatar img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-}
+.dash-avatar img { width: 100%; height: 100%; object-fit: cover; }
 
-/* =========================================
-   GRID SYSTEMS
-   ========================================= */
+/* ============================================================
+   RESTAURANT MANAGEMENT GRID (3-COLUMN)
+   ============================================================ */
 
-/* 3-Column Grid for Manage Bookings & Bookings List */
-.manage-bookings-container,
-.bookings-grid {
+.restaurant-management-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(450px, 1fr));
-    gap: 20px;
-    margin-top: 20px;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 25px;
+    width: 100%;
 }
 
-/* =========================================
-   CARD COMPONENTS
-   ========================================= */
-
-/* Restaurant Card (Manage Bookings Page) */
 .restaurant-card {
     background: var(--bg-panel);
     border: 1px solid var(--border-soft);
     border-radius: 12px;
-    overflow: hidden;
-    transition: all 0.3s ease;
+    padding: 25px;
     display: flex;
     flex-direction: column;
-    height: 100%;
+    gap: 15px;
+    transition: all 0.3s ease;
+    min-height: 200px;
 }
 
 .restaurant-card:hover {
     transform: translateY(-5px);
-    box-shadow: var(--shadow-sm);
+    border-color: var(--accent-yellow);
 }
 
-.restaurant-banner {
-    width: 100%;
-    aspect-ratio: 16 / 9;
-    position: relative;
-    overflow: hidden;
-}
+/* ============================================================
+   BOOKINGS DASHBOARD (SIDEBAR + 1-COLUMN)
+   ============================================================ */
 
-.restaurant-banner img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-}
-
-.restaurant-overlay {
-    position: absolute;
-    inset: 0;
-    background: rgba(0, 0, 0, 0.4);
+.bookings-layout-container {
     display: flex;
-    align-items: center;
-    justify-content: center;
-    opacity: 0;
-    transition: opacity 0.3s ease;
+    flex-direction: row;
+    gap: 30px;
+    padding: 10px 0 40px;
+    width: 100%;
+    align-items: flex-start;
 }
 
-.restaurant-card:hover .restaurant-overlay { opacity: 1; }
+/* Sticky Sidebar (Search/Filter) */
+.home-sidebar {
+    flex: 0 0 260px;
+    position: sticky;
+    top: 20px;
+    align-self: start;
+    z-index: 100;
+}
 
-.restaurant-cta {
-    background: var(--accent-white);
-    color: var(--text-dark);
-    padding: 8px 16px;
-    border-radius: 4px;
+.home-sidebar-panel {
+    background: #1c1d22;
+    border: 1px solid rgba(255,255,255,0.08);
+    border-radius: 12px;
+    padding: 25px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+}
+
+.home-sidebar-head h1 {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.8rem;
+    font-weight: 800;
+    margin: 0 0 8px;
+    color: #fff;
+    letter-spacing: -1px;
+}
+
+.home-sidebar-copy {
+    font-size: 0.85rem;
+    line-height: 1.6;
+    color: rgba(255,255,255,0.6);
+    margin-bottom: 30px;
+}
+
+.home-filter-group { margin-bottom: 20px; }
+
+.home-filter-label {
     font-size: 0.7rem;
-    font-weight: 900;
     text-transform: uppercase;
-}
-
-.restaurant-content { padding: 15px; }
-
-.restaurant-badge {
-    display: inline-block;
-    background: rgba(255, 255, 255, 0.1);
-    padding: 2px 8px;
-    border-radius: 4px;
-    font-size: 0.6rem;
-    font-weight: 700;
-    text-transform: uppercase;
-    color: var(--text-muted);
+    letter-spacing: 2px;
+    color: rgba(255,255,255,0.4);
     margin-bottom: 8px;
+    display: block;
+    font-weight: 700;
 }
 
-.restaurant-name {
-    font-size: 1.3rem;
-    margin: 0 0 10px;
-    color: var(--text-main);
+.home-input, .home-select {
+    width: 100%;
+    background: rgba(255,255,255,0.03);
+    border: 1px solid rgba(255,255,255,0.1);
+    border-radius: 6px;
+    padding: 12px;
+    color: #fff;
+    font-size: 0.9rem;
+    outline: none;
+    transition: all 0.2s ease;
 }
 
-.restaurant-details {
-    border-top: 1px solid var(--border-soft);
-    padding-top: 10px;
+.home-input:focus, .home-select:focus {
+    border-color: rgba(255,255,255,0.3);
+    background: rgba(255,255,255,0.05);
 }
 
-.restaurant-detail-row {
-    display: flex;
-    justify-content: space-between;
+.home-submit-btn {
+    width: 100%;
+    padding: 14px;
+    background: #fff;
+    color: #000;
+    border: none;
+    border-radius: 6px;
+    font-weight: 800;
+    cursor: pointer;
+    margin-top: 15px;
+    transition: all 0.2s ease;
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
     font-size: 0.75rem;
-    margin-bottom: 5px;
 }
 
-.detail-label { color: var(--text-muted); text-transform: uppercase; }
-.detail-value { color: var(--text-main); font-weight: 500; }
+.home-submit-btn:hover {
+    opacity: 0.9;
+    transform: translateY(-1px);
+}
 
-/* Booking Slick Card (Bookings Page) */
+/* Main Bookings Content */
+.bookings-main-content {
+    flex: 1;
+    min-width: 0;
+}
+
+.bookings-grid {
+    display: flex;
+    flex-direction: column;
+    gap: 25px;
+    width: 100%;
+}
+
 .booking-slick-row {
     background: var(--bg-panel);
     border: 1px solid var(--border-soft);
     border-radius: 12px;
-    padding: 20px;
+    padding: 30px 30px 30px 30px;
+    padding-top: 45px; /* Space for absolute header */
     color: var(--text-main);
-    transition: all 0.3s ease;
-    height: 100%;
-    display: flex;
-    flex-direction: row; /* Changed to row for side-by-side content and actions */
-    justify-content: space-between; /* Space between content and actions */
-    align-items: flex-start; /* Align items to the top */
-    text-align: left; /* Revert text alignment */
-}
-
-.booking-slick-row:hover {
-    transform: translateY(-3px);
-    box-shadow: var(--shadow-sm);
-}
-
-.booking-content-wrap {
-    flex-grow: 1;
-    display: flex;
-    flex-direction: column;
-    align-items: flex-start; /* Align content to the left */
-    justify-content: space-between; /* Distribute space between header, meta, and message */
-}
-
-.booking-header {
+    display: grid;
+    grid-template-columns: 1fr 2fr;
+    gap: 40px;
+    text-align: left;
     width: 100%;
-    margin-bottom: 15px;
+    position: relative;
+    align-items: center;
 }
 
-.booking-header .d-flex {
-    justify-content: flex-start; /* Align to left */
-    width: auto;
+/* Booking Card Details */
+.header-top-row {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    position: absolute;
+    top: 15px;
+    left: 15px;
 }
 
-.res-brand-tag {
+.res-ref-tag {
     font-size: 0.65rem;
-    font-weight: 700;
-    text-transform: uppercase;
     color: var(--text-muted);
-    letter-spacing: 0.5px;
+    font-weight: 400;
+    letter-spacing: 0.3px;
+    white-space: nowrap;
 }
 
 .res-name {
     font-family: "Playfair Display", serif;
     font-weight: 800;
-    font-size: 1.4rem;
+    font-size: 1.8rem;
     color: var(--text-main);
-    margin: 5px 0 12px;
-    text-align: left; /* Align to left */
+    margin: 2px 0 12px;
 }
 
 .booking-meta-row {
     display: flex;
-    flex-direction: column; /* Stack items vertically */
-    gap: 5px; /* Smaller gap for vertical stacking */
-    font-size: 0.8rem;
+    flex-direction: column;
+    gap: 10px;
+    font-size: 0.9rem;
     color: var(--text-muted);
-    margin-bottom: 15px;
-    align-items: flex-start; /* Align items to the left */
-    justify-content: flex-start;
 }
 
-.meta-item { display: flex; align-items: center; }
-.meta-item i { margin-right: 10px; width: 14px; text-align: center; }
+.meta-item i {
+    margin-right: 12px;
+    width: 16px;
+    text-align: center;
+    color: var(--accent-yellow);
+}
 
-/* Customer Message Section */
-.customer-message-section {
-    background-color: rgba(255, 255, 255, 0.05);
-    border-radius: 8px;
-    padding: 10px;
-    margin-top: auto; /* Push to bottom */
-    margin-bottom: 0;
-    text-align: left;
+/* ============================================================
+   MESSAGING GRID
+   ============================================================ */
+
+.message-grid-container {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
     width: 100%;
-    align-self: flex-start; /* Align to bottom-left */
 }
 
-.customer-message-section p {
-    font-size: 0.8rem;
-    color: var(--text-muted);
-    margin-bottom: 0;
+.message-box {
+    background-color: var(--bg-input);
+    border: 1px solid var(--border-glass);
+    border-radius: 8px;
+    padding: 15px;
+    display: flex;
+    flex-direction: column;
+    min-height: 140px;
 }
 
-/* =========================================
-   BUTTONS & ACTIONS
-   ========================================= */
+.message-box.sent {
+    opacity: 0.85;
+    background-color: rgba(0, 0, 0, 0.3);
+    border-color: rgba(255, 255, 255, 0.05);
+}
 
-.slick-manage-btn {
-    background-color: var(--accent-yellow);
-    color: var(--text-dark);
+.message-box.sent .message-content {
+    color: var(--text-main);
+    background: transparent;
     border: none;
-    padding: 10px 15px;
-    border-radius: 6px;
-    font-weight: 700;
-    font-size: 0.75rem;
+    padding: 0;
+}
+
+.message-box.admin-message { border-left: 3px solid var(--accent-yellow); }
+.message-box.user-message { border-left: 3px solid var(--accent-muted); }
+
+.message-label {
+    font-size: 0.65rem;
+    color: #666;
     text-transform: uppercase;
-    letter-spacing: 1px;
-    cursor: pointer;
-    transition: background-color 0.2s ease;
-    width: 100%; /* Ensure buttons take full width of their container */
-}
-
-.slick-manage-btn:hover { background-color: #e6c200; }
-
-.btn-outline-danger {
-    border: 1px solid var(--text-muted);
-    color: var(--text-muted);
-    background-color: transparent;
-    padding: 10px 15px;
-    border-radius: 6px;
+    letter-spacing: 2px;
     font-weight: 700;
-    font-size: 0.75rem;
-    text-transform: uppercase;
-    letter-spacing: 1px;
-    cursor: pointer;
-    transition: all 0.2s ease;
-    width: 100%; /* Ensure buttons take full width of their container */
+    margin-bottom: 10px;
 }
 
-.btn-outline-danger:hover {
-    background-color: var(--text-muted);
-    color: var(--text-dark);
+.message-box textarea {
+    width: 100%;
+    flex-grow: 1;
+    background: #121212;
+    border: 1px solid #333;
+    border-radius: 6px;
+    color: var(--text-main);
+    resize: none;
+    font-size: 0.9rem;
+    padding: 12px;
+    outline: none;
 }
+
+.message-content {
+    background: #121212;
+    border: 1px solid #222;
+    border-radius: 6px;
+    padding: 12px;
+    font-size: 0.9rem;
+    color: var(--text-main);
+    min-height: 60px;
+}
+
+/* ============================================================
+   ACTION BUTTONS (BOTTOM)
+   ============================================================ */
 
 .actions-container {
-    display: flex;
-    flex-direction: column; /* Stack buttons vertically */
-    gap: 10px;
-    margin-left: 20px; /* Space between content and actions */
-    align-items: flex-end; /* Align buttons to the right */
-    justify-content: flex-start; /* Align buttons to the top */
-    width: auto; /* Allow container to shrink to content */
-    min-width: 120px; /* Ensure enough space for buttons */
+    grid-column: 1 / -1;
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 15px;
+    margin-top: 8px;
+    border-top: 1px solid var(--border-soft);
+    padding-top: 12px;
 }
 
+.slick-manage-btn, .btn-outline-danger {
+    width: 100%;
+    padding: 14px;
+    border-radius: 6px;
+    font-weight: 800;
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    cursor: pointer;
+    border: none;
+}
 
+.slick-manage-btn { background-color: var(--accent-yellow); color: var(--text-dark); }
+.btn-outline-danger { background-color: transparent; color: var(--text-muted); border: 1px solid var(--border-glass); }
 
-/* =========================================
-   STATUS INDICATORS
-   ========================================= */
-
+/* Status Indicators */
 .status-indicator {
-    display: inline-block;
     width: 8px;
     height: 8px;
     border-radius: 50%;
+    display: inline-block;
     margin-right: 8px;
-    vertical-align: middle;
 }
 
+.status-Pending { background-color: #ffc107; }
 .status-Approved { background-color: #28a745; }
-.status-Pending { background-color: var(--text-muted); }
-.status-Cancelled, .status-NoShow { background-color: #dc3545; }
-.status-Completed { background-color: var(--accent-muted); }
+.status-Cancelled { background-color: #dc3545; }
+.status-Completed { background-color: #6c757d; }
+.status-NoShow { background-color: #343a40; border: 1px solid var(--border-glass); }
 
-/* =========================================
-   RESPONSIVE ADJUSTMENTS
-   ========================================= */
-
-@media (max-width: 768px) {
-    .manage-bookings-container,
-    .bookings-grid {
-        grid-template-columns: 1fr;
-    }
-    .dash-header {
-        flex-direction: column;
-        align-items: flex-start;
-        gap: 20px;
-    }
-    .booking-slick-row {
-        flex-direction: column; /* Stack content and actions vertically on small screens */
-        align-items: center; /* Center content on small screens */
-        text-align: center;
-    }
-    .booking-content-wrap {
-        align-items: center;
-    }
-    .actions-container {
-        margin-left: 0;
-        margin-top: 20px;
-        align-items: center;
-    }
-}
-
-/* =========================================
-   HARD GREY AESTHETIC - UNIFIED DESIGN SYSTEM
-   ========================================= */
-
-:root {
-    /* Core Palette */
-    --bg-deep: #0d1117;       /* Deep Navy Background */
-    --bg-panel: #1c1d22;      /* Charcoal Panel Background */
-    --bg-black: #000000;      /* Solid Black for Containers */
-    --bg-input: #2a2b30;      /* Lighter Grey for Inputs */
-
-    /* Accents */
-    --accent-white: #ffffff;   /* Primary Accent */
-    --accent-yellow: #FFD700;  /* Action Accent (Confirm) */
-    --accent-muted: #6c757d;   /* Muted Grey Accent */
-
-    /* Typography */
-    --text-main: #f5f5f5;
-    --text-muted: #a1a1a1;
-    --text-dark: #000000;
-
-    /* Borders & Shadows */
-    --border-glass: rgba(255, 255, 255, 0.1);
-    --border-soft: rgba(255, 255, 255, 0.05);
-    --shadow-sm: 0 4px 15px rgba(0, 0, 0, 0.4);
-    --shadow-lg: 0 18px 55px rgba(0, 0, 0, 0.35);
-}
-
-/* ---------- Base Setup ---------- */
-@import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Playfair+Display:ital,wght@0,800;1,800&display=swap");
-
-* { box-sizing: border-box; }
-
-body {
-    margin: 0;
-    font-family: "Inter", -apple-system, sans-serif;
-    background: var(--bg-deep);
-    color: var(--text-main);
-    line-height: 1.6;
-}
-
-h1, h2, h3, .nav-logo {
-    font-family: "Playfair Display", serif;
-    font-weight: 800;
-}
-
-a { text-decoration: none; color: inherit; }
-
-/* =========================================
-   LAYOUT COMPONENTS
-   ========================================= */
-
-.dashboard-page {
-    background: var(--bg-deep);
-    min-height: 100vh;
-    display: flex;
-    flex-direction: column;
-}
-
-.dashboard-wrap {
-    flex-grow: 1;
-    padding: 20px;
-    max-width: 1400px;
-    margin: 0 auto;
-    width: 100%;
-}
-
-/* Header (Mission Control Style) */
-.dash-header {
-    background: var(--bg-panel);
-    border: 1px solid var(--border-soft);
-    border-radius: 12px;
-    padding: 20px 24px;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 30px;
-}
-
-.dash-title h1 {
-    font-size: 1.8rem;
-    margin: 0;
-    color: var(--text-main);
-}
-
-.dash-title p {
-    font-size: 0.9rem;
-    color: var(--text-muted);
-    margin: 4px 0 0;
-}
-
-.dash-brand {
+/* --- Invisible Brand Identity Container --- */
+.dash-brand-minimal {
     display: flex;
     align-items: center;
+    gap: 10px;
+    background: transparent; /* Makes it invisible */
+    border: none;             /* Removes the box border */
+    padding: 0;               /* Removes internal spacing */
 }
 
-.dash-brand-field label {
-    font-size: 0.6rem;
+.dash-brand-label {
+    font-size: 0.65rem;
     color: var(--text-muted);
-    text-transform: uppercase;
-    letter-spacing: 0.5px;
-    margin-bottom: 5px;
-    display: block;
+    letter-spacing: 1.5px;
+    font-weight: 700;
 }
 
-.dash-brand-field select {
-    background: var(--bg-input);
-    border: 1px solid var(--border-glass);
-    border-radius: 6px;
-    padding: 6px 10px;
-    color: var(--text-main);
-    font-size: 0.85rem;
-    outline: none;
-    color-scheme: dark;
-}
-
-.dash-avatar {
-    width: 40px;
-    height: 40px;
-    border-radius: 50%;
+.dash-brand-logo {
+    width: 22px;
+    height: 22px;
+    border-radius: 4px;
     overflow: hidden;
-    border: 2px solid var(--accent-white);
-    margin-left: 15px;
+    /* Keeps a very subtle border on the logo itself if needed, or set to none */
+    border: 1px solid rgba(255, 255, 255, 0.1);
 }
 
-.dash-avatar img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
+.dash-brand-name {
+    font-size: 0.9rem;
+    color: #a1a1a1;
+    font-weight: 500;
 }
 
-/* =========================================
-   GRID SYSTEMS
-   ========================================= */
-
-/* 3-Column Grid for Manage Bookings & Bookings List */
-.bookings-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(450px, 1fr));
-    gap: 20px;
-    margin-top: 20px;
+/* --- Fix for Manage Restaurants Grid (3 per line) --- */
+#restaurant-list {
+    display: grid !important;
+    grid-template-columns: repeat(3, 1fr) !important;
+    gap: 25px !important;
+    width: 100% !important;
 }
 
-.manage-bookings-container {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); /* Three columns for restaurant cards */
-    gap: 20px;
-    margin-top: 20px;
-}
-
-/* =========================================
-   CARD COMPONENTS
-   ========================================= */
-
-/* Restaurant Card (Manage Bookings Page) */
+/* Ensure individual cards inside stay neat */
 .restaurant-card {
     background: var(--bg-panel);
     border: 1px solid var(--border-soft);
     border-radius: 12px;
-    overflow: hidden;
-    transition: all 0.3s ease;
+    padding: 25px;
     display: flex;
     flex-direction: column;
-    height: 100%;
+    gap: 15px;
+    transition: all 0.3s ease;
+    min-height: 200px;
+    width: 100%; /* Fills the grid cell */
 }
 
 .restaurant-card:hover {
     transform: translateY(-5px);
-    box-shadow: var(--shadow-sm);
+    border-color: var(--accent-yellow);
 }
 
-.restaurant-banner {
-    width: 100%;
-    aspect-ratio: 16 / 9;
-    position: relative;
-    overflow: hidden;
-}
-
-.restaurant-banner img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-}
-
-.restaurant-overlay {
-    position: absolute;
-    inset: 0;
-    background: rgba(0, 0, 0, 0.4);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    opacity: 0;
-    transition: opacity 0.3s ease;
-}
-
-.restaurant-card:hover .restaurant-overlay { opacity: 1; }
-
-.restaurant-cta {
-    background: var(--accent-white);
-    color: var(--text-dark);
-    padding: 8px 16px;
-    border-radius: 4px;
-    font-size: 0.7rem;
-    font-weight: 900;
-    text-transform: uppercase;
-}
-
-.restaurant-content { padding: 15px; }
-
-.restaurant-badge {
-    display: inline-block;
-    background: rgba(255, 255, 255, 0.1);
-    padding: 2px 8px;
-    border-radius: 4px;
-    font-size: 0.6rem;
-    font-weight: 700;
-    text-transform: uppercase;
-    color: var(--text-muted);
-    margin-bottom: 8px;
-}
-
-.restaurant-name {
-    font-size: 1.3rem;
-    margin: 0 0 10px;
-    color: var(--text-main);
-}
-
-.restaurant-details {
-    border-top: 1px solid var(--border-soft);
-    padding-top: 10px;
-}
-
-.restaurant-detail-row {
-    display: flex;
-    justify-content: space-between;
-    font-size: 0.75rem;
-    margin-bottom: 5px;
-}
-
-.detail-label { color: var(--text-muted); text-transform: uppercase; }
-.detail-value { color: var(--text-main); font-weight: 500; }
-
-/* Booking Slick Card (Bookings Page) */
-.booking-slick-row {
-    background: var(--bg-panel);
-    border: 1px solid var(--border-soft);
-    border-radius: 12px;
-    padding: 20px;
-    color: var(--text-main);
-    transition: all 0.3s ease;
-    height: 100%;
-    display: flex;
-    flex-direction: row;
-    justify-content: space-between;
-    align-items: flex-start;
-    text-align: left;
-    position: relative; /* Needed for absolute positioning of message box */
-}
-
-.booking-slick-row:hover {
-    transform: translateY(-3px);
-    box-shadow: var(--shadow-sm);
-}
-
-.booking-content-wrap {
-    flex-grow: 1;
-    display: flex;
-    flex-direction: column;
-    align-items: flex-start; /* Align content to the left */
-    justify-content: space-between; /* Distribute space between header, meta, and message */
-}
-
-.booking-header {
-    width: 100%;
-    margin-bottom: 15px;
-}
-
-.booking-header .d-flex {
-    justify-content: flex-start; /* Align to left */
-    width: auto;
-}
-
-.res-brand-tag {
-    font-size: 0.65rem;
-    font-weight: 700;
-    text-transform: uppercase;
-    color: var(--text-muted);
-    letter-spacing: 0.5px;
-}
-
-.res-name {
-    font-family: "Playfair Display", serif;
-    font-weight: 800;
-    font-size: 1.4rem;
-    color: var(--text-main);
-    margin: 5px 0 12px;
-    text-align: left; /* Align to left */
-}
-
-.booking-meta-row {
-    display: flex;
-    flex-direction: column; /* Stack items vertically */
-    gap: 5px; /* Smaller gap for vertical stacking */
-    font-size: 0.8rem;
-    color: var(--text-muted);
-    margin-bottom: 15px;
-    align-items: flex-start; /* Align items to the left */
-    justify-content: flex-start;
-}
-
-.meta-item { display: flex; align-items: center; }
-.meta-item i { margin-right: 10px; width: 14px; text-align: center; }
-
-/* Customer Message Section */
-.customer-message-section {
-    background-color: rgba(255, 255, 255, 0.05);
-    border-radius: 8px;
-    padding: 10px;
-    margin-top: auto; /* Push to bottom */
-    margin-bottom: 0;
-    text-align: left;
-    position: absolute; /* Position absolutely within booking-slick-row */
-    bottom: 20px; /* Align with bottom padding */
-    left: 20px; /* Align with left padding */
-    width: calc(100% - 360px); /* Adjust to leave space for message input container */
-    max-width: calc(100% - 360px); /* Ensure it doesn\'t overlap with message input container */
-}
-
-.customer-message-section p {
-    font-size: 0.8rem;
-    color: var(--text-muted);
-    margin-bottom: 0;
-}
-
-/* Messaging Box and Send Button */
-.message-input-container {
-    position: absolute; /* Position absolutely within booking-slick-row */
-    top: 70px; /* Position below the actions container */
-    right: 20px; /* Align with right padding */
-    width: 300px; /* Fixed width for the message input container */
-    display: flex;
-    flex-direction: column;
-    gap: 8px;
-    background-color: var(--bg-panel); /* Match card background */
-    border: 1px solid var(--border-soft);
-    border-radius: 8px;
-    padding: 10px;
-    box-shadow: var(--shadow-sm);
-    z-index: 1; /* Ensure it\\\'s above other content if needed */
-}
-
-.message-input-container textarea {
-    width: 100%;
-    min-height: 60px;
-    background-color: var(--bg-input);
-    border: 1px solid var(--border-glass);
-    border-radius: 6px;
-    padding: 10px;
-    color: var(--text-main);
-    font-size: 0.9rem;
-    resize: vertical;
-    outline: none;
-}
-
-.message-input-container textarea::placeholder {
-    color: var(--text-muted);
-}
-
-.send-message-btn {
-    background-color: var(--accent-yellow);
-    color: var(--text-dark);
-    border: none;
-    padding: 8px 15px;
-    border-radius: 6px;
-    font-weight: 700;
-    font-size: 0.75rem;
-    text-transform: uppercase;
-    letter-spacing: 1px;
-    cursor: pointer;
-    transition: background-color 0.2s ease;
-    align-self: flex-end; /* Align button to the right */
-    min-width: 100px;
-}
-
-.send-message-btn:hover {
-    background-color: #e6c200;
-}
-
-/* =========================================
-   BUTTONS & ACTIONS
-   ========================================= */
-
-.slick-manage-btn {
-    background-color: var(--accent-yellow);
-    co.slick-manage-btn,
-    .btn-outline-danger {
-        padding: 10px 15px;
-        border-radius: 6px;
-        font-weight: 700;
-        font-size: 0.75rem;
-        text-transform: uppercase;
-        letter-spacing: 1px;
-        cursor: pointer;
-        transition: background-color 0.2s ease;
-        width: 100px; /* Fixed width for consistent button size */
-        min-width: 80px; /* Ensure a minimum width */
-    }
-
-    .slick-manage-btn:hover { background-color: #e6c200; }
-
-    .btn-outline-danger {
-        border: 1px solid var(--text-muted);
-        color: var(--text-muted);
-        background-color: transparent;
-        padding: 10px 15px;
-        border-radius: 6px;
-        font-weight: 700;
-        font-size: 0.75rem;
-        text-transform: uppercase;
-        letter-spacing: 1px;
-        cursor: pointer;
-        transition: all 0.2s ease;
-        width: 100%; /* Ensure buttons take full width of their container */
-    }
-
-    .btn-outline-danger:hover {
-        background-color: var(--text-muted);
-        color: var(--tex.actions-container {
-        display: flex;
-        flex-direction: row; /* Arrange buttons side-by-side */
-        gap: 10px;
-        position: absolute; /* Position absolutely within booking-slick-row */
-        top: 20px; /* Align with top padding */
-        right: 20px; /* Align with right padding */
-        width: auto;
-        z-index: 2; /* Ensure buttons are above other content */
-        white-space: nowrap; /* Prevent buttons from wrapping */
-        justify-content: flex-end; /* Align buttons to the right within their container */
-    }================================ */
-
-    .status-indicator {
-        display: inline-block;
-        width: 8px;
-        height: 8px;
-        border-radius: 50%;
-        margin-right: 8px;
-        vertical-align: middle;
-    }
-
-        .status-Approved { background-color: #28a745; }
-        .status-Pending { background-color: var(--text-muted); }
-        .status-Cancelled, .status-NoShow { background-color: #dc3545; }
-        .status-Completed { background-color: var(--accent-muted); }
-
-        /* =========================================
-           RESPONSIVE ADJUSTMENTS
-           ========================================= */
-
-        @media (max-width: 768px) {
-            .manage-bookings-container,
-            .bookings-grid {
-                grid-template-columns: 1fr;
-            }
-            .dash-header {
-                flex-direction: column;
-                align-items: flex-start;
-                gap: 20px;
-            }
-            .booking-slick-row {
-                flex-direction: column; /* Stack content and actions vertically on small screens */
-                align-items: center; /* Center content on small screens */
-                text-align: center;
-            }
-            .booking-content-wrap {
-                align-items: center;
-            }
-            .actions-container {
-                margin-left: 0;
-                margin-top: 20px;
-                align-items: center;
-            }
-        }
 
 
 .trackable {
     display: none;
 }
+
 

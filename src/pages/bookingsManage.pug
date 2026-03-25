@@ -4,9 +4,10 @@ div.dashboard-page
             .dash-title
                 h1#dashboardTitle Bookings Manage
                 p#dashboardSub Select a restaurant to manage its bookings.
-            include components/brandLogo.pug
 
-            +brandLogoComponent("La Benetti")
+        div#brand-container
+
+        div#booking-items
 
         .container.py-5
             .manage-bookings-container#restaurant-list

@@ -1,12 +1,15 @@
-div.booking-slick-row(data-id="{{id}}")
+div.booking-slick-row(data-id="{{id}}" data-status="{{status}}")
     div.booking-content-wrap
         div.booking-header
-            div.d-flex.align-items-center
+            div.header-top-row
                 span.status-indicator(class="status-{{status}}")
-                h3.res-brand-tag BOOKING #{{id}}
+                span.res-ref-tag #{{id}}
             h2.res-name {{customerName}}
 
         div.booking-meta-row
+            div.meta-item
+                i.fas.fa-calendar
+                span {{formattedDate}}
             div.meta-item
                 i.fas.fa-clock
                 span {{formattedStartTime}} - {{formattedEndTime}}
@@ -14,33 +17,26 @@ div.booking-slick-row(data-id="{{id}}")
                 i.fas.fa-users
                 span {{numGuests}} Guests
             div.meta-item
+                i.fas.fa-envelope
+                span {{customerEmail}}
+            div.meta-item
+                i.fas.fa-phone
+                span {{customerPhone}}
+            div.meta-item
                 i.fas.fa-info-circle
-                span {{status}}
+                span.status-text {{status}}
 
     div.messaging-section
-        div.message-grid-container
-            // Box 1: User's Initial Request (Read-only)
-            div.message-box.user-message(data-message-box="1")
-                div.message-label Customer Request
-                div.message-content {{customerMessage}}
+        div.chat-window
+            div.chat-messages
+            div.chat-input-wrap
+                input.chat-input(type="text" placeholder="Type a message... (send with a status action below)")
+                button.chat-send-btn(title="Queue message — then click a status button to send") &#9658;
+            div.chat-queued-notice(style="display:none; color: var(--accent-yellow); font-size: 0.75rem; padding: 4px 8px;")
+                | &#10003; Message queued — click a status button below to send it.
 
-            // Box 2: Admin's First Reply (Editable)
-            div.message-box.admin-message(data-message-box="2")
-                div.message-label Your First Reply
-                textarea.message-input(placeholder="Type your message...")
-
-            // Box 3: User's Second Message (Read-only)
-            div.message-box.user-message(data-message-box="3")
-                div.message-label Customer Response
-                div.message-content {{customerResponse}}
-
-            // Box 4: Admin's Second Reply (Editable)
-            div.message-box.admin-message(data-message-box="4")
-                div.message-label Your Second Reply
-                textarea.message-input(placeholder="Type your message...")
-
-        div.actions-container
-            button.slick-manage-btn.confirm-btn.js-action(data-id="{{id}}" data-status="Approved") CONFIRM
-            button.slick-manage-btn.btn-outline-danger.decline-btn.js-action(data-id="{{id}}" data-status="Cancelled") DECLINE
-            button.slick-manage-btn.complete-btn.js-action(data-id="{{id}}" data-status="Completed") COMPLETE
-            button.slick-manage-btn.noshow-btn.js-action(data-id="{{id}}" data-status="NoShow") NO SHOW
+    div.actions-container
+        button.slick-manage-btn.js-action(data-status="Approved") CONFIRM
+        button.slick-manage-btn.btn-outline-danger.js-action(data-status="Cancelled") DECLINE
+        button.slick-manage-btn.js-action(data-status="Completed") COMPLETE
+        button.slick-manage-btn.js-action(data-status="NoShow") NO SHOW

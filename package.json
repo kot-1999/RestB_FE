@@ -27,7 +27,8 @@
   },
   "dependencies": {
     "acorn": "^8.16.0",
-    "acorn-globals": "^7.0.1"
+    "acorn-globals": "^7.0.1",
+    "dayjs": "^1.11.20"
   },
   "keywords": [
     "pug",

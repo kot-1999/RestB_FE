@@ -235,6 +235,9 @@ export default class ApiRequest {
         }
     }
 
+
+
+
     // B2B & B2C: Update user profile
     // ENDPOINTS: PATCH /b2c/v1/user/, PATCH /b2b/v1/admin/
     static async updateProfile(data) {
@@ -280,11 +283,10 @@ export default class ApiRequest {
             if (queryParams.brandID) queryString.append("brandID", queryParams.brandID);
             if (queryParams.date) queryString.append("date", queryParams.date);
 
-            if (queryParams.categories && Array.isArray(queryParams.categories)) {
-                queryParams.categories.forEach((category) => {
-                    queryString.append("categories[]", category);
-                });
+            if (queryParams.statuses && Array.isArray(queryParams.statuses) && queryParams.statuses.length > 0) {
+                queryParams.statuses.forEach(status => queryString.append('statuses', status));
             }
+
 
             if (queryParams.page) queryString.append("page", queryParams.page);
             if (queryParams.limit) queryString.append("limit", queryParams.limit);
@@ -318,25 +320,24 @@ export default class ApiRequest {
             // Build query string from parameters
             const queryString = new URLSearchParams();
 
-            // Common parameters for both B2C and B2B with restaurantID
-            if (queryParams.statuses && Array.isArray(queryParams.statuses)) {
-                queryParams.statuses.forEach(status => queryString.append('statuses', status));
-            }
+            // Common parameters for both B2C and B2B
+            if (queryParams.dateFrom) queryString.append('dateFrom', queryParams.dateFrom);
+            if (queryParams.dateTo) queryString.append('dateTo', queryParams.dateTo);
             if (queryParams.page) queryString.append('page', queryParams.page);
             if (queryParams.limit) queryString.append('limit', queryParams.limit);
 
+            // Only append statuses if the array has values
+            if (queryParams.statuses && Array.isArray(queryParams.statuses) && queryParams.statuses.length > 0) {
+                queryParams.statuses.forEach(status => queryString.append('statuses[]', status));
+
+            }
+
             let url;
             if (userType === 'b2c') {
-                // B2C: User's bookings
-                // Additional parameters: dateFrom, dateTo
-                if (queryParams.dateFrom) queryString.append('dateFrom', queryParams.dateFrom);
-                if (queryParams.dateTo) queryString.append('dateTo', queryParams.dateTo);
-
                 url = queryString.toString()
                     ? `${this.baseUrl}/b2c/v1/booking/?${queryString.toString()}`
                     : `${this.baseUrl}/b2c/v1/booking/`;
             } else {
-                // B2B: Specific restaurant bookings
                 if (restaurantID) {
                     url = queryString.toString()
                         ? `${this.baseUrl}/b2b/v1/booking/${restaurantID}?${queryString.toString()}`
@@ -350,7 +351,6 @@ export default class ApiRequest {
                 'Content-Type': 'application/json'
             };
 
-            // Add authorization header for authenticated users
             if (authData?.token) {
                 headers.Authorization = `Bearer ${authData.token}`;
             }
@@ -368,6 +368,7 @@ export default class ApiRequest {
             return null;
         }
     }
+
     // B2B: Get booking summaries
     // ENDPOINT: GET /b2b/v1/booking/
     static async getBookingSummaries(queryParams = {}) {
@@ -463,4 +464,65 @@ export default class ApiRequest {
             return null;
         }
     }
-}
+    // ... getRestaurant method above ...
+
+    // B2B: Update booking (status and/or message)
+    // ENDPOINT: PATCH /b2b/v1/booking/{bookingID}
+    static async updateBooking(bookingID, data = {}) {
+        try {
+            const authData = LocalStorage.get('auth');
+            if (!authData?.token) {
+                throw new Error('updateBooking - Token is required for this action');
+            }
+
+            const response = await fetch(
+                `${this.baseUrl}/b2b/v1/booking/${bookingID}`, {
+                    headers: {
+                        'Content-Type': 'application/json',
+                        Authorization: `Bearer ${authData.token}`
+                    },
+                    method: 'PATCH',
+                    body: JSON.stringify(data)
+                });
+
+            await ApiRequest.checkResponse(response);
+            const res = await response.json();
+            showSuccess(res.message);
+            return res;
+        } catch (err) {
+            showError(err);
+            return null;
+        }
+    }
+    // B2B: Update booking (status and/or message)
+    // ENDPOINT: PATCH /b2b/v1/booking/{bookingID}
+    // Note: status is always required by the API. message is optional.
+    static async updateBooking(bookingID, data = {}) {
+        try {
+            const authData = LocalStorage.get('auth');
+            if (!authData?.token) {
+                throw new Error('updateBooking - Token is required for this action');
+            }
+
+            const response = await fetch(
+                `${this.baseUrl}/b2b/v1/booking/${bookingID}`, {
+                    headers: {
+                        'Content-Type': 'application/json',
+                        Authorization: `Bearer ${authData.token}`
+                    },
+                    method: 'PATCH',
+                    body: JSON.stringify(data)
+                });
+
+            await ApiRequest.checkResponse(response);
+            const res = await response.json();
+            showSuccess(res.message);
+            return res;
+        } catch (err) {
+            showError(err);
+            return null;
+        }
+    }
+
+}  // <-- this is the closing brace of the class, keep it here
+

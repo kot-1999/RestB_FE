@@ -1,89 +1,22 @@
 import ApiRequest from "../utils/ApiRequest.js";
 import Mustache from "../utils/mustache.js";
-
-// ─── Booking Card Template ────────────────────────────────────────────────────
-const BOOKING_CARD_TEMPLATE = `
-<div class="booking-card" data-id="{{id}}" data-status="{{status}}">
-
-    <!-- ── HEADER: name, ref, status pill ─────────────────────────────────── -->
-    <div class="bc-header">
-        <div class="bc-header-left">
-            <span class="bc-status-dot status-{{status}}"></span>
-            <div>
-                <h2 class="bc-name">{{customerName}}</h2>
-                <span class="bc-ref">#{{id}}</span>
-            </div>
-        </div>
-        <span class="bc-status-pill status-pill-{{status}}">{{status}}</span>
-    </div>
-
-    <!-- ── META: date / time / guests / contact ───────────────────────────── -->
-    <div class="bc-meta">
-        <div class="bc-meta-row">
-            <div class="bc-meta-item">
-                <i class="fas fa-calendar-alt"></i>
-                <span>{{formattedDate}}</span>
-            </div>
-            <div class="bc-meta-item">
-                <i class="fas fa-clock"></i>
-                <span>{{formattedStartTime}} – {{formattedEndTime}}</span>
-            </div>
-            <div class="bc-meta-item">
-                <i class="fas fa-users"></i>
-                <span>{{numGuests}} Guests</span>
-            </div>
-        </div>
-        <div class="bc-meta-row">
-            <div class="bc-meta-item">
-                <i class="fas fa-envelope"></i>
-                <span>{{customerEmail}}</span>
-            </div>
-            <div class="bc-meta-item">
-                <i class="fas fa-phone"></i>
-                <span>{{customerPhone}}</span>
-            </div>
-        </div>
-    </div>
-
-    <!-- ── CHAT ───────────────────────────────────────────────────────────── -->
-    <div class="bc-chat">
-        <div class="bc-chat-messages"></div>
-        <div class="bc-chat-input-row">
-            <input type="text" class="bc-chat-input" placeholder="Type a message… send with a status button below">
-            <button class="bc-chat-send js-chat-send" title="Queue message">&#9658;</button>
-        </div>
-        <div class="bc-chat-queued" style="display:none;">
-            &#10003; Message queued — click a status button to send.
-        </div>
-    </div>
-
-    <!-- ── ACTIONS ────────────────────────────────────────────────────────── -->
-    <div class="bc-actions">
-        <button class="bc-btn bc-btn-confirm  js-action" data-status="Approved">CONFIRM</button>
-        <button class="bc-btn bc-btn-decline  js-action" data-status="Cancelled">DECLINE</button>
-        <button class="bc-btn bc-btn-complete js-action" data-status="Completed">COMPLETE</button>
-        <button class="bc-btn bc-btn-noshow   js-action" data-status="NoShow">NO SHOW</button>
-    </div>
-
-</div>`;
+import {Template} from "../config.js";
 
 // ─── Data mapper ──────────────────────────────────────────────────────────────
 function mapBookingToView(b) {
     const time = new Date(b.bookingTime);
     const ok   = !isNaN(time);
-
+    console.log(b)
     return {
         id:                 b.id,
         status:             b.status,
-        customerName:       `${b.user?.firstName || 'Guest'} ${b.user?.lastName || ''}`.trim(),
+        customerName:       b.restaurant ? `${b?.restaurant?.name}` : `${b.user?.firstName || 'Guest'} ${b.user?.lastName}`,
+        restaurantID:       b.restaurant ? b.restaurant?.id : null,
         customerEmail:      b.user?.email  || 'No email',
         customerPhone:      b.user?.phone  || 'No phone',
         numGuests:          b.guestsNumber || 0,
         formattedDate:      ok ? time.toLocaleDateString([], { weekday: 'short', year: 'numeric', month: 'short', day: 'numeric' }) : 'N/A',
-        formattedStartTime: ok ? time.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }) : 'N/A',
-        formattedEndTime:   ok && b.duration
-            ? new Date(time.getTime() + b.duration * 60000).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
-            : 'N/A',
+        formattedStartTime: ok ? time.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }) : 'N/A'
     };
 }
 
@@ -110,9 +43,6 @@ export default async function loadBookings() {
     const params = new URLSearchParams(window.location.hash.split("?")[1]);
     const restaurantID = params.get("id");
 
-    if (!restaurantID) {
-        return $list.html('<p class="bc-state-msg">No restaurant selected.</p>');
-    }
 
     const $fromInput   = $("#filter-from");
     const $toInput     = $("#filter-to");
@@ -140,7 +70,7 @@ export default async function loadBookings() {
     const fetchBookings = async () => {
         const fromVal = $fromInput.val();
         const toVal   = $toInput.val();
-
+        console.log('!!!!!!!!!!!!!!')
         if (!fromVal || !toVal) {
             $list.html('<p class="bc-state-msg">Please select a date range and try again.</p>');
             return;
@@ -161,6 +91,7 @@ export default async function loadBookings() {
         let res;
         try {
             res = await ApiRequest.getBookings(query, restaurantID);
+            console.log(res)
         } catch (err) {
             $list.html('<p class="bc-state-msg bc-state-msg--error">Failed to load bookings. Please refresh and try again.</p>');
             return;
@@ -189,10 +120,10 @@ export default async function loadBookings() {
             $list.html('<p class="bc-state-msg">No bookings found for the selected filters.</p>');
             return;
         }
-
+        const bookingCardTemplate = Template.component.bookingCard()
         // Render cards
         const cardsHtml = res.bookings
-            .map(b => Mustache.render(BOOKING_CARD_TEMPLATE, mapBookingToView(b)))
+            .map(b => Mustache.render(bookingCardTemplate, mapBookingToView(b)))
             .join('');
         $list.html(cardsHtml);
 

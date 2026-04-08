@@ -55,6 +55,26 @@ const elements = [
     {
         id: 'nav-manage-bookings',
         disabledFor: [STATE.NO_AUTH, STATE.USER]
+    },
+    {
+        id: 'booking-card-meta',
+        disabledFor: [STATE.NO_AUTH, STATE.USER]
+    },
+    {
+        id: 'booking-card-approve',
+        disabledFor: [STATE.NO_AUTH, STATE.USER]
+    },
+    {
+        id: 'booking-card-confirm',
+        disabledFor: [STATE.NO_AUTH, STATE.USER]
+    },
+    {
+        id: 'booking-card-noshow',
+        disabledFor: [STATE.NO_AUTH, STATE.USER]
+    },
+    {
+        id: 'booking-details-create-form',
+        disabledFor: [STATE.ADMIN, STATE.EMPLOYEE]
     }
 ]
 
@@ -65,16 +85,20 @@ export function updateVisibility() {
     const state = getState()
 
     elements.forEach(({ id, disabledFor }) => {
-        const $el = $('#' + id)
+        let $el = $('#' + id)
+
+        // fallback to class if no id found
+        if (!$el.length) {
+            $el = $('.' + id)
+        }
+
         if (!$el.length) {
             return
         }
 
         if (disabledFor.includes(state)) {
-            // remove if state is disabled
             $el.addClass(magicClassName)
         } else {
-            // add class to all elements
             $el.removeClass(magicClassName)
         }
     })

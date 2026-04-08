@@ -84,9 +84,6 @@ content#content {
     width: 100%;
 }
 
-.trackable {
-    display: none;
-}
 
 .visually-hidden {
     position: absolute !important;
@@ -2942,5 +2939,8 @@ content#content {
 }
 
 
+.trackable {
+    display: none;
+}
 
 

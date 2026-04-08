@@ -1,116 +1,313 @@
-/* ---------- Theme / Base (deduped) ---------- */
-:root{
-    /* Slate theme vars */
-    --bg-1: rgba(20,28,45,0.92);
-    --bg-2: rgba(10,12,24,0.92);
+/* =========================================================
+   RESTBOO STYLES — FULL REWRITE
+   Component-first rebuild based on uploaded Pug components
+   ========================================================= */
 
-    --mint-1: #aef0db;
-    --mint-2: #2c9288;
-    --mint-3: #74bfa6;
+/* =========================================================
+   01. THEME / RESET / GLOBALS
+   ========================================================= */
 
-    --text: #0f172a;
-    --muted: #6b7280;
+:root {
+    --bg-deep: #08100d;
+    --bg-panel: #121a16;
+    --bg-panel-2: #0f1713;
+    --bg-input: #16211b;
+    --bg-soft: #0c1310;
 
-    --white: rgba(255,255,255,0.96);
-    --white-2: rgba(255,255,255,0.92);
+    --text-main: #f4f4f4;
+    --text-muted: #a9b2ad;
+    --text-dim: rgba(255,255,255,0.34);
+    --text-dark: #07100c;
 
-    --glass: rgba(255,255,255,0.10);
-    --glass-border: rgba(255,255,255,0.12);
+    --border-soft: rgba(255,255,255,0.06);
+    --border-glass: rgba(255,255,255,0.10);
 
-    --shadow-lg: 0 18px 55px rgba(0,0,0,0.35);
-    --shadow-md: 0 14px 40px rgba(0,0,0,0.18);
+    --accent-primary: #aee9d7;
+    --accent-secondary: #87d7c5;
+    --accent-strong: #1aa39a;
+    --accent-yellow: #eab308;
+    --accent-danger: #e05c5c;
+    --accent-blue: #5b8dee;
+    --accent-green: #4caf7d;
 
-    --r-lg: 22px;
-    --r-md: 18px;
-    --r-sm: 14px;
-    --r-pill: 999px;
+    --shadow-md: 0 12px 30px rgba(0,0,0,0.28);
+    --shadow-lg: 0 22px 60px rgba(0,0,0,0.42);
 
-    /* Additional dark theme set */
-    --bg-main: #121212;
-    --bg-card: #1a1a1a;
-    --border-soft: #2a2a2a;
+    --radius-sm: 12px;
+    --radius-md: 18px;
+    --radius-lg: 22px;
+    --radius-pill: 999px;
 
-    --text-primary: #f5f5f5;
-    --text-muted: #a1a1a1;
-
-    --accent: #c2a46d;      /* muted champagne gold */
-    --accent-soft: #8c7a50;
+    --page-max: 1400px;
+    --page-gutter: 24px;
+    --page-bottom: 60px;
 }
 
-* { box-sizing: border-box; }
+*,
+*::before,
+*::after {
+    box-sizing: border-box;
+}
 
-body{
+html {
+    -webkit-text-size-adjust: 100%;
+}
+
+body {
     margin: 0;
-    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    background: var(--bg-deep);
+    color: var(--text-main);
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Inter, Roboto, sans-serif;
     line-height: 1.6;
-    background: linear-gradient(135deg, var(--bg-1), var(--bg-2));
-    color: var(--text);
 }
 
-/* =========================================
-   ROLE SHELL (KEEP LOGIC)
-========================================= */
-.nav-shell { display: none; }
-.nav-shell.is-active { display: block; }
+a {
+    color: inherit;
+    text-decoration: none;
+}
 
-/* =========================================
-   NAVBAR BASE
-========================================= */
+img {
+    max-width: 100%;
+    display: block;
+}
 
-.site-header {
+button,
+input,
+select,
+textarea {
+    font: inherit;
+}
+
+content,
+content#content {
+    display: block;
+    width: 100%;
+}
+
+.trackable {
+    display: none;
+}
+
+.visually-hidden {
+    position: absolute !important;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0,0,0,0);
+    white-space: nowrap;
+    border: 0;
+}
+
+.page-shell {
+    width: 100%;
+    max-width: var(--page-max);
+    margin: 0 auto;
+    padding: 0 var(--page-gutter) var(--page-bottom);
+}
+
+@media (max-width: 700px) {
+    :root {
+        --page-gutter: 16px;
+        --page-bottom: 48px;
+    }
+}
+
+/* =========================================================
+   02. SHARED COMPONENTS
+   ========================================================= */
+
+.ui-panel {
+    background: var(--bg-panel);
+    border: 1px solid var(--border-soft);
+    border-radius: var(--radius-md);
+    box-shadow: var(--shadow-md);
+}
+
+.ui-soft {
+    background: rgba(255,255,255,0.03);
+    border: 1px solid var(--border-soft);
+    border-radius: 14px;
+}
+
+.ui-title-xl {
+    margin: 0 0 8px;
+    font-family: "Playfair Display", serif;
+    font-size: clamp(2rem, 3vw, 2.7rem);
+    line-height: 1.02;
+    letter-spacing: -0.03em;
+    color: var(--text-main);
+}
+
+.ui-title-lg {
+    margin: 0 0 8px;
+    font-family: "Playfair Display", serif;
+    font-size: 1.75rem;
+    line-height: 1.08;
+    color: var(--text-main);
+}
+
+.ui-copy {
+    margin: 0;
+    color: var(--text-muted);
+}
+
+.ui-input,
+.ui-select,
+.ui-textarea {
+    width: 100%;
+    padding: 12px 14px;
+    background: var(--bg-input);
+    border: 1px solid var(--border-glass);
+    border-radius: 12px;
+    color: var(--text-main);
+    outline: none;
+    transition: border-color .18s ease, box-shadow .18s ease, transform .18s ease;
+}
+
+.ui-input::placeholder,
+.ui-textarea::placeholder {
+    color: rgba(255,255,255,0.32);
+}
+
+.ui-input:focus,
+.ui-select:focus,
+.ui-textarea:focus {
+    transform: translateY(-1px);
+    border-color: rgba(135, 215, 197, 0.55);
+    box-shadow: 0 0 0 4px rgba(135, 215, 197, 0.12);
+}
+
+.ui-btn,
+.ui-btn-secondary,
+.ui-btn-danger {
+    appearance: none;
+    border: none;
+    border-radius: var(--radius-pill);
+    padding: 11px 16px;
+    font-size: .74rem;
+    font-weight: 900;
+    letter-spacing: .14em;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: transform .16s ease, box-shadow .16s ease, background .16s ease, border-color .16s ease, color .16s ease;
+}
+
+.ui-btn {
+    background: linear-gradient(135deg, var(--accent-primary), var(--accent-secondary));
+    color: var(--text-dark);
+    box-shadow: 0 14px 30px rgba(135, 215, 197, 0.22);
+}
+
+.ui-btn:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 18px 36px rgba(135, 215, 197, 0.30);
+}
+
+.ui-btn-secondary {
+    background: transparent;
+    color: var(--text-main);
+    border: 1px solid var(--border-glass);
+}
+
+.ui-btn-secondary:hover {
+    transform: translateY(-1px);
+    background: rgba(255,255,255,0.05);
+    border-color: rgba(255,255,255,0.18);
+}
+
+.ui-btn-danger {
+    background: rgba(224,92,92,0.12);
+    color: #ff9a9a;
+    border: 1px solid rgba(224,92,92,0.26);
+}
+
+.ui-btn-danger:hover {
+    transform: translateY(-1px);
+    background: rgba(224,92,92,0.18);
+    border-color: rgba(224,92,92,0.38);
+}
+
+.ui-empty {
+    padding: 40px 24px;
+    text-align: center;
+    background: var(--bg-panel);
+    border: 1px dashed var(--border-glass);
+    border-radius: var(--radius-md);
+    color: var(--text-muted);
+}
+
+.ui-chip {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 38px;
+    padding: 8px 14px;
+    border-radius: 10px;
+    border: 1px solid var(--border-glass);
+    background: rgba(255,255,255,0.03);
+    color: var(--text-main);
+    font-size: .72rem;
+    font-weight: 900;
+    letter-spacing: .14em;
+    text-transform: uppercase;
+    cursor: pointer;
+}
+
+/* =========================================================
+   03. NAV COMPONENT (nav.pug)
+   ========================================================= */
+
+.navBar {
     position: sticky;
     top: 0;
     z-index: 1000;
-}
 
-.navbar {
-    position: sticky;
-    top: 0;
-    z-index: 1000;
-
-    margin: 20px auto 0;
-    max-width: 1200px;
-
-    padding: 14px 24px;
+    max-width: var(--page-max);
+    margin: 18px auto 0;
+    padding: 14px var(--page-gutter);
 
     display: flex;
-    justify-content: space-between;
     align-items: center;
+    justify-content: space-between;
+    gap: 18px;
 
-    border-radius: var(--nav-radius);
+    background: rgba(18, 26, 22, 0.86);
+    border: 1px solid var(--border-glass);
+    border-radius: 18px;
     backdrop-filter: blur(14px);
-
-    background: var(--nav-bg);
-    border: 1px solid var(--nav-border);
-
-    transition: all 0.3s ease;
+    box-shadow: var(--shadow-md);
 }
 
-.nav-logo {
+#navLogo.navItem {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
     font-family: "Playfair Display", serif;
     font-size: 22px;
-    letter-spacing: 1px;
-    text-decoration: none;
-    color: var(--nav-text);
-
-    display: flex;
-    align-items: center;
-    gap: 8px;
-
-    transition: opacity 0.3s ease;
+    font-weight: 700;
+    color: var(--text-main);
 }
 
-.nav-logo::before {
+#navLogo.navItem::before {
     content: "✦";
-    color: var(--nav-accent);
+    color: #86d400;
     font-size: 14px;
 }
 
-.nav-logo:hover {
-    opacity: 0.8;
+.navToggle {
+    display: none;
+    appearance: none;
+    background: none;
+    border: none;
+    padding: 0;
+    color: var(--text-main);
+    font-size: 1.6rem;
+    line-height: 1;
+    cursor: pointer;
 }
 
-.nav-links,
 .navRight {
     display: flex;
     align-items: center;
@@ -120,128 +317,2349 @@ body{
     padding: 0;
 }
 
-.nav-link,
-.navRight a {
+.navItem {
     position: relative;
-    text-decoration: none;
-    color: var(--nav-text-muted);
-    font-size: 14px;
-    letter-spacing: 0.4px;
-
+    display: inline-flex;
+    align-items: center;
     padding: 6px 2px;
-    transition: color 0.3s ease;
+    color: var(--text-muted);
+    font-size: 14px;
+    letter-spacing: .02em;
+    transition: color .2s ease;
 }
 
-/* Animated underline */
-.nav-link::after,
-.navRight a::after {
+.navItem::after {
     content: "";
     position: absolute;
-    bottom: -4px;
     left: 0;
+    bottom: -4px;
+    width: 0;
     height: 2px;
-    width: 0%;
-    background: var(--nav-accent);
-    transition: width 0.3s ease;
+    background: var(--accent-primary);
+    transition: width .22s ease;
 }
 
-.nav-link:hover,
-.navRight a:hover {
-    color: var(--nav-text);
+.navItem:hover,
+.navItem.navActive {
+    color: var(--text-main);
 }
 
-.nav-link:hover::after,
-.navRight a:hover::after {
+.navItem:hover::after,
+.navItem.navActive::after {
     width: 100%;
 }
 
-/* Active state */
-.navActive,
-.nav-link.active {
-    color: var(--nav-text);
-}
-
-.navActive::after,
-.nav-link.active::after {
-    width: 100%;
-}
-
-.nav-btn {
-    padding: 8px 18px;
-    border-radius: 999px;
-    font-size: 13px;
-    letter-spacing: 0.5px;
-    font-weight: 500;
-
-    background: var(--nav-accent);
-    color: #111;
-    border: none;
-
-    cursor: pointer;
-
-    transition:
-            transform 0.2s ease,
-            background 0.3s ease;
-}
-
-.nav-btn:hover {
-    transform: translateY(-2px);
-    background: #d4b67f;
-}
-
-.nav-btn.logout {
-    background: transparent;
-    color: var(--nav-text);
-    border: 1px solid var(--nav-border);
-}
-
-.navToggle {
-    display: none;
-    font-size: 1.6rem;
-    background: none;
-    border: none;
-    color: var(--nav-text);
-    cursor: pointer;
+.trackable.is-active,
+.trackable.show,
+.trackable[style*="display: list-item"],
+.trackable[style*="display:list-item"],
+.trackable[style*="display: block"],
+.trackable[style*="display:block"],
+.trackable[style*="display: inline-block"],
+.trackable[style*="display:inline-block"],
+.trackable[style*="display: flex"],
+.trackable[style*="display:flex"] {
+    display: list-item;
 }
 
 @media (max-width: 840px) {
+    .navBar {
+        position: relative;
+        flex-wrap: wrap;
+        padding: 14px 18px;
+    }
+
     .navToggle {
         display: block;
     }
 
-    .nav-links,
     .navRight {
         position: absolute;
-        top: 100%;
+        top: calc(100% + 10px);
         right: 0;
-
+        width: 240px;
+        padding: 18px;
+        display: none;
         flex-direction: column;
         align-items: flex-start;
-
-        width: 220px;
-        padding: 20px;
-
+        gap: 14px;
+        background: rgba(18, 26, 22, 0.97);
+        border: 1px solid var(--border-glass);
         border-radius: 14px;
-        background: #1a1a1a;
-        border: 1px solid var(--nav-border);
-
-        display: none;
+        box-shadow: var(--shadow-md);
     }
 
-    .nav-links.open,
     .navRight.open {
         display: flex;
+    }
+
+    .navRight li,
+    .navRight .navItem {
+        width: 100%;
     }
 }
 
 /* =========================================================
-   FOOTER (Cleaned)
-========================================================= */
+   04. AUTH FORM (login/register/forgotPassword)
+   ========================================================= */
+
+#authForm {
+    max-width: 560px;
+    margin: 48px auto;
+    padding: 22px;
+    border-radius: 18px;
+    background: rgba(0, 0, 0, 0.35);
+    border: 1px solid rgba(255,255,255,0.12);
+    backdrop-filter: blur(10px);
+    box-shadow: 0 18px 55px rgba(0,0,0,0.35);
+    color: rgba(255,255,255,0.92);
+}
+
+#authForm h1,
+#authForm h2,
+#authForm h3 {
+    margin: 14px 0 10px;
+    color: rgba(255,255,255,0.9);
+    line-height: 1.15;
+}
+
+#authForm h1 {
+    font-family: "Playfair Display", serif;
+    font-size: 2rem;
+}
+
+#authForm .user-type-btn,
+#authForm .auth-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 10px 18px;
+    margin: 6px 12px 8px 0;
+    border-radius: 999px;
+    border: 1px solid rgba(255,255,255,0.18);
+    background: rgba(255,255,255,0.08);
+    color: rgba(255,255,255,0.92);
+    cursor: pointer;
+    transition: transform .14s ease, box-shadow .14s ease, background .14s ease, border-color .14s ease;
+}
+
+#authForm .user-type-btn,
+#authForm .auth-btn[data-auth="login"],
+#authForm .auth-btn[data-auth="register"] {
+    min-width: 140px;
+}
+
+#authForm .user-type-btn:hover,
+#authForm .auth-btn:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 12px 24px rgba(0,0,0,0.25);
+    background: rgba(255,255,255,0.12);
+    border-color: rgba(255,255,255,0.28);
+}
+
+#authForm .user-type-btn.active,
+#authForm .auth-btn.active {
+    background: linear-gradient(135deg, var(--accent-primary), var(--accent-secondary));
+    color: var(--text-dark);
+    border-color: rgba(135,215,197,0.55);
+    box-shadow: 0 14px 30px rgba(135,215,197,0.22);
+}
+
+#authForm .auth-btn[data-auth="forgotPassword"] {
+    display: inline-flex;
+    width: auto;
+    min-width: 0;
+    background: transparent !important;
+    border: none !important;
+    box-shadow: none !important;
+    padding: 4px 0 !important;
+    margin: 10px 0 0 !important;
+    color: rgba(255,255,255,0.75);
+    font-weight: 600;
+    text-decoration: underline;
+}
+
+#authForm .auth-btn[data-auth="forgotPassword"]:hover {
+    color: var(--accent-primary);
+    transform: none !important;
+}
+
+#authForm .form-group {
+    margin-bottom: 14px;
+}
+
+#authForm label {
+    display: block;
+    margin: 10px 0 6px;
+    font-size: 13px;
+    font-weight: 800;
+    color: rgba(255,255,255,0.85);
+}
+
+#authForm input,
+#authForm select,
+#authForm textarea {
+    width: 100%;
+    padding: 12px 14px;
+    border-radius: 14px;
+    border: 1px solid rgba(255,255,255,0.16);
+    background: rgba(0,0,0,0.25);
+    color: #fff;
+    caret-color: var(--accent-strong);
+    outline: none;
+    transition: transform .14s ease, box-shadow .14s ease, border-color .14s ease;
+}
+
+#authForm input::placeholder,
+#authForm textarea::placeholder {
+    color: rgba(255,255,255,0.45);
+}
+
+#authForm input:focus,
+#authForm select:focus,
+#authForm textarea:focus {
+    transform: translateY(-1px);
+    border-color: rgba(135,215,197,0.70);
+    box-shadow: 0 0 0 4px rgba(135,215,197,0.16);
+}
+
+#authForm input:-webkit-autofill {
+    -webkit-text-fill-color: #fff;
+    box-shadow: 0 0 0 1000px rgba(0,0,0,0.25) inset;
+}
+
+#authForm input.is-invalid,
+#authForm select.is-invalid,
+#authForm textarea.is-invalid {
+    border-color: rgba(255,80,80,0.70);
+    box-shadow: 0 0 0 4px rgba(255,80,80,0.14);
+}
+
+#authForm button[type="submit"],
+#authForm input[type="submit"] {
+    width: 100%;
+    margin-top: 14px;
+    padding: 14px 16px;
+    border-radius: 999px;
+    border: none;
+    font-weight: 950;
+    font-size: 16px;
+    cursor: pointer;
+    background: linear-gradient(135deg, var(--accent-primary), var(--accent-secondary));
+    color: var(--text-dark);
+    box-shadow: 0 16px 32px rgba(135,215,197,0.24);
+    transition: transform .14s ease, box-shadow .14s ease, opacity .14s ease;
+    position: relative;
+    overflow: hidden;
+}
+
+#authForm button[type="submit"]:hover,
+#authForm input[type="submit"]:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 18px 40px rgba(135,215,197,0.32);
+}
+
+#authForm button[type="submit"][disabled],
+#authForm input[type="submit"][disabled] {
+    opacity: .75;
+    cursor: not-allowed;
+}
+
+#authForm button[type="submit"]::after {
+    content: "";
+    position: absolute;
+    top: 50%;
+    right: 18px;
+    width: 16px;
+    height: 16px;
+    margin-top: -8px;
+    border-radius: 50%;
+    border: 2px solid rgba(7,16,12,0.35);
+    border-top-color: rgba(7,16,12,0.95);
+    opacity: 0;
+    transform: scale(.8);
+    animation: authSpin .8s linear infinite;
+}
+
+#authForm button.is-loading::after {
+    opacity: 1;
+    transform: scale(1);
+}
+
+#authForm button[type="submit"]::before {
+    content: "";
+    position: absolute;
+    top: 50%;
+    right: 18px;
+    width: 10px;
+    height: 18px;
+    margin-top: -12px;
+    border-right: 3px solid rgba(7,16,12,0.95);
+    border-bottom: 3px solid rgba(7,16,12,0.95);
+    transform: rotate(45deg) scale(.6);
+    opacity: 0;
+}
+
+#authForm button.is-success::before {
+    opacity: 1;
+    transform: rotate(45deg) scale(1);
+}
+
+#authForm button.is-success::after {
+    opacity: 0;
+}
+
+#authForm.is-error {
+    animation: authShake .42s ease;
+}
+
+@keyframes authSpin {
+    to { transform: rotate(360deg); }
+}
+
+@keyframes authShake {
+    0%,100% { transform: translateX(0); }
+    15% { transform: translateX(-6px); }
+    30% { transform: translateX(6px); }
+    45% { transform: translateX(-5px); }
+    60% { transform: translateX(5px); }
+    75% { transform: translateX(-3px); }
+    90% { transform: translateX(3px); }
+}
+
+@media (max-width: 520px) {
+    #authForm {
+        margin: 28px 14px;
+        padding: 18px;
+    }
+}
+
+/* =========================================================
+   05. PROFILE CARD (profileCard.pug)
+   ========================================================= */
+
+.profile-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+    width: 100%;
+    padding: 24px;
+}
+
+.profile-card {
+    width: 520px;
+    max-width: 100%;
+    padding: 36px;
+    border-radius: 20px;
+    background: rgba(18, 26, 22, 0.92);
+    border: 1px solid rgba(255,255,255,0.08);
+    backdrop-filter: blur(10px);
+    box-shadow: 0 20px 60px rgba(0,0,0,0.45);
+}
+
+#updateProfileForm {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.avatar-section {
+    width: 100%;
+    text-align: center;
+    margin-bottom: 30px;
+}
+
+.avatar-section label {
+    display: block;
+    margin-bottom: 12px;
+    font-size: .72rem;
+    font-weight: 800;
+    letter-spacing: .12em;
+    text-transform: uppercase;
+    color: var(--text-muted);
+}
+
+#userAvatar {
+    width: 120px;
+    height: 120px;
+    margin: 0 auto 12px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 3px solid rgba(255,255,255,0.1);
+    background: var(--bg-input);
+}
+
+.form-fields {
+    width: 100%;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 15px;
+}
+
+.field-group {
+    text-align: left;
+}
+
+.field-group label {
+    display: block;
+    margin-bottom: 6px;
+    font-size: .72rem;
+    font-weight: 800;
+    letter-spacing: .08em;
+    text-transform: uppercase;
+    color: var(--text-muted);
+}
+
+.form-fields input {
+    width: 100%;
+    padding: 12px 13px;
+    border-radius: 12px;
+    background: rgba(255,255,255,0.05);
+    border: 1px solid rgba(255,255,255,0.10);
+    color: #fff;
+}
+
+.form-fields input:focus {
+    outline: none;
+    transform: translateY(-1px);
+    border-color: rgba(135,215,197,0.55);
+    box-shadow: 0 0 0 4px rgba(135,215,197,0.12);
+}
+
+.form-fields input[readonly] {
+    background: rgba(255,255,255,0.03);
+    color: rgba(255,255,255,0.72);
+}
+
+#profile-role.trackable.is-active,
+#profile-role.trackable.show,
+#profile-role.trackable[style*="display: block"],
+#profile-role.trackable[style*="display:block"],
+#profile-role.trackable[style*="display: flex"],
+#profile-role.trackable[style*="display:flex"] {
+    display: block;
+}
+
+#updateProfileForm button[type="submit"],
+#updateProfileForm button {
+    width: 100%;
+    margin-top: 24px;
+    padding: 15px 16px;
+    border: none;
+    border-radius: 999px;
+    font-size: .95rem;
+    font-weight: 800;
+    cursor: pointer;
+    background: linear-gradient(135deg, var(--accent-primary), var(--accent-secondary));
+    color: var(--text-dark);
+    box-shadow: 0 16px 32px rgba(135,215,197,0.24);
+}
+
+@media (max-width: 600px) {
+    .profile-card {
+        width: 100%;
+        padding: 26px 20px;
+    }
+
+    .form-fields {
+        grid-template-columns: 1fr;
+    }
+
+    #userAvatar {
+        width: 100px;
+        height: 100px;
+    }
+}
+
+/* =========================================================
+   06. BRAND MINI CARD / LOGO (brandCard.pug, brandLogo.pug)
+   ========================================================= */
+
+.dash-brand-minimal {
+    display: inline-flex;
+    align-items: center;
+    gap: 12px;
+    min-width: 0;
+    max-width: 100%;
+    background: transparent;
+    border: none;
+    padding: 0;
+    margin: 0;
+    flex-shrink: 0;
+}
+
+.dash-brand-label {
+    display: none;
+}
+
+.dash-brand-logo {
+    width: 24px;
+    height: 24px;
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    border-radius: 6px;
+    background: var(--bg-input);
+    border: 1px solid var(--border-glass);
+}
+
+.dash-brand-logo img,
+.dash-brand-logo .js-brand-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.dash-brand-name,
+.dash-brand-name.js-brand-name {
+    min-width: 0;
+    max-width: 220px;
+    font-size: .9rem;
+    font-weight: 500;
+    line-height: 1.2;
+    color: var(--text-muted);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+/* =========================================================
+   07. HOME PAGE / RESTAURANT CARD (restaurantCard.pug)
+   ========================================================= */
+
+.home-page {
+    width: 100%;
+    background: var(--bg-deep);
+    color: var(--text-main);
+    padding-bottom: var(--page-bottom);
+}
+
+.home-filter-bar {
+    width: 100%;
+    padding: 18px 0 14px;
+    background: linear-gradient(180deg, rgba(20,24,29,0.98) 0%, rgba(26,28,33,0.96) 100%);
+    border-bottom: 1px solid var(--border-soft);
+}
+
+.home-filter-bar-inner {
+    max-width: var(--page-max);
+    margin: 0 auto;
+    padding: 0 var(--page-gutter);
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.home-brand {
+    display: flex;
+    align-items: baseline;
+    justify-content: center;
+    gap: 12px;
+    text-align: center;
+}
+
+.home-brand h1 {
+    margin: 0;
+    font-family: "Playfair Display", serif;
+    font-size: 1.45rem;
+    font-weight: 800;
+    color: var(--text-main);
+}
+
+.home-sidebar-copy {
+    margin: 0;
+    font-size: .85rem;
+    color: var(--text-muted);
+}
+
+.home-filters {
+    display: flex;
+    align-items: flex-end;
+    gap: 10px;
+    width: 100%;
+}
+
+.home-filter-group {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    flex: 1 1 0;
+    min-width: 0;
+}
+
+.home-filter-label {
+    display: block;
+    font-size: .64rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: .12em;
+    color: var(--text-muted);
+}
+
+.home-input,
+.home-select {
+    width: 100%;
+    min-height: 44px;
+    background: var(--bg-input);
+    border: 1px solid var(--border-glass);
+    border-radius: 10px;
+    padding: 10px 12px;
+    color: var(--text-main);
+    font-size: .84rem;
+    box-sizing: border-box;
+    color-scheme: dark;
+    outline: none;
+    transition: border-color .18s ease, box-shadow .18s ease, transform .18s ease;
+}
+
+.home-input:focus,
+.home-select:focus {
+    border-color: rgba(135,215,197,0.4);
+    box-shadow: 0 0 0 4px rgba(135,215,197,0.08);
+    transform: translateY(-1px);
+}
+
+.home-input::placeholder {
+    color: rgba(255,255,255,0.28);
+}
+
+.home-select option {
+    background: var(--bg-panel);
+    color: var(--text-main);
+}
+
+.home-filter-actions {
+    flex: 0 0 auto;
+    display: flex;
+    align-items: flex-end;
+}
+
+.home-submit-btn {
+    min-height: 44px;
+    padding: 10px 18px;
+    border: none;
+    border-radius: 10px;
+    background: linear-gradient(135deg, var(--accent-primary), var(--accent-secondary));
+    color: var(--text-dark);
+    font-size: .74rem;
+    font-weight: 900;
+    letter-spacing: .14em;
+    text-transform: uppercase;
+    cursor: pointer;
+    white-space: nowrap;
+    box-shadow: 0 10px 24px rgba(135,215,197,0.20);
+}
+
+.home-main {
+    max-width: var(--page-max);
+    margin: 0 auto;
+    padding: 24px var(--page-gutter) 0;
+}
+
+.home-layout {
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+}
+
+.restaurants-container,
+.restaurants-grid,
+.home-grid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 16px;
+    background: transparent;
+    border: none;
+    padding: 0;
+}
+
+.restaurant-card {
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    text-decoration: none;
+    color: var(--text-main);
+    background: var(--bg-panel);
+    border: 1px solid var(--border-soft);
+    border-radius: 16px;
+    transition: transform .2s ease, border-color .2s ease, box-shadow .2s ease;
+}
+
+.restaurant-card:hover {
+    transform: translateY(-3px);
+    border-color: rgba(255,255,255,0.18);
+    box-shadow: 0 12px 28px rgba(0,0,0,0.22);
+}
+
+.restaurant-banner {
+    position: relative;
+    width: 100%;
+    aspect-ratio: 3 / 2;
+    overflow: hidden;
+    flex-shrink: 0;
+    background: var(--bg-input);
+}
+
+.restaurant-banner img {
+    width: 100%;
+    height: 100%;
+    display: block;
+    object-fit: cover;
+    transition: transform .4s ease;
+}
+
+.restaurant-card:hover .restaurant-banner img {
+    transform: scale(1.04);
+}
+
+.restaurant-overlay {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(0,0,0,0);
+    opacity: 0;
+    transition: opacity .25s ease, background .25s ease;
+}
+
+.restaurant-card:hover .restaurant-overlay {
+    opacity: 1;
+    background: rgba(0,0,0,0.42);
+}
+
+.restaurant-cta {
+    color: #fff;
+    font-size: .75rem;
+    font-weight: 800;
+    letter-spacing: .12em;
+    text-transform: uppercase;
+    border: 1px solid rgba(255,255,255,0.6);
+    border-radius: 999px;
+    padding: 7px 14px;
+}
+
+.restaurant-content {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+    padding: 14px 16px 15px;
+    background: transparent;
+}
+
+.restaurant-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 8px;
+    margin-bottom: 6px;
+}
+
+.restaurant-name {
+    margin: 0;
+    flex: 1;
+    font-family: "Playfair Display", serif;
+    font-size: 1.05rem;
+    line-height: 1.2;
+    color: var(--text-main);
+}
+
+.restaurant-badge {
+    flex-shrink: 0;
+    padding: 3px 7px;
+    border-radius: 999px;
+    background: rgba(135,215,197,0.14);
+    border: 1px solid rgba(135,215,197,0.22);
+    color: #bff6ec;
+    font-size: .58rem;
+    font-weight: 800;
+    letter-spacing: .08em;
+    text-transform: uppercase;
+    white-space: nowrap;
+}
+
+.restaurant-description {
+    margin: 0 0 8px;
+    color: rgba(255,255,255,0.58);
+    font-size: .8rem;
+    line-height: 1.45;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+
+.restaurant-meta-line {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    margin-bottom: 10px;
+}
+
+.restaurant-type {
+    color: rgba(255,255,255,0.42);
+    font-size: .72rem;
+}
+
+.restaurant-details {
+    margin-top: auto;
+    padding-top: 10px;
+    border-top: 1px solid rgba(255,255,255,0.06);
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.restaurant-detail-row {
+    display: grid;
+    grid-template-columns: 72px minmax(0, 1fr);
+    gap: 8px;
+    align-items: start;
+}
+
+.detail-label {
+    color: rgba(255,255,255,0.38);
+    font-size: .64rem;
+    font-weight: 800;
+    letter-spacing: .08em;
+    text-transform: uppercase;
+}
+
+.detail-value {
+    color: rgba(255,255,255,0.78);
+    font-size: .74rem;
+    line-height: 1.4;
+    word-break: break-word;
+}
+
+.brand-row .detail-value {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.brand-info {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    min-width: 0;
+}
+
+.brand-logo-small {
+    width: 18px;
+    height: 18px;
+    border-radius: 999px;
+    object-fit: cover;
+    flex-shrink: 0;
+    border: 1px solid rgba(255,255,255,0.1);
+}
+
+@media (max-width: 1100px) {
+    .restaurants-container,
+    .restaurants-grid,
+    .home-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+}
+
+@media (max-width: 820px) {
+    .home-filters {
+        flex-wrap: wrap;
+    }
+
+    .home-filter-group {
+        flex: 1 1 calc(50% - 10px);
+    }
+
+    .home-filter-actions,
+    .home-submit-btn {
+        width: 100%;
+    }
+}
+
+@media (max-width: 700px) {
+    .restaurants-container,
+    .restaurants-grid,
+    .home-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .home-brand {
+        flex-direction: column;
+        gap: 6px;
+    }
+}
+
+/* =========================================================
+   08. DASHBOARD PAGE
+   ========================================================= */
+
+.dashboard-page {
+    width: 100%;
+    max-width: var(--page-max);
+    margin: 0 auto;
+    padding: 22px var(--page-gutter) var(--page-bottom);
+    color: var(--text-main);
+}
+
+.dashboard-wrap {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 22px;
+}
+
+.dash-header {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) 290px;
+    gap: 18px;
+    align-items: stretch;
+}
+
+.dash-title {
+    padding: 24px 28px;
+    background: var(--bg-panel);
+    border: 1px solid var(--border-soft);
+    border-radius: 20px;
+    box-shadow: var(--shadow-md);
+}
+
+.dash-title h1 {
+    margin: 0 0 8px;
+    font-family: "Playfair Display", serif;
+    font-size: clamp(2.2rem, 4vw, 3rem);
+    line-height: 1.02;
+    letter-spacing: -0.03em;
+    color: var(--text-main);
+}
+
+.dash-title p {
+    margin: 0;
+    color: var(--text-muted);
+    font-size: 1rem;
+}
+
+#brand-container.dash-brand-minimal {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: flex-start;
+    gap: 10px;
+    padding: 22px 20px;
+    background: var(--bg-panel);
+    border: 1px solid var(--border-soft);
+    border-radius: 20px;
+    box-shadow: var(--shadow-md);
+}
+
+#brand-container .dash-brand-label {
+    display: block;
+    margin: 0;
+    font-size: .72rem;
+    font-weight: 900;
+    letter-spacing: .14em;
+    text-transform: uppercase;
+    color: var(--text-muted);
+}
+
+#brand-container .dash-brand-logo {
+    width: 54px;
+    height: 54px;
+    border-radius: 14px;
+}
+
+#brand-container .dash-brand-name {
+    max-width: 100%;
+    font-size: 1.05rem;
+    font-weight: 700;
+    color: var(--text-main);
+    white-space: normal;
+}
+
+.dash-kpis {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 18px;
+}
+
+.kpi {
+    padding: 22px 18px 18px;
+    background: var(--bg-panel);
+    border: 1px solid var(--border-soft);
+    border-radius: 18px;
+    box-shadow: var(--shadow-md);
+}
+
+.kpi-label {
+    margin: 0 0 14px;
+    font-size: .72rem;
+    font-weight: 900;
+    letter-spacing: .12em;
+    text-transform: uppercase;
+    color: rgba(255,255,255,0.28);
+}
+
+.kpi-value {
+    margin: 0 0 10px;
+    font-size: clamp(2rem, 4vw, 2.6rem);
+    line-height: 1;
+    font-weight: 900;
+    color: var(--accent-secondary);
+}
+
+.kpi-meta {
+    margin: 0;
+    font-size: .95rem;
+    color: var(--accent-strong);
+    font-weight: 600;
+}
+
+.dash-card {
+    padding: 18px 18px 22px;
+    background: var(--bg-panel);
+    border: 1px solid var(--border-soft);
+    border-radius: 20px;
+    box-shadow: var(--shadow-md);
+}
+
+.dash-card-head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 14px;
+    margin-bottom: 18px;
+}
+
+.dash-card-head h2 {
+    margin: 0;
+    font-family: "Playfair Display", serif;
+    font-size: 2rem;
+    line-height: 1.05;
+    color: var(--text-main);
+}
+
+.dash-card-actions {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.dash-chip {
+    appearance: none;
+    border: 1px solid var(--border-glass);
+    background: rgba(255,255,255,0.03);
+    color: var(--text-main);
+    min-height: 38px;
+    padding: 8px 14px;
+    border-radius: 8px;
+    font-size: .72rem;
+    font-weight: 900;
+    letter-spacing: .14em;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: background .16s ease, border-color .16s ease, transform .16s ease, color .16s ease;
+}
+
+.dash-chip:hover {
+    transform: translateY(-1px);
+    background: rgba(255,255,255,0.06);
+    border-color: rgba(255,255,255,0.18);
+}
+
+.dash-chip.is-active {
+    background: linear-gradient(135deg, var(--accent-primary), var(--accent-secondary));
+    color: var(--text-dark);
+    border-color: transparent;
+}
+
+.dash-chart {
+    width: 100%;
+    min-height: 360px;
+    padding: 8px 6px 0;
+}
+
+.dash-chart canvas {
+    display: block;
+    width: 100% !important;
+    max-width: 100%;
+    min-height: 320px;
+}
+
+.dash-filters {
+    padding: 18px 20px 20px;
+    background: var(--bg-panel);
+    border: 1px solid var(--border-soft);
+    border-radius: 20px;
+    box-shadow: var(--shadow-md);
+}
+
+.filter-row {
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+}
+
+.filter-group {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.filter-group > label {
+    display: block;
+    margin: 0;
+    font-size: .84rem;
+    font-weight: 700;
+    color: var(--text-main);
+}
+
+.check-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px 14px;
+    align-items: center;
+}
+
+.check {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    color: var(--text-main);
+    font-size: .82rem;
+    line-height: 1.2;
+    cursor: pointer;
+}
+
+.check input[type="checkbox"] {
+    accent-color: var(--accent-strong);
+    cursor: pointer;
+}
+
+@media (max-width: 1100px) {
+    .dash-header {
+        grid-template-columns: 1fr;
+    }
+
+    .dash-kpis {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .dash-card-head {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+}
+
+@media (max-width: 700px) {
+    .dash-kpis {
+        grid-template-columns: 1fr;
+    }
+
+    .dash-card-actions {
+        width: 100%;
+        flex-wrap: wrap;
+    }
+
+    .dash-chip {
+        flex: 1 1 auto;
+    }
+
+    .check-row {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+}
+
+/* =========================================================
+   09. MANAGE BOOKINGS PAGE + CARD (bookingCard.pug)
+   ========================================================= */
+
+.bookings-layout-container {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    width: 100%;
+    align-items: stretch;
+}
+
+.home-sidebar {
+    width: 100%;
+    position: static;
+    align-self: stretch;
+}
+
+.home-sidebar-panel {
+    background: var(--bg-panel);
+    border: 1px solid var(--border-soft);
+    border-radius: var(--radius-md);
+    padding: 20px 22px;
+    box-shadow: var(--shadow-md);
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr)) auto;
+    gap: 16px;
+    align-items: end;
+}
+
+.home-sidebar-head,
+.bookings-layout-container .home-sidebar-copy {
+    display: none;
+}
+
+.bookings-main-content {
+    width: 100%;
+    min-width: 0;
+}
+
+.bookings-grid {
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+    width: 100%;
+}
+
+.booking-card {
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    background: var(--bg-panel);
+    border: 1px solid var(--border-soft);
+    border-radius: 12px;
+    color: var(--text-main);
+    box-shadow: 0 10px 24px rgba(0,0,0,0.18);
+    transition: transform .18s ease, border-color .18s ease, box-shadow .18s ease;
+}
+
+.booking-card:hover {
+    transform: translateY(-2px);
+    border-color: rgba(255,255,255,0.16);
+    box-shadow: 0 14px 30px rgba(0,0,0,0.24);
+}
+
+.bc-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    padding: 16px 18px 14px;
+    border-bottom: 1px solid var(--border-soft);
+}
+
+.bc-header-left {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    min-width: 0;
+}
+
+.bc-status-dot {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    flex-shrink: 0;
+}
+
+.bc-name {
+    margin: 0 0 2px;
+    font-size: 1rem;
+    font-weight: 700;
+    color: var(--text-main);
+}
+
+.bc-ref {
+    font-size: .7rem;
+    color: rgba(255,255,255,0.34);
+    font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+    letter-spacing: .05em;
+}
+
+.bc-status-pill {
+    flex-shrink: 0;
+    font-size: .65rem;
+    font-weight: 800;
+    letter-spacing: .08em;
+    text-transform: uppercase;
+    padding: 4px 10px;
+    border-radius: 999px;
+    border: 1px solid currentColor;
+    white-space: nowrap;
+}
+
+.bc-meta {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    padding: 12px 18px;
+    border-bottom: 1px solid var(--border-soft);
+}
+
+.bc-meta-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px 20px;
+}
+
+.bc-meta-item {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    min-width: 0;
+    font-size: .78rem;
+    color: rgba(255,255,255,0.68);
+}
+
+.bc-meta-item i {
+    width: 14px;
+    flex-shrink: 0;
+    text-align: center;
+    font-size: .72rem;
+    color: rgba(255,255,255,0.34);
+}
+
+.bc-chat {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+    min-height: 0;
+    background: rgba(255,255,255,0.015);
+}
+
+.bc-chat-messages {
+    flex: 1;
+    min-height: 140px;
+    max-height: 260px;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    padding: 14px 18px;
+}
+
+.bc-chat-empty {
+    margin: auto;
+    text-align: center;
+    font-size: .78rem;
+    color: rgba(255,255,255,0.28);
+}
+
+.bc-bubble {
+    max-width: 80%;
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+    padding: 8px 12px;
+    border-radius: 10px;
+}
+
+.bc-bubble--staff {
+    align-self: flex-end;
+    background: rgba(255,255,255,0.06);
+    border: 1px solid rgba(255,255,255,0.09);
+}
+
+.bc-bubble--customer {
+    align-self: flex-start;
+    background: rgba(0,0,0,0.22);
+    border: 1px solid rgba(255,255,255,0.05);
+}
+
+.bc-bubble-author {
+    font-size: .65rem;
+    font-weight: 700;
+    letter-spacing: .06em;
+    text-transform: uppercase;
+    color: rgba(255,255,255,0.34);
+}
+
+.bc-bubble--staff .bc-bubble-author {
+    color: var(--accent-yellow);
+}
+
+.bc-bubble-text {
+    margin: 0;
+    font-size: .82rem;
+    line-height: 1.4;
+    color: rgba(255,255,255,0.82);
+}
+
+.bc-bubble-time {
+    align-self: flex-end;
+    font-size: .62rem;
+    color: rgba(255,255,255,0.28);
+}
+
+.bc-chat-input-row {
+    display: flex;
+    align-items: center;
+    gap: 0;
+    border-top: 1px solid var(--border-soft);
+}
+
+.bc-chat-input {
+    flex: 1;
+    padding: 10px 14px;
+    background: transparent;
+    border: none;
+    outline: none;
+    color: var(--text-main);
+    font-size: .8rem;
+}
+
+.bc-chat-input::placeholder {
+    color: rgba(255,255,255,0.24);
+}
+
+.bc-chat-send {
+    padding: 10px 14px;
+    background: transparent;
+    border: none;
+    border-left: 1px solid var(--border-soft);
+    color: var(--accent-yellow);
+    font-size: .85rem;
+    cursor: pointer;
+}
+
+.bc-chat-queued {
+    padding: 5px 14px 8px;
+    border-top: 1px solid rgba(255,255,255,0.05);
+    font-size: .72rem;
+    color: var(--accent-yellow);
+}
+
+.bc-actions {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    border-top: 1px solid var(--border-soft);
+}
+
+.bc-btn {
+    padding: 12px 6px;
+    background: transparent;
+    border: none;
+    border-right: 1px solid var(--border-soft);
+    color: rgba(255,255,255,0.54);
+    font-size: .65rem;
+    font-weight: 800;
+    letter-spacing: .10em;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: background .15s ease, color .15s ease;
+}
+
+.bc-btn:last-child {
+    border-right: none;
+}
+
+.bc-btn:hover {
+    background: rgba(255,255,255,0.04);
+    color: #fff;
+}
+
+.bc-btn-confirm:hover { color: var(--accent-yellow); }
+.bc-btn-decline:hover { color: var(--accent-danger); }
+.bc-btn-complete:hover { color: var(--accent-blue); }
+.bc-btn-noshow:hover { color: #9a9a9a; }
+
+.bc-status-dot.status-Pending { background: var(--accent-yellow); }
+.bc-status-dot.status-Approved { background: var(--accent-green); }
+.bc-status-dot.status-Completed { background: var(--accent-blue); }
+.bc-status-dot.status-Cancelled { background: var(--accent-danger); }
+.bc-status-dot.status-NoShow { background: #777; }
+
+.bc-status-pill.status-pill-Pending {
+    color: var(--accent-yellow);
+    border-color: rgba(234,179,8,0.55);
+    background: rgba(234,179,8,0.08);
+}
+.bc-status-pill.status-pill-Approved {
+    color: var(--accent-green);
+    border-color: rgba(76,175,125,0.55);
+    background: rgba(76,175,125,0.08);
+}
+.bc-status-pill.status-pill-Completed {
+    color: var(--accent-blue);
+    border-color: rgba(91,141,238,0.55);
+    background: rgba(91,141,238,0.08);
+}
+.bc-status-pill.status-pill-Cancelled {
+    color: var(--accent-danger);
+    border-color: rgba(224,92,92,0.55);
+    background: rgba(224,92,92,0.08);
+}
+.bc-status-pill.status-pill-NoShow {
+    color: #888;
+    border-color: rgba(255,255,255,0.14);
+    background: rgba(255,255,255,0.04);
+}
+
+@media (max-width: 1100px) {
+    .home-sidebar-panel {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+}
+
+@media (max-width: 700px) {
+    .home-sidebar-panel {
+        grid-template-columns: 1fr;
+    }
+
+    .bc-header {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .bc-actions {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media (max-width: 520px) {
+    .bc-meta-row {
+        flex-direction: column;
+        gap: 8px;
+    }
+
+    .bc-actions {
+        grid-template-columns: 1fr;
+    }
+
+    .bc-btn {
+        border-right: none;
+        border-bottom: 1px solid var(--border-soft);
+    }
+
+    .bc-btn:last-child {
+        border-bottom: none;
+    }
+}
+
+/* =========================================================
+   10. MY BOOKINGS PAGE
+   ========================================================= */
+
+.mybookings-page {
+    width: 100%;
+    min-height: 100vh;
+    background: var(--bg-deep);
+    color: var(--text-main);
+    padding-bottom: var(--page-bottom);
+}
+
+.mb-container {
+    max-width: var(--page-max);
+    margin: 0 auto;
+    padding: 22px var(--page-gutter) var(--page-bottom);
+}
+
+.mb-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 18px;
+    margin-bottom: 24px;
+    padding: 22px 24px;
+    background: var(--bg-panel);
+    border: 1px solid var(--border-soft);
+    border-radius: var(--radius-md);
+    box-shadow: var(--shadow-md);
+}
+
+.mb-title,
+.mb-header h1 {
+    margin: 0 0 6px;
+    font-family: "Playfair Display", serif;
+    font-size: clamp(2rem, 3vw, 2.4rem);
+    line-height: 1.05;
+    letter-spacing: -0.03em;
+    color: var(--text-main);
+}
+
+.mb-subtitle {
+    margin: 0;
+    color: var(--text-muted);
+    font-size: .95rem;
+}
+
+.mb-list {
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+    width: 100%;
+}
+
+.mb-card {
+    display: flex;
+    justify-content: space-between;
+    gap: 20px;
+    align-items: center;
+    padding: 22px;
+    background: var(--bg-panel);
+    border: 1px solid var(--border-soft);
+    border-radius: var(--radius-md);
+    box-shadow: var(--shadow-md);
+}
+
+.mb-card h3 {
+    margin: 0 0 8px;
+    font-family: "Playfair Display", serif;
+    font-size: 1.35rem;
+    color: var(--text-main);
+}
+
+.mb-meta {
+    color: var(--text-muted);
+    font-size: .92rem;
+}
+
+.mb-actions {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    min-width: 180px;
+}
+
+.mb-status {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    align-self: flex-start;
+    min-height: 34px;
+    padding: 8px 12px;
+    border-radius: 999px;
+    font-size: .72rem;
+    font-weight: 900;
+    letter-spacing: .12em;
+    text-transform: uppercase;
+    border: 1px solid transparent;
+    white-space: nowrap;
+}
+
+.mb-status.Pending {
+    background: rgba(234,179,8,0.14);
+    color: #ffd76a;
+    border-color: rgba(234,179,8,0.28);
+}
+
+.mb-status.Approved {
+    background: rgba(76,175,125,0.14);
+    color: #78d98d;
+    border-color: rgba(76,175,125,0.28);
+}
+
+.mb-status.Completed {
+    background: rgba(108,117,125,0.18);
+    color: #c6c9cd;
+    border-color: rgba(108,117,125,0.3);
+}
+
+.mb-status.Cancelled {
+    background: rgba(224,92,92,0.14);
+    color: #ff9aa5;
+    border-color: rgba(224,92,92,0.28);
+}
+
+.mb-status.NoShow {
+    background: rgba(52,58,64,0.45);
+    color: #d2d5d8;
+    border-color: rgba(255,255,255,0.08);
+}
+
+.mb-btn-primary,
+.mb-btn-secondary,
+.mb-btn-danger {
+    appearance: none;
+    border: none;
+    border-radius: 999px;
+    padding: 11px 16px;
+    font-size: .74rem;
+    font-weight: 900;
+    letter-spacing: .14em;
+    text-transform: uppercase;
+    cursor: pointer;
+}
+
+.mb-btn-primary {
+    background: linear-gradient(135deg, var(--accent-primary), var(--accent-secondary));
+    color: var(--text-dark);
+}
+
+.mb-btn-secondary {
+    background: transparent;
+    color: var(--text-main);
+    border: 1px solid var(--border-glass);
+}
+
+.mb-btn-danger {
+    background: rgba(224,92,92,0.12);
+    color: #ff9a9a;
+    border: 1px solid rgba(224,92,92,0.26);
+}
+
+@media (max-width: 900px) {
+    .mb-card {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .mb-actions {
+        width: 100%;
+        min-width: 0;
+    }
+}
+
+/* =========================================================
+   11. RESTAURANT DETAILS / BOOKING PAGE
+   ========================================================= */
+
+.restaurant-book-page {
+    width: 100%;
+    max-width: var(--page-max);
+    margin: 28px auto 0;
+    padding: 0 var(--page-gutter) var(--page-bottom);
+    color: var(--text-main);
+}
+
+.rb-page-header {
+    margin-bottom: 28px;
+    padding: 28px 32px;
+    background: linear-gradient(180deg, rgba(15,17,21,0.98) 0%, rgba(21,24,33,0.98) 100%);
+    border: 1px solid var(--border-soft);
+    border-radius: 22px;
+    box-shadow: var(--shadow-md);
+}
+
+.rb-banner-title {
+    margin: 0 0 10px;
+    font-family: "Playfair Display", serif;
+    font-size: clamp(2rem, 3vw, 3.2rem);
+    line-height: 1.05;
+    color: var(--text-main);
+}
+
+.rb-description {
+    margin: 0;
+    max-width: 760px;
+    color: var(--text-muted);
+    font-size: 1rem;
+}
+
+.rb-content-wrapper {
+    display: grid;
+    grid-template-columns: 360px minmax(0, 1fr);
+    gap: 24px;
+    align-items: start;
+}
+
+.rb-sticky-left {
+    position: sticky;
+    top: 90px;
+}
+
+.rb-main-flow {
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+    min-width: 0;
+}
+
+.rb-panel {
+    background: var(--bg-panel);
+    border: 1px solid var(--border-soft);
+    border-radius: 22px;
+    box-shadow: var(--shadow-md);
+}
+
+.rb-booking,
+.rb-details,
+.rb-gallery,
+.rb-reviews {
+    padding: 24px;
+}
+
+.rb-booking h2,
+.rb-copy-block h2,
+.rb-gallery h3,
+.rb-reviews h3 {
+    margin: 0 0 16px;
+    font-family: "Playfair Display", serif;
+    color: var(--text-main);
+}
+
+.rb-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 14px;
+    margin-bottom: 14px;
+}
+
+.rb-field {
+    display: flex;
+    flex-direction: column;
+    gap: 7px;
+    margin-bottom: 14px;
+}
+
+.rb-field label {
+    color: var(--text-muted);
+    font-size: .72rem;
+    font-weight: 800;
+    letter-spacing: 1.2px;
+    text-transform: uppercase;
+}
+
+.rb-field input,
+.rb-field textarea,
+.rb-field select {
+    width: 100%;
+    padding: 13px 14px;
+    border: 1px solid var(--border-glass);
+    border-radius: 12px;
+    background: var(--bg-input);
+    color: var(--text-main);
+    outline: none;
+}
+
+.rb-field textarea {
+    min-height: 110px;
+    resize: vertical;
+}
+
+.rb-actions {
+    display: flex;
+    gap: 12px;
+    margin-top: 8px;
+}
+
+.rb-submit-btn,
+.rb-secondary-btn {
+    appearance: none;
+    border: none;
+    border-radius: 999px;
+    padding: 12px 18px;
+    font-size: .74rem;
+    font-weight: 900;
+    letter-spacing: .14em;
+    text-transform: uppercase;
+    cursor: pointer;
+}
+
+.rb-submit-btn {
+    background: linear-gradient(135deg, var(--accent-primary), var(--accent-secondary));
+    color: var(--text-dark);
+}
+
+.rb-secondary-btn {
+    background: transparent;
+    color: var(--text-main);
+    border: 1px solid var(--border-glass);
+}
+
+.rb-top-row {
+    display: grid;
+    grid-template-columns: minmax(0, 1.2fr) minmax(320px, 0.8fr);
+    gap: 22px;
+    align-items: start;
+}
+
+.rb-copy-block p {
+    margin: 0;
+    color: var(--text-muted);
+    line-height: 1.65;
+}
+
+.rb-meta-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 12px 18px;
+    margin-top: 18px;
+}
+
+.rb-meta-label {
+    font-size: .68rem;
+    font-weight: 800;
+    letter-spacing: .12em;
+    text-transform: uppercase;
+    color: var(--text-muted);
+}
+
+.rb-meta-value {
+    color: var(--text-main);
+    font-size: .94rem;
+    line-height: 1.35;
+}
+
+.rb-image-container {
+    width: 100%;
+    max-height: 460px;
+    overflow: hidden;
+    border-radius: 18px;
+    background: var(--bg-input);
+    border: 1px solid var(--border-soft);
+}
+
+.rb-banner-img {
+    width: 100%;
+    display: block;
+    object-fit: cover;
+    aspect-ratio: 16 / 10;
+}
+
+.rb-gallery-grid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 14px;
+}
+
+.rb-gallery-item {
+    overflow: hidden;
+    border-radius: 16px;
+    border: 1px solid var(--border-soft);
+    background: var(--bg-input);
+}
+
+.rb-gallery-item img {
+    width: 100%;
+    height: 100%;
+    min-height: 180px;
+    object-fit: cover;
+}
+
+.rb-review-list {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+}
+
+.rb-review-card {
+    padding: 16px 18px;
+    background: rgba(255,255,255,0.03);
+    border: 1px solid var(--border-soft);
+    border-radius: 16px;
+}
+
+.rb-review-top {
+    display: flex;
+    justify-content: space-between;
+    gap: 16px;
+    margin-bottom: 8px;
+}
+
+.rb-stars {
+    color: #f3d37a;
+}
+
+.rb-review-text {
+    margin: 0;
+    color: var(--text-muted);
+}
+
+@media (max-width: 900px) {
+    .rb-content-wrapper {
+        grid-template-columns: 1fr;
+    }
+
+    .rb-sticky-left {
+        position: static;
+    }
+
+    .rb-top-row {
+        grid-template-columns: 1fr;
+    }
+
+    .rb-gallery-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+}
+
+@media (max-width: 640px) {
+    .rb-row,
+    .rb-meta-grid,
+    .rb-gallery-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .rb-actions {
+        flex-direction: column;
+    }
+}
+
+/* =========================================================
+   12. MANAGE RESTAURANTS (restaurantAdminCard.pug)
+   ========================================================= */
+
+.admin-restaurants-page {
+    min-height: 100vh;
+    width: 100%;
+    padding: 24px var(--page-gutter) var(--page-bottom);
+    background: var(--bg-deep);
+    color: var(--text-main);
+}
+
+.ar-shell {
+    max-width: var(--page-max);
+    margin: 0 auto;
+}
+
+.ar-page-head {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 18px;
+    margin-bottom: 24px;
+    padding: 22px 24px;
+    background: var(--bg-panel);
+    border: 1px solid var(--border-soft);
+    border-radius: var(--radius-md);
+    box-shadow: var(--shadow-md);
+}
+
+.ar-page-copy h1 {
+    margin: 0 0 6px;
+    font-family: "Playfair Display", serif;
+    font-size: clamp(2rem, 3vw, 2.5rem);
+    line-height: 1.05;
+    letter-spacing: -0.03em;
+    color: var(--text-main);
+}
+
+.ar-page-copy p {
+    margin: 0;
+    color: var(--text-muted);
+    font-size: .95rem;
+}
+
+.ar-brand-strip {
+    margin-bottom: 22px;
+    padding: 16px 18px;
+    background: var(--bg-panel);
+    border: 1px solid var(--border-soft);
+    border-radius: 14px;
+}
+
+.ar-brand-card {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 14px;
+}
+
+.ar-brand-copy {
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.ar-brand-label {
+    font-size: .68rem;
+    font-weight: 800;
+    letter-spacing: .14em;
+    text-transform: uppercase;
+    color: var(--text-muted);
+}
+
+.ar-brand-copy strong {
+    font-size: 1rem;
+    font-weight: 700;
+    color: var(--text-main);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.ar-brand-logo-wrap {
+    width: 52px;
+    height: 52px;
+    border-radius: 12px;
+    overflow: hidden;
+    flex-shrink: 0;
+    background: var(--bg-input);
+    border: 1px solid var(--border-glass);
+}
+
+.ar-brand-logo {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.ar-empty {
+    padding: 42px 24px;
+    text-align: center;
+    background: var(--bg-panel);
+    border: 1px dashed var(--border-glass);
+    border-radius: var(--radius-md);
+    color: var(--text-muted);
+}
+
+.ar-list {
+    display: grid;
+    gap: 20px;
+}
+
+.ar-editor-card {
+    background: var(--bg-panel);
+    border: 1px solid var(--border-soft);
+    border-radius: 18px;
+    overflow: hidden;
+    box-shadow: var(--shadow-md);
+}
+
+.ar-editor-head {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 16px;
+    padding: 20px 22px 18px;
+    border-bottom: 1px solid var(--border-soft);
+}
+
+.ar-editor-title {
+    margin: 0 0 6px;
+    font-family: "Playfair Display", serif;
+    font-size: 1.45rem;
+    line-height: 1.1;
+    color: var(--text-main);
+}
+
+.ar-editor-sub {
+    margin: 0;
+    color: var(--text-muted);
+    font-size: .9rem;
+}
+
+.ar-editor-grid {
+    display: grid;
+    grid-template-columns: minmax(0, 1.7fr) 360px;
+    gap: 22px;
+    padding: 22px;
+}
+
+.ar-editor-main {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+.ar-editor-side {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+.ar-field,
+.ar-media-card {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.ar-field label,
+.ar-media-label {
+    display: block;
+    font-size: .68rem;
+    font-weight: 800;
+    letter-spacing: .12em;
+    text-transform: uppercase;
+    color: var(--text-muted);
+}
+
+.ar-field-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 16px;
+}
+
+.ar-address-grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
+.ar-field input,
+.ar-field textarea,
+.ar-field select {
+    width: 100%;
+    padding: 12px 14px;
+    border: 1px solid var(--border-glass);
+    border-radius: 12px;
+    background: var(--bg-input);
+    color: var(--text-main);
+    outline: none;
+}
+
+.ar-field textarea {
+    min-height: 120px;
+    resize: vertical;
+}
+
+.ar-media-card {
+    padding: 16px;
+    background: rgba(255,255,255,0.03);
+    border: 1px solid var(--border-soft);
+    border-radius: 14px;
+}
+
+.ar-banner-preview {
+    width: 100%;
+    aspect-ratio: 16 / 10;
+    overflow: hidden;
+    border-radius: 12px;
+    background: #121212;
+    border: 1px solid var(--border-soft);
+}
+
+.ar-banner-preview img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.ar-gallery-dropzone {
+    position: relative;
+    padding: 20px 16px;
+    border: 1.5px dashed rgba(255,255,255,0.18);
+    border-radius: 12px;
+    background: rgba(255,255,255,0.02);
+    color: var(--text-muted);
+    text-align: center;
+    cursor: pointer;
+}
+
+.ar-gallery-dropzone input[type="file"],
+.js-gallery-input {
+    position: absolute;
+    inset: 0;
+    opacity: 0;
+    cursor: pointer;
+}
+
+.ar-gallery-preview {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 10px;
+    margin-top: 14px;
+}
+
+.ar-gallery-item {
+    position: relative;
+    aspect-ratio: 1 / 1;
+    border-radius: 12px;
+    overflow: hidden;
+    background: #121212;
+    border: 1px solid var(--border-soft);
+}
+
+.ar-gallery-thumb,
+.ar-gallery-item img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.ar-gallery-remove-btn {
+    position: absolute;
+    top: 8px;
+    right: 8px;
+    width: 28px;
+    height: 28px;
+    border: none;
+    border-radius: 999px;
+    background: rgba(10,10,10,0.82);
+    color: #fff;
+    font-size: .95rem;
+    font-weight: 700;
+    cursor: pointer;
+    display: grid;
+    place-items: center;
+}
+
+.ar-editor-footer {
+    display: flex;
+    justify-content: flex-end;
+    gap: 12px;
+    padding: 18px 22px 22px;
+    border-top: 1px solid var(--border-soft);
+}
+
+.ar-primary-btn,
+.ar-secondary-btn,
+.ar-danger-btn {
+    appearance: none;
+    border: none;
+    border-radius: 999px;
+    padding: 11px 16px;
+    font-size: .74rem;
+    font-weight: 900;
+    letter-spacing: .14em;
+    text-transform: uppercase;
+    cursor: pointer;
+}
+
+.ar-primary-btn {
+    background: linear-gradient(135deg, var(--accent-primary), var(--accent-secondary));
+    color: var(--text-dark);
+}
+
+.ar-secondary-btn {
+    background: transparent;
+    color: var(--text-main);
+    border: 1px solid var(--border-glass);
+}
+
+.ar-danger-btn {
+    background: rgba(224,92,92,0.12);
+    color: #ff9a9a;
+    border: 1px solid rgba(224,92,92,0.26);
+}
+
+@media (max-width: 1180px) {
+    .ar-editor-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .ar-editor-side {
+        order: -1;
+    }
+}
+
+@media (max-width: 860px) {
+    .ar-page-head,
+    .ar-editor-head,
+    .ar-editor-footer,
+    .ar-brand-card {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .ar-address-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+}
+
+@media (max-width: 620px) {
+    .ar-field-grid,
+    .ar-address-grid,
+    .ar-gallery-preview {
+        grid-template-columns: 1fr;
+    }
+
+    .ar-editor-footer {
+        flex-direction: column-reverse;
+        align-items: stretch;
+    }
+}
+
+/* =========================================================
+   13. FOOTER
+   ========================================================= */
 
 .footer {
     margin-top: 80px;
     padding: 40px 20px;
-    background: linear-gradient(135deg, var(--mint-3), var(--mint-2));
+    background: linear-gradient(135deg, rgba(135,215,197,0.35), rgba(26,163,154,0.26));
     color: rgba(255,255,255,0.88);
     border-top: 1px solid rgba(255,255,255,0.06);
 }
@@ -262,4170 +2680,267 @@ body{
     display: flex;
     justify-content: center;
     gap: 22px;
+    flex-wrap: wrap;
 }
 
 .footer-links a {
-    color: rgba(255,255,255,0.70);
-    text-decoration: none;
+    color: rgba(255,255,255,0.72);
     font-size: 14px;
-    transition: transform .2s ease, color .2s ease;
 }
 
 .footer-links a:hover {
     color: #fff;
-    transform: translateY(-2px);
 }
 
 /* =========================================================
-   AUTH PAGE (FINAL — using #authForm system)
-========================================================= */
-
-/* ---------- Auth Card Container ---------- */
-#authForm{
-    max-width: 560px;
-    margin: 48px auto;
-    padding: 22px;
-    border-radius: 18px;
-
-    background: rgba(0,0,0,0.35);
-    border: 1px solid rgba(255,255,255,0.12);
-    backdrop-filter: blur(10px);
-    box-shadow: 0 18px 55px rgba(0,0,0,0.35);
-    color: rgba(255,255,255,0.92);
-}
-
-/* ---------- Section Headings ---------- */
-#authForm h2{
-    margin: 14px 0 10px;
-    font-size: 18px;
-    letter-spacing: -0.2px;
-    color: rgba(255,255,255,0.88);
-    opacity: 0.95;
-}
-
-/* ---------- Pills (User Type + Auth Type) ---------- */
-#authForm .user-type-btn,
-#authForm .auth-btn{
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-
-    padding: 10px 18px;
-    margin: 6px 12px 8px 0;
-
-    border-radius: 999px;
-    border: 1px solid rgba(255,255,255,0.18);
-    background: rgba(255,255,255,0.08);
-    color: rgba(255,255,255,0.92);
-
-    cursor: pointer;
-    transition:
-            transform .14s ease,
-            box-shadow .14s ease,
-            background .14s ease,
-            border-color .14s ease;
-}
-
-/* Keep login/register pills visually same width */
-#authForm .user-type-btn,
-#authForm .auth-btn[data-auth="login"],
-#authForm .auth-btn[data-auth="register"]{
-    min-width: 140px;
-}
-
-/* Hover */
-#authForm .user-type-btn:hover,
-#authForm .auth-btn:hover{
-    transform: translateY(-1px);
-    box-shadow: 0 12px 24px rgba(0,0,0,0.25);
-    background: rgba(255,255,255,0.12);
-    border-color: rgba(255,255,255,0.28);
-}
-
-/* Active pill */
-#authForm .user-type-btn.active,
-#authForm .auth-btn.active{
-    background: linear-gradient(135deg, #aef0db, #2c9288);
-    color: #06311f;
-    border-color: rgba(44,146,136,0.55);
-    box-shadow: 0 14px 30px rgba(44,146,136,0.28);
-}
-
-/* ---------- Forgot Password (special button) ---------- */
-#authForm .auth-btn[data-auth="forgotPassword"]{
-    display: inline-flex;
-    width: auto;
-    min-width: 0;
-
-    background: transparent !important;
-    border: none !important;
-    box-shadow: none !important;
-
-    padding: 4px 0 !important;
-    margin: 10px 0 0 !important;
-
-    color: rgba(255,255,255,0.75);
-    font-weight: 600;
-    text-decoration: underline;
-}
-
-#authForm .auth-btn[data-auth="forgotPassword"]:hover{
-    color: #aef0db;
-    transform: none !important;
-}
-
-/* ---------- Fields ---------- */
-#authForm label{
-    display: block;
-    margin: 10px 0 6px;
-    font-size: 13px;
-    font-weight: 800;
-    color: rgba(255,255,255,0.85);
-}
-
-#authForm input,
-#authForm select,
-#authForm textarea{
-    width: 100%;
-    padding: 12px 14px;
-    border-radius: 14px;
-    border: 1px solid rgba(255,255,255,0.16);
-    background: rgba(0,0,0,0.25);
-    color: #fff;
-    caret-color: #2c9288;
-    outline: none;
-
-    transition:
-            transform .14s ease,
-            box-shadow .14s ease,
-            border-color .14s ease;
-}
-
-#authForm input::placeholder,
-#authForm textarea::placeholder{
-    color: rgba(255,255,255,0.45);
-}
-
-#authForm input:focus,
-#authForm select:focus,
-#authForm textarea:focus{
-    transform: translateY(-1px);
-    border-color: rgba(44,146,136,0.70);
-    box-shadow: 0 0 0 4px rgba(53,255,191,0.16);
-}
-
-/* Chrome autofill fix */
-#authForm input:-webkit-autofill{
-    -webkit-text-fill-color: #fff;
-    box-shadow: 0 0 0 1000px rgba(0,0,0,0.25) inset;
-}
-
-/* invalid field */
-#authForm input.is-invalid{
-    border-color: rgba(255,80,80,0.70);
-    box-shadow: 0 0 0 4px rgba(255,80,80,0.14);
-}
-
-/* ---------- Submit Button ---------- */
-#authForm button[type="submit"],
-#authForm input[type="submit"]{
-    width: 100%;
-    margin-top: 14px;
-    padding: 14px 16px;
-
-    border-radius: 999px;
-    border: none;
-
-    font-weight: 950;
-    font-size: 16px;
-    cursor: pointer;
-
-    background: linear-gradient(135deg, #aef0db, #2c9288);
-    color: #06311f;
-
-    box-shadow: 0 16px 32px rgba(44,146,136,0.30);
-    transition: transform .14s ease, box-shadow .14s ease, opacity .14s ease;
-
-    position: relative;
-    overflow: hidden;
-}
-
-#authForm button[type="submit"]:hover{
-    transform: translateY(-1px);
-    box-shadow: 0 18px 40px rgba(44,146,136,0.40);
-}
-
-#authForm button[type="submit"][disabled]{
-    opacity: 0.75;
-    cursor: not-allowed;
-}
-
-/* ---------- Submit Spinner ---------- */
-#authForm button[type="submit"]::after{
-    content: "";
-    position: absolute;
-    top: 50%;
-    right: 18px;
-    width: 16px;
-    height: 16px;
-    margin-top: -8px;
-
-    border-radius: 50%;
-    border: 2px solid rgba(6,49,31,0.35);
-    border-top-color: rgba(6,49,31,0.95);
-
-    opacity: 0;
-    transform: scale(0.8);
-    animation: authSpin .8s linear infinite;
-}
-
-#authForm button.is-loading::after{
-    opacity: 1;
-    transform: scale(1);
-}
-
-/* ---------- Success Check ---------- */
-#authForm button[type="submit"]::before{
-    content: "";
-    position: absolute;
-    top: 50%;
-    right: 18px;
-    width: 10px;
-    height: 18px;
-    margin-top: -12px;
-
-    border-right: 3px solid rgba(6,49,31,0.95);
-    border-bottom: 3px solid rgba(6,49,31,0.95);
-
-    transform: rotate(45deg) scale(0.6);
-    opacity: 0;
-}
-
-#authForm button.is-success::before{
-    opacity: 1;
-    transform: rotate(45deg) scale(1);
-}
-
-#authForm button.is-success::after{
-    opacity: 0;
-}
-
-@keyframes authSpin{
-    to { transform: rotate(360deg); }
-}
-
-/* ---------- Form Shake on Error ---------- */
-@keyframes authShake{
-    0%,100%{ transform: translateX(0); }
-    15%{ transform: translateX(-6px); }
-    30%{ transform: translateX(6px); }
-    45%{ transform: translateX(-5px); }
-    60%{ transform: translateX(5px); }
-    75%{ transform: translateX(-3px); }
-    90%{ transform: translateX(3px); }
-}
-#authForm.is-error{ animation: authShake .42s ease; }
-
-/* ---------- Responsive ---------- */
-@media (max-width: 520px){
-    #authForm{
-        margin: 28px 14px;
-        padding: 18px;
-    }
-    #authForm .user-type-btn,
-    #authForm .auth-btn[data-auth="login"],
-    #authForm .auth-btn[data-auth="register"]{
-        min-width: 0;
-    }
-}
-
-/* --- AUTH PAGE (HARD GREY REFINEMENT) --- */
-.auth-page-container {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    min-height: 80vh;
-    padding: 20px;
-}
-
-.auth-panel {
-    background: var(--bg-panel); /* Charcoal Panel */
-    border: 1px solid var(--border-soft);
-    border-radius: 12px;
-    padding: 40px;
-    width: 100%;
-    max-width: 450px;
-    box-shadow: var(--shadow-lg);
-    text-align: center;
-}
-
-.auth-header h1 {
-    font-size: 2.2rem;
-    margin: 0 0 8px;
-    letter-spacing: 1px;
-}
-
-.auth-subtitle {
-    font-size: 0.85rem;
-    color: var(--text-muted);
-    margin-bottom: 30px;
-}
-
-/* Switcher (Login/Register) */
-.auth-type-switcher {
-    display: flex;
-    background: var(--bg-black);
-    padding: 4px;
-    border-radius: 8px;
-    margin-bottom: 30px;
-    border: 1px solid var(--border-soft);
-}
-
-.auth-type-btn {
-    flex: 1;
-    padding: 10px;
-    background: transparent;
-    border: none;
-    color: var(--text-muted);
-    font-size: 0.7rem;
-    font-weight: 800;
-    letter-spacing: 1px;
-    cursor: pointer;
-    border-radius: 6px;
-    transition: all 0.2s ease;
-}
-
-.auth-type-btn.active {
-    background: #ffffff;
-    color: #000000;
-}
-
-/* Form Inputs */
-.auth-input-group {
-    text-align: left;
-    margin-bottom: 20px;
-}
-
-.auth-input-group label {
-    display: block;
-    font-size: 0.6rem;
-    font-weight: 900;
-    text-transform: uppercase;
-    color: var(--text-muted);
-    margin-bottom: 6px;
-    letter-spacing: 1px;
-}
-
-.auth-input-group input {
-    width: 100%;
-    background: var(--bg-input);
-    border: 1px solid var(--border-glass);
-    padding: 12px;
-    border-radius: 6px;
-    color: #ffffff;
-    outline: none;
-    transition: border-color 0.2s;
-}
-
-.auth-input-group input:focus {
-    border-color: #ffffff;
-}
-
-/* Submit & Links */
-.auth-submit-btn {
-    width: 100%;
-    padding: 14px;
-    background: #ffffff;
-    color: #000000;
-    border: none;
-    border-radius: 4px;
-    font-weight: 900;
-    text-transform: uppercase;
-    letter-spacing: 2px;
-    cursor: pointer;
-    margin-top: 10px;
-    transition: all 0.3s ease;
-}
-
-.auth-submit-btn:hover {
-    background: #e0e0e0;
-    transform: translateY(-2px);
-}
-
-.auth-link-btn {
-    background: transparent;
-    border: none;
-    color: var(--text-muted);
-    font-size: 0.7rem;
-    margin-top: 20px;
-    cursor: pointer;
-    text-decoration: underline;
-    transition: color 0.2s;
-}
-
-.auth-link-btn:hover {
-    color: #ffffff;
-}
-
-
-/* ===============================
-   DASHBOARD (Cleaned Final)
-================================ */
-.dashboard-page{
-    max-width: 1200px;
-    margin: 0 auto;
-    padding: 22px 16px 60px; /* last version wins */
-}
-
-/* Wrapper */
-.dashboard-wrap{
-    display: flex;              /* last version wins (was grid before) */
-    flex-direction: column;
-    gap: 16px;
-}
-
-/* Header */
-.dash-header{
-    display: flex;
-    justify-content: space-between;
-    align-items: flex-start;
-    gap: 16px;
-
-    background: rgba(255,255,255,0.06);
-    border: 1px solid rgba(255,255,255,0.10);
-    border-radius: 18px;
-    padding: 18px;
-}
-
-.dash-title h1{
-    margin: 0 0 6px;
-    font-size: 34px; /* last version wins (was 44px) */
-    color: #fff;
-    letter-spacing: -0.4px;
-}
-
-.dash-sub{
-    margin: 0; /* latest version uses 0; earlier had margin-top */
-    color: rgba(255,255,255,0.75);
-    font-weight: 600;
-}
-
-/* Brand dropdown + avatar */
-.dash-brand{
-    display: flex;
-    gap: 14px;
-    align-items: center;
-}
-
-.dash-brand-field label{
-    display: block;
-    font-weight: 800;
-    font-size: 12px;
-    color: rgba(255,255,255,0.80);
-    margin-bottom: 6px;
-}
-
-.dash-brand-field select{
-    min-width: 210px;
-    padding: 10px 12px;
-    border-radius: 14px;
-    border: 1px solid rgba(255,255,255,0.18);
-    background: rgba(255,255,255,0.10);
-    color: #fff;
-    outline: none;
-}
-.dash-brand-field select option{
-    color: #111;  /* ensure readable options */
-    background: #fff;
-}
-
-.dash-avatar{
-    width: 48px; /* last version wins */
-    height: 48px;
-    border-radius: 999px;
-    overflow: hidden;
-    border: 2px solid rgba(255,255,255,0.18);
-    box-shadow: 0 12px 26px rgba(0,0,0,0.25);
-}
-.dash-avatar img{
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    display: block;
-}
-
-/* KPI cards */
-.dash-kpis{
+   SMALL FIX PATCH
+   ========================================================= */
+
+/* ---------------------------------------------------------
+   1) MANAGE BOOKINGS PAGE
+   Make restaurant selection cards less huge
+   --------------------------------------------------------- */
+
+#restaurant-list,
+.bookings-main-content #restaurant-list {
     display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    gap: 14px;
-}
-
-.kpi{
-    background: rgba(255,255,255,0.96);
-    border: 1px solid rgba(0,0,0,0.06);
-    border-radius: 18px;
-    padding: 16px;
-    box-shadow: 0 14px 40px rgba(0,0,0,0.18);
-}
-
-.kpi-label{
-    margin: 0 0 8px;
-    font-weight: 800;
-    color: rgba(15,23,42,0.70);
-    font-size: 12px;
-    text-transform: uppercase;
-    letter-spacing: .6px;
-}
-
-.kpi-value{
-    margin: 0 0 4px;
-    font-size: 30px;
-    font-weight: 900;
-    color: #0f172a;
-}
-
-.kpi-meta{
-    margin: 0;
-    font-weight: 800;
-    color: rgba(44,146,136,0.90);
-    font-size: 12px;
-}
-
-/* Cards (big panels) */
-.dash-card{
-    background: rgba(255,255,255,0.06);
-    border: 1px solid rgba(255,255,255,0.10);
-    border-radius: 18px;
-    padding: 18px;
-    box-shadow: 0 18px 55px rgba(0,0,0,0.25);
-}
-
-.dash-card-head{
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    gap: 12px;
-    margin-bottom: 12px;
-}
-
-.dash-card-head h2{
-    margin: 0;
-    color: #fff;
-    font-size: 22px;
-}
-
-.dash-card-actions{
-    display: flex;
-    gap: 10px;
-}
-
-.dash-chip{
-    border: 1px solid rgba(255,255,255,0.18);
-    background: rgba(255,255,255,0.10);
-    color: rgba(255,255,255,0.85);
-    padding: 9px 12px;
-    border-radius: 999px;
-    font-weight: 900;
-    cursor: pointer;
-    transition: transform .12s ease, background .12s ease;
-}
-.dash-chip:hover{
-    transform: translateY(-1px);
-}
-.dash-chip.is-active{
-    border: none;
-    color: #06311f;
-    background: linear-gradient(135deg, #aef0db, #2c9288);
-    box-shadow: 0 12px 26px rgba(44,146,136,0.28);
-}
-
-/* Chart */
-.dash-chart{
-    border-radius: 14px;
-    background: rgba(0,0,0,0.18);
-    border: 1px solid rgba(255,255,255,0.08);
-    padding: 14px;
-    min-height: 220px;
-}
-.dash-chart .chart-placeholder{
-    height: 240px; /* latest */
-    border-radius: 16px;
-    border: 1px dashed rgba(255,255,255,0.22);
-    background: rgba(0,0,0,0.10);
-    display: grid;
-    place-items: center;
-    color: rgba(255,255,255,0.70);
-    font-weight: 900;
-}
-
-/* Filters */
-.dash-filters{
-    background: rgba(255,255,255,0.06);
-    border: 1px solid rgba(255,255,255,0.10);
-    border-radius: 18px;
-    padding: 18px;
-}
-
-.filter-row{
-    display: grid;
-    grid-template-columns: 1fr 2fr 1fr; /* latest */
-    gap: 16px;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 18px;
     align-items: start;
 }
 
-.filter-group label{
-    display: block;
-    font-weight: 900;
-    color: rgba(255,255,255,0.85);
-    margin-bottom: 8px;
-    font-size: 12px;
+#restaurant-list .restaurant-card {
+    max-width: none;
+    min-height: 0;
 }
 
-.filter-group select{
-    width: 100%;
-    padding: 10px 12px;
-    border-radius: 14px;
-    border: 1px solid rgba(255,255,255,0.18);
-    background: rgba(255,255,255,0.10);
-    color: #fff;
-    outline: none;
+#restaurant-list .restaurant-banner {
+    aspect-ratio: 16 / 9;
+    max-height: 220px;
 }
 
-.check-row{
-    display: flex;
-    flex-wrap: wrap;
-    gap: 10px 14px;
-}
-
-label.check{
-    display: inline-flex;
-    align-items: center;
-    gap: 8px;
-    font-weight: 800;
-    color: rgba(255,255,255,0.78);
-}
-label.check input{
-    accent-color: #35ffbf;
-}
-
-.filter-group.right{
-    justify-self: end;
-}
-
-/* Responsive */
-@media (max-width: 980px){
-    .dash-kpis{ grid-template-columns: repeat(2, 1fr); }
-    .filter-row{ grid-template-columns: 1fr; }
-    .dash-header{ flex-direction: column; align-items: flex-start; }
-    .dash-brand{ width: 100%; justify-content: space-between; }
-    .filter-group.right{ justify-self: start; }
-}
-@media (max-width: 520px){
-    .dash-kpis{ grid-template-columns: 1fr; }
-    .dash-brand-field select{ min-width: 0; width: 100%; }
-}
-
-
-
-/* =========================================
-  My Bookings Page
-========================================= */
-.mybookings-page {
-    padding: 80px 24px;
-    font-family: "Inter", sans-serif;
-    background: #f6f5f2;
-    color: #1c1c1c;
-}
-
-.mb-container {
-    max-width: 880px;
-    margin: 0 auto;
-}
-
-.mb-header {
-    text-align: center;
-    margin-bottom: 60px;
-}
-.mb-header h1 {
-    font-size: 2.4rem;
-    font-weight: 600;
-    letter-spacing: -0.5px;
-    margin-bottom: 8px;
-}
-.mb-subtitle {
-    font-size: 15px;
-    color: #6e6e6e;
-}
-
-/* =========================================
-  Booking Cards & List
-========================================= */
-.mb-list {
-    display: flex;
-    flex-direction: column;
-    gap: 28px;
-    transition: opacity 0.3s ease, transform 0.3s ease;
-}
-.mb-list.fade-out {
-    opacity: 0;
-    transform: translateY(6px);
-}
-.mb-list.fade-in {
-    opacity: 1;
-    transform: translateY(0);
-}
-
-.mb-card {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 26px 30px;
-    border-radius: 14px;
-    background: var(--bg-card, #fff);
-    border: 1px solid var(--border-soft, #e0e0e0);
-    transition: transform 0.35s cubic-bezier(.22,1,.36,1), border-color .3s ease, background .3s ease;
-}
-.mb-card:hover {
-    transform: translateY(-4px);
-    border-color: var(--accent-soft, #b89b5e);
-}
-.mb-card h3 {
-    margin: 0 0 8px;
-    font-weight: 500;
-    font-size: 17px;
-}
-.mb-meta {
-    font-size: 14px;
-    color: #7a7a7a;
-    margin: 3px 0;
-}
-
-/* Status variants */
-.mb-card.pending { border-left: 3px solid #d4af37; }
-.mb-card.confirmed { border-left: 3px solid #2f5d50; }
-.mb-card.cancelled { border-left: 3px solid #a8a29e; opacity: 0.6; }
-
-/* Card head & badges */
-.mb-card-head {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    gap: 10px;
-    margin-bottom: 6px;
-}
-.mb-badge {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    gap: 6px;
-    padding: 4px 8px;
-    border-radius: 999px;
-    font-size: 12px;
-    font-weight: 800;
-    text-transform: capitalize;
-    background: rgba(255,255,255,0.08);
-    border: 1px solid var(--border-soft, #e0e0e0);
-    color: var(--text-primary, #1c1c1c);
-}
-.mb-badge.badge-pending {
-    background: rgba(245,158,11,0.12);
-    color: #b45309;
-    border-color: rgba(245,158,11,0.35);
-}
-.mb-badge.badge-confirmed {
-    background: rgba(16,185,129,0.12);
-    color: #065f46;
-    border-color: rgba(16,185,129,0.35);
-}
-.mb-badge.badge-cancelled {
-    background: rgba(107,114,128,0.12);
-    color: #374151;
-    border-color: rgba(107,114,128,0.35);
-}
-
-/* Buttons */
-.mb-btn {
-    border: 0;
-    border-radius: 999px;
-    padding: 10px 14px;
-    cursor: pointer;
-    font-weight: 800;
-    background: linear-gradient(135deg, #aef0db, #2c9288);
-    color: #06311f;
-    box-shadow: 0 12px 26px rgba(44,146,136,0.28);
-    transition: transform 0.15s ease, box-shadow 0.15s ease;
-}
-.mb-btn:hover {
-    transform: translateY(-1px);
-    box-shadow: 0 18px 40px rgba(44,146,136,0.40);
-}
-
-/* =========================================
-  Empty / Error States
-========================================= */
-.mb-empty,
-.mb-error {
-    text-align: center;
-    margin-top: 80px;
-    color: #9a948b;
-}
-.mb-empty h2,
-.mb-error h2 {
-    margin-bottom: 8px;
-    font-weight: 500;
-}
-
-/* =========================================
-  Tabs
-========================================= */
-.mb-tabs {
-    margin-bottom: 50px;
-}
-.mb-tabs-inner {
-    display: inline-flex;
-    gap: 36px;
-    border-bottom: 1px solid var(--border-soft, #e0e0e0);
-    position: relative;
-}
-.mb-tab {
-    background: none;
-    border: none;
-    padding: 12px 0;
-    font-size: 14px;
-    letter-spacing: 0.4px;
-    color: var(--text-muted, #888);
-    font-weight: 500;
-    cursor: pointer;
-    position: relative;
-    display: inline-flex;
-    align-items: center;
-    gap: 8px;
-}
-.mb-tab.active { color: var(--text-primary, #1c1c1c); }
-.mb-tab-indicator {
-    position: absolute;
-    bottom: -1px;
-    height: 2px;
-    width: 0;
-    background: #b89b5e;
-    transition: transform .4s cubic-bezier(.22,1,.36,1), width .4s cubic-bezier(.22,1,.36,1);
-}
-.mb-count {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    min-width: 22px;
-    height: 20px;
-    padding: 0 6px;
-    border-radius: 999px;
-    font-size: 12px;
-    font-weight: 700;
-    color: var(--text-primary, #1c1c1c);
-    background: rgba(255,255,255,0.10);
-    border: 1px solid var(--border-soft, #e0e0e0);
-}
-
-/* =========================================
-  Search
-========================================= */
-.mb-search {
-    margin: 8px 0 18px;
-}
-.mb-search input[type="search"] {
-    width: 100%;
-    padding: 12px 14px;
-    border-radius: 14px;
-    border: 1px solid var(--border-soft, #e0e0e0);
-    background: rgba(255,255,255,0.08);
-    color: var(--text-primary, #1c1c1c);
-    outline: none;
-}
-.mb-search input[type="search"]::placeholder {
-    color: var(--text-muted, #888);
-}
-
-/* =========================================
-  Modal (Cancel Confirmation)
-========================================= */
-.mb-modal {
-    position: fixed;
-    inset: 0;
-    display: none;
-    z-index: 1000;
-}
-.mb-modal.active {
-    display: grid;
-    place-items: center;
-}
-.mb-modal-backdrop {
-    position: absolute;
-    inset: 0;
-    background: rgba(0,0,0,0.55);
-    backdrop-filter: blur(2px);
-}
-.mb-modal-content {
-    position: relative;
-    z-index: 1;
-    width: min(420px, 92vw);
-    padding: 20px;
-    border-radius: 16px;
-    background: rgba(255,255,255,0.96);
-    border: 1px solid rgba(0,0,0,0.08);
-    box-shadow: 0 18px 55px rgba(0,0,0,0.28);
-}
-.mb-modal-content h3 {
-    margin: 0 0 6px;
-    font-size: 20px;
-    color: #0f172a;
-}
-.mb-modal-content p {
-    margin: 0 0 14px;
-    color: #374151;
-}
-.mb-modal-actions {
-    display: flex;
-    gap: 10px;
-    justify-content: end;
-}
-.mb-modal-cancel {
-    border: 1px solid rgba(0,0,0,0.12);
-    background: #fff;
-    color: #0f172a;
-    border-radius: 999px;
-    padding: 10px 12px;
-    font-weight: 800;
-    cursor: pointer;
-}
-.mb-modal-confirm {
-    background: linear-gradient(135deg, #ffd1d1, #ff7b7b);
-    color: #4a1111;
-    border: none;
-    border-radius: 999px;
-    padding: 10px 12px;
-    font-weight: 900;
-    cursor: pointer;
-    box-shadow: 0 12px 26px rgba(255, 80, 80, 0.22);
-}
-
-/* =========================================
-  Toast / Undo Notification
-========================================= */
-.mb-toast {
-    position: fixed;
-    left: 50%;
-    bottom: 22px;
-    transform: translateX(-50%);
-    background: rgba(255,255,255,0.96);
-    color: #0f172a;
-    border: 1px solid rgba(0,0,0,0.10);
-    border-radius: 999px;
-    padding: 10px 14px;
-    box-shadow: 0 12px 28px rgba(0,0,0,.18);
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    z-index: 2000;
-}
-.mb-toast[hidden] { display: none; }
-.mb-toast button {
-    border: none;
-    background: transparent;
-    color: #2c9288;
-    font-weight: 900;
-    cursor: pointer;
-}
-
-/* =========================================
-  Skeleton Loaders
-========================================= */
-.mb-skeleton {
-    position: relative;
-    overflow: hidden;
-    border-radius: 10px;
-    background: rgba(255,255,255,0.06);
-    height: 72px;
-    margin-bottom: 10px;
-}
-.mb-skeleton::after {
-    content: "";
-    position: absolute;
-    inset: 0;
-    translate: -100% 0;
-    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.10), transparent);
-    animation: mbShimmer 1.25s infinite;
-}
-@keyframes mbShimmer { to { translate: 100% 0; } }
-
-/* =========================================
-  Pagination
-========================================= */
-.mb-pagination {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: 12px;
-    margin-top: 12px;
-    flex-wrap: wrap;
-}
-.mb-page-buttons { display: inline-flex; gap: 6px; flex-wrap: wrap; }
-.mb-page-btn {
-    border: 1px solid var(--border-soft, #e0e0e0);
-    background: rgba(255,255,255,0.08);
-    color: var(--text-primary, #1c1c1c);
-    padding: 8px 12px;
-    border-radius: 999px;
-    font-weight: 800;
-    cursor: pointer;
-}
-.mb-page-btn[disabled] { opacity: 0.5; cursor: not-allowed; }
-.mb-page-btn.is-active {
-    background: linear-gradient(135deg, #aef0db, #2c9288);
-    color: #06311f;
-    border: none;
-    box-shadow: 0 12px 26px rgba(44,146,136,0.28);
-}
-.mb-page-size {
-    display: inline-flex;
-    align-items: center;
-    gap: 8px;
-}
-.mb-page-size select {
-    border-radius: 14px;
-    padding: 8px 10px;
-    border: 1px solid var(--border-soft, #e0e0e0);
-    background: rgba(255,255,255,0.08);
-    color: var(--text-primary, #1c1c1c);
-}
-
-/* =========================================
-  Virtualized List Mode
-========================================= */
-#bookings-container.is-virtualized {
-    position: relative;
-    max-height: 420px;
-    overflow: auto;
-}
-.mb-spacer { width: 1px; height: 0; }
-
-/* Visually hidden utility */
-.visually-hidden {
-    position: absolute !important;
-    width: 1px;
-    height: 1px;
-    padding: 0;
-    margin: -1px;
-    overflow: hidden;
-    clip: rect(0,0,0,0);
-    border: 0;
-}
-
-/* ===================== My Bookings Page ===================== */
-.mybookings-page {
-    padding: 80px 24px;
-    font-family: "Inter", sans-serif;
-    background: #f6f5f2;
-    color: #1c1c1c;
-}
-
-/* Container & Header */
-.mb-container {
-    max-width: 880px;
-    margin: 0 auto;
-}
-.mb-header h1 {
-    font-size: 2.4rem;
-    font-weight: 600;
-    margin-bottom: 8px;
-}
-.mb-subtitle {
-    color: #6e6e6e;
-    font-size: 15px;
-    margin-bottom: 40px;
-}
-
-/* ===================== Tabs ===================== */
-.mb-tabs-inner {
-    display: flex;
-    gap: 24px;
-    border-bottom: 1px solid #e0e0e0;
-    position: relative;
-    margin-bottom: 24px;
-}
-.mb-tab {
-    background: none;
-    border: none;
-    padding: 8px 0;
-    font-size: 14px;
-    color: #6e6e6e;
-    font-weight: 500;
-    cursor: pointer;
-    position: relative;
-    display: inline-flex;
-    align-items: center;
-    gap: 6px;
-}
-.mb-tab.active {
-    color: #1c1c1c;
-    font-weight: 700;
-}
-.mb-tab-indicator {
-    position: absolute;
-    bottom: -1px;
-    height: 3px;
-    width: 0;
-    background: #2c9288;
-    border-radius: 2px;
-    transition: transform 0.3s ease, width 0.3s ease;
-}
-.mb-count {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    min-width: 20px;
-    height: 20px;
-    padding: 0 6px;
-    border-radius: 999px;
-    font-size: 12px;
-    font-weight: 700;
-    color: #2c9288;
-    background: rgba(46, 161, 139, 0.12);
-    border: 1px solid rgba(46,161,139,0.3);
-}
-
-/* ===================== Search Bar ===================== */
-.mb-search {
-    margin-bottom: 20px;
-}
-.mb-search input[type="search"] {
-    width: 100%;
-    padding: 12px 16px;
-    border-radius: 12px;
-    border: 1px solid #dcdcdc;
-    font-size: 14px;
-    color: #1c1c1c;
-    outline: none;
-    background: #fff;
-}
-.mb-search input[type="search"]::placeholder {
-    color: #a1a1a1;
-}
-
-/* ===================== Booking Cards ===================== */
-.mb-card {
-    display: flex;
-    justify-content: space-between;
-    flex-direction: column;
-    padding: 20px 24px;
-    border-radius: 16px;
-    background: #fff;
-    border: 1px solid #e0e0e0;
-    box-shadow: 0 6px 20px rgba(0,0,0,0.08);
-    transition: transform 0.2s ease, box-shadow 0.2s ease;
-}
-.mb-card:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 12px 28px rgba(0,0,0,0.12);
-}
-.mb-card h3 {
-    margin: 0 0 6px;
-    font-size: 18px;
-    font-weight: 600;
-    color: #1c1c1c;
-}
-.mb-meta {
-    font-size: 14px;
-    color: #4a4a4a;
-    margin-bottom: 12px;
-}
-
-/* Badges for status */
-.mb-badge {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    gap: 4px;
-    padding: 4px 8px;
-    border-radius: 999px;
-    font-size: 12px;
-    font-weight: 700;
-    text-transform: capitalize;
-}
-.badge-pending {
-    background: rgba(245,158,11,0.12);
-    color: #b45309;
-}
-.badge-confirmed {
-    background: rgba(16,185,129,0.12);
-    color: #065f46;
-}
-.badge-cancelled {
-    background: rgba(107,114,128,0.12);
-    color: #374151;
-}
-
-/* Cancel button */
-.mb-btn {
-    border: none;
-    border-radius: 999px;
-    padding: 8px 14px;
-    font-weight: 700;
-    cursor: pointer;
-    background: linear-gradient(135deg, #aef0db, #2c9288);
-    color: #06311f;
-    box-shadow: 0 8px 20px rgba(44,146,136,0.28);
-    transition: transform 0.15s ease, box-shadow 0.15s ease;
-}
-.mb-btn:hover {
-    transform: translateY(-1px);
-    box-shadow: 0 14px 32px rgba(44,146,136,0.4);
-}
-
-/* ===================== Empty State ===================== */
-.mb-empty, .mb-error {
-    text-align: center;
-    margin-top: 80px;
-    color: #9a948b;
-}
-.mb-empty h2, .mb-error h2 {
-    margin-bottom: 8px;
-    font-weight: 500;
-}
-/* Sticky search container */
-#mb-search-container {
-    position: sticky;
-    top: 80px; /* same as page padding to align with header */
-    background: #f6f5f2; /* match page background */
-    padding-bottom: 8px;
-    z-index: 10;
-}
-#mb-search-container input {
-    width: 100%;
-    padding: 12px 16px;
-    border-radius: 12px;
-    border: 1px solid #dcdcdc;
-    font-size: 14px;
-    color: #1c1c1c;
-    outline: none;
-    background: #fff;
-}
-#mb-search-container input::placeholder {
-    color: #a1a1a1;
-}
-
-/* Wrapper sticks search + tabs together */
-.mb-sticky-wrapper {
-    position: sticky;
-    top: 80px; /* same as header padding */
-    z-index: 10;
-    background: #f6f5f2;
-    padding-bottom: 8px;
-}
-
-/* Sticky search input */
-#mb-search-container input {
-    width: 100%;
-    padding: 12px 16px;
-    border-radius: 12px;
-    border: 1px solid #dcdcdc;
-    font-size: 14px;
-    color: #1c1c1c;
-    outline: none;
-    background: #fff;
-}
-#mb-search-container input::placeholder {
-    color: #a1a1a1;
-}
-
-/* Admin Restaurants Page - Compact + Gallery included */
-#admin-restaurants-root {
-    font-family: Arial, sans-serif;
-    background: #f4f4f4;
-    padding: 20px;
-}
-
-.ar-container {
-    max-width: 900px;
-    margin: 0 auto;
-}
-
-/* Header */
-.ar-header h1 {
-    font-size: 26px;
-    margin-bottom: 4px;
-    color: #333;
-}
-.ar-header p {
-    font-size: 13px;
-    color: #666;
-    margin-bottom: 15px;
-}
-
-/* New Restaurant Button */
-#ar-new-btn {
-    display: inline-block;
-    margin-bottom: 15px;
-    padding: 8px 18px;
-    background: #4caf50;
-    color: #fff;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
-    font-size: 14px;
-}
-#ar-new-btn:hover {
-    background: #45a049;
-}
-
-/* Cards */
-.ar-card {
-    background: #fff;
-    border: 1px solid #ddd;
-    border-radius: 6px;
-    padding: 12px;
-    margin-bottom: 12px;
-    box-shadow: 0 1px 3px rgba(0,0,0,0.08);
-}
-
-/* Card Header */
-.ar-card-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 10px;
-}
-.ar-card-header h2 {
-    font-size: 16px;
-    margin: 0;
-    color: #222;
-}
-
-/* Fields */
-.ar-field {
-    margin-bottom: 8px;
-    display: flex;
-    gap: 10px;
-    align-items: center;
-}
-.ar-field label {
-    font-weight: bold;
-    font-size: 12px;
-    min-width: 130px;
-    color: #555;
-}
-.ar-field input {
-    flex: 1;
-    padding: 5px 8px;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-    font-size: 13px;
-}
-
-/* Gallery Section */
-.ar-gallery-field {
-    display: flex;
-    flex-direction: column;
-    margin-bottom: 10px;
-}
-.ar-gallery-dropzone {
-    padding: 8px;
-    border: 2px dashed #ccc;
-    border-radius: 4px;
-    text-align: center;
-    cursor: pointer;
-    font-size: 12px;
-    color: #666;
-    transition: background 0.2s, border-color 0.2s;
-}
-.ar-gallery-dropzone.ar-gallery-dragover {
-    background: #f0f8ff;
-    border-color: #2196f3;
-}
-
-.ar-gallery-preview {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 6px;
-    margin-top: 6px;
-}
-.ar-gallery-item {
-    position: relative;
-}
-.ar-gallery-thumb {
-    width: 60px;
-    height: 60px;
-    object-fit: cover;
-    border-radius: 4px;
-    cursor: pointer;
-    border: 1px solid #ccc;
-}
-.ar-gallery-remove-btn {
-    position: absolute;
-    top: -6px;
-    right: -6px;
-    background: #f44336;
-    color: #fff;
-    border: none;
-    border-radius: 50%;
-    width: 18px;
-    height: 18px;
-    font-size: 12px;
-    cursor: pointer;
-}
-.ar-gallery-remove-btn:hover {
-    background: #d32f2f;
-}
-
-/* Buttons */
-.ar-submit-btn {
-    margin-top: 6px;
-    padding: 6px 12px;
-    background: #2196f3;
-    color: #fff;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
-    font-size: 13px;
-}
-.ar-submit-btn:hover {
-    background: #1976d2;
-}
-
-.ar-remove-btn {
-    background: #f44336;
-    color: #fff;
-    border: none;
-    border-radius: 3px;
-    padding: 5px 10px;
-    cursor: pointer;
-    font-size: 12px;
-}
-.ar-remove-btn:hover {
-    background: #d32f2f;
-}
-
-/* Empty State */
-#restaurants-empty {
-    text-align: center;
-    color: #777;
-    margin-top: 30px;
-    font-size: 14px;
-}
-
-/* Lightbox overlay for gallery */
-.ar-lightbox-overlay {
-    display: none;
-    position: fixed;
-    top:0; left:0;
-    width:100%; height:100%;
-    background: rgba(0,0,0,0.8);
-    justify-content: center;
-    align-items: center;
-    z-index: 1000;
-}
-.ar-lightbox-overlay.active {
-    display: flex;
-}
-.ar-lightbox-overlay img {
-    max-width: 90%;
-    max-height: 90%;
-    border-radius: 6px;
-}
-/* Gallery sortable hints */
-.ar-gallery-item.dragging {
-    opacity: 0.6;
-    border: 2px dashed #2196f3;
-}
-.ar-gallery-preview {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 6px;
-    margin-top: 6px;
-}
-
-/* Forgot Password Page */
-#forgot-password-root {
-    font-family: Arial, sans-serif;
-    background: #f9f9f9;
-    padding: 30px 20px;
-    display: flex;
-    justify-content: center;
-}
-
-.fp-container {
-    background: #fff;
-    border: 1px solid #ddd;
-    border-radius: 6px;
-    padding: 25px 20px;
-    width: 100%;
-    max-width: 400px;
-    box-shadow: 0 2px 5px rgba(0,0,0,0.05);
-}
-
-.fp-container h1 {
-    margin-bottom: 10px;
-    font-size: 24px;
-    color: #333;
-    text-align: center;
-}
-
-.fp-container p {
-    font-size: 13px;
-    color: #666;
-    margin-bottom: 20px;
-    text-align: center;
-}
-
-.fp-field {
-    margin-bottom: 15px;
-    display: flex;
-    flex-direction: column;
-}
-
-.fp-field label {
-    font-weight: bold;
-    font-size: 12px;
-    margin-bottom: 5px;
-    color: #555;
-}
-
-.fp-field input {
-    padding: 8px 10px;
-    font-size: 14px;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-}
-
-#fp-submit {
-    width: 100%;
-    padding: 10px;
-    background: #2196f3;
-    color: #fff;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
-    font-size: 14px;
-}
-
-#fp-submit:hover {
-    background: #1976d2;
-}
-
-#fp-message {
-    margin-top: 15px;
-    font-size: 13px;
-    text-align: center;
-    color: red;
-}
-
-/* Admin restaurant cards */
-.ar-card {
-    border: 1px solid #ccc;
-    border-radius: 8px;
-    padding: 16px;
-    margin-bottom: 16px;
-    background-color: #f9f9f9;
-    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-}
-
-.ar-card-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 12px;
-}
-
-.ar-card h2.ar-name {
-    margin: 0;
-    font-size: 1.2rem;
-}
-
-.ar-card .ar-field {
-    margin-bottom: 10px;
-}
-
-.ar-card .ar-field label {
-    display: block;
-    font-weight: 600;
-    margin-bottom: 4px;
-}
-
-.ar-card input[type="text"],
-.ar-card input[type="number"],
-.ar-card input[type="time"] {
-    width: 100%;
-    padding: 6px 8px;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-    font-size: 0.95rem;
-}
-
-.ar-card button {
-    background-color: #007bff;
-    color: white;
-    border: none;
-    border-radius: 4px;
-    padding: 6px 12px;
-    cursor: pointer;
-    font-size: 0.95rem;
-}
-
-.ar-card button:hover {
-    background-color: #0056b3;
-}
-
-/* Gallery preview */
-.ar-gallery-preview {
-    display: flex;
-    gap: 8px;
-    flex-wrap: wrap;
-    margin-top: 6px;
-}
-
-.ar-gallery-item {
-    position: relative;
-    width: 80px;
-    height: 80px;
-    border: 1px solid #ddd;
-    border-radius: 4px;
-    overflow: hidden;
-}
-
-.ar-gallery-item img {
+#restaurant-list .restaurant-banner img {
     width: 100%;
     height: 100%;
     object-fit: cover;
-    cursor: pointer;
 }
 
-.ar-gallery-remove-btn {
-    position: absolute;
-    top: 2px;
-    right: 2px;
-    background: rgba(255,0,0,0.8);
-    color: white;
-    border: none;
-    border-radius: 50%;
-    width: 18px;
-    height: 18px;
-    font-size: 12px;
-    line-height: 18px;
-    text-align: center;
-    cursor: pointer;
+#restaurant-list .restaurant-content {
+    padding: 14px 16px;
 }
 
-.ar-lightbox-overlay {
-    position: fixed;
-    top:0;
-    left:0;
-    width:100%;
-    height:100%;
-    background: rgba(0,0,0,0.8);
-    display: none;
-    justify-content:center;
-    align-items:center;
-    z-index: 1000;
+#restaurant-list .restaurant-name {
+    font-size: 1rem;
 }
 
-.ar-lightbox-overlay.active {
-    display: flex;
+#restaurant-list .restaurant-description {
+    -webkit-line-clamp: 2;
 }
 
-.ar-lightbox-overlay img {
-    max-width: 90%;
-    max-height: 90%;
-    border-radius: 8px;
-}
-
-/* ==========================
-   RESET & BASE LAYOUT
-   ========================== */
-html, body {
-    width: 100%;
-    height: 100%;
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-    background: #0a0f1e; /* optional page background */
-    font-family: sans-serif;
-    color: white;
-}
-
-/* ==========================
-   FULL SCREEN FLEX CONTAINER
-   ========================== */
-.profile-container {
-    display: flex;
-    flex-direction: column;
-    align-items: center;      /* horizontal center */
-    justify-content: center;  /* vertical center */
-    min-height: 100vh;
-    width: 100%;
-    padding: 20px;
-    text-align: center;
-}
-
-/* ==========================
-   PROFILE CARD
-   ========================== */
-.profile-card {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-
-    width: 500px;
-    max-width: 90%; /* responsive */
-    padding: 40px;
-    border-radius: 20px;
-    background: rgba(10, 15, 30, 0.9);
-    backdrop-filter: blur(10px);
-
-    box-shadow:
-        0 0 0 1px rgba(255,255,255,0.05),
-        0 20px 60px rgba(0,0,0,0.6);
-
-    transition: all 0.25s ease;
-    margin: 0;
-}
-
-.profile-card:hover {
-    box-shadow:
-        0 0 0 1px rgba(255,255,255,0.05),
-        0 30px 70px rgba(0,0,0,0.7);
-}
-
-/* ==========================
-   HEADER
-   ========================== */
-.profile-container h2 {
-    font-size: 34px;
-    font-weight: 700;
-    margin-bottom: 35px;
-
-    background: linear-gradient(90deg, #8fd3c7, #3aa89d);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-}
-
-/* ==========================
-   FORM
-   ========================== */
-#updateProfileForm {
-    width: 100%;          /* fill the card */
-    display: flex;
-    flex-direction: column;
-    align-items: center;  /* center avatar + inputs */
-}
-
-/* ==========================
-   AVATAR SECTION
-   ========================== */
-.avatar-section {
-    text-align: center;
-    margin-bottom: 35px;
-    position: relative;
-}
-
-#userAvatar {
-    width: 120px;
-    height: 120px;
-    border-radius: 50%;
-    object-fit: cover;
-    border: 3px solid rgba(255,255,255,0.1);
-    margin-bottom: 10px;
-    transition: transform 0.2s ease;
-}
-
-#userAvatar:hover {
-    transform: scale(1.05);
-}
-
-.avatar-section input[type="file"] {
-    margin-top: 10px;
-    color: white;
-}
-
-.avatar-section input[type="file"]::file-selector-button {
-    padding: 8px 12px;
-    border: none;
-    border-radius: 8px;
-    background: linear-gradient(90deg, #8fd3c7, #3aa89d);
-    color: #0b1b1a;
-    cursor: pointer;
-}
-
-.avatar-section input[type="file"]::file-selector-button:hover {
-    opacity: 0.9;
-}
-
-/* ==========================
-   FORM FIELDS
-   ========================== */
-.form-fields {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 15px;
-    margin-top: 20px;
-    width: 100%;
-}
-
-.form-fields input {
-    padding: 12px;
-    border-radius: 10px;
-    background: rgba(255,255,255,0.05);
-    border: 1px solid rgba(255,255,255,0.1);
-    color: white;
-    transition: all 0.2s ease;
-}
-
-.form-fields input::placeholder {
-    color: rgba(255,255,255,0.5);
-}
-
-.form-fields input:focus {
-    outline: none;
-    border-color: #4fd1c5;
-}
-
-input[readonly] {
-    background: rgba(255,255,255,0.03);
-}
-
-/* ==========================
-   SUBMIT BUTTON
-   ========================== */
-#updateProfileForm button {
-    margin-top: 25px;
-    width: 100%;
-    padding: 16px;
-    border: none;
-    border-radius: 40px;
-    font-size: 18px;
-    font-weight: 600;
-    background: linear-gradient(90deg, #8fd3c7, #3aa89d);
-    color: #0b1b1a;
-    cursor: pointer;
-    transition: all 0.2s ease;
-}
-
-#updateProfileForm button:hover {
-    transform: translateY(-1px);
-}
-
-#updateProfileForm button:active {
-    transform: translateY(0);
-}
-
-/* ==========================
-   RESPONSIVE
-   ========================== */
-@media (max-width: 600px) {
-    .profile-card {
-        width: 90%;
-        padding: 30px;
+@media (max-width: 1100px) {
+    #restaurant-list,
+    .bookings-main-content #restaurant-list {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
     }
+}
 
-    .form-fields {
+@media (max-width: 700px) {
+    #restaurant-list,
+    .bookings-main-content #restaurant-list {
         grid-template-columns: 1fr;
     }
 
-    #userAvatar {
-        width: 100px;
-        height: 100px;
+    #restaurant-list .restaurant-banner {
+        max-height: 200px;
     }
 }
 
-/* ===============================
-   GLOBAL THEME & FONTS
-================================ */
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Playfair+Display:ital,wght@0,800;1,800&display=swap');
+/* ---------------------------------------------------------
+   2) RESTAURANT DETAILS PAGE
+   Make gallery images the same size
+   --------------------------------------------------------- */
 
-body {
-    background: #0a0b10;
-    color: #fff;
-    margin: 0;
-    font-family: 'Inter', sans-serif;
+.rb-gallery-grid {
+    align-items: stretch;
 }
 
-/* ===============================
-   HOME PAGE LAYOUT
-================================ */
-
-.home-page {
-    width: min(1600px, calc(100vw - 40px));
-    margin: 0 auto;
-    padding: 20px 0 60px;
+.rb-gallery-item {
+    aspect-ratio: 1 / 1;
+    overflow: hidden;
 }
 
-.home-layout {
-    display: grid;
-    grid-template-columns: 280px 1fr;
-    gap: 25px;
-    align-items: start;
-}
-
-/* ===============================
-   STICKY SIDEBAR (SEARCH)
-================================ */
-
-.home-sidebar {
-    position: sticky;
-    top: 20px;
-    align-self: start;
-}
-
-.home-sidebar-panel {
-    background: #1c1d22;
-    border: 1px solid rgba(255,255,255,0.08);
-    border-radius: 12px;
-    padding: 20px;
-    box-shadow: 0 10px 30px rgba(0,0,0,0.3);
-}
-
-.home-sidebar-head h1 {
-    font-family: 'Playfair Display', serif;
-    font-size: 2rem;
-    font-weight: 800;
-    margin: 0 0 8px;
-    color: #fff;
-}
-
-.home-sidebar-copy {
-    font-size: 0.85rem;
-    line-height: 1.5;
-    color: rgba(255,255,255,0.6);
-    margin-bottom: 20px;
-}
-
-/* --- SIDEBAR INPUTS --- */
-.home-filter-group {
-    margin-bottom: 15px;
-}
-
-.home-filter-label {
-    font-size: 0.7rem;
-    text-transform: uppercase;
-    letter-spacing: 1px;
-    color: rgba(255,255,255,0.4);
-    margin-bottom: 6px;
+.rb-gallery-item img {
+    width: 100%;
+    height: 100%;
+    min-height: 0;
+    object-fit: cover;
     display: block;
 }
 
-.home-input, .home-select {
-    width: 100%;
-    background: rgba(255,255,255,0.03);
-    border: 1px solid rgba(255,255,255,0.1);
-    border-radius: 6px;
-    padding: 10px;
-    color: #fff;
-    font-size: 0.9rem;
-    box-sizing: border-box;
-}
-
-.home-submit-btn {
-    width: 100%;
-    padding: 12px;
-    background: #fff;
-    color: #000;
-    border: none;
-    border-radius: 6px;
-    font-weight: 700;
-    cursor: pointer;
-    margin-top: 10px;
-    transition: opacity 0.2s;
-}
-
-/* ===============================
-   MAIN CONTENT AREA
-================================ */
-
-.home-main {
-    display: flex;
-    flex-direction: column;
-    gap: 25px;
-}
-
-.dash-card-head {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 10px;
-}
-
-.dash-card-head h2 {
-    font-family: 'Playfair Display', serif;
-    font-size: 2.2rem;
-    margin: 0;
-}
-
-.dash-chip {
-    background: #1c1d22;
-    border: 1px solid rgba(255,255,255,0.1);
-    color: #fff;
-    padding: 6px 14px;
-    border-radius: 20px;
-    font-size: 0.8rem;
-    font-weight: 600;
-}
-
-/* ===============================
-   RESTAURANT GRID (3 COLUMNS)
-================================ */
-
-.restaurants-container {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 20px;
-}
-
-/* ===============================
-   RESTAURANT CARD (HARD GREY STYLE)
-================================ */
-
-.restaurant-card {
-    background: #1c1d22;
-    border: 1px solid rgba(255,255,255,0.08);
-    border-radius: 12px;
-    overflow: hidden;
-    text-decoration: none;
-    color: #fff;
-    transition: transform 0.2s ease, border-color 0.2s ease;
-    display: flex;
-    flex-direction: column;
-}
-
-.restaurant-card:hover {
-    transform: translateY(-4px);
-    border-color: rgba(255,255,255,0.2);
-}
-
-.restaurant-banner {
-    width: 100%;
-    aspect-ratio: 1 / 1; /* Keep it square like the details page */
-    overflow: hidden;
-    background: #2a2b30;
-}
-
-.restaurant-banner img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    transition: transform 0.4s ease;
-}
-
-.restaurant-card:hover .restaurant-banner img {
-    transform: scale(1.05);
-}
-
-.restaurant-content {
-    padding: 16px;
-    flex-grow: 1;
-    display: flex;
-    flex-direction: column;
-}
-
-.restaurant-name {
-    font-family: 'Playfair Display', serif;
-    font-size: 1.25rem;
-    margin: 0 0 8px 0;
-    line-height: 1.2;
-}
-
-.restaurant-description {
-    font-size: 0.85rem;
-    color: rgba(255,255,255,0.6);
-    line-height: 1.5;
-    margin-bottom: 15px;
-    display: -webkit-box;
-    -webkit-line-clamp: 2;
-    -webkit-box-orient: vertical;
-    overflow: hidden;
-}
-
-/* Meta info styled like the tags on details page */
-.restaurant-details {
-    margin-top: auto;
-    border-top: 1px solid rgba(255,255,255,0.05);
-    padding-top: 12px;
-}
-
-.restaurant-detail-row {
-    display: flex;
-    justify-content: space-between;
-    font-size: 0.75rem;
-    margin-bottom: 6px;
-}
-
-.detail-label {
-    color: rgba(255,255,255,0.4);
-    text-transform: uppercase;
-    letter-spacing: 0.5px;
-}
-
-.detail-value {
-    font-weight: 500;
-    color: rgba(255,255,255,0.9);
-    text-align: right;
-}
-
-/* ===============================
-   UTILITIES
-================================ */
-.hidden { display: none !important; }
-
-@media (max-width: 1200px) {
-    .restaurants-container { grid-template-columns: repeat(2, 1fr); }
-}
-
-@media (max-width: 800px) {
-    .home-layout { grid-template-columns: 1fr; }
-    .restaurants-container { grid-template-columns: 1fr; }
-}
-
-/*
-   RESTAURANT DETAILS - REFINED DARK LAYOUT V8
-   - Nav Bar: White, smaller height, square buttons, left-aligned options
-   - Header: Name & Description centered
-   - Layout: Sticky Booking (Left) | Main Flow (Right)
-   - Fix: Info Card and Image aligned perfectly, Gallery/Reviews right underneath
-*/
-
-/* --- NAVIGATION BAR --- */
-.nav-container, nav {
-    background: #ffffff !important;
-    padding: 5px 20px;
-    display: flex;
-    justify-content: flex-start;
-    gap: 5px;
-    border-bottom: 1px solid #eee;
-    width: 100%;
-    box-sizing: border-box;
-    height: 45px;
-    align-items: center;
-}
-
-.nav-container a, nav a {
-    color: #000000 !important;
-    text-decoration: none;
-    padding: 4px 12px;
-    border-radius: 2px;
-    font-weight: 600;
-    font-size: 0.85rem;
-    transition: all 0.2s;
-    height: 30px;
-    display: flex;
-    align-items: center;
-}
-
-.nav-container a.active, nav a.active,
-.nav-container a:hover, nav a:hover {
-    background: #000000 !important;
-    color: #ffffff !important;
-}
-
-/* --- GLOBAL CONTAINER --- */
-.restaurant-book-page {
-    max-width: 1400px;
-    margin: 0 auto;
-    padding: 40px 20px;
-    font-family: 'Inter', sans-serif;
-    color: #fff;
-    background: #0a0b10;
-}
-
-/* --- TOP HEADER (CENTERED) --- */
-.rb-page-header {
-    margin-bottom: 40px;
-    padding-bottom: 20px;
-    text-align: center;
-    width: 100%;
-}
-
-#rb-name.rb-banner-title {
-    font-family: 'Playfair Display', serif;
-    font-size: 3.5rem;
-    font-weight: 800;
-    margin: 0 0 10px 0;
-    color: #fff;
-}
-
-#rb-desc.rb-description {
-    font-size: 1rem;
-    line-height: 1.6;
-    color: rgba(255,255,255,0.7);
-    margin: 0 auto;
-    max-width: 800px;
-}
-
-/* --- MAIN CONTENT STRUCTURE (SIDEBAR + FLOW) --- */
-.rb-content-wrapper {
-    display: flex;
-    justify-content: center;
-    gap: 25px;
-    align-items: flex-start;
-}
-
-/* --- STICKY BOOKING (LEFT) --- */
-.rb-sticky-left {
-    position: sticky;
-    top: 20px;
-    z-index: 10;
-    width: 320px;
-    flex-shrink: 0;
-}
-
-/* --- MAIN FLOW AREA (CENTER + RIGHT) --- */
-.rb-main-flow {
-    display: flex;
-    flex-direction: column;
-    gap: 25px;
-    width: 665px; /* Matches 320px + 320px + 25px gap */
-}
-
-/* --- TOP ROW: INFO CARD AND IMAGE --- */
-.rb-top-row {
-    display: flex;
-    gap: 25px;
-    align-items: stretch; /* Critical: Makes Info and Image same height */
-    width: 100%;
-}
-
-/* Unified Card Style */
-.rb-panel {
-    background: #1c1d22;
-    border: 1px solid rgba(255,255,255,0.08);
-    border-radius: 12px;
-    padding: 20px;
-    color: #fff;
-    box-sizing: border-box;
-}
-
-.rb-panel h2, .rb-panel h3 {
-    font-size: 0.75rem;
-    text-transform: uppercase;
-    letter-spacing: 1px;
-    color: rgba(255,255,255,0.4);
-    margin: 0 0 15px 0;
-    border-bottom: 1px solid rgba(255,255,255,0.05);
-    padding-bottom: 8px;
-}
-
-/* Info Card Specifics */
-.rb-details {
-    width: 320px;
-    flex-shrink: 0;
-}
-
-.rb-info p {
-    margin: 10px 0;
-    font-size: 0.85rem;
-    display: flex;
-    justify-content: space-between;
-    border-bottom: 1px solid rgba(255,255,255,0.03);
-    padding-bottom: 6px;
-}
-
-.rb-info strong { color: rgba(255,255,255,0.4); font-weight: 400; }
-.rb-info span { text-align: right; font-weight: 500; }
-
-/* Image Specifics (Non-Sticky, Aligned) */
+/* Main hero image keeps a clean consistent crop too */
 .rb-image-container {
-    width: 320px;
-    flex-shrink: 0;
-    border-radius: 12px;
-    overflow: hidden;
-    border: 1px solid rgba(255,255,255,0.1);
+    aspect-ratio: 16 / 10;
 }
 
+.rb-image-container img,
 .rb-banner-img {
     width: 100%;
     height: 100%;
     object-fit: cover;
 }
 
-/* --- SCROLLABLE CONTENT AREA (GALLERY & REVIEWS) --- */
-.rb-scroll-area {
-    display: flex;
-    flex-direction: column;
-    gap: 40px;
-    width: 100%;
+/* ---------------------------------------------------------
+   3) RESTAURANT DETAILS INFO BOX
+   Add space between label and value
+   --------------------------------------------------------- */
+
+/* If using separate label/value elements */
+.rb-meta-item {
+    gap: 6px;
 }
 
-/* Horizontal Gallery */
+.rb-meta-label {
+    margin-right: 6px;
+}
+
+/* If your actual markup is label + text inline */
+.rb-details strong,
+.rb-details b,
+.rb-copy-block strong,
+.rb-copy-block b {
+    display: inline-block;
+    margin-right: 6px;
+}
+
+
+/* =========================================================
+   ADD-ON PATCH
+   1. restaurant details gallery same size
+   2. current page highlighted in navbar
+   3. dashboard chart smaller
+   4. more space before first booking card
+   ========================================================= */
+
+/* ---------------------------------------------------------
+   1) RESTAURANT DETAILS: gallery images same size
+   --------------------------------------------------------- */
+
+.rb-gallery-grid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 14px;
+    align-items: stretch;
+}
+
+.rb-gallery-item {
+    aspect-ratio: 1 / 1;
+    overflow: hidden;
+    border-radius: 16px;
+}
+
+.rb-gallery-item img {
+    width: 100%;
+    height: 100%;
+    min-height: 0;
+    object-fit: cover;
+    display: block;
+}
+
+/* keep hero image neat too */
+.rb-image-container {
+    overflow: hidden;
+}
+
+.rb-image-container img,
+.rb-banner-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+/* ---------------------------------------------------------
+   3) DASHBOARD: make chart smaller
+   --------------------------------------------------------- */
+
+.dash-chart {
+    min-height: 280px;
+    max-height: 320px;
+    padding: 6px 6px 0;
+}
+
+.dash-chart canvas {
+    width: 100% !important;
+    max-width: 100%;
+    height: 260px !important;
+    min-height: 0 !important;
+    max-height: 260px;
+    display: block;
+}
+
+/* optional: make chart card a bit less tall overall */
+.dash-card {
+    padding-bottom: 16px;
+}
+
+/* ---------------------------------------------------------
+   4) BOOKINGS PAGE: push first booking lower
+   stop overlap with restaurant heading container
+   --------------------------------------------------------- */
+
+.bookings-main-content {
+    margin-top: 14px;
+}
+
+.bookings-grid {
+    margin-top: 10px;
+}
+
+/* if the first card still sits too tight, this forces spacing */
+.bookings-grid .booking-card:first-child,
+.bookings-grid .booking-slick-row:first-child {
+    margin-top: 8px;
+}
+/* =========================================================
+   RESTAURANT DETAILS GALLERY
+   horizontal scroll strip
+   ========================================================= */
+
 .rb-gallery-grid {
     display: flex;
+    gap: 12px;
     overflow-x: auto;
-    gap: 15px;
-    padding-bottom: 10px;
-    scrollbar-width: none;
+    overflow-y: hidden;
+    padding-bottom: 6px;
+    scroll-snap-type: x proximity;
+    -webkit-overflow-scrolling: touch;
 }
 
 .rb-shot {
     flex: 0 0 220px;
-    aspect-ratio: 1/1;
-    border-radius: 12px;
-    overflow: hidden;
-    background: #1c1d22;
-}
-
-.rb-shot img { width: 100%; height: 100%; object-fit: cover; }
-
-/* Reviews */
-.rb-review-list {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-    gap: 20px;
-}
-
-.rb-review {
-    background: #1c1d22;
-    padding: 25px;
-    border-radius: 16px;
-    border: 1px solid rgba(255,255,255,0.05);
-}
-
-.rb-review-top { display: flex; justify-content: space-between; margin-bottom: 8px; }
-.rb-stars { color: #ffc107; font-size: 0.85rem; }
-.rb-review-text { font-size: 0.95rem; color: rgba(255,255,255,0.6); margin: 0; line-height: 1.5; }
-
-/* Booking Form Elements */
-.rb-row {
-    display: grid;
-    grid-template-columns: 1fr;
-    gap: 12px;
-    margin-bottom: 12px;
-}
-
-.rb-field label {
-    font-size: 0.65rem;
-    text-transform: uppercase;
-    color: rgba(255,255,255,0.3);
-    margin-bottom: 4px;
-    display: block;
-}
-
-.rb-field input, .rb-field textarea {
-    width: 100%;
-    background: rgba(255,255,255,0.03);
-    border: 1px solid rgba(255,255,255,0.1);
-    border-radius: 6px;
-    padding: 10px;
-    color: #fff;
-    font-size: 0.9rem;
-}
-
-.rb-btn {
-    width: 100%;
-    padding: 14px;
-    background: #fff;
-    color: #000;
-    border: none;
-    border-radius: 6px;
-    font-weight: 700;
-    cursor: pointer;
-    margin-top: 10px;
-    transition: opacity 0.2s;
-}
-
-@media (max-width: 1100px) {
-    .rb-content-wrapper { flex-direction: column; align-items: center; }
-    .rb-sticky-left { position: static; width: 100%; max-width: 665px; }
-    .rb-main-flow { width: 100%; max-width: 665px; }
-    .rb-top-row { flex-direction: column; }
-    .rb-details, .rb-image-container { width: 100%; height: auto; }
-    .rb-image-container { aspect-ratio: 1/1; }
-}
-
-/* ---------- Theme / Base (deduped) ---------- */
-:root{
-    /* Slate theme vars */
-    --bg-1: rgba(20,28,45,0.92);
-    --bg-2: rgba(10,12,24,0.92);
-
-    --mint-1: #aef0db;
-    --mint-2: #2c9288;
-    --mint-3: #74bfa6;
-
-    --text: #0f172a;
-    --muted: #6b7280;
-
-    --white: rgba(255,255,255,0.96);
-    --white-2: rgba(255,255,255,0.92);
-
-    --glass: rgba(255,255,255,0.10);
-    --glass-border: rgba(255,255,255,0.12);
-
-    --shadow-lg: 0 18px 55px rgba(0,0,0,0.35);
-    --shadow-md: 0 14px 40px rgba(0,0,0,0.18);
-
-    --r-lg: 22px;
-    --r-md: 18px;
-    --r-sm: 14px;
-    --r-pill: 999px;
-
-    /* Additional dark theme set */
-    --bg-main: #121212;
-    --bg-card: #1a1a1a;
-    --border-soft: #2a2a2a;
-
-    --text-primary: #f5f5f5;
-    --text-muted: #a1a1a1;
-
-    --accent: #c2a46d;      /* muted champagne gold */
-    --accent-soft: #8c7a50;
-}
-
-* { box-sizing: border-box; }
-
-body{
-    margin: 0;
-    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-    line-height: 1.6;
-    background: linear-gradient(135deg, var(--bg-1), var(--bg-2));
-    color: var(--text);
-}
-
-/* ===============================
-   HOME PAGE STYLES
-================================ */
-
-.home-page {
-    width: min(1600px, calc(100vw - 40px));
-    margin: 0 auto;
-    padding: 20px 0 60px;
-}
-
-.home-layout {
-    display: grid;
-    grid-template-columns: 280px 1fr;
-    gap: 25px;
-    align-items: start;
-}
-
-/* ===============================
-   STICKY SIDEBAR (SEARCH)
-================================ */
-
-.home-sidebar {
-    position: sticky;
-    top: 20px;
-    align-self: start;
-}
-
-.home-sidebar-panel {
-    background: #1c1d22;
-    border: 1px solid rgba(255,255,255,0.08);
-    border-radius: 12px;
-    padding: 20px;
-    box-shadow: 0 10px 30px rgba(0,0,0,0.3);
-}
-
-.home-sidebar-head h1 {
-    font-family: 'Playfair Display', serif;
-    font-size: 2rem;
-    font-weight: 800;
-    margin: 0 0 8px;
-    color: #fff;
-}
-
-.home-sidebar-copy {
-    font-size: 0.85rem;
-    line-height: 1.5;
-    color: rgba(255,255,255,0.6);
-    margin-bottom: 20px;
-}
-
-/* --- SIDEBAR INPUTS --- */
-.home-filter-group {
-    margin-bottom: 15px;
-}
-
-.home-filter-label {
-    font-size: 0.7rem;
-    text-transform: uppercase;
-    letter-spacing: 1px;
-    color: rgba(255,255,255,0.4);
-    margin-bottom: 6px;
-    display: block;
-}
-
-.home-input, .home-select {
-    width: 100%;
-    background: rgba(255,255,255,0.03);
-    border: 1px solid rgba(255,255,255,0.1);
-    border-radius: 6px;
-    padding: 10px;
-    color: #fff;
-    font-size: 0.9rem;
-    box-sizing: border-box;
-}
-
-.home-submit-btn {
-    width: 100%;
-    padding: 12px;
-    background: #fff;
-    color: #000;
-    border: none;
-    border-radius: 6px;
-    font-weight: 700;
-    cursor: pointer;
-    margin-top: 10px;
-    transition: opacity 0.2s;
-}
-
-/* ===============================
-   MAIN CONTENT AREA
-================================ */
-
-.home-main {
-    display: flex;
-    flex-direction: column;
-    gap: 25px;
-}
-
-.dash-card-head {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 10px;
-}
-
-.dash-card-head h2 {
-    font-family: 'Playfair Display', serif;
-    font-size: 2.2rem;
-    margin: 0;
-    color: #fff;
-}
-
-.dash-chip {
-    background: #1c1d22;
-    border: 1px solid rgba(255,255,255,0.1);
-    color: #fff;
-    padding: 6px 14px;
-    border-radius: 20px;
-    font-size: 0.8rem;
-    font-weight: 600;
-}
-
-/* ===============================
-   RESTAURANT GRID (3 COLUMNS)
-================================ */
-
-.restaurants-container {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 20px;
-}
-
-/* ===============================
-   RESTAURANT CARD (HARD GREY STYLE)
-================================ */
-
-.restaurant-card {
-    background: #1c1d22;
-    border: 1px solid rgba(255,255,255,0.08);
-    border-radius: 12px;
-    overflow: hidden;
-    text-decoration: none;
-    color: #fff;
-    transition: transform 0.2s ease, border-color 0.2s ease;
-    display: flex;
-    flex-direction: column;
-}
-
-.restaurant-card:hover {
-    transform: translateY(-4px);
-    border-color: rgba(255,255,255,0.2);
-}
-
-.restaurant-banner {
-    width: 100%;
-    aspect-ratio: 1 / 1;
-    overflow: hidden;
-    background: #2a2b30;
-    position: relative;
-}
-
-.restaurant-banner img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    transition: transform 0.4s ease;
-}
-
-.restaurant-overlay {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: rgba(0, 0, 0, 0);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    opacity: 0;
-    transition: opacity 0.3s ease, background 0.3s ease;
-}
-
-.restaurant-card:hover .restaurant-overlay {
-    opacity: 1;
-    background: rgba(0, 0, 0, 0.4);
-}
-
-.restaurant-cta {
-    color: #fff;
-    font-weight: 600;
-    font-size: 0.9rem;
-    text-transform: uppercase;
-    letter-spacing: 0.5px;
-}
-
-.restaurant-card:hover .restaurant-banner img {
-    transform: scale(1.05);
-}
-
-.restaurant-content {
-    padding: 16px;
-    flex-grow: 1;
-    display: flex;
-    flex-direction: column;
-}
-
-.restaurant-top {
-    display: flex;
-    justify-content: space-between;
-    align-items: start;
-    gap: 10px;
-    margin-bottom: 8px;
-}
-
-.restaurant-name {
-    font-family: 'Playfair Display', serif;
-    font-size: 1.25rem;
-    margin: 0;
-    line-height: 1.2;
-    flex: 1;
-}
-
-.restaurant-badge {
-    background: rgba(174, 240, 219, 0.2);
-    color: #aef0db;
-    padding: 4px 8px;
-    border-radius: 4px;
-    font-size: 0.65rem;
-    font-weight: 600;
-    text-transform: uppercase;
-    letter-spacing: 0.5px;
-    white-space: nowrap;
-}
-
-.restaurant-description {
-    font-size: 0.85rem;
-    color: rgba(255,255,255,0.6);
-    line-height: 1.5;
-    margin-bottom: 15px;
-    display: -webkit-box;
-    -webkit-line-clamp: 2;
-    -webkit-box-orient: vertical;
-    overflow: hidden;
-}
-
-.restaurant-meta-line {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 8px;
-    margin-bottom: 12px;
-}
-
-.restaurant-type {
-    font-size: 0.75rem;
-    color: rgba(255,255,255,0.5);
-    text-transform: capitalize;
-}
-
-.restaurant-brand {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    margin-bottom: 12px;
-    padding: 8px;
-    background: rgba(255,255,255,0.03);
-    border-radius: 6px;
-}
-
-.brand-logo {
-    width: 28px;
-    height: 28px;
-    border-radius: 4px;
-    object-fit: cover;
-}
-
-.restaurant-brand-text {
-    display: flex;
-    flex-direction: column;
-    gap: 2px;
-}
-
-.restaurant-brand-label {
-    font-size: 0.65rem;
-    color: rgba(255,255,255,0.4);
-    text-transform: uppercase;
-    letter-spacing: 0.5px;
-}
-
-.brand-name {
-    font-size: 0.8rem;
-    color: #fff;
-    font-weight: 500;
-}
-
-/* Meta info styled like the tags on details page */
-.restaurant-details {
-    margin-top: auto;
-    border-top: 1px solid rgba(255,255,255,0.05);
-    padding-top: 12px;
-}
-
-.restaurant-detail-row {
-    display: flex;
-    justify-content: space-between;
-    font-size: 0.75rem;
-    margin-bottom: 6px;
-}
-
-.detail-label {
-    color: rgba(255,255,255,0.4);
-    text-transform: uppercase;
-    letter-spacing: 0.5px;
-}
-
-.detail-value {
-    font-weight: 500;
-    color: rgba(255,255,255,0.9);
-    text-align: right;
-}
-
-/* ===============================
-   UTILITIES
-================================ */
-.hidden { display: none !important; }
-
-@media (max-width: 1200px) {
-    .restaurants-container { grid-template-columns: repeat(2, 1fr); }
-}
-
-@media (max-width: 800px) {
-    .home-layout { grid-template-columns: 1fr; }
-    .restaurants-container { grid-template-columns: 1fr; }
-}
-
-/* --- TIGHTEN SIDEBAR SEARCH --- */
-.home-sidebar-panel {
-    padding: 15px; /* Reduced from 20px */
-}
-
-.home-sidebar-head h1 {
-    font-size: 1.5rem; /* Smaller header */
-    margin-bottom: 4px;
-}
-
-.home-sidebar-copy {
-    font-size: 0.8rem;
-    margin-bottom: 15px; /* Less gap */
-    line-height: 1.4;
-}
-
-.home-filter-group {
-    margin-bottom: 10px; /* Tighter spacing between inputs */
-}
-
-.home-filter-label {
-    font-size: 0.65rem; /* Smaller labels */
-    margin-bottom: 4px;
-}
-
-.home-input, .home-select {
-    padding: 8px; /* Thinner inputs */
-    font-size: 0.85rem;
-}
-
-.home-submit-btn {
-    padding: 10px;
-    margin-top: 5px;
-}
-
-/* --- TIGHTEN BRAND ON CARD --- */
-.restaurant-brand {
-    background: transparent; /* Remove the background block */
-    padding: 0;
-    margin-bottom: 8px;
-    border-top: 1px solid rgba(255,255,255,0.05);
-    padding-top: 8px;
-}
-
-.brand-logo {
-    width: 20px; /* Much smaller logo */
-    height: 20px;
-}
-
-.brand-name {
-    font-size: 0.75rem; /* Subtle text */
-    color: rgba(255,255,255,0.6);
-}
-
-/* --- SUBTLE BRAND AT BOTTOM --- */
-.brand-row {
-    margin-top: 8px;
-    padding-top: 8px;
-    border-top: 1px dashed rgba(255, 255, 255, 0.1);
-    align-items: center;
-}
-
-.brand-info {
-    display: flex;
-    align-items: center;
-    gap: 6px;
-}
-
-.brand-logo-small {
-    width: 16px; /* Tiny logo for a subtle look */
-    height: 16px;
-    border-radius: 2px;
-    object-fit: cover;
-    opacity: 0.8;
-}
-
-.brand-row .detail-value {
-    color: rgba(255, 255, 255, 0.5); /* Muted text for the brand name */
-    font-size: 0.7rem;
-}
-
-/* --- PAGE COLOR OVERRIDES --- */
-body {
-    background: #0d1117; /* Deep Navy Background */
-}
-
-.home-main {
-    background: #000000; /* Solid Black Container */
-    padding: 20px;
-    border-radius: 12px;
-    border: 1px solid rgba(255, 255, 255, 0.05);
-}
-
-/* Ensure the sidebar matches the new theme */
-.home-sidebar-panel {
-    background: #000000; /* Sidebar matches the main container */
-}
-/* --- COMPACT SQUARE-ISH CARDS --- */
-.restaurant-banner {
-    aspect-ratio: 1.1 / 1; /* Almost square aspect ratio */
-}
-
-.restaurant-content {
-    padding: 8px 12px; /* Even tighter padding */
-}
-
-.restaurant-description {
-    margin-bottom: 6px; /* Reduced gap */
-    -webkit-line-clamp: 1; /* Only show 1 line of description for maximum compactness */
-}
-
-.restaurant-name {
-    font-size: 1.05rem; /* Slightly smaller for better fit */
-}
-
-.restaurant-details {
-    padding-top: 6px; /* Tighter bottom section */
-}
-/* --- CLEAN UP NESTED CONTAINERS --- */
-.home-main {
-    background: transparent; /* Remove the outer box background */
-    border: none;            /* Remove the outer box border */
-    padding: 0;              /* Remove the outer box padding */
-}
-
-.restaurants-container {
-    background: #000000;      /* Keep only the inner box black */
-    border: 1px solid rgba(255, 255, 255, 0.05);
-    border-radius: 12px;
-    padding: 20px;
-}
-
-/* Align the "Restaurants" title to the new container */
-.dash-card-head {
-    padding: 0 5px;
-    margin-bottom: 15px;
-}
-/* --- MATCH BACKGROUNDS & REMOVE CARD BOXES --- */
-.restaurants-container {
-    background: #1c1d22; /* Matches the color around the "Restaurants" title */
-    border: 1px solid rgba(255, 255, 255, 0.05);
-    border-radius: 12px;
-    padding: 24px;
-}
-
-.restaurant-card {
-    background: transparent; /* Removes the black box around the card */
-    border: none;            /* Removes the card's individual border */
-    box-shadow: none;        /* Removes any shadow "boxes" */
-}
-
-.restaurant-card:hover {
-    background: rgba(255, 255, 255, 0.03); /* Subtle highlight on hover */
-    transform: translateY(-4px);
-    border-radius: 8px;
-}
-
-/* Ensure the header area matches as well */
-.dash-card-head {
-    background: #1c1d22;
-    margin-bottom: 0;
-    padding: 20px 24px 10px;
-    border-top-left-radius: 12px;
-    border-top-right-radius: 12px;
-    border: 1px solid rgba(255, 255, 255, 0.05);
-    border-bottom: none;
-}
-
-/* Connect the header and container seamlessly */
-.restaurants-container {
-    border-top-left-radius: 0;
-    border-top-right-radius: 0;
-}
-/* --- SIDEBAR VISIBILITY FIXES --- */
-
-/* 1. Force dark theme for all dropdowns (Select & Datalist) */
-select, input, datalist {
-    color-scheme: dark; /* This is the "magic" line for browser dropdowns */
-}
-
-.home-select option {
-    background-color: #1c1d22; /* Matches sidebar panel */
-    color: #ffffff;
-}
-
-/* 2. Fix Category Chip Visibility */
-.home-chip {
-    background: #2a2b30; /* Darker grey so it stands out from the black sidebar */
-    border: 1px solid rgba(255, 255, 255, 0.2);
-    color: #ffffff;
-    padding: 6px 10px;
-    border-radius: 6px;
-    display: inline-flex;
-    align-items: center;
-    gap: 8px;
-    margin-top: 5px;
-    font-weight: 500;
-    font-size: 0.8rem;
-}
-
-.home-chip-remove {
-    background: rgba(255, 255, 255, 0.1);
-    border: none;
-    color: #ff4d4d; /* Red 'x' for clear action */
-    cursor: pointer;
-    border-radius: 4px;
-    width: 18px;
-    height: 18px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 12px;
-    transition: background 0.2s;
-}
-
-.home-chip-remove:hover {
-    background: rgba(255, 77, 77, 0.2);
-}
-
-/* 3. Improve Search Button Contrast */
-.home-submit-btn {
-    background: #ffffff;
-    color: #000000;
-    font-weight: 800;
-    text-transform: uppercase;
-    letter-spacing: 1px;
-    transition: transform 0.1s, background 0.2s;
-}
-
-.home-submit-btn:hover {
-    background: #e0e0e0;
-    transform: translateY(-1px);
-}
-/* --- MATCH CATEGORY SEARCH TO RADIUS DROPDOWN --- */
-
-/* Force the datalist/input to use the same dark theme as the select box */
-.js-category-input {
-    background-color: #2a2b30; /* Same as the Radius dropdown */
-    border: 1px solid rgba(255, 255, 255, 0.15);
-    color: #ffffff;
-    padding: 8px 10px;
-    border-radius: 6px;
-    font-size: 0.85rem;
-    outline: none;
-    transition: border-color 0.2s;
-}
-
-.js-category-input:focus {
-    border-color: var(--accent); /* Highlights when you type */
-}
-
-/* Ensure the browser's native datalist options match the dark theme */
-input::-webkit-calendar-picker-indicator {
-    filter: invert(1); /* Makes the little dropdown arrow white */
-    cursor: pointer;
-}
-
-/* This forces the popup menu to be dark on Chrome/Edge/Safari */
-input[list] {
-    color-scheme: dark;
-}
-/* --- HIDE AMOUNT LABEL & COUNT --- */
-.dash-card-actions {
-    display: none !important; /* Removes the "Amount" label and count entirely */
-}
-
-.dash-card-head {
-    justify-content: flex-start; /* Aligns the "Restaurants" title to the left */
-}
-
-/* --- SLEEK DASHBOARD BADGES --- */
-.dash-card-actions {
-    display: flex !important;
-    align-items: center;
-    gap: 1px; /* Creates a tiny divider line between the two boxes */
-    background: rgba(255, 255, 255, 0.05);
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    border-radius: 4px; /* Edgy, subtle rounding instead of bubbly */
-    overflow: hidden;
-}
-
-/* The "Amount" Label Part */
-.dash-chip {
-    background: #aef0db; /* Your mint accent */
-    color: #06311f;
-    padding: 4px 10px;
-    font-size: 0.65rem;
-    font-weight: 800;
-    text-transform: uppercase;
-    letter-spacing: 1px;
-    border: none;
-    border-radius: 0; /* Flat edge to join the number box */
-    margin: 0;
-}
-
-/* The Number Part (520) */
-.js-restaurant-count {
-    display: block !important;
-    background: transparent;
-    color: #ffffff;
-    padding: 4px 12px;
-    font-size: 0.75rem;
-    font-weight: 700;
-    font-family: 'Inter', sans-serif;
-    letter-spacing: 0.5px;
-}
-
-/* Hover effect for the whole badge */
-.dash-card-actions:hover {
-    border-color: rgba(174, 240, 219, 0.4);
-    transition: border-color 0.2s;
-}
-/* --- MOVE BADGE TO THE FAR RIGHT --- */
-.dash-card-head {
-    display: flex !important;
-    justify-content: space-between !important; /* Pushes title to left, badge to right */
-    align-items: center !important;
-    width: 100%;
-    padding: 15px 24px; /* Balanced padding for the header */
-}
-
-/* Ensure the badge stays as a single unit on the right */
-.dash-card-actions {
-    margin-left: auto; /* Extra insurance to keep it pushed right */
-    display: flex !important;
-}
-/* --- MINIMAL WHITE & BLACK SPLIT BADGE --- */
-.dash-card-actions {
-    display: flex !important;
-    align-items: center;
-    background: rgba(255, 255, 255, 0.05);
-    border: 1px solid rgba(255, 255, 255, 0.15);
-    border-radius: 4px; /* Sharp, edgy corners */
-    overflow: hidden;
-}
-
-/* The "Amount" Label (Now Clean White) */
-.dash-chip {
-    background: #ffffff; /* Pure white background */
-    color: #000000;      /* Sharp black text */
-    padding: 4px 12px;
-    font-size: 0.65rem;
-    font-weight: 900;
-    text-transform: uppercase;
-    letter-spacing: 1.5px;
-    border: none;
-    border-radius: 0;
-    margin: 0;
-}
-
-/* The Number Part (e.g., 520) */
-.js-restaurant-count {
-    display: block !important;
-    background: transparent;
-    color: #ffffff;
-    padding: 4px 14px;
-    font-size: 0.8rem;
-    font-weight: 700;
-    font-family: 'Inter', sans-serif;
-    letter-spacing: 0.5px;
-}
-
-/* Subtle Hover Glow */
-.dash-card-actions:hover {
-    border-color: rgba(255, 255, 255, 0.4);
-    box-shadow: 0 0 10px rgba(255, 255, 255, 0.05);
-    transition: all 0.2s ease;
-}
-
-/* --- FORCE WHITE & BLACK BADGE (NO GREEN) --- */
-
-/* Move the entire badge container to the far right */
-.dash-card-head {
-    display: flex !important;
-    justify-content: space-between !important;
-    align-items: center !important;
-    width: 100%;
-}
-
-/* The sleek white-and-black split badge */
-.dash-card-head .dash-card-actions {
-    display: flex !important;
-    margin-left: auto !important;
-    background: rgba(255, 255, 255, 0.05) !important;
-    border: 1px solid rgba(255, 255, 255, 0.2) !important;
-    border-radius: 4px !important;
-    overflow: hidden !important;
-}
-
-/* Force the "Amount" label to be pure white with black text */
-.dash-card-head .dash-chip {
-    background: #ffffff !important; /* Force pure white */
-    color: #000000 !important;      /* Force sharp black text */
-    padding: 4px 12px !important;
-    font-size: 0.65rem !important;
-    font-weight: 900 !important;
-    text-transform: uppercase !important;
-    letter-spacing: 1.5px !important;
-    border: none !important;
-    border-radius: 0 !important;
-    margin: 0 !important;
-    box-shadow: none !important; /* Remove any green shadows */
-}
-
-/* The number part (e.g., 520) */
-.dash-card-head .js-restaurant-count {
-    display: block !important;
-    background: transparent !important;
-    color: #ffffff !important;
-    padding: 4px 14px !important;
-    font-size: 0.8rem !important;
-    font-weight: 700 !important;
-}
-/* --- CLEAN UNIFIED SPLIT BADGE (NO DOUBLE BOXES) --- */
-
-/* 1. Reset the header container so it's invisible and pushes to the right */
-.dash-card-head {
-    background: transparent !important;
-    border: none !important;
-    display: flex !important;
-    justify-content: space-between !important;
-    align-items: center !important;
-    padding: 10px 0 !important;
-    margin-bottom: 15px !important;
-}
-
-/* 2. The single, clean split badge on the right */
-.dash-card-actions {
-    display: flex !important;
-    background: transparent !important; /* No outer background */
-    border: 1px solid rgba(255, 255, 255, 0.2) !important;
-    border-radius: 4px !important;
-    overflow: hidden !important;
-    padding: 0 !important;
-    margin: 0 !important;
-}
-
-/* 3. The "Amount" side (Solid White) */
-.dash-chip {
-    background: #ffffff !important;
-    color: #000000 !important;
-    padding: 4px 12px !important;
-    font-size: 0.65rem !important;
-    font-weight: 900 !important;
-    text-transform: uppercase !important;
-    letter-spacing: 1px !important;
-    border: none !important;
-    border-radius: 0 !important;
-    margin: 0 !important;
-}
-
-/* 4. The "Number" side (Transparent with White Text) */
-.js-restaurant-count {
-    display: block !important;
-    color: #ffffff !important;
-    background: transparent !important;
-    padding: 4px 12px !important;
-    font-size: 0.75rem !important;
-    font-weight: 700 !important;
-    margin: 0 !important;
-}
-/* --- 1. CATEGORY SEARCH MATCHES RADIUS (HIGH CONTRAST) --- */
-.js-category-input {
-    background-color: #2a2b30 !important;
-    border: 1px solid rgba(255, 255, 255, 0.15) !important;
-    color: #ffffff !important;
-    padding: 10px 12px !important;
-    border-radius: 6px !important;
-    color-scheme: dark !important; /* Forces the browser popup to be dark/white text */
-}
-
-/* --- 2. SLICKER SEARCH BUTTON --- */
-.home-submit-btn {
-    background: #ffffff !important;
-    color: #000000 !important;
-    font-weight: 900 !important;
-    text-transform: uppercase !important;
-    letter-spacing: 2px !important; /* More space for a "luxury" look */
-    padding: 14px !important;
-    border-radius: 4px !important;
-    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1) !important;
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.4) !important;
-}
-
-.home-submit-btn:hover {
-    background: #e0e0e0 !important;
-    transform: translateY(-2px) !important;
-    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.6) !important;
-}
-
-/* --- 3. "PLAY TRAILER" STYLE CATEGORY CHIPS --- */
-.home-category-selected {
-    display: flex;
-    flex-direction: column; /* Stack them so they don't squish */
-    gap: 8px;
-    margin-top: 12px;
-}
-
-.home-chip {
-    background: rgba(255, 255, 255, 0.05) !important; /* Faded "glass" look */
-    border: 1px solid rgba(255, 255, 255, 0.1) !important;
-    color: #ffffff !important;
-    padding: 10px 16px !important; /* Wide and breathable */
-    border-radius: 4px !important;
-    display: flex !important;
-    justify-content: space-between !important;
-    align-items: center !important;
-    font-size: 0.8rem !important;
-    font-weight: 500 !important;
-    letter-spacing: 0.5px !important;
-    transition: background 0.2s !important;
-}
-
-.home-chip:hover {
-    background: rgba(255, 255, 255, 0.1) !important;
-    border-color: rgba(255, 255, 255, 0.2) !important;
-}
-
-/* The White "X" button */
-.home-chip-remove {
-    background: #ffffff !important; /* Solid white box */
-    color: #000000 !important;      /* Black X */
-    width: 20px !important;
-    height: 20px !important;
-    border-radius: 2px !important;
-    display: flex !important;
-    align-items: center !important;
-    justify-content: center !important;
-    font-size: 14px !important;
-    font-weight: 900 !important;
-    line-height: 1 !important;
-    margin-left: 12px !important;
-    transition: transform 0.2s !important;
-}
-
-.home-chip-remove:hover {
-    transform: scale(1.1) !important;
-    background: #f0f0f0 !important;
-}
-/* --- MAKE CATEGORY SELECT LOOK LIKE RADIUS --- */
-.js-category-input {
-    appearance: none; /* Removes default browser styling */
-    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' fill='white' viewBox='0 0 16 16'%3E%3Cpath d='M7.247 11.14 2.451 5.658C1.885 5.013 2.345 4 3.204 4h9.592a1 1 0 0 1 .753 1.659l-4.796 5.48a1 1 0 0 1-1.506 0z'/%3E%3C/svg%3E" );
-    background-repeat: no-repeat;
-    background-position: right 10px center;
-    padding-right: 30px !important;
-    cursor: pointer;
-    color-scheme: dark; /* This forces the dropdown list to be dark with white text */
-}
-
-/* Ensure the dropdown options match the dark theme */
-.js-category-input option {
-    background-color: #1c1d22;
-    color: #ffffff;
-}
-/* --- 1. RADIUS & GUESTS ON THE SAME LINE --- */
-.home-filter-row-split {
-    display: grid;
-    grid-template-columns: 1fr 1fr; /* Two equal columns */
-    gap: 12px;
-    margin-bottom: 10px;
-}
-
-/* Ensure the labels and inputs inside the split row look tight */
-.home-filter-row-split .home-filter-group {
-    margin-bottom: 0; /* Remove bottom margin since the row handles it */
-}
-
-/* --- 2. SMALLER, COMPACT CATEGORY PILLS (4 PER LINE) --- */
-.home-category-selected {
-    display: grid;
-    grid-template-columns: repeat(4, 1fr); /* Force 4 columns */
-    gap: 6px;
-    margin-top: 10px;
-}
-
-.home-chip {
-    padding: 4px 6px !important; /* Tighten internal space */
-    font-size: 0.65rem !important; /* Smaller text to fit */
-    justify-content: center !important; /* Center content */
-    min-width: 0; /* Allow it to shrink */
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis; /* Truncate if name is too long */
-}
-
-.home-chip-remove {
-    width: 14px !important; /* Smaller X box */
-    height: 14px !important;
-    font-size: 10px !important;
-    margin-left: 4px !important;
-}
-
-/* ============================================================
-   HARD GREY AESTHETIC - UNIFIED DESIGN SYSTEM
-   Cleaned & Optimized Version
-   ============================================================ */
-
-:root {
-    /* Core Palette */
-    --bg-deep: #0d1117;
-    --bg-panel: #1c1d22;
-    --bg-black: #000000;
-    --bg-input: #2a2b30;
-
-    /* Accents */
-    --accent-white: #ffffff;
-    --accent-yellow: #FFD700;
-    --accent-muted: #6c757d;
-
-    /* Typography */
-    --text-main: #f5f5f5;
-    --text-muted: #a1a1a1;
-    --text-dark: #000000;
-
-    /* Borders & Shadows */
-    --border-glass: rgba(255, 255, 255, 0.1);
-    --border-soft: rgba(255, 255, 255, 0.05);
-}
-
-/* --- Base Setup --- */
-@import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Playfair+Display:ital,wght@0,800;1,800&display=swap");
-
-* { box-sizing: border-box; }
-
-body {
-    margin: 0;
-    font-family: "Inter", -apple-system, sans-serif;
-    background: var(--bg-deep);
-    color: var(--text-main);
-    line-height: 1.6;
-}
-
-h1, h2, h3, h4, .nav-logo {
-    font-family: "Playfair Display", serif;
-    font-weight: 800;
-}
-
-a { text-decoration: none; color: inherit; }
-
-/* ============================================================
-   LAYOUT COMPONENTS
-   ============================================================ */
-
-.dashboard-page {
-    background: var(--bg-deep);
-    min-height: 100vh;
-    display: flex;
-    flex-direction: column;
-}
-
-.dashboard-wrap {
-    flex-grow: 1;
-    padding: 10px 15px;
-    max-width: 1650px;
-    margin: 0 auto;
-    width: 100%;
-}
-
-/* Dashboard Top Header */
-.dash-header {
-    background: var(--bg-panel);
-    border: 1px solid var(--border-soft);
-    border-radius: 12px;
-    padding: 20px 24px;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 30px;
-}
-
-.dash-title h1 {
-    font-size: 1.8rem;
-    margin: 0;
-    color: var(--text-main);
-}
-
-.dash-title p {
-    font-size: 0.9rem;
-    color: var(--text-muted);
-    margin: 4px 0 0;
-}
-
-.dash-brand-minimal {
-    display: flex;
-    align-items: center;
-    background: var(--bg-input);
-    border: 1px solid var(--border-glass);
-    border-radius: 8px;
-    padding: 8px 12px;
-    gap: 15px;
-}
-
-.dash-brand-field label {
-    font-size: 0.6rem;
-    color: var(--text-muted);
-    text-transform: uppercase;
-    letter-spacing: 0.5px;
-    margin-bottom: 2px;
-    display: block;
-}
-
-.dash-brand-field select {
-    background: transparent;
-    border: none;
-    padding: 0;
-    color: var(--text-main);
-    font-size: 0.85rem;
-    outline: none;
-    -webkit-appearance: none; /* Remove default arrow on Chrome/Safari */
-    -moz-appearance: none;    /* Remove default arrow on Firefox */
-    appearance: none;         /* Remove default arrow */
-    cursor: pointer;
-}
-
-.dash-avatar {
-    width: 36px;
-    height: 36px;
-    border-radius: 50%;
-    overflow: hidden;
-    border: 2px solid var(--accent-yellow);
-    flex-shrink: 0;
-}
-
-.dash-avatar img { width: 100%; height: 100%; object-fit: cover; }
-
-/* ============================================================
-   RESTAURANT MANAGEMENT GRID (3-COLUMN)
-   ============================================================ */
-
-.restaurant-management-grid {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 25px;
-    width: 100%;
-}
-
-.restaurant-card {
-    background: var(--bg-panel);
-    border: 1px solid var(--border-soft);
-    border-radius: 12px;
-    padding: 25px;
-    display: flex;
-    flex-direction: column;
-    gap: 15px;
-    transition: all 0.3s ease;
-    min-height: 200px;
-}
-
-.restaurant-card:hover {
-    transform: translateY(-5px);
-    border-color: var(--accent-yellow);
-}
-
-/* ============================================================
-   BOOKINGS DASHBOARD (SIDEBAR + 1-COLUMN)
-   ============================================================ */
-
-.bookings-layout-container {
-    display: flex;
-    flex-direction: row;
-    gap: 30px;
-    padding: 10px 0 40px;
-    width: 100%;
-    align-items: flex-start;
-}
-
-/* Sticky Sidebar (Search/Filter) */
-.home-sidebar {
-    flex: 0 0 260px;
-    position: sticky;
-    top: 20px;
-    align-self: start;
-    z-index: 100;
-}
-
-.home-sidebar-panel {
-    background: #1c1d22;
-    border: 1px solid rgba(255,255,255,0.08);
-    border-radius: 12px;
-    padding: 25px;
-    box-shadow: 0 10px 30px rgba(0,0,0,0.3);
-}
-
-.home-sidebar-head h1 {
-    font-family: 'Playfair Display', serif;
-    font-size: 1.8rem;
-    font-weight: 800;
-    margin: 0 0 8px;
-    color: #fff;
-    letter-spacing: -1px;
-}
-
-.home-sidebar-copy {
-    font-size: 0.85rem;
-    line-height: 1.6;
-    color: rgba(255,255,255,0.6);
-    margin-bottom: 30px;
-}
-
-.home-filter-group { margin-bottom: 20px; }
-
-.home-filter-label {
-    font-size: 0.7rem;
-    text-transform: uppercase;
-    letter-spacing: 2px;
-    color: rgba(255,255,255,0.4);
-    margin-bottom: 8px;
-    display: block;
-    font-weight: 700;
-}
-
-.home-input, .home-select {
-    width: 100%;
-    background: rgba(255,255,255,0.03);
-    border: 1px solid rgba(255,255,255,0.1);
-    border-radius: 6px;
-    padding: 12px;
-    color: #fff;
-    font-size: 0.9rem;
-    outline: none;
-    transition: all 0.2s ease;
-}
-
-.home-input:focus, .home-select:focus {
-    border-color: rgba(255,255,255,0.3);
-    background: rgba(255,255,255,0.05);
-}
-
-.home-submit-btn {
-    width: 100%;
-    padding: 14px;
-    background: #fff;
-    color: #000;
-    border: none;
-    border-radius: 6px;
-    font-weight: 800;
-    cursor: pointer;
-    margin-top: 15px;
-    transition: all 0.2s ease;
-    text-transform: uppercase;
-    letter-spacing: 1.5px;
-    font-size: 0.75rem;
-}
-
-.home-submit-btn:hover {
-    opacity: 0.9;
-    transform: translateY(-1px);
-}
-
-/* Main Bookings Content */
-.bookings-main-content {
-    flex: 1;
-    min-width: 0;
-}
-
-.bookings-grid {
-    display: flex;
-    flex-direction: column;
-    gap: 25px;
-    width: 100%;
-}
-
-.booking-slick-row {
-    background: var(--bg-panel);
-    border: 1px solid var(--border-soft);
-    border-radius: 12px;
-    padding: 30px 30px 30px 30px;
-    padding-top: 45px; /* Space for absolute header */
-    color: var(--text-main);
-    display: grid;
-    grid-template-columns: 1fr 2fr;
-    gap: 40px;
-    text-align: left;
-    width: 100%;
-    position: relative;
-    align-items: center;
-}
-
-/* Booking Card Details */
-.header-top-row {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    position: absolute;
-    top: 15px;
-    left: 15px;
-}
-
-.res-ref-tag {
-    font-size: 0.65rem;
-    color: var(--text-muted);
-    font-weight: 400;
-    letter-spacing: 0.3px;
-    white-space: nowrap;
-}
-
-.res-name {
-    font-family: "Playfair Display", serif;
-    font-weight: 800;
-    font-size: 1.8rem;
-    color: var(--text-main);
-    margin: 2px 0 12px;
-}
-
-.booking-meta-row {
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
-    font-size: 0.9rem;
-    color: var(--text-muted);
-}
-
-.meta-item i {
-    margin-right: 12px;
-    width: 16px;
-    text-align: center;
-    color: var(--accent-yellow);
-}
-
-/* ============================================================
-   MESSAGING GRID
-   ============================================================ */
-
-.message-grid-container {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 20px;
-    width: 100%;
-}
-
-.message-box {
-    background-color: var(--bg-input);
-    border: 1px solid var(--border-glass);
-    border-radius: 8px;
-    padding: 15px;
-    display: flex;
-    flex-direction: column;
-    min-height: 140px;
-}
-
-.message-box.sent {
-    opacity: 0.85;
-    background-color: rgba(0, 0, 0, 0.3);
-    border-color: rgba(255, 255, 255, 0.05);
-}
-
-.message-box.sent .message-content {
-    color: var(--text-main);
-    background: transparent;
-    border: none;
-    padding: 0;
-}
-
-.message-box.admin-message { border-left: 3px solid var(--accent-yellow); }
-.message-box.user-message { border-left: 3px solid var(--accent-muted); }
-
-.message-label {
-    font-size: 0.65rem;
-    color: #666;
-    text-transform: uppercase;
-    letter-spacing: 2px;
-    font-weight: 700;
-    margin-bottom: 10px;
-}
-
-.message-box textarea {
-    width: 100%;
-    flex-grow: 1;
-    background: #121212;
-    border: 1px solid #333;
-    border-radius: 6px;
-    color: var(--text-main);
-    resize: none;
-    font-size: 0.9rem;
-    padding: 12px;
-    outline: none;
-}
-
-.message-content {
-    background: #121212;
-    border: 1px solid #222;
-    border-radius: 6px;
-    padding: 12px;
-    font-size: 0.9rem;
-    color: var(--text-main);
-    min-height: 60px;
-}
-
-/* ============================================================
-   ACTION BUTTONS (BOTTOM)
-   ============================================================ */
-
-.actions-container {
-    grid-column: 1 / -1;
-    display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    gap: 15px;
-    margin-top: 8px;
-    border-top: 1px solid var(--border-soft);
-    padding-top: 12px;
-}
-
-.slick-manage-btn, .btn-outline-danger {
-    width: 100%;
-    padding: 14px;
-    border-radius: 6px;
-    font-weight: 800;
-    font-size: 0.75rem;
-    text-transform: uppercase;
-    letter-spacing: 1.5px;
-    cursor: pointer;
-    border: none;
-}
-
-.slick-manage-btn { background-color: var(--accent-yellow); color: var(--text-dark); }
-.btn-outline-danger { background-color: transparent; color: var(--text-muted); border: 1px solid var(--border-glass); }
-
-/* Status Indicators */
-.status-indicator {
-    width: 8px;
-    height: 8px;
-    border-radius: 50%;
-    display: inline-block;
-    margin-right: 8px;
-}
-
-.status-Pending { background-color: #ffc107; }
-.status-Approved { background-color: #28a745; }
-.status-Cancelled { background-color: #dc3545; }
-.status-Completed { background-color: #6c757d; }
-.status-NoShow { background-color: #343a40; border: 1px solid var(--border-glass); }
-
-/* ============================================================
-   ADMIN MODAL & TAG STYLES
-   ============================================================ */
-
-.modal-overlay {
-    position: fixed;
-    inset: 0;
-    background: rgba(0, 0, 0, 0.85);
-    backdrop-filter: blur(8px);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    z-index: 2000;
-    transition: opacity 0.3s ease;
-}
-
-.modal-overlay.hidden {
-    opacity: 0;
-    pointer-events: none;
-}
-
-.modal-content {
-    background: var(--bg-panel);
-    border: 1px solid var(--border-glass);
-    border-radius: 16px;
-    width: 90%;
-    max-width: 900px;
-    max-height: 90vh;
-    overflow-y: auto;
-    padding: 40px;
-    position: relative;
-    box-shadow: var(--shadow-lg);
-}
-
-.modal-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 30px;
-    border-bottom: 1px solid var(--border-soft);
-    padding-bottom: 15px;
-}
-
-.modal-header h2 {
-    font-family: "Playfair Display", serif;
-    font-size: 2rem;
-    margin: 0;
-}
-
-.close-modal {
-    background: none;
-    border: none;
-    color: var(--text-muted);
-    font-size: 2rem;
-    cursor: pointer;
-    line-height: 1;
-}
-
-.form-grid {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 40px;
-}
-
-.form-group {
-    margin-bottom: 20px;
-}
-
-.form-group label {
-    font-size: 0.65rem;
-    color: var(--text-muted);
-    text-transform: uppercase;
-    letter-spacing: 1.5px;
-    font-weight: 800;
-    margin-bottom: 8px;
-    display: block;
-}
-
-.form-group input, .form-group textarea {
-    width: 100%;
-    background: #121212;
-    border: 1px solid #333;
-    border-radius: 6px;
-    color: #fff;
-    padding: 12px;
-    outline: none;
-    font-size: 0.9rem;
-}
-
-.form-group textarea {
-    height: 100px;
-    resize: none;
-}
-
-.form-group input:focus, .form-group textarea:focus {
-    border-color: var(--accent-yellow);
-}
-
-.time-row {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-}
-
-.time-sep {
-    color: var(--text-muted);
-    font-size: 0.8rem;
-}
-
-/* Tag Input Styling */
-.tag-container {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 8px;
-    margin-top: 10px;
-}
-
-.category-tag {
-    background: var(--bg-input);
-    color: var(--text-main);
-    font-size: 0.7rem;
-    padding: 4px 10px;
-    border-radius: 4px;
-    text-transform: uppercase;
-    letter-spacing: 1px;
-    border: 1px solid var(--border-glass);
-    display: flex;
-    align-items: center;
-    gap: 6px;
-}
-
-.remove-tag {
-    cursor: pointer;
-    color: var(--accent-muted);
-    font-size: 1rem;
-    line-height: 1;
-}
-
-.remove-tag:hover {
-    color: var(--accent-yellow);
-}
-
-.modal-footer {
-    display: flex;
-    justify-content: flex-end;
-    gap: 15px;
-    margin-top: 40px;
-    border-top: 1px solid var(--border-soft);
-    padding-top: 25px;
-}
-
-.btn-cancel {
-    background: transparent;
-    color: var(--text-muted);
-    border: 1px solid var(--border-glass);
-    padding: 12px 25px;
-    border-radius: 6px;
-    font-weight: 700;
-    cursor: pointer;
-}
-
-.btn-save {
-    background: var(--accent-yellow);
-    color: #000;
-    border: none;
-    padding: 12px 30px;
-    border-radius: 6px;
-    font-weight: 800;
-    letter-spacing: 1.5px;
-    cursor: pointer;
-}
-
-/* Create Trigger Card Styling */
-.create-trigger-card {
-    border: 2px dashed var(--border-glass);
-    background: transparent;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    gap: 15px;
-    color: var(--text-muted);
-}
-
-.create-trigger-card:hover {
-    border-color: var(--accent-yellow);
-    color: var(--accent-yellow);
-}
-
-.create-icon {
-    font-size: 3rem;
-    font-weight: 200;
-}
-
-.create-label {
-    font-size: 0.75rem;
-    font-weight: 800;
-    letter-spacing: 2px;
-}
-
-/* ============================================================
-   CHAT INTERFACE STYLES (REPLACES MESSAGING GRID)
-   ============================================================ */
-
-.chat-window {
-    background: var(--bg-input);
-    border: 1px solid var(--border-soft);
-    border-radius: 12px;
-    padding: 20px;
-    display: flex;
-    flex-direction: column;
-    height: 400px; /* Fixed height for chat window */
-    overflow-y: auto;
-    position: relative;
-}
-
-.chat-messages {
-    flex-grow: 1;
-    display: flex;
-    flex-direction: column;
-    gap: 15px;
-    padding-bottom: 20px; /* Space for input bar */
-}
-
-.chat-bubble {
-    max-width: 80%;
-    padding: 12px 18px;
-    border-radius: 18px;
-    font-size: 0.9rem;
-    line-height: 1.4;
-    position: relative;
-}
-
-.chat-bubble.customer {
-    background: #1a1a1a;
-    color: var(--text-main);
-    align-self: flex-start;
-    border-bottom-left-radius: 4px;
-}
-
-.chat-bubble.admin {
-    background: #2a2a2a;
-    color: var(--text-main);
-    align-self: flex-end;
-    border-bottom-right-radius: 4px;
-    border-left: 3px solid var(--accent-yellow);
-}
-
-.chat-bubble-author {
-    font-size: 0.7rem;
-    color: var(--text-muted);
-    margin-bottom: 4px;
-    font-weight: 600;
-}
-
-.chat-bubble-time {
-    font-size: 0.6rem;
-    color: var(--text-muted);
-    margin-top: 5px;
-    display: block;
-    text-align: right;
-}
-
-.chat-input-wrap {
-    display: flex;
-    padding-top: 15px;
-    border-top: 1px solid var(--border-soft);
-    margin-top: auto; /* Pushes input to bottom */
-    gap: 10px;
-}
-
-.chat-input {
-    flex-grow: 1;
-    background: #121212;
-    border: 1px solid #333;
-    border-radius: 20px;
-    padding: 10px 15px;
-    color: var(--text-main);
-    outline: none;
-    font-size: 0.9rem;
-}
-
-.chat-send-btn {
-    background: var(--accent-yellow);
-    color: var(--text-dark);
-    border: none;
-    border-radius: 50%;
-    width: 40px;
-    height: 40px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    cursor: pointer;
-    font-size: 1.2rem;
-    transition: background 0.2s ease;
-}
-
-.chat-send-btn:hover { background: #e6b800; }
-
-/* --- Fix for Manage Bookings Grid (3 per line) --- */
-#restaurant-list.manage-bookings-container {
-    display: grid !important;
-    grid-template-columns: repeat(3, 1fr) !important;
-    gap: 25px !important;
-    width: 100% !important;
-    margin-top: 20px;
-}
-
-/* Ensure individual cards stay compact */
-#restaurant-list .restaurant-card {
-    background: var(--bg-panel);
-    border: 1px solid var(--border-soft);
-    border-radius: 12px;
-    padding: 20px;
-    display: flex;
-    flex-direction: column;
-    gap: 12px;
-    transition: all 0.3s ease;
-    min-height: 200px;
-    width: 100%;
-}
-
-#restaurant-list .restaurant-card:hover {
-    transform: translateY(-5px);
-    border-color: var(--accent-yellow);
-}
-
-/* Ensure images inside don't explode in size */
-#restaurant-list .restaurant-card img {
-    width: 100%;
     height: 150px;
-    object-fit: cover;
-    border-radius: 8px;
-}
-
-/* --- Fix for the "Huge" Brand Logo --- */
-.dash-brand-minimal {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-    background: transparent;
-    border: none;
-    padding: 0;
-    flex-shrink: 0; /* Prevents the component from stretching */
-}
-
-.dash-brand-logo {
-    width: 24px !important;  /* Force the width */
-    height: 24px !important; /* Force the height */
-    border-radius: 4px;
     overflow: hidden;
-    border: 1px solid var(--border-glass);
-    display: flex;
-    align-items: center;
-    justify-content: center;
+    border-radius: 16px;
+    background: var(--bg-input);
+    scroll-snap-align: start;
 }
 
-.dash-brand-logo img {
-    width: 100% !important;
-    height: 100% !important;
+.rb-shot img {
+    width: 100%;
+    height: 100%;
     object-fit: cover;
+    display: block;
 }
 
-.dash-brand-name {
-    font-size: 0.9rem;
-    color: #a1a1a1;
-    font-weight: 500;
-    white-space: nowrap; /* Keeps the name on one line */
+/* optional prettier scrollbar */
+.rb-gallery-grid::-webkit-scrollbar {
+    height: 8px;
+}
+
+.rb-gallery-grid::-webkit-scrollbar-track {
+    background: rgba(255,255,255,0.04);
+    border-radius: 999px;
 }
 
 
-.trackable {
-    display: none;
-}
 
 

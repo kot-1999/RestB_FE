@@ -12,6 +12,8 @@ export default class ApiRequest {
         }
     }
 
+
+
     // SHARED: File upload
     // ENDPOINT: PUT /upload-url
     static async uploadFile(file) {
@@ -104,6 +106,67 @@ export default class ApiRequest {
         } catch (err) {
             showError(err)
             return null
+        }
+    }
+
+    // B2B: Get restaurants for current admin brand
+    static async getAdminRestaurants(queryParams = {}) {
+        try {
+            const authData = LocalStorage.get('auth');
+            if (!authData?.token) {
+                throw new Error('getAdminRestaurants - Token is required for this action');
+            }
+
+            const queryString = new URLSearchParams();
+
+            if (queryParams.brandID) queryString.append('brandID', queryParams.brandID);
+            if (queryParams.page) queryString.append('page', queryParams.page);
+            if (queryParams.limit) queryString.append('limit', queryParams.limit);
+
+            const url = queryString.toString()
+                ? `${this.baseUrl}/b2b/v1/restaurant/?${queryString.toString()}`
+                : `${this.baseUrl}/b2b/v1/restaurant/`;
+
+            const response = await fetch(url, {
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json',
+                    Authorization: `Bearer ${authData.token}`
+                }
+            });
+
+            await ApiRequest.checkResponse(response);
+            return await response.json();
+        } catch (error) {
+            showError(error);
+            return null;
+        }
+    }
+
+// B2B: Create or update restaurant
+    static async saveRestaurant(body) {
+        try {
+            const authData = LocalStorage.get('auth');
+            if (!authData?.token) {
+                throw new Error('saveRestaurant - Token is required for this action');
+            }
+
+            const response = await fetch(`${this.baseUrl}/b2b/v1/restaurant/`, {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json',
+                    Authorization: `Bearer ${authData.token}`
+                },
+                body: JSON.stringify(body)
+            });
+
+            await ApiRequest.checkResponse(response);
+            const res = await response.json();
+            showSuccess(res.message || 'Restaurant saved');
+            return res;
+        } catch (error) {
+            showError(error);
+            return null;
         }
     }
 
@@ -294,6 +357,8 @@ export default class ApiRequest {
             const url = queryString.toString()
                 ? `${this.baseUrl}/b2c/v1/restaurant/?${queryString.toString()}`
                 : `${this.baseUrl}/b2c/v1/restaurant/`;
+
+            console.log("GET URL:", url);
 
             const response = await fetch(url, {
                 method: "GET",

@@ -1,42 +1,46 @@
-div.booking-slick-row(data-id="{{id}}" data-status="{{status}}")
-    div.booking-content-wrap
-        div.booking-header
-            div.header-top-row
-                span.status-indicator(class="status-{{status}}")
-                span.res-ref-tag #{{id}}
-            h2.res-name {{customerName}}
+div.booking-card(data-id="{{id}}" data-status="{{status}}")
 
-        div.booking-meta-row
-            div.meta-item
-                i.fas.fa-calendar
+    //- ── HEADER ──────────────────────────────────────────────────────────────
+    div.bc-header
+        div.bc-header-left
+            span.bc-status-dot(class="status-{{status}}")
+            div
+                h2.bc-name {{customerName}}
+                span.bc-ref #{{id}}
+        span.bc-status-pill(class="status-pill-{{status}}") {{status}}
+
+    //- ── META ────────────────────────────────────────────────────────────────
+    div.bc-meta
+        div.bc-meta-row
+            div.bc-meta-item
+                i.fas.fa-calendar-alt
                 span {{formattedDate}}
-            div.meta-item
+            div.bc-meta-item
                 i.fas.fa-clock
-                span {{formattedStartTime}} - {{formattedEndTime}}
-            div.meta-item
+                span {{formattedStartTime}} – {{formattedEndTime}}
+            div.bc-meta-item
                 i.fas.fa-users
                 span {{numGuests}} Guests
-            div.meta-item
+        div.bc-meta-row
+            div.bc-meta-item
                 i.fas.fa-envelope
                 span {{customerEmail}}
-            div.meta-item
+            div.bc-meta-item
                 i.fas.fa-phone
                 span {{customerPhone}}
-            div.meta-item
-                i.fas.fa-info-circle
-                span.status-text {{status}}
 
-    div.messaging-section
-        div.chat-window
-            div.chat-messages
-            div.chat-input-wrap
-                input.chat-input(type="text" placeholder="Type a message... (send with a status action below)")
-                button.chat-send-btn(title="Queue message — then click a status button to send") &#9658;
-            div.chat-queued-notice(style="display:none; color: var(--accent-yellow); font-size: 0.75rem; padding: 4px 8px;")
-                | &#10003; Message queued — click a status button below to send it.
+    //- ── CHAT ────────────────────────────────────────────────────────────────
+    div.bc-chat
+        div.bc-chat-messages
+        div.bc-chat-input-row
+            input.bc-chat-input(type="text" placeholder="Type a message… send with a status button below")
+            button.bc-chat-send.js-chat-send(title="Queue message") &#9658;
+        div.bc-chat-queued(style="display:none;")
+            | &#10003; Message queued — click a status button to send.
 
-    div.actions-container
-        button.slick-manage-btn.js-action(data-status="Approved") CONFIRM
-        button.slick-manage-btn.btn-outline-danger.js-action(data-status="Cancelled") DECLINE
-        button.slick-manage-btn.js-action(data-status="Completed") COMPLETE
-        button.slick-manage-btn.js-action(data-status="NoShow") NO SHOW
+    //- ── ACTIONS ─────────────────────────────────────────────────────────────
+    div.bc-actions
+        button.bc-btn.bc-btn-confirm.js-action(data-status="Approved") CONFIRM
+        button.bc-btn.bc-btn-decline.js-action(data-status="Cancelled") DECLINE
+        button.bc-btn.bc-btn-complete.js-action(data-status="Completed") COMPLETE
+        button.bc-btn.bc-btn-noshow.js-action(data-status="NoShow") NO SHOW

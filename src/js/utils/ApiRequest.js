@@ -589,5 +589,33 @@ export default class ApiRequest {
         }
     }
 
-}  // <-- this is the closing brace of the class, keep it here
+    // B2B & B2C: User registration
+    // ENDPOINTS: POST /b2c/v1/authorization/register, POST /b2b/v1/authorization/register
+    static async createBooking(body) {
+        try {
+            const authData = LocalStorage.get('auth');
+            if (!authData?.token) {
+                throw new Error('createBooking - Token is required for this action');
+            }
+            const response = await fetch(
+                `${this.baseUrl}/b2c/v1/booking`, {
+                    headers: {
+                        'Content-Type': 'application/json',
+                        Authorization: `Bearer ${authData.token}`
+                    },
+                    method: 'POST',
+                    body: JSON.stringify(body)
+                });
+            await ApiRequest.checkResponse(response)
+            const res = await response.json()
+
+            showSuccess(res.message)
+            return res
+        } catch (err) {
+            showError(err)
+            return null
+        }
+    }
+
+}
 

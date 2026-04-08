@@ -98,16 +98,14 @@ export default function () {
     const $date = $('#rb-date');
     const $guests = $('#rb-guests');
     const $time = $('#rb-time');
-    const $until = $('#rb-until');
     const $btn = $('#rb-confirm');
-    const $msg = $('#rb-msg');
+    const $msg = $('#rb-message');
 
     function validateForm() {
       const isValid =
           !!$date.val() &&
           Number($guests.val()) > 0 &&
-          !!$time.val() &&
-          !!$until.val();
+          !!$time.val()
 
       $btn.prop('disabled', !isValid);
     }
@@ -115,10 +113,16 @@ export default function () {
     $date.on('change input', validateForm);
     $guests.on('change input', validateForm);
     $time.on('change input', validateForm);
-    $until.on('change input', validateForm);
 
     $btn.on('click', function () {
-      $msg.text('Booking flow not connected yet.');
+
+      ApiRequest.createBooking({
+        bookingTime: new Date(`${$date.val()}T${$time.val()}:00`).toISOString(),
+        guestsNumber: $guests.val(),
+        restaurantID: getRestaurantIdFromUrl(),
+        message: $msg.val() ?? undefined
+      })
+      console.log($date.val(), $guests.val(), $time.val(), $msg.val())
     });
 
     validateForm();

@@ -5,44 +5,25 @@ import {Template} from "../config.js";
 export default async function loadBookingsManage() {
     const restaurantList = document.getElementById("restaurant-list");
 
-    // Fetch restaurants with daily summary
     const response = await ApiRequest.getBookingSummaries({ page: 1, limit: 20 });
 
-    console.log(response);
-    $('#brand-container').replaceWith(Mustache.render(Template.component.brandCard(), response.brand))
+    $('#brand-container').replaceWith(Mustache.render(Template.component.brandCard(), response.brand));
+    $('#booking-items').empty();
 
-    $('#booking-items').empty()
-
-    // response.restaurants.forEach((restaurant) => {
-    //     $('#booking-items').append(
-    //         Mustache.render(
-    //             Template.component.restaurantBookingCard(),
-    //             restaurant
-    //         )
-    //     )
-    // })
-    // const restaurantBookingCard = Template.component.restaurantBookingCard()
-    // TODO move to restaurantBookingCard.pug
     if (response && response.restaurants && response.restaurants.length > 0) {
         const template = `
             {{#restaurants}}
             <div class="manage-bookings-grid-item">
                 <a href="/#bookings?id={{id}}" class="restaurant-card">
                     <div class="restaurant-banner">
-                        <img src="{{bannerURL}}" onerror="this.src='https://picsum.photos/seed/{{id}}/400/400'"/>
+                        <img src="{{bannerURL}}" onerror="this.src='/assets/img/default-banner.png'"/>
                         <div class="restaurant-overlay">
                             <span class="restaurant-cta">Manage Bookings</span>
                         </div>
                     </div>
                     <div class="restaurant-content">
-                        <span class="restaurant-badge">{{brandName}}</span>
                         <h3 class="restaurant-name">{{name}}</h3>
-
                         <div class="restaurant-details">
-                            <div class="restaurant-detail-row">
-                                <span class="detail-label">Today's Bookings</span>
-                                <span class="detail-value">{{todaySummary.totalPendingBookings}} Pending / {{todaySummary.totalApprovedAndConfirmedBookings}} Approved</span>
-                            </div>
                             <div class="restaurant-detail-row">
                                 <span class="detail-label">Location</span>
                                 <span class="detail-value">{{address.city}}, {{address.street}}</span>
@@ -54,20 +35,15 @@ export default async function loadBookingsManage() {
             {{/restaurants}}
         `;
 
-        // Prepare data for rendering
-        const today = new Date().toISOString().split("T")[0];
         const data = {
             restaurants: response.restaurants.map(r => {
-                const todaySummary = r.bookingsDailySummaries?.[today] || {
-                    totalPendingBookings: 0,
-                    totalApprovedAndConfirmedBookings: 0,
-                    totalGuests: 0
-                };
+                // bookingsDailySummaries is a flat object with totalPendingBookings etc.
+                const summary = r.bookingsDailySummaries || {};
 
                 return {
                     ...r,
-                    brandName: response.brand?.name || "Independent",
-                    todaySummary: todaySummary
+                    todayPending:  summary.totalPendingBookings || 0,
+                    todayApproved: summary.totalApprovedAndConfirmedBookings || 0
                 };
             })
         };

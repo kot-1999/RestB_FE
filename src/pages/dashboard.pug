@@ -5,34 +5,29 @@ div.dashboard-page
                 h1#dashboardTitle Dashboard
                 p#dashboardSub Your weekly activity at a glance.
 
-            .dash-brand
-                .dash-brand-field
-                    label(for="brand") Brand name
-                    select#brand(name="brand")
-                        option(value="La Benetti" selected) La Benetti
-                        option(value="Independent") Independent
-                        option(value="Chain") Chain
-
-                .dash-avatar(title="Admin")
-                    img(src="/assets/img/default-avatar.png" alt="Admin avatar")
+            div.dash-brand-minimal#brand-container
+                .dash-brand-label BRAND
+                .dash-brand-logo
+                    img.js-brand-img(src="/assets/img/default-avatar.png" alt="Loading...")
+                .dash-brand-name Loading...
 
         // ===== KPI cards =====
         .dash-kpis
             .kpi
                 p.kpi-label Total bookings
-                p.kpi-value 0(Default)
+                p.kpi-value 0
                 p.kpi-meta#totalBookingsMeta This week
             .kpi
                 p.kpi-label Pending bookings
-                p.kpi-value 0(Default)
+                p.kpi-value 0
                 p.kpi-meta Needs review
             .kpi
                 p.kpi-label Cancelled
-                p.kpi-value 0(Default)
+                p.kpi-value 0
                 p.kpi-meta#cancelledMeta This week
             .kpi
                 p.kpi-label People booked
-                p.kpi-value 0(Default)
+                p.kpi-value 0
                 p.kpi-meta#guestsMeta Covers (guests)
 
         // ===== Chart card =====
@@ -45,7 +40,7 @@ div.dashboard-page
             .dash-chart
                 canvas#bookingsChart(width="400" height="400")
 
-        // ===== Filters row (like your mock) =====
+        // ===== Filters row =====
         .dash-filters
             .filter-row
                 .filter-group

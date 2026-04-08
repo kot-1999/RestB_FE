@@ -35,6 +35,14 @@ export default function () {
             }
         });
 
+        $(document)
+            .off("click", ".home-chip-remove")
+            .on("click", ".home-chip-remove", function () {
+                const categoryToRemove = ($(this).data("category") || "").toString();
+                selectedCategories = selectedCategories.filter((item) => item !== categoryToRemove);
+                renderSelectedCategories();
+            });
+
         loadRestaurants();
     }
 
@@ -48,9 +56,11 @@ export default function () {
 
             const restaurants = response?.restaurants || [];
             const total = response?.pagination?.total ?? restaurants.length;
+            const brand = response?.brand || null;
 
             renderRestaurants({
                 restaurants,
+                brand,
                 total,
                 guestNumber,
                 template,
@@ -129,7 +139,7 @@ function renderSelectedCategories() {
     selectedCategories.forEach((category) => {
         const label = formatCategoryLabel(category);
 
-        const $chip = $(`
+        $wrap.append(`
             <div class="home-chip">
                 <span>${escapeHtml(label)}</span>
                 <button
@@ -140,18 +150,10 @@ function renderSelectedCategories() {
                 >×</button>
             </div>
         `);
-
-        $chip.find(".home-chip-remove").on("click", function () {
-            const categoryToRemove = ($(this).data("category") || "").toString();
-            selectedCategories = selectedCategories.filter((item) => item !== categoryToRemove);
-            renderSelectedCategories();
-        });
-
-        $wrap.append($chip);
     });
 }
 
-function renderRestaurants({ restaurants, total, guestNumber, template, $container, $count }) {
+function renderRestaurants({ restaurants, brand, total, guestNumber, template, $container, $count }) {
     $container.empty();
 
     if (!restaurants.length) {
@@ -166,14 +168,14 @@ function renderRestaurants({ restaurants, total, guestNumber, template, $contain
     }
 
     restaurants.forEach((restaurant) => {
-        const viewModel = buildRestaurantViewModel(restaurant, guestNumber);
+        const viewModel = buildRestaurantViewModel(restaurant, brand, guestNumber);
         $container.append(Mustache.render(template, viewModel));
     });
 
     $count.text(total);
 }
 
-function buildRestaurantViewModel(restaurant, guestNumber) {
+function buildRestaurantViewModel(restaurant, brand, guestNumber) {
     const categories = Array.isArray(restaurant.categories) ? restaurant.categories : [];
     const restaurantType = categories.length
         ? categories.map(formatCategoryLabel).join(" · ")
@@ -184,6 +186,7 @@ function buildRestaurantViewModel(restaurant, guestNumber) {
 
     return {
         ...restaurant,
+        brand: restaurant.brand || brand || null,
         restaurantType,
         isAutoApproved,
         openingHours: formatOpeningHours(restaurant.timeFrom, restaurant.timeTo)

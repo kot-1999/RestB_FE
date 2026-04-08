@@ -1,12 +1,12 @@
 div.restaurant-book-page
-    // --- Top Header: Centered Lux Name + Clean Description ---
+    //- ── TOP HEADER ─────────────────────────────────────────────────────
     header.rb-page-header
-        h1#rb-name.rb-banner-title Sakura Sushi
-        p#rb-desc.rb-description No description available.
+        h1#rb-name.rb-banner-title Loading restaurant...
+        p#rb-desc.rb-description Please wait while we fetch the restaurant details.
 
-    // --- Main Content Wrapper (Flex Layout) ---
+    //- ── MAIN CONTENT ───────────────────────────────────────────────────
     section.rb-content-wrapper
-        // --- Column 1 (Left): Sticky Booking Card ---
+        //- ── LEFT: BOOKING CARD ────────────────────────────────────────
         aside.rb-sticky-left
             .rb-panel.rb-booking
                 h2 Book Here
@@ -18,12 +18,20 @@ div.restaurant-book-page
 
                     .rb-field
                         label(for="rb-guests") Number of people
-                        input#rb-guests(type="number" min="1" max="20" value="2")
+                        input#rb-guests(
+                            type="number"
+                            min="1"
+                            max="20"
+                            value="2"
+                        )
 
                 .rb-row
                     .rb-field
                         label(for="rb-time") Start time
-                        input#rb-time(type="time" value="19:00")
+                        input#rb-time(
+                            type="time"
+                            value="19:00"
+                        )
 
                     .rb-field
                         label(for="rb-until") End time
@@ -31,39 +39,49 @@ div.restaurant-book-page
 
                 .rb-field
                     label(for="rb-message") Message
-                    textarea#rb-message(rows="4" placeholder="Any special request for the restaurant?")
+                    textarea#rb-message(
+                        rows="4"
+                        placeholder="Any special request for the restaurant?"
+                    )
 
                 .rb-booking-actions
-                    button#rb-confirm.rb-btn(type="button" disabled) Confirm Booking
+                    button#rb-confirm.rb-btn(
+                        type="button"
+                        disabled
+                    ) Confirm Booking
                     p#rb-msg.rb-msg
 
-        // --- Main Flow Area (Center + Right Columns) ---
+        //- ── RIGHT: DETAILS / IMAGE / GALLERY / REVIEWS ───────────────
         section.rb-main-flow
-            // --- Top Row: Info Card and Square Image (Perfectly Aligned) ---
             .rb-top-row
                 .rb-panel.rb-details
                     h3 Information
+
                     .rb-info
                         p
                             strong Brand:
-                            span#rb-brand La benetti
+                            span#rb-brand Loading...
+
                         p
                             strong Location:
-                            span#rb-location Tallaght
+                            span#rb-location Loading...
+
                         p
                             strong Categories:
-                            span#rb-categories Japanese Cuisine, Sushi, Ramen
+                            span#rb-categories Loading...
+
                         p
                             strong Opening times:
-                            span#rb-hours 09:00 to 22:00
+                            span#rb-hours Loading...
 
                 .rb-image-container
-                    img.rb-banner-img(src="/assets/img/restaurant2.jpg" alt="Restaurant banner")
+                    img#rb-banner.rb-banner-img(
+                        src="/assets/img/restaurant2.jpg"
+                        alt="Restaurant banner"
+                    )
 
-            // --- Scroll Area: Gallery & Reviews ---
-            // This area now starts directly under the Info card and Image
             .rb-scroll-area
-                // --- Gallery Section ---
+                //- ── GALLERY ───────────────────────────────────────────
                 section.rb-gallery
                     .rb-section-title
                         h2 Gallery
@@ -71,17 +89,12 @@ div.restaurant-book-page
 
                     .rb-gallery-grid#rb-gallery-grid
                         a.rb-shot(href="#")
-                            img(src="/assets/img/restaurant2.jpg" alt="Gallery 1")
-                        a.rb-shot(href="#")
-                            img(src="/assets/img/restaurant3.jpeg" alt="Gallery 2")
-                        a.rb-shot(href="#")
-                            img(src="/assets/img/restaurant1.JPG" alt="Gallery 3")
-                        a.rb-shot(href="#")
-                            img(src="/assets/img/restaurant2.jpg" alt="Gallery 4")
-                        a.rb-shot(href="#")
-                            img(src="/assets/img/restaurant3.jpeg" alt="Gallery 5")
+                            img(
+                                src="/assets/img/restaurant2.jpg"
+                                alt="Loading gallery image"
+                            )
 
-                // --- Reviews Section ---
+                //- ── REVIEWS (mock, kept intentionally) ───────────────
                 section.rb-reviews
                     .rb-section-title
                         h2 Reviews

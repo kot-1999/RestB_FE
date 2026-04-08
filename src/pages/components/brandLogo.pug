@@ -1,0 +1,8 @@
+mixin brandLogoComponent(brandName, brandLogoURL)
+    .dash-brand-minimal
+        .dash-brand-label BRAND
+        .dash-brand-logo
+            // The 'js-brand-img' class is the hook for our JavaScript
+            img.js-brand-img(src=brandLogoURL || "/assets/img/default-avatar.png" alt=brandName)
+        // The 'js-brand-name' class is the hook for our JavaScript
+        .dash-brand-name.js-brand-name #{brandName}

@@ -1,0 +1,46 @@
+div.booking-card(data-id="{{id}}" data-status="{{status}}")
+
+    //- ── HEADER ──────────────────────────────────────────────────────────────
+    div.bc-header
+        div.bc-header-left
+            span.bc-status-dot(class="status-{{status}}")
+            div
+                h2.bc-name {{customerName}}
+                span.bc-ref #{{id}}
+        span.bc-status-pill(class="status-pill-{{status}}") {{status}}
+
+    //- ── META ────────────────────────────────────────────────────────────────
+    div.bc-meta
+        div.bc-meta-row
+            div.bc-meta-item
+                i.fas.fa-calendar-alt
+                span {{formattedDate}}
+            div.bc-meta-item
+                i.fas.fa-clock
+                span {{formattedStartTime}} – {{formattedEndTime}}
+            div.bc-meta-item
+                i.fas.fa-users
+                span {{numGuests}} Guests
+        div.bc-meta-row
+            div.bc-meta-item
+                i.fas.fa-envelope
+                span {{customerEmail}}
+            div.bc-meta-item
+                i.fas.fa-phone
+                span {{customerPhone}}
+
+    //- ── CHAT ────────────────────────────────────────────────────────────────
+    div.bc-chat
+        div.bc-chat-messages
+        div.bc-chat-input-row
+            input.bc-chat-input(type="text" placeholder="Type a message… send with a status button below")
+            button.bc-chat-send.js-chat-send(title="Queue message") &#9658;
+        div.bc-chat-queued(style="display:none;")
+            | &#10003; Message queued — click a status button to send.
+
+    //- ── ACTIONS ─────────────────────────────────────────────────────────────
+    div.bc-actions
+        button.bc-btn.bc-btn-confirm.js-action(data-status="Approved") CONFIRM
+        button.bc-btn.bc-btn-decline.js-action(data-status="Cancelled") DECLINE
+        button.bc-btn.bc-btn-complete.js-action(data-status="Completed") COMPLETE
+        button.bc-btn.bc-btn-noshow.js-action(data-status="NoShow") NO SHOW

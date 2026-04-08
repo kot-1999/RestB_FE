@@ -12,6 +12,8 @@ export default class ApiRequest {
         }
     }
 
+
+
     // SHARED: File upload
     // ENDPOINT: PUT /upload-url
     static async uploadFile(file) {
@@ -104,6 +106,67 @@ export default class ApiRequest {
         } catch (err) {
             showError(err)
             return null
+        }
+    }
+
+    // B2B: Get restaurants for current admin brand
+    static async getAdminRestaurants(queryParams = {}) {
+        try {
+            const authData = LocalStorage.get('auth');
+            if (!authData?.token) {
+                throw new Error('getAdminRestaurants - Token is required for this action');
+            }
+
+            const queryString = new URLSearchParams();
+
+            if (queryParams.brandID) queryString.append('brandID', queryParams.brandID);
+            if (queryParams.page) queryString.append('page', queryParams.page);
+            if (queryParams.limit) queryString.append('limit', queryParams.limit);
+
+            const url = queryString.toString()
+                ? `${this.baseUrl}/b2b/v1/restaurant/?${queryString.toString()}`
+                : `${this.baseUrl}/b2b/v1/restaurant/`;
+
+            const response = await fetch(url, {
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json',
+                    Authorization: `Bearer ${authData.token}`
+                }
+            });
+
+            await ApiRequest.checkResponse(response);
+            return await response.json();
+        } catch (error) {
+            showError(error);
+            return null;
+        }
+    }
+
+// B2B: Create or update restaurant
+    static async saveRestaurant(body) {
+        try {
+            const authData = LocalStorage.get('auth');
+            if (!authData?.token) {
+                throw new Error('saveRestaurant - Token is required for this action');
+            }
+
+            const response = await fetch(`${this.baseUrl}/b2b/v1/restaurant/`, {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json',
+                    Authorization: `Bearer ${authData.token}`
+                },
+                body: JSON.stringify(body)
+            });
+
+            await ApiRequest.checkResponse(response);
+            const res = await response.json();
+            showSuccess(res.message || 'Restaurant saved');
+            return res;
+        } catch (error) {
+            showError(error);
+            return null;
         }
     }
 
@@ -235,6 +298,9 @@ export default class ApiRequest {
         }
     }
 
+
+
+
     // B2B & B2C: Update user profile
     // ENDPOINTS: PATCH /b2c/v1/user/, PATCH /b2b/v1/admin/
     static async updateProfile(data) {
@@ -280,11 +346,10 @@ export default class ApiRequest {
             if (queryParams.brandID) queryString.append("brandID", queryParams.brandID);
             if (queryParams.date) queryString.append("date", queryParams.date);
 
-            if (queryParams.categories && Array.isArray(queryParams.categories)) {
-                queryParams.categories.forEach((category) => {
-                    queryString.append("categories[]", category);
-                });
+            if (queryParams.statuses && Array.isArray(queryParams.statuses) && queryParams.statuses.length > 0) {
+                queryParams.statuses.forEach(status => queryString.append('statuses', status));
             }
+
 
             if (queryParams.page) queryString.append("page", queryParams.page);
             if (queryParams.limit) queryString.append("limit", queryParams.limit);
@@ -292,6 +357,8 @@ export default class ApiRequest {
             const url = queryString.toString()
                 ? `${this.baseUrl}/b2c/v1/restaurant/?${queryString.toString()}`
                 : `${this.baseUrl}/b2c/v1/restaurant/`;
+
+            console.log("GET URL:", url);
 
             const response = await fetch(url, {
                 method: "GET",
@@ -314,31 +381,30 @@ export default class ApiRequest {
         try {
             const authData = LocalStorage.get('auth');
             const userType = authData?.role ? 'b2b' : 'b2c';
-            
+
             // Build query string from parameters
             const queryString = new URLSearchParams();
-            
-            // Common parameters for both B2C and B2B with restaurantID
-            if (queryParams.statuses && Array.isArray(queryParams.statuses)) {
-                queryParams.statuses.forEach(status => queryString.append('statuses', status));
-            }
+
+            // Common parameters for both B2C and B2B
+            if (queryParams.dateFrom) queryString.append('dateFrom', queryParams.dateFrom);
+            if (queryParams.dateTo) queryString.append('dateTo', queryParams.dateTo);
             if (queryParams.page) queryString.append('page', queryParams.page);
             if (queryParams.limit) queryString.append('limit', queryParams.limit);
-            
+
+            // Only append statuses if the array has values
+            if (queryParams.statuses && Array.isArray(queryParams.statuses) && queryParams.statuses.length > 0) {
+                queryParams.statuses.forEach(status => queryString.append('statuses[]', status));
+
+            }
+
             let url;
             if (userType === 'b2c') {
-                // B2C: User's bookings
-                // Additional parameters: dateFrom, dateTo
-                if (queryParams.dateFrom) queryString.append('dateFrom', queryParams.dateFrom);
-                if (queryParams.dateTo) queryString.append('dateTo', queryParams.dateTo);
-                
-                url = queryString.toString() 
+                url = queryString.toString()
                     ? `${this.baseUrl}/b2c/v1/booking/?${queryString.toString()}`
                     : `${this.baseUrl}/b2c/v1/booking/`;
             } else {
-                // B2B: Specific restaurant bookings
                 if (restaurantID) {
-                    url = queryString.toString() 
+                    url = queryString.toString()
                         ? `${this.baseUrl}/b2b/v1/booking/${restaurantID}?${queryString.toString()}`
                         : `${this.baseUrl}/b2b/v1/booking/${restaurantID}`;
                 } else {
@@ -350,7 +416,6 @@ export default class ApiRequest {
                 'Content-Type': 'application/json'
             };
 
-            // Add authorization header for authenticated users
             if (authData?.token) {
                 headers.Authorization = `Bearer ${authData.token}`;
             }
@@ -368,6 +433,7 @@ export default class ApiRequest {
             return null;
         }
     }
+
     // B2B: Get booking summaries
     // ENDPOINT: GET /b2b/v1/booking/
     static async getBookingSummaries(queryParams = {}) {
@@ -379,12 +445,12 @@ export default class ApiRequest {
 
             // Build query string from parameters
             const queryString = new URLSearchParams();
-            
+
             // B2B parameters: page, limit
             if (queryParams.page) queryString.append('page', queryParams.page);
             if (queryParams.limit) queryString.append('limit', queryParams.limit);
 
-            const url = queryString.toString() 
+            const url = queryString.toString()
                 ? `${this.baseUrl}/b2b/v1/booking?${queryString.toString()}`
                 : `${this.baseUrl}/b2b/v1/booking`;
 
@@ -422,7 +488,7 @@ export default class ApiRequest {
             // Build query string for timeFrom and timeTo parameters
             const queryString = new URLSearchParams(queryParams).toString();
             const url = `${this.baseUrl}/b2b/v1/dashboard/${queryString ? `?${queryString}` : ''}`;
-            
+
             const headers = {
                 'Content-Type': 'application/json'
             };
@@ -463,4 +529,65 @@ export default class ApiRequest {
             return null;
         }
     }
-}
+    // ... getRestaurant method above ...
+
+    // B2B: Update booking (status and/or message)
+    // ENDPOINT: PATCH /b2b/v1/booking/{bookingID}
+    static async updateBooking(bookingID, data = {}) {
+        try {
+            const authData = LocalStorage.get('auth');
+            if (!authData?.token) {
+                throw new Error('updateBooking - Token is required for this action');
+            }
+
+            const response = await fetch(
+                `${this.baseUrl}/b2b/v1/booking/${bookingID}`, {
+                    headers: {
+                        'Content-Type': 'application/json',
+                        Authorization: `Bearer ${authData.token}`
+                    },
+                    method: 'PATCH',
+                    body: JSON.stringify(data)
+                });
+
+            await ApiRequest.checkResponse(response);
+            const res = await response.json();
+            showSuccess(res.message);
+            return res;
+        } catch (err) {
+            showError(err);
+            return null;
+        }
+    }
+    // B2B: Update booking (status and/or message)
+    // ENDPOINT: PATCH /b2b/v1/booking/{bookingID}
+    // Note: status is always required by the API. message is optional.
+    static async updateBooking(bookingID, data = {}) {
+        try {
+            const authData = LocalStorage.get('auth');
+            if (!authData?.token) {
+                throw new Error('updateBooking - Token is required for this action');
+            }
+
+            const response = await fetch(
+                `${this.baseUrl}/b2b/v1/booking/${bookingID}`, {
+                    headers: {
+                        'Content-Type': 'application/json',
+                        Authorization: `Bearer ${authData.token}`
+                    },
+                    method: 'PATCH',
+                    body: JSON.stringify(data)
+                });
+
+            await ApiRequest.checkResponse(response);
+            const res = await response.json();
+            showSuccess(res.message);
+            return res;
+        } catch (err) {
+            showError(err);
+            return null;
+        }
+    }
+
+}  // <-- this is the closing brace of the class, keep it here
+

@@ -1,78 +1,81 @@
 section.dashboard-page.home-page
-    .home-layout
-        aside.home-sidebar
-            .home-sidebar-panel
-                .home-sidebar-head
-                    h1 RestBoo
-                    p.home-sidebar-copy Find the right restaurant for your date, location, and party size — then book in a few clicks.
+    //- ── TOP FILTER BAR ──────────────────────────────────────────────────
+    .home-filter-bar
+        .home-filter-bar-inner
+            //- Brand: h1 + tagline on one line
+            .home-brand
+                h1 RestBoo
+                p.home-sidebar-copy Find the right restaurant for your date, location, and party size — then book in a few clicks.
 
-                form.home-filters.js-home-filters
-                    .home-filter-group
-                        label.home-filter-label(for="restaurant-search") Search
-                        input#restaurant-search.home-input.js-filter-search(
-                            type="text"
-                            placeholder="Where? e.g. London Bridge"
-                        )
+            //- Filter row: all fields stretch to fill width
+            form.home-filters.js-home-filters
+                .home-filter-group
+                    label.home-filter-label(for="restaurant-search") Search
+                    input#restaurant-search.home-input.js-filter-search(
+                        type="text"
+                        placeholder="Where? e.g. London Bridge"
+                    )
 
-                    .home-filter-group
-                        label.home-filter-label(for="restaurant-date") Date
-                        input#restaurant-date.home-input.js-filter-date(
-                            type="date"
-                        )
+                .home-filter-group
+                    label.home-filter-label(for="restaurant-date") Date
+                    input#restaurant-date.home-input.js-filter-date(
+                        type="date"
+                    )
 
-                    .home-filter-group
-                        label.home-filter-label(for="restaurant-guests") Guests
-                        input#restaurant-guests.home-input.js-filter-guests(
-                            type="number"
-                            min="1"
-                            max="20"
-                            value="2"
-                            placeholder="Guests"
-                        )
+                .home-filter-group
+                    label.home-filter-label(for="restaurant-guests") Guests
+                    input#restaurant-guests.home-input.js-filter-guests(
+                        type="number"
+                        min="1"
+                        max="20"
+                        value="2"
+                        placeholder="Guests"
+                    )
 
-                    .home-filter-group
-                        label.home-filter-label(for="restaurant-radius") Radius
-                        select#restaurant-radius.home-select.js-filter-radius
-                            option(value="2") 2km
-                            option(value="5") 5km
-                            option(value="10") 10km
-                            option(value="20") 20km
-                            option(value="50") 50km
-                            option(value="100" selected) 100km
+                .home-filter-group
+                    label.home-filter-label(for="restaurant-radius") Radius
+                    select#restaurant-radius.home-select.js-filter-radius
+                        option(value="2") 2km
+                        option(value="5") 5km
+                        option(value="10") 10km
+                        option(value="20") 20km
+                        option(value="50") 50km
+                        option(value="100" selected) 100km
 
+                .home-filter-group
+                    label.home-filter-label(for="restaurant-category") Category
+                    input#restaurant-category.home-input.js-category-input(
+                        type="text"
+                        list="restaurant-category-options"
+                        placeholder="Type to add category"
+                        autocomplete="off"
+                    )
+                    datalist#restaurant-category-options.js-category-datalist
 
-                    .home-filter-group
-                        label.home-filter-label(for="restaurant-category") Category
-                        input#restaurant-category.home-input.js-category-input(
-                            type="text"
-                            list="restaurant-category-options"
-                            placeholder="Type to add category"
-                            autocomplete="off"
-                        )
-                        datalist#restaurant-category-options.js-category-datalist
+                .home-filter-actions
+                    button.home-submit-btn(type="submit") Search
 
-                    .home-category-selected.js-selected-categories#selected-categories
+            //- Selected category chips sit below the filter row
+            .home-category-selected.js-selected-categories#selected-categories
 
-                    .home-filter-actions
-                        button.home-submit-btn(type="submit") Search
+    //- ── RESULTS AREA ────────────────────────────────────────────────────
+    .home-main
+        .dash-card
+            .dash-card-head
+                h2 Browse Restaurants
+                .dash-card-actions
+                    span.dash-chip.is-active Amount
+                    span.dash-chip.js-restaurant-count 0
 
-        .home-main
-            .dash-card
-                .dash-card-head
-                    h2 Browse Restaurants
-                    .dash-card-actions
-                        span.dash-chip.is-active Amount
-                        span.dash-chip.js-restaurant-count 0
+            .restaurants-loading(style="display: none;")
+                .skeleton-grid
+                    each _ in [1, 2, 3]
+                        .skeleton-card
+                            .skeleton-banner
+                            .skeleton-content
+                                .skeleton-line.title
+                                .skeleton-line.desc
+                                .skeleton-line.meta
 
-                .restaurants-loading(style="display: none;")
-                    .skeleton-grid
-                        each _ in [1, 2, 3]
-                            .skeleton-card
-                                .skeleton-banner
-                                .skeleton-content
-                                    .skeleton-line.title
-                                    .skeleton-line.desc
-                                    .skeleton-line.meta
-
-                .restaurants-container
-                    // Restaurant cards injected here
+            .restaurants-container
+                // Restaurant cards injected here

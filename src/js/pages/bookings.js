@@ -1,12 +1,12 @@
 import ApiRequest from "../utils/ApiRequest.js";
 import Mustache from "../utils/mustache.js";
 import {Template} from "../config.js";
+import {showError} from "../utils/helpers.js";
 
 // ─── Data mapper ──────────────────────────────────────────────────────────────
 function mapBookingToView(b) {
     const time = new Date(b.bookingTime);
     const ok   = !isNaN(time);
-    console.log(b)
     return {
         id:                 b.id,
         status:             b.status,
@@ -70,7 +70,6 @@ export default async function loadBookings() {
     const fetchBookings = async () => {
         const fromVal = $fromInput.val();
         const toVal   = $toInput.val();
-        console.log('!!!!!!!!!!!!!!')
         if (!fromVal || !toVal) {
             $list.html('<p class="bc-state-msg">Please select a date range and try again.</p>');
             return;
@@ -93,8 +92,7 @@ export default async function loadBookings() {
             res = await ApiRequest.getBookings(query, restaurantID);
             console.log(res)
         } catch (err) {
-            $list.html('<p class="bc-state-msg bc-state-msg--error">Failed to load bookings. Please refresh and try again.</p>');
-            return;
+            showError(err)
         }
 
         if (!res?.bookings) {
@@ -140,15 +138,18 @@ export default async function loadBookings() {
         });
 
         // ── Queue message ──────────────────────────────────────────────────
-        $list.off('click', '.js-chat-send').on('click', '.js-chat-send', function () {
+        $list.off('click', '.js-chat-send').on('click', '.js-chat-send', async function () {
             const $card  = $(this).closest('.booking-card');
             const $input = $card.find('.bc-chat-input');
-            const msg    = $input.val()?.trim();
-            if (!msg) return;
-            $card.data('pending-message', msg);
-            $input.prop('disabled', true);
-            $(this).prop('disabled', true);
-            $card.find('.bc-chat-queued').show();
+            const message    = $input.val()?.trim();
+            if (!message) return;
+
+            const bId     = $card.data('id');
+            await ApiRequest.updateBooking(bId, { message })
+            fetchBookings()
+            // $card.data('pending-message', msg);
+            // $input.prop('disabled', true);
+            // $(this).prop('disabled', true);
         });
 
         $list.off('keydown', '.bc-chat-input').on('keydown', '.bc-chat-input', function (e) {
@@ -159,11 +160,9 @@ export default async function loadBookings() {
         $list.off('click', '.js-action').on('click', '.js-action', async function () {
             const $btn    = $(this);
             const $card   = $btn.closest('.booking-card');
-            const status  = $btn.data('status');
             const bId     = $card.data('id');
             const pending = $card.data('pending-message');
-            const payload = { status };
-            if (pending) payload.message = pending;
+            const payload = { status: $btn.data('status') };
 
             const oldStatus  = $card.data('status');
             const $dot       = $card.find('.bc-status-dot');
@@ -197,7 +196,6 @@ export default async function loadBookings() {
                     $msgs[0].scrollTop = $msgs[0].scrollHeight;
                     $card.find('.bc-chat-input').val('').prop('disabled', false);
                     $card.find('.js-chat-send').prop('disabled', false);
-                    $card.find('.bc-chat-queued').hide();
                 }
             } else {
                 $dot.removeClass(`status-${status}`).addClass(`status-${oldStatus}`);

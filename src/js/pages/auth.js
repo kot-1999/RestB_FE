@@ -52,11 +52,10 @@ const load = () => {
 
         const userType = $('#userType').val()
         const authType = $('#authType').val()
-        let res
 
         try {
             if (authType === 'register') {
-                res = await ApiRequest.register({
+                await ApiRequest.register({
                     email: $('#email').val(),
                     password: $('#password').val(),
                     firstName: $('#firstName').val(),
@@ -64,15 +63,18 @@ const load = () => {
                     phone: $('#phone').val(),
                     brandName: $('#brandName').val(),
                 }, userType)
+
+                userType === 'b2c' ? window.location.hash = '#home' :  window.location.hash = '#dashboard'
             }
             else if (authType === 'login') {
-                res = await ApiRequest.login({
+                await ApiRequest.login({
                     email: $('#email').val(),
                     password: $('#password').val(),
                 }, userType)
+                userType === 'b2c' ? window.location.hash = '#home' :  window.location.hash = '#dashboard'
             }
             else if (authType === 'forgotPassword') {
-                res = await ApiRequest.forgotPassword({
+                await ApiRequest.forgotPassword({
                     email: $('#email').val(),
                 }, userType)
             }

@@ -44,9 +44,7 @@ export default class ApiRequest {
             // Upload file directly to S3/RustFS
             await fetch(res.uploadUrl, {
                 method: 'PUT',
-                headers: {
-                    'Content-Type': file.type
-                },
+
                 body: file
             });
             return res
@@ -595,7 +593,8 @@ export default class ApiRequest {
         try {
             const authData = LocalStorage.get('auth');
             if (!authData?.token) {
-                throw new Error('createBooking - Token is required for this action');
+                window.location.hash = '#signin'
+                throw new Error('Authorization is required for this action');
             }
             const response = await fetch(
                 `${this.baseUrl}/b2c/v1/booking`, {

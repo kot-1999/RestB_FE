@@ -356,8 +356,6 @@ export default class ApiRequest {
                 ? `${this.baseUrl}/b2c/v1/restaurant/?${queryString.toString()}`
                 : `${this.baseUrl}/b2c/v1/restaurant/`;
 
-            console.log("GET URL:", url);
-
             const response = await fetch(url, {
                 method: "GET",
                 headers: {

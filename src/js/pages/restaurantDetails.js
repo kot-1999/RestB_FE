@@ -122,7 +122,6 @@ export default function () {
         restaurantID: getRestaurantIdFromUrl(),
         message: $msg.val() ?? undefined
       })
-      console.log($date.val(), $guests.val(), $time.val(), $msg.val())
     });
 
     validateForm();

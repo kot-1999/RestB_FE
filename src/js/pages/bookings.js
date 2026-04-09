@@ -90,7 +90,6 @@ export default async function loadBookings() {
         let res;
         try {
             res = await ApiRequest.getBookings(query, restaurantID);
-            console.log(res)
         } catch (err) {
             showError(err)
         }

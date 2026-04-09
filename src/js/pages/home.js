@@ -1,6 +1,6 @@
 import ApiRequest from "../utils/ApiRequest.js";
 import Mustache from "../utils/mustache.js";
-import { Template } from "../config.js";
+import Template from "../utils/Template.js";
 import { RestaurantCategories } from "../utils/enums.js";
 
 let selectedCategories = [];

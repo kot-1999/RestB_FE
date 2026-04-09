@@ -1,5 +1,4 @@
-// Show page content
-import { Template } from "./config.js";
+import Template from "./utils/Template.js";
 import loadAuth from "./pages/auth.js"
 import loadHome from "./pages/home.js"
 import loadProfile from "./pages/profile.js"
@@ -8,7 +7,7 @@ import loadDashboard from "./pages/dashboard.js"
 import loadResetPassword from "./pages/resetPassword.js"
 import loadManageBookings from "./pages/bookingsManage.js"
 import ApiRequest from "./utils/ApiRequest.js";
-import {showError, LocalStorage, updateVisibility} from "./utils/helpers.js";
+import {showError, updateVisibility} from "./utils/helpers.js";
 import loadBookings from "./pages/bookings.js";
 import loadAdminRestaurants from "./pages/adminRestaurants.js";
 import registerEmployee from "./pages/registerEmployee.js";

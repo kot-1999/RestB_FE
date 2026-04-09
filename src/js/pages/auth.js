@@ -1,4 +1,4 @@
-import {Template} from "../config.js";
+import Template from "../utils/Template.js";
 import ApiRequest from "../utils/ApiRequest.js";
 import {LocalStorage, showError} from "../utils/helpers.js";
 

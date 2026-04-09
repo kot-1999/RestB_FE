@@ -1,4 +1,4 @@
-export const Template =  {
+export default {
     page: {
         auth: () => document.getElementById('auth-template').innerHTML,
         profile: () => document.getElementById('profile-template').innerHTML,
@@ -21,5 +21,7 @@ export const Template =  {
         bookingCard: () => document.getElementById('booking-card-template').innerHTML,
         brandCard: () => document.getElementById('brand-card-template').innerHTML,
         restaurantBookingCard: () => document.getElementById('restaurant-booking-card-template').innerHTML,
+        pagination: () => document.getElementById('pagination-template').innerHTML,
     }
 }
+

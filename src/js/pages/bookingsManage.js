@@ -1,6 +1,6 @@
 import Mustache from "../utils/mustache.js";
 import ApiRequest from "../utils/ApiRequest.js";
-import {Template} from "../config.js";
+import Template from "../utils/Template.js";
 
 export default async function loadBookingsManage() {
     const restaurantList =$("#restaurant-list");

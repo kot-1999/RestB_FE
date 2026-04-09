@@ -1,5 +1,5 @@
 import ApiRequest from '../utils/ApiRequest.js';
-import {showError} from "../utils/helpers";
+import {showError} from "../utils/helpers.js";
 
 export default function () {
     let dashboardData = null;

@@ -1,0 +1,26 @@
+.manage-bookings-grid-item
+    a.restaurant-card(href="/#bookings?id={{id}}")
+        .restaurant-banner
+            img(src="{{bannerURL}}" onerror="this.src='/assets/img/default-banner.png'")
+            .restaurant-overlay
+                span.restaurant-cta Manage Bookings
+        .restaurant-content
+            h3.restaurant-name {{name}}
+            .restaurant-details
+                .restaurant-detail-row
+                    span.detail-label Location
+                    span.detail-value {{address.city}}, {{address.street}}
+
+                span.detail-label Today's summary:
+
+                .restaurant-detail-row
+                    span.detail-label Pending
+                    span.detail-value {{bookingsDailySummaries.totalPendingBookings}} {{pendingLabel}}
+
+                .restaurant-detail-row
+                    span.detail-label Approved
+                    span.detail-value {{bookingsDailySummaries.totalApprovedAndConfirmedBookings}} {{approvedLabel}}
+
+                .restaurant-detail-row
+                    span.detail-label Guests
+                    span.detail-value {{bookingsDailySummaries.totalGuests}} {{guestLabel}}

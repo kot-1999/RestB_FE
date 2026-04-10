@@ -30,7 +30,7 @@ export default function loadAdminRestaurants(options = { page: 1 }) {
                 page,
                 limit: 5
             });
-
+            console.log(response);
             brand = response?.brand || null;
             restaurants = Array.isArray(response?.restaurants) ? response.restaurants : [];
 

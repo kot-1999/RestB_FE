@@ -1,14 +1,16 @@
 import Mustache from "../utils/mustache.js";
 import ApiRequest from "../utils/ApiRequest.js";
 import Template from "../utils/Template.js";
+import renderPagination from "./components/pagination.js";
 
-export default async function loadBookingsManage() {
+export default async function loadBookingsManage(options = { page: 1 }) {
     const restaurantList =$("#restaurant-list");
 
-    const response = await ApiRequest.getBookingSummaries({ page: 1, limit: 20 });
+    const response = await ApiRequest.getBookingSummaries({ page: options.page, limit: 9 });
 
-    $('#brand-container').replaceWith(Mustache.render(Template.component.brandCard(), response.brand));
+
     restaurantList.empty();
+    renderPagination(response.pagination, loadBookingsManage)
 
     if (response && response.restaurants && response.restaurants.length > 0) {
         const template = Template.component.restaurantBookingCard()

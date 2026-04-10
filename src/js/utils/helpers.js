@@ -75,6 +75,10 @@ const elements = [
     {
         id: 'booking-details-create-form',
         disabledFor: [STATE.ADMIN, STATE.EMPLOYEE]
+    },
+    {
+        id: 'booking-admin-header',
+        disabledFor: [STATE.USER]
     }
 ]
 

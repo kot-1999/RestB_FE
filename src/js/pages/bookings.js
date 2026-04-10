@@ -2,6 +2,7 @@ import ApiRequest from "../utils/ApiRequest.js";
 import Mustache from "../utils/mustache.js";
 import Template from "../utils/Template.js";
 import {showError} from "../utils/helpers.js";
+import renderPagination from "./components/pagination.js";
 
 // ─── Data mapper ──────────────────────────────────────────────────────────────
 function mapBookingToView(b) {
@@ -38,7 +39,7 @@ function buildBubbles(discussion) {
 }
 
 // ─── Main export ──────────────────────────────────────────────────────────────
-export default async function loadBookings() {
+export default async function loadBookings(options = { page: 1 }) {
     const $list = $("#bookings-list");
     const params = new URLSearchParams(window.location.hash.split("?")[1]);
     const restaurantID = params.get("id");
@@ -67,7 +68,7 @@ export default async function loadBookings() {
     }
 
     // ── Fetch & render ──────────────────────────────────────────────────────
-    const fetchBookings = async () => {
+    const fetchBookings = async (page) => {
         const fromVal = $fromInput.val();
         const toVal   = $toInput.val();
         if (!fromVal || !toVal) {
@@ -80,8 +81,8 @@ export default async function loadBookings() {
         const query = {
             dateFrom: fromVal + "T00:00:00.000Z",
             dateTo:   toVal   + "T23:59:59.999Z",
-            page:  1,
-            limit: 50
+            page,
+            limit: 20,
         };
 
         const selectedStatus = $statusInput.val();
@@ -109,9 +110,14 @@ export default async function loadBookings() {
         // Brand
         if (res.restaurant) {
             updateBrandComponent(res.restaurant);
-        } else if (res.bookings[0]?.restaurant) {
-            updateBrandComponent(res.bookings[0].restaurant);
         }
+
+        // TODO: If there is no restaurant, it means that it's user bookings
+        // else if (res.bookings[0]?.restaurant) {
+        //     updateBrandComponent(res.bookings[0].restaurant);
+        // }
+
+        renderPagination(res.pagination, loadBookings)
 
         if (count === 0) {
             $list.html('<p class="bc-state-msg">No bookings found for the selected filters.</p>');
@@ -145,10 +151,8 @@ export default async function loadBookings() {
 
             const bId     = $card.data('id');
             await ApiRequest.updateBooking(bId, { message })
-            fetchBookings()
-            // $card.data('pending-message', msg);
-            // $input.prop('disabled', true);
-            // $(this).prop('disabled', true);
+            fetchBookings(options.page)
+
         });
 
         $list.off('keydown', '.bc-chat-input').on('keydown', '.bc-chat-input', function (e) {
@@ -207,8 +211,8 @@ export default async function loadBookings() {
     // ── Filter button ───────────────────────────────────────────────────────
     $(document).off('click', '#apply-filters').on('click', '#apply-filters', (e) => {
         e.preventDefault();
-        fetchBookings();
+        fetchBookings(1);
     });
 
-    fetchBookings();
+    fetchBookings(options.page);
 }

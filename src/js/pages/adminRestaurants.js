@@ -1,7 +1,8 @@
 import ApiRequest from '../utils/ApiRequest.js';
 import { RestaurantCategories } from '../utils/enums.js';
+import renderPagination from "./components/pagination.js";
 
-export default function () {
+export default function loadAdminRestaurants(options = { page: 1 }) {
     const $list = $('#restaurants-list');
     const $empty = $('#restaurants-empty');
     const $newBtn = $('#ar-new-btn');
@@ -17,17 +18,17 @@ export default function () {
         });
 
         attachDelegatedEvents();
-        loadRestaurants();
+        loadRestaurants(options.page);
     }
 
-    async function loadRestaurants() {
+    async function loadRestaurants(page) {
         $list.empty();
         $empty.hide();
 
         try {
             const response = await ApiRequest.getAdminRestaurants({
-                page: 1,
-                limit: 100
+                page,
+                limit: 5
             });
 
             brand = response?.brand || null;
@@ -35,6 +36,7 @@ export default function () {
 
             renderBrand();
             renderRestaurants();
+            renderPagination(response.pagination, loadAdminRestaurants)
         } catch (error) {
             console.error('Failed to load admin restaurants:', error);
             $empty.show();
@@ -261,7 +263,7 @@ export default function () {
         $(document)
             .off('click', '.js-reset-restaurant')
             .on('click', '.js-reset-restaurant', async function () {
-                await loadRestaurants();
+                await loadRestaurants(options.page);
             });
 
         $(document)

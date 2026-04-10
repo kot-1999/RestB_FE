@@ -29,7 +29,7 @@ div.dashboard-page
 
     // Right Content Area - Contains header and cards
     main.bookings-main-content
-      .dash-header
+      div#booking-admin-header.dash-header.trackable
         .dash-title
           h1#dashboardTitle Bookings for <span style="color:var(--accent-white)" id="restaurant-name"></span>
           p#dashboardSub Today's mission control overview.
@@ -44,3 +44,5 @@ div.dashboard-page
       // Bookings grid outside the header
       .bookings-grid#bookings-list
         // Booking cards will be rendered here by JavaScript
+
+  div#pagination

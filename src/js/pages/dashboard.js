@@ -1,5 +1,5 @@
 import ApiRequest from '../utils/ApiRequest.js';
-import {showError} from "../utils/helpers.js";
+import {renderHeaderWithBrand, showError} from "../utils/helpers.js";
 
 export default function () {
     let dashboardData = null;
@@ -224,20 +224,9 @@ export default function () {
     // Initialize
     initializeDashboard();
 
-    // Populate the dash-brand-minimal component from API brand data
-    function populateBrand() {
-        if (!dashboardData || !dashboardData.brand) return;
-        const brand = dashboardData.brand;
-        const $container = $('#brand-container');
-        $container.find('.dash-brand-name').text(brand.name || 'Unknown Brand');
-        if (brand.logoURL) {
-            $container.find('.js-brand-img').attr('src', brand.logoURL).attr('alt', brand.name);
-        }
-    }
-
     async function initializeDashboard() {
         await loadDashboardData(currentPeriod);
-        populateBrand();
+        renderHeaderWithBrand(dashboardData.brand, 'Dashboard', 'Your weekly activity at a glance.');
         populateRestaurantFilter();
         updateKPIs();
         updateChart();

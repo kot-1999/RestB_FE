@@ -1,6 +1,11 @@
 div.dashboard-page
   .bookings-layout-container
 
+    // Header
+    main.bookings-main-content
+      div#brand-admin-header.trackable
+
+
     aside.home-sidebar
       .home-sidebar-panel
         .home-sidebar-head
@@ -27,22 +32,8 @@ div.dashboard-page
 
         button#apply-filters.home-submit-btn APPLY FILTERS
 
-    // Right Content Area - Contains header and cards
-    main.bookings-main-content
-      div#booking-admin-header.dash-header.trackable
-        .dash-title
-          h1#dashboardTitle Bookings for <span style="color:var(--accent-white)" id="restaurant-name"></span>
-          p#dashboardSub Today's mission control overview.
-
-        // Brand component inside the header
-        div.dash-brand-minimal#brand-container
-          .dash-brand-label BRAND
-          .dash-brand-logo
-            img.js-brand-img(src="/assets/img/default-avatar.png" alt="Loading...")
-          .dash-brand-name Loading...
-
       // Bookings grid outside the header
-      .bookings-grid#bookings-list
+    .bookings-grid#bookings-list
         // Booking cards will be rendered here by JavaScript
 
   div#pagination

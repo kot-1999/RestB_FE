@@ -2,6 +2,7 @@ import Mustache from "../utils/mustache.js";
 import ApiRequest from "../utils/ApiRequest.js";
 import Template from "../utils/Template.js";
 import renderPagination from "./components/pagination.js";
+import {renderHeaderWithBrand} from "../utils/helpers.js";
 
 export default async function loadBookingsManage(options = { page: 1 }) {
     const restaurantList =$("#restaurant-list");
@@ -11,7 +12,7 @@ export default async function loadBookingsManage(options = { page: 1 }) {
 
     restaurantList.empty();
     renderPagination(response.pagination, loadBookingsManage)
-
+    renderHeaderWithBrand(response.brand, 'Bookings Manage', 'Select a restaurant to manage its bookings.')
     if (response && response.restaurants && response.restaurants.length > 0) {
         const template = Template.component.restaurantBookingCard()
         response.restaurants.forEach((restaurant) => {

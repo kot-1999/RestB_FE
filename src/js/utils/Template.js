@@ -19,7 +19,7 @@ export default {
         dummyProfileTemplate: () => document.getElementById('dummy-profile-template').innerHTML,
         restaurantCard: () => document.getElementById('restaurant-card-template').innerHTML,
         bookingCard: () => document.getElementById('booking-card-template').innerHTML,
-        brandCard: () => document.getElementById('brand-card-template').innerHTML,
+        headerWithBrand: () => document.getElementById('header-with-brand-template').innerHTML,
         restaurantBookingCard: () => document.getElementById('restaurant-booking-card-template').innerHTML
     }
 }

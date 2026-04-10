@@ -1,3 +1,6 @@
+import Mustache from "./mustache.js";
+import Template from "./Template.js";
+
 const STATE = {
     NO_AUTH: 'No-auth',
     USER: 'User',
@@ -77,7 +80,7 @@ const elements = [
         disabledFor: [STATE.ADMIN, STATE.EMPLOYEE]
     },
     {
-        id: 'booking-admin-header',
+        id: 'brand-admin-header',
         disabledFor: [STATE.USER]
     }
 ]
@@ -180,6 +183,13 @@ export function getFormData(target) {
             return [key, value]
         })
     )
+}
+
+export function renderHeaderWithBrand(brand, title, secondTitle) {
+    console.log(brand)
+    const $headerWithBrand = $('#brand-admin-header')
+    const template = Template.component.headerWithBrand()
+    $headerWithBrand.replaceWith(Mustache.render(template, { ...brand, title, secondTitle }))
 }
 
 export function authRequired() {

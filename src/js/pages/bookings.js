@@ -1,7 +1,7 @@
 import ApiRequest from "../utils/ApiRequest.js";
 import Mustache from "../utils/mustache.js";
 import Template from "../utils/Template.js";
-import {showError} from "../utils/helpers.js";
+import {renderHeaderWithBrand, showError} from "../utils/helpers.js";
 import renderPagination from "./components/pagination.js";
 
 // ─── Data mapper ──────────────────────────────────────────────────────────────
@@ -56,17 +56,6 @@ export default async function loadBookings(options = { page: 1 }) {
         $toInput.val(today);
     }
 
-    // ── Brand component ─────────────────────────────────────────────────────
-    function updateBrandComponent(restaurant) {
-        if (!restaurant?.brand) return;
-        const name = restaurant.brand.name || "Unknown Brand";
-        const logo = restaurant.brand.logoURL || "/assets/img/default-avatar.png";
-        const nameEl = document.querySelector('.dash-brand-name');
-        const imgEl  = document.querySelector('.js-brand-img');
-        if (nameEl) nameEl.textContent = name;
-        if (imgEl)  { imgEl.src = logo; imgEl.alt = name; }
-    }
-
     // ── Fetch & render ──────────────────────────────────────────────────────
     const fetchBookings = async (page) => {
         const fromVal = $fromInput.val();
@@ -109,13 +98,8 @@ export default async function loadBookings(options = { page: 1 }) {
 
         // Brand
         if (res.restaurant) {
-            updateBrandComponent(res.restaurant);
+            renderHeaderWithBrand(res.restaurant.brand, 'Manage Bookings', 'Today\'s mission control overview.');
         }
-
-        // TODO: If there is no restaurant, it means that it's user bookings
-        // else if (res.bookings[0]?.restaurant) {
-        //     updateBrandComponent(res.bookings[0].restaurant);
-        // }
 
         renderPagination(res.pagination, loadBookings)
 

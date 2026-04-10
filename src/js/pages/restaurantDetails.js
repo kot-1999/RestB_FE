@@ -1,4 +1,5 @@
 import ApiRequest from '../utils/ApiRequest.js';
+import {renderHeaderWithBrand} from "../utils/helpers.js";
 
 export default function () {
   initializeRestaurantDetails();
@@ -55,8 +56,8 @@ export default function () {
   }
 
   function renderRestaurantDetails(restaurant, brand = null) {
-    $('#rb-name').text(restaurant.name || 'Unnamed restaurant');
-    $('#rb-desc').text(restaurant.description || 'No description available.');
+
+    renderHeaderWithBrand(restaurant.brand, restaurant.name, restaurant.description ?? 'No description available.')
 
     $('#rb-brand').text(
         brand?.name || restaurant.brand?.name || 'Unknown brand'

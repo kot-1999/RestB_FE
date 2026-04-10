@@ -186,8 +186,10 @@ export function getFormData(target) {
 }
 
 export function renderHeaderWithBrand(brand, title, secondTitle) {
-    console.log(brand)
-    const $headerWithBrand = $('#brand-admin-header')
+    let $headerWithBrand = $('#brand-admin-header')
+    if (!$headerWithBrand.length) {
+        $headerWithBrand = $('#brand-user-header')
+    }
     const template = Template.component.headerWithBrand()
     $headerWithBrand.replaceWith(Mustache.render(template, { ...brand, title, secondTitle }))
 }

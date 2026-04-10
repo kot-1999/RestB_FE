@@ -1,5 +1,5 @@
 import ApiRequest from "../utils/ApiRequest.js";
-import {Template} from "../config.js";
+import Template from "../utils/Template.js";
 import Mustache from "./../utils/mustache.js"
 import {getFormData, showError} from "../utils/helpers.js";
 

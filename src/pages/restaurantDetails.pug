@@ -1,14 +1,12 @@
 div.restaurant-book-page
     //- ── TOP HEADER ─────────────────────────────────────────────────────
-    header.rb-page-header
-        h1#rb-name.rb-banner-title Loading restaurant...
-        p#rb-desc.rb-description Please wait while we fetch the restaurant details.
+    div#brand-user-header
 
     //- ── MAIN CONTENT ───────────────────────────────────────────────────
     section.rb-content-wrapper
         //- ── LEFT: BOOKING CARD ────────────────────────────────────────
         aside.rb-sticky-left
-            .rb-panel.rb-booking
+            #booking-details-create-form.rb-panel.rb-booking.trackable
                 h2 Book Here
 
                 .rb-row
@@ -32,10 +30,6 @@ div.restaurant-book-page
                             type="time"
                             value="19:00"
                         )
-
-                    .rb-field
-                        label(for="rb-until") End time
-                        input#rb-until(type="time")
 
                 .rb-field
                     label(for="rb-message") Message

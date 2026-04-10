@@ -1,11 +1,12 @@
 import ApiRequest from "../utils/ApiRequest.js";
 import Mustache from "../utils/mustache.js";
-import { Template } from "../config.js";
+import Template from "../utils/Template.js";
 import { RestaurantCategories } from "../utils/enums.js";
+import renderPagination from "./components/pagination.js";
 
 let selectedCategories = [];
 
-export default function () {
+export default function loadHome(options = { page: 1 }) {
     const $form = $(".js-home-filters");
     const $container = $(".restaurants-container");
     const $loading = $(".restaurants-loading");
@@ -24,7 +25,7 @@ export default function () {
 
         $form.off("submit").on("submit", async (event) => {
             event.preventDefault();
-            await loadRestaurants();
+            await loadRestaurants(1);
         });
 
         $categoryInput.off("change").on("change", handleCategoryInput);
@@ -43,16 +44,19 @@ export default function () {
                 renderSelectedCategories();
             });
 
-        loadRestaurants();
+        loadRestaurants(options.page);
     }
 
-    async function loadRestaurants() {
+    async function loadRestaurants(page) {
         $loading.show();
         $container.empty();
 
         try {
-            const { filters, guestNumber } = getFilters();
-            const response = await ApiRequest.getRestaurants(filters);
+            const { filters, guestNumber} = getFilters();
+            const response = await ApiRequest.getRestaurants({
+                ...filters,
+                page
+            });
 
             const restaurants = response?.restaurants || [];
             const total = response?.pagination?.total ?? restaurants.length;
@@ -67,6 +71,8 @@ export default function () {
                 $container,
                 $count
             });
+
+            renderPagination(response.pagination, loadHome)
         } catch (error) {
             console.error("Failed to load restaurants:", error);
             renderError($container, $count);

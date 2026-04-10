@@ -8,7 +8,7 @@ The frontend now uses a **super simple** configuration system. Just change **one
 
 **Option 1: Edit Config File**
 ```javascript
-// In src/assets/js/config.js, line 23:
+// In src/assets/js/Template.js, line 23:
 const config = {
     usebackend: 'github', // CHANGE THIS: 'github', 'local', or 'production'
     // ...
@@ -99,7 +99,7 @@ Content-Type: application/json
 ## Quick Start
 
 1. **Build frontend**: `npm run build`
-2. **Choose backend**: Edit `usebackend` in config.js or use console
+2. **Choose backend**: Edit `usebackend` in Template.js or use console
 3. **Run locally**: `npm run dev`
 4. **Test login**: Open browser, check console for API calls
 

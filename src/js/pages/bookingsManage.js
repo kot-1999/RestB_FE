@@ -1,61 +1,36 @@
 import Mustache from "../utils/mustache.js";
 import ApiRequest from "../utils/ApiRequest.js";
-import {Template} from "../config.js";
+import Template from "../utils/Template.js";
+import renderPagination from "./components/pagination.js";
+import {renderHeaderWithBrand} from "../utils/helpers.js";
 
-export default async function loadBookingsManage() {
-    const restaurantList = document.getElementById("restaurant-list");
+export default async function loadBookingsManage(options = { page: 1 }) {
+    const restaurantList =$("#restaurant-list");
 
-    const response = await ApiRequest.getBookingSummaries({ page: 1, limit: 20 });
+    const response = await ApiRequest.getBookingSummaries({ page: options.page, limit: 9 });
 
-    $('#brand-container').replaceWith(Mustache.render(Template.component.brandCard(), response.brand));
-    $('#booking-items').empty();
 
+    restaurantList.empty();
+    renderPagination(response.pagination, loadBookingsManage)
+    renderHeaderWithBrand(response.brand, 'Bookings Manage', 'Select a restaurant to manage its bookings.')
     if (response && response.restaurants && response.restaurants.length > 0) {
-        const template = `
-            {{#restaurants}}
-            <div class="manage-bookings-grid-item">
-                <a href="/#bookings?id={{id}}" class="restaurant-card">
-                    <div class="restaurant-banner">
-                        <img src="{{bannerURL}}" onerror="this.src='/assets/img/default-banner.png'"/>
-                        <div class="restaurant-overlay">
-                            <span class="restaurant-cta">Manage Bookings</span>
-                        </div>
-                    </div>
-                    <div class="restaurant-content">
-                        <h3 class="restaurant-name">{{name}}</h3>
-                        <div class="restaurant-details">
-                            <div class="restaurant-detail-row">
-                                <span class="detail-label">Location</span>
-                                <span class="detail-value">{{address.city}}, {{address.street}}</span>
-                            </div>
-                        </div>
-                    </div>
-                </a>
-            </div>
-            {{/restaurants}}
-        `;
+        const template = Template.component.restaurantBookingCard()
+        response.restaurants.forEach((restaurant) => {
 
-        const data = {
-            restaurants: response.restaurants.map(r => {
-                // bookingsDailySummaries is a flat object with totalPendingBookings etc.
-                const summary = r.bookingsDailySummaries || {};
-
-                return {
-                    ...r,
-                    todayPending:  summary.totalPendingBookings || 0,
-                    todayApproved: summary.totalApprovedAndConfirmedBookings || 0
-                };
-            })
-        };
-
-        restaurantList.innerHTML = Mustache.render(template, data);
+            restaurantList.append(Mustache.render(template, {
+                ...restaurant,
+                approvedLabel: restaurant.bookingsDailySummaries.totalApprovedAndConfirmedBookings === 1 ? 'Booking' : 'Bookings',
+                pendingLabel: restaurant.bookingsDailySummaries.totalPendingBookings === 1 ? 'Booking' : 'Bookings',
+                guestLabel: restaurant.bookingsDailySummaries.totalGuests === 1 ? 'Guest' : 'Guests'
+            }))
+        })
     } else {
-        restaurantList.innerHTML = `
+        restaurantList.replaceWith(`
             <div class="col-12 text-center py-5">
                 <div class="empty-state p-5">
                     <p class="text-white mb-0">No restaurants found in your management console.</p>
                 </div>
             </div>
-        `;
+        `)
     }
 }

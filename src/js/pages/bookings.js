@@ -1,89 +1,23 @@
 import ApiRequest from "../utils/ApiRequest.js";
 import Mustache from "../utils/mustache.js";
-
-// ─── Booking Card Template ────────────────────────────────────────────────────
-const BOOKING_CARD_TEMPLATE = `
-<div class="booking-card" data-id="{{id}}" data-status="{{status}}">
-
-    <!-- ── HEADER: name, ref, status pill ─────────────────────────────────── -->
-    <div class="bc-header">
-        <div class="bc-header-left">
-            <span class="bc-status-dot status-{{status}}"></span>
-            <div>
-                <h2 class="bc-name">{{customerName}}</h2>
-                <span class="bc-ref">#{{id}}</span>
-            </div>
-        </div>
-        <span class="bc-status-pill status-pill-{{status}}">{{status}}</span>
-    </div>
-
-    <!-- ── META: date / time / guests / contact ───────────────────────────── -->
-    <div class="bc-meta">
-        <div class="bc-meta-row">
-            <div class="bc-meta-item">
-                <i class="fas fa-calendar-alt"></i>
-                <span>{{formattedDate}}</span>
-            </div>
-            <div class="bc-meta-item">
-                <i class="fas fa-clock"></i>
-                <span>{{formattedStartTime}} – {{formattedEndTime}}</span>
-            </div>
-            <div class="bc-meta-item">
-                <i class="fas fa-users"></i>
-                <span>{{numGuests}} Guests</span>
-            </div>
-        </div>
-        <div class="bc-meta-row">
-            <div class="bc-meta-item">
-                <i class="fas fa-envelope"></i>
-                <span>{{customerEmail}}</span>
-            </div>
-            <div class="bc-meta-item">
-                <i class="fas fa-phone"></i>
-                <span>{{customerPhone}}</span>
-            </div>
-        </div>
-    </div>
-
-    <!-- ── CHAT ───────────────────────────────────────────────────────────── -->
-    <div class="bc-chat">
-        <div class="bc-chat-messages"></div>
-        <div class="bc-chat-input-row">
-            <input type="text" class="bc-chat-input" placeholder="Type a message… send with a status button below">
-            <button class="bc-chat-send js-chat-send" title="Queue message">&#9658;</button>
-        </div>
-        <div class="bc-chat-queued" style="display:none;">
-            &#10003; Message queued — click a status button to send.
-        </div>
-    </div>
-
-    <!-- ── ACTIONS ────────────────────────────────────────────────────────── -->
-    <div class="bc-actions">
-        <button class="bc-btn bc-btn-confirm  js-action" data-status="Approved">CONFIRM</button>
-        <button class="bc-btn bc-btn-decline  js-action" data-status="Cancelled">DECLINE</button>
-        <button class="bc-btn bc-btn-complete js-action" data-status="Completed">COMPLETE</button>
-        <button class="bc-btn bc-btn-noshow   js-action" data-status="NoShow">NO SHOW</button>
-    </div>
-
-</div>`;
+import Template from "../utils/Template.js";
+import {renderHeaderWithBrand, showError} from "../utils/helpers.js";
+import renderPagination from "./components/pagination.js";
 
 // ─── Data mapper ──────────────────────────────────────────────────────────────
 function mapBookingToView(b) {
     const time = new Date(b.bookingTime);
     const ok   = !isNaN(time);
-
     return {
         id:                 b.id,
         status:             b.status,
-        customerName:       `${b.user?.firstName || 'Guest'} ${b.user?.lastName || ''}`.trim(),
+        customerName:       b.restaurant ? `${b?.restaurant?.name}` : `${b.user?.firstName || 'Guest'} ${b.user?.lastName}`,
+        restaurantID:       b.restaurant ? b.restaurant?.id : null,
         customerEmail:      b.user?.email  || 'No email',
         customerPhone:      b.user?.phone  || 'No phone',
         numGuests:          b.guestsNumber || 0,
         formattedDate:      ok ? time.toLocaleDateString([], { weekday: 'short', year: 'numeric', month: 'short', day: 'numeric' }) : 'N/A',
-        formattedStartTime: ok ? time.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }) : 'N/A',
-        formattedEndTime:   ok && b.duration
-            ? new Date(time.getTime() + b.duration * 60000).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
-            : 'N/A',
+        formattedStartTime: ok ? time.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }) : 'N/A'
     };
 }
 
@@ -105,14 +39,11 @@ function buildBubbles(discussion) {
 }
 
 // ─── Main export ──────────────────────────────────────────────────────────────
-export default async function loadBookings() {
+export default async function loadBookings(options = { page: 1 }) {
     const $list = $("#bookings-list");
     const params = new URLSearchParams(window.location.hash.split("?")[1]);
     const restaurantID = params.get("id");
 
-    if (!restaurantID) {
-        return $list.html('<p class="bc-state-msg">No restaurant selected.</p>');
-    }
 
     const $fromInput   = $("#filter-from");
     const $toInput     = $("#filter-to");
@@ -125,22 +56,10 @@ export default async function loadBookings() {
         $toInput.val(today);
     }
 
-    // ── Brand component ─────────────────────────────────────────────────────
-    function updateBrandComponent(restaurant) {
-        if (!restaurant?.brand) return;
-        const name = restaurant.brand.name || "Unknown Brand";
-        const logo = restaurant.brand.logoURL || "/assets/img/default-avatar.png";
-        const nameEl = document.querySelector('.dash-brand-name');
-        const imgEl  = document.querySelector('.js-brand-img');
-        if (nameEl) nameEl.textContent = name;
-        if (imgEl)  { imgEl.src = logo; imgEl.alt = name; }
-    }
-
     // ── Fetch & render ──────────────────────────────────────────────────────
-    const fetchBookings = async () => {
+    const fetchBookings = async (page) => {
         const fromVal = $fromInput.val();
         const toVal   = $toInput.val();
-
         if (!fromVal || !toVal) {
             $list.html('<p class="bc-state-msg">Please select a date range and try again.</p>');
             return;
@@ -151,8 +70,8 @@ export default async function loadBookings() {
         const query = {
             dateFrom: fromVal + "T00:00:00.000Z",
             dateTo:   toVal   + "T23:59:59.999Z",
-            page:  1,
-            limit: 50
+            page,
+            limit: 20,
         };
 
         const selectedStatus = $statusInput.val();
@@ -162,8 +81,7 @@ export default async function loadBookings() {
         try {
             res = await ApiRequest.getBookings(query, restaurantID);
         } catch (err) {
-            $list.html('<p class="bc-state-msg bc-state-msg--error">Failed to load bookings. Please refresh and try again.</p>');
-            return;
+            showError(err)
         }
 
         if (!res?.bookings) {
@@ -180,19 +98,19 @@ export default async function loadBookings() {
 
         // Brand
         if (res.restaurant) {
-            updateBrandComponent(res.restaurant);
-        } else if (res.bookings[0]?.restaurant) {
-            updateBrandComponent(res.bookings[0].restaurant);
+            renderHeaderWithBrand(res.restaurant.brand, 'Manage Bookings', 'Today\'s mission control overview.');
         }
+
+        renderPagination(res.pagination, loadBookings)
 
         if (count === 0) {
             $list.html('<p class="bc-state-msg">No bookings found for the selected filters.</p>');
             return;
         }
-
+        const bookingCardTemplate = Template.component.bookingCard()
         // Render cards
         const cardsHtml = res.bookings
-            .map(b => Mustache.render(BOOKING_CARD_TEMPLATE, mapBookingToView(b)))
+            .map(b => Mustache.render(bookingCardTemplate, mapBookingToView(b)))
             .join('');
         $list.html(cardsHtml);
 
@@ -209,15 +127,16 @@ export default async function loadBookings() {
         });
 
         // ── Queue message ──────────────────────────────────────────────────
-        $list.off('click', '.js-chat-send').on('click', '.js-chat-send', function () {
+        $list.off('click', '.js-chat-send').on('click', '.js-chat-send', async function () {
             const $card  = $(this).closest('.booking-card');
             const $input = $card.find('.bc-chat-input');
-            const msg    = $input.val()?.trim();
-            if (!msg) return;
-            $card.data('pending-message', msg);
-            $input.prop('disabled', true);
-            $(this).prop('disabled', true);
-            $card.find('.bc-chat-queued').show();
+            const message    = $input.val()?.trim();
+            if (!message) return;
+
+            const bId     = $card.data('id');
+            await ApiRequest.updateBooking(bId, { message })
+            fetchBookings(options.page)
+
         });
 
         $list.off('keydown', '.bc-chat-input').on('keydown', '.bc-chat-input', function (e) {
@@ -228,11 +147,9 @@ export default async function loadBookings() {
         $list.off('click', '.js-action').on('click', '.js-action', async function () {
             const $btn    = $(this);
             const $card   = $btn.closest('.booking-card');
-            const status  = $btn.data('status');
             const bId     = $card.data('id');
             const pending = $card.data('pending-message');
-            const payload = { status };
-            if (pending) payload.message = pending;
+            const payload = { status: $btn.data('status') };
 
             const oldStatus  = $card.data('status');
             const $dot       = $card.find('.bc-status-dot');
@@ -266,7 +183,6 @@ export default async function loadBookings() {
                     $msgs[0].scrollTop = $msgs[0].scrollHeight;
                     $card.find('.bc-chat-input').val('').prop('disabled', false);
                     $card.find('.js-chat-send').prop('disabled', false);
-                    $card.find('.bc-chat-queued').hide();
                 }
             } else {
                 $dot.removeClass(`status-${status}`).addClass(`status-${oldStatus}`);
@@ -279,8 +195,8 @@ export default async function loadBookings() {
     // ── Filter button ───────────────────────────────────────────────────────
     $(document).off('click', '#apply-filters').on('click', '#apply-filters', (e) => {
         e.preventDefault();
-        fetchBookings();
+        fetchBookings(1);
     });
 
-    fetchBookings();
+    fetchBookings(options.page);
 }

@@ -84,9 +84,6 @@ content#content {
     width: 100%;
 }
 
-.trackable {
-    display: none;
-}
 
 .visually-hidden {
     position: absolute !important;
@@ -1722,13 +1719,6 @@ content#content {
     cursor: pointer;
 }
 
-.bc-chat-queued {
-    padding: 5px 14px 8px;
-    border-top: 1px solid rgba(255,255,255,0.05);
-    font-size: .72rem;
-    color: var(--accent-yellow);
-}
-
 .bc-actions {
     display: grid;
     grid-template-columns: repeat(4, 1fr);
@@ -2940,7 +2930,90 @@ content#content {
     background: rgba(255,255,255,0.04);
     border-radius: 999px;
 }
+/* ================
+PAGINATION
+==================*/
+
+/* контейнер */
+.pagination-list {
+    display: flex;
+    justify-content: center;
+    gap: 8px;
+    list-style: none;
+    padding: 0;
+    margin-top: 24px;
+}
+
+/* кнопки */
+.pagination-btn {
+    min-width: 36px;
+    height: 36px;
+    padding: 0 12px;
+
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+
+    font-size: .72rem;
+    font-weight: 800;
+    letter-spacing: .08em;
+    text-transform: uppercase;
+
+    color: var(--text-main);
+    background: var(--bg-input);
+
+    border: 1px solid var(--border-glass);
+    border-radius: 999px;
+
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+/* hover */
+.pagination-btn:hover:not(.disabled) {
+    background: rgba(255,255,255,0.06);
+    border-color: var(--border-soft);
+}
+
+/* активная страница */
+.pagination-list li.active .pagination-btn {
+    background: linear-gradient(
+            135deg,
+            var(--accent-primary),
+            var(--accent-secondary)
+    );
+    color: var(--text-dark);
+    border: none;
+    box-shadow: var(--shadow-md);
+}
+
+/* disabled */
+.pagination-btn.disabled {
+    opacity: 0.35;
+    cursor: not-allowed;
+    pointer-events: none;
+}
+
+/* 🔥 hover animation */
+.pagination-list li:hover .pagination-btn:not(.disabled) {
+    transform: scale(1.15);
+    border-color: #1aa39a;
+    box-shadow: 0 6px 18px rgba(0,0,0,0.25);
+}
+
+/* prevent jump on active */
+.pagination-list li.active .pagination-btn {
+    transform: scale(1.05);
+}
+
+/* optional: stronger hover on active */
+.pagination-list li.active:hover .pagination-btn {
+    transform: scale(1.1);
+}
 
 
+.trackable {
+    display: none;
+}
 
 

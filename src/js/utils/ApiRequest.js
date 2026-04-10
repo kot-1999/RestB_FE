@@ -44,9 +44,7 @@ export default class ApiRequest {
             // Upload file directly to S3/RustFS
             await fetch(res.uploadUrl, {
                 method: 'PUT',
-                headers: {
-                    'Content-Type': file.type
-                },
+
                 body: file
             });
             return res
@@ -358,8 +356,6 @@ export default class ApiRequest {
                 ? `${this.baseUrl}/b2c/v1/restaurant/?${queryString.toString()}`
                 : `${this.baseUrl}/b2c/v1/restaurant/`;
 
-            console.log("GET URL:", url);
-
             const response = await fetch(url, {
                 method: "GET",
                 headers: {
@@ -589,5 +585,34 @@ export default class ApiRequest {
         }
     }
 
-}  // <-- this is the closing brace of the class, keep it here
+    // B2B & B2C: User registration
+    // ENDPOINTS: POST /b2c/v1/authorization/register, POST /b2b/v1/authorization/register
+    static async createBooking(body) {
+        try {
+            const authData = LocalStorage.get('auth');
+            if (!authData?.token) {
+                window.location.hash = '#signin'
+                throw new Error('Authorization is required for this action');
+            }
+            const response = await fetch(
+                `${this.baseUrl}/b2c/v1/booking`, {
+                    headers: {
+                        'Content-Type': 'application/json',
+                        Authorization: `Bearer ${authData.token}`
+                    },
+                    method: 'POST',
+                    body: JSON.stringify(body)
+                });
+            await ApiRequest.checkResponse(response)
+            const res = await response.json()
+
+            showSuccess(res.message)
+            return res
+        } catch (err) {
+            showError(err)
+            return null
+        }
+    }
+
+}
 

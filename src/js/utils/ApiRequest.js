@@ -339,18 +339,49 @@ export default class ApiRequest {
         try {
             const queryString = new URLSearchParams();
 
-            if (queryParams.search) queryString.append("search", queryParams.search);
-            if (queryParams.radius) queryString.append("radius", queryParams.radius);
-            if (queryParams.brandID) queryString.append("brandID", queryParams.brandID);
-            if (queryParams.date) queryString.append("date", queryParams.date);
-
-            if (queryParams.statuses && Array.isArray(queryParams.statuses) && queryParams.statuses.length > 0) {
-                queryParams.statuses.forEach(status => queryString.append('statuses', status));
+            if (queryParams.search) {
+                queryString.append("search", queryParams.search);
             }
 
+            if (queryParams.radius) {
+                queryString.append("radius", queryParams.radius);
+            }
 
-            if (queryParams.page) queryString.append("page", queryParams.page);
-            if (queryParams.limit) queryString.append("limit", queryParams.limit);
+            if (queryParams.brandID) {
+                queryString.append("brandID", queryParams.brandID);
+            }
+
+            if (queryParams.date) {
+                queryString.append("date", queryParams.date);
+            }
+
+            if (
+                queryParams.statuses &&
+                Array.isArray(queryParams.statuses) &&
+                queryParams.statuses.length > 0
+            ) {
+                queryParams.statuses.forEach((status) => {
+                    queryString.append("statuses[]", status);
+                });
+            }
+
+            if (
+                queryParams.categories &&
+                Array.isArray(queryParams.categories) &&
+                queryParams.categories.length > 0
+            ) {
+                queryParams.categories.forEach((category) => {
+                    queryString.append("categories[]", category);
+                });
+            }
+
+            if (queryParams.page) {
+                queryString.append("page", queryParams.page);
+            }
+
+            if (queryParams.limit) {
+                queryString.append("limit", queryParams.limit);
+            }
 
             const url = queryString.toString()
                 ? `${this.baseUrl}/b2c/v1/restaurant/?${queryString.toString()}`

@@ -55,7 +55,7 @@ const load = () => {
 
         try {
             if (authType === 'register') {
-                await ApiRequest.register({
+                const res = await ApiRequest.register({
                     email: $('#email').val(),
                     password: $('#password').val(),
                     firstName: $('#firstName').val(),
@@ -64,14 +64,15 @@ const load = () => {
                     brandName: $('#brandName').val(),
                 }, userType)
 
-                userType === 'b2c' ? window.location.hash = '#home' :  window.location.hash = '#dashboard'
+                if (res) userType === 'b2c' ? window.location.hash = '#home' :  window.location.hash = '#dashboard'
             }
             else if (authType === 'login') {
-                await ApiRequest.login({
+                const res = await ApiRequest.login({
                     email: $('#email').val(),
                     password: $('#password').val(),
                 }, userType)
-                userType === 'b2c' ? window.location.hash = '#home' :  window.location.hash = '#dashboard'
+
+                if (res) userType === 'b2c' ? window.location.hash = '#home' :  window.location.hash = '#dashboard'
             }
             else if (authType === 'forgotPassword') {
                 await ApiRequest.forgotPassword({

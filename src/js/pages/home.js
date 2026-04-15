@@ -20,19 +20,29 @@ export default function loadHome(options = { page: 1 }) {
     function init() {
         setDefaultDate();
         setDefaultGuests();
+        setDefaultRadius();
         renderCategorySuggestions();
         renderSelectedCategories();
+        initRadiusSlider();
 
-        $form.off("submit").on("submit", async (event) => {
+        $form.off("submit").on("submit", async function (event) {
             event.preventDefault();
+            commitCategoryInput();
             await loadRestaurants(1);
         });
 
-        $categoryInput.off("change").on("change", handleCategoryInput);
+        $categoryInput.off("change").on("change", function () {
+            commitCategoryInput();
+        });
+
+        $categoryInput.off("blur").on("blur", function () {
+            commitCategoryInput();
+        });
+
         $categoryInput.off("keydown").on("keydown", function (event) {
             if (event.key === "Enter") {
                 event.preventDefault();
-                handleCategoryInput.call(this);
+                commitCategoryInput();
             }
         });
 
@@ -52,11 +62,15 @@ export default function loadHome(options = { page: 1 }) {
         $container.empty();
 
         try {
-            const { filters, guestNumber} = getFilters();
-            const response = await ApiRequest.getRestaurants({
-                ...filters,
-                page
-            });
+            const { filters, guestNumber } = getFilters(page);
+            console.log("Restaurant filters being sent:", filters);
+
+            const response = await ApiRequest.getRestaurants(filters);
+
+            if (!response) {
+                renderError($container, $count);
+                return;
+            }
 
             const restaurants = response?.restaurants || [];
             const total = response?.pagination?.total ?? restaurants.length;
@@ -72,7 +86,11 @@ export default function loadHome(options = { page: 1 }) {
                 $count
             });
 
-            renderPagination(response.pagination, loadHome)
+            if (response?.pagination) {
+                renderPagination(response.pagination, loadHome);
+            } else {
+                $("#pagination").empty();
+            }
         } catch (error) {
             console.error("Failed to load restaurants:", error);
             renderError($container, $count);
@@ -80,20 +98,49 @@ export default function loadHome(options = { page: 1 }) {
             $loading.hide();
         }
     }
+
+    function commitCategoryInput() {
+        const inputValue = ($categoryInput.val() || "").toString().trim();
+
+        if (!inputValue) {
+            return;
+        }
+
+        const matchedCategory = findCategoryValue(inputValue);
+
+        if (matchedCategory && !selectedCategories.includes(matchedCategory)) {
+            selectedCategories.push(matchedCategory);
+            renderSelectedCategories();
+        }
+
+        $categoryInput.val("");
+    }
 }
 
-function getFilters() {
+function getFilters(page = 1) {
     const search = ($(".js-filter-search").val() || "").toString().trim();
     const radius = Number(($(".js-filter-radius").val() || "20").toString());
     const guestNumber = clampGuests($(".js-filter-guests").val());
     const date = toDateTimeString($(".js-filter-date").val());
 
+    const inputCategoryValue = ($(".js-category-input").val() || "").toString().trim();
+    const matchedInputCategory = findCategoryValue(inputCategoryValue);
+
+    const categories = [...selectedCategories];
+
+    if (matchedInputCategory && !categories.includes(matchedInputCategory)) {
+        categories.push(matchedInputCategory);
+    }
+
     const filters = {
         date,
-        categories: [...selectedCategories],
-        page: 1,
+        page,
         limit: 24
     };
+
+    if (categories.length) {
+        filters.categories = categories;
+    }
 
     if (search) {
         filters.search = search;
@@ -119,23 +166,17 @@ function renderCategorySuggestions() {
     });
 }
 
-function handleCategoryInput() {
-    const inputValue = ($(this).val() || "").toString().trim();
+function findCategoryValue(inputValue) {
+    const normalizedInput = normalizeCategory(inputValue);
 
-    if (!inputValue) {
-        return;
-    }
-
-    const matchedCategory = Object.values(RestaurantCategories).find((category) => {
-        return formatCategoryLabel(category).toLowerCase() === inputValue.toLowerCase();
-    });
-
-    if (matchedCategory && !selectedCategories.includes(matchedCategory)) {
-        selectedCategories.push(matchedCategory);
-        renderSelectedCategories();
-    }
-
-    $(this).val("");
+    return (
+        Object.values(RestaurantCategories).find((category) => {
+            return (
+                normalizeCategory(category) === normalizedInput ||
+                normalizeCategory(formatCategoryLabel(category)) === normalizedInput
+            );
+        }) || null
+    );
 }
 
 function renderSelectedCategories() {
@@ -153,7 +194,7 @@ function renderSelectedCategories() {
                     class="home-chip-remove"
                     aria-label="Remove ${escapeHtml(label)}"
                     data-category="${escapeHtml(category)}"
-                >×</button>
+                >&times;</button>
             </div>
         `);
     });
@@ -207,19 +248,70 @@ function renderError($container, $count) {
         </div>
     `);
     $count.text("0");
+    $("#pagination").empty();
 }
 
 function setDefaultDate() {
+    const $dateInput = $(".js-filter-date");
+
+    if ($dateInput.val()) {
+        return;
+    }
+
     const today = new Date();
     const year = today.getFullYear();
     const month = String(today.getMonth() + 1).padStart(2, "0");
     const day = String(today.getDate()).padStart(2, "0");
 
-    $(".js-filter-date").val(`${year}-${month}-${day}`);
+    $dateInput.val(`${year}-${month}-${day}`);
 }
 
 function setDefaultGuests() {
-    $(".js-filter-guests").val("2");
+    const $guestsInput = $(".js-filter-guests");
+
+    if ($guestsInput.val()) {
+        return;
+    }
+
+    $guestsInput.val("2");
+}
+
+function setDefaultRadius() {
+    const $radiusInput = $(".js-filter-radius");
+
+    if ($radiusInput.val()) {
+        return;
+    }
+
+    $radiusInput.val("20");
+}
+
+function initRadiusSlider() {
+    const $radiusInput = $(".js-filter-radius");
+
+    updateRadiusUI($radiusInput);
+
+    $radiusInput.off("input").on("input", function () {
+        updateRadiusUI($(this));
+    });
+
+    $radiusInput.off("change").on("change", function () {
+        updateRadiusUI($(this));
+    });
+}
+
+function updateRadiusUI($input) {
+    const value = Number($input.val());
+    const min = Number($input.attr("min")) || 0;
+    const max = Number($input.attr("max")) || 100;
+
+    const percent = ((value - min) / (max - min)) * 100;
+
+    // update text
+    $(".js-radius-value").text(`${value} km`);
+
+    // update visual fill
+    $input.css("--range-progress", `${percent}%`);
 }
 
 function toDateTimeString(dateValue) {
@@ -240,9 +332,20 @@ function clampGuests(value) {
     return Math.max(1, Math.min(20, parsed));
 }
 
+function normalizeCategory(value) {
+    return String(value)
+        .trim()
+        .replace(/([a-z])([A-Z])/g, "$1 $2")
+        .replace(/[_-]+/g, " ")
+        .replace(/\s+/g, " ")
+        .toLowerCase();
+}
+
 function formatCategoryLabel(value) {
     return String(value)
         .replace(/([a-z])([A-Z])/g, "$1 $2")
+        .replace(/[_-]+/g, " ")
+        .replace(/\s+/g, " ")
         .trim();
 }
 

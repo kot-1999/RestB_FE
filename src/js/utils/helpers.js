@@ -49,7 +49,7 @@ const elements = [
     },
     {
         id: 'nav-manage-restaurants',
-        disabledFor: [STATE.NO_AUTH, STATE.USER]
+        disabledFor: [STATE.NO_AUTH, STATE.USER, STATE.EMPLOYEE]
     },
     {
         id: 'nav-bookings',
@@ -82,6 +82,9 @@ const elements = [
     {
         id: 'brand-admin-header',
         disabledFor: [STATE.USER]
+    }, {
+        id: 'dashboard-restaurant-filter',
+        disabledFor: [STATE.EMPLOYEE]
     }
 ]
 

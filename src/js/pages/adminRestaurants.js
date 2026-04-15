@@ -286,7 +286,7 @@ export default function loadAdminRestaurants(options = { page: 1 }) {
                 if (!payload) return;
 
                 const response = await ApiRequest.saveRestaurant(payload);
-
+                console.log('!!!!!!!!!!!!', response)
                 if (response?.restaurant?.id) {
                     await loadRestaurants();
                 }

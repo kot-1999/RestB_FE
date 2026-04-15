@@ -15,57 +15,76 @@ html(lang="en")
     content#content
       include pages/home
 
+    include pages/components/footer
+
     div(style="display:none")
       template#auth-template
         include pages/auth
+
     div(style="display:none")
       template#profile-template
         include pages/profile
+
     div(style="display:none")
       template#home-template
         include pages/home
+
     div(style="display:none")
       template#restaurant-details-template
         include pages/restaurantDetails
+
     div(style="display:none")
       template#dashboard-template
         include pages/dashboard
+
     div(style="display:none")
       template#login-component-template
         include pages/components/authForms/login
+
     div(style="display:none")
       template#register-component-template
         include pages/components/authForms/register
+
     div(style="display:none")
       template#forgot-password-component-template
         include pages/components/authForms/forgotPassword
+
     div(style="display:none")
       template#restaurant-card-template
         include pages/components/restaurantCard
+
     div(style="display:none")
       template#dummy-profile-template
         include pages/components/profileCard
+
     div(style="display:none")
       template#reset-password-template
         include pages/resetPassword
+
     div(style="display:none")
       template#register-employee-template
         include pages/registerEmployee
+
     div(style="display:none")
       template#mybooking-template
-            include pages/bookings
+        include pages/bookings
+
     div(style="display:none")
       template#admin-restaurants-template
-            include pages/adminrestaurants
+        include pages/adminrestaurants
+
     div(style="display:none")
       template#bookings-manage
         include pages/bookingsManage
+
     div(style="display:none")
       template#booking-card-template
         include pages/components/bookingCard
+
     div(style="display:none")
       template#restaurant-booking-card-template
         include pages/components/restaurantBookingCard
+
     div(style="display:none")
       template#header-with-brand-template
         include pages/components/headerWithBrand

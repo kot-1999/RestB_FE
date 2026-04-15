@@ -134,7 +134,10 @@ export default async function loadBookings(options = { page: 1 }) {
             if (!message) return;
 
             const bId     = $card.data('id');
-            await ApiRequest.updateBooking(bId, { message })
+            const newBooking = await ApiRequest.updateBooking(bId, { message })
+
+            console.log('???????????', newBooking)
+
             fetchBookings(options.page)
 
         });

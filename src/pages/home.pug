@@ -1,64 +1,63 @@
 section.dashboard-page.home-page
-    //- ── TOP FILTER BAR ──────────────────────────────────────────────────
     .home-filter-bar
         .home-filter-bar-inner
-            //- Brand: h1 + tagline on one line
             .home-brand
                 h1 RestBoo
                 p.home-sidebar-copy Find the right restaurant for your date, location, and party size — then book in a few clicks.
 
-            //- Filter row: all fields stretch to fill width
             form.home-filters.js-home-filters
-                .home-filter-group
-                    label.home-filter-label(for="restaurant-search") Search
-                    input#restaurant-search.home-input.js-filter-search(
-                        type="text"
-                        placeholder="Where? e.g. London Bridge"
-                    )
+                .home-filter-row.home-filter-row--top
+                    .home-filter-group.is-search
+                        label.home-filter-label(for="restaurant-search") Search
+                        input#restaurant-search.home-input.js-filter-search(
+                            type="text"
+                            placeholder="Where? e.g. London Bridge"
+                        )
 
-                .home-filter-group
-                    label.home-filter-label(for="restaurant-date") Date
-                    input#restaurant-date.home-input.js-filter-date(
-                        type="date"
-                    )
+                    .home-filter-group.is-radius
+                        label.home-filter-label(for="restaurant-radius") Radius
+                        .home-range-wrap
+                            input#restaurant-radius.home-range.js-filter-radius(
+                                type="range"
+                                min="1"
+                                max="100"
+                                step="5"
+                                value="20"
+                            )
+                            span.home-range-badge.js-radius-value 20 km
 
-                .home-filter-group
-                    label.home-filter-label(for="restaurant-guests") Guests
-                    input#restaurant-guests.home-input.js-filter-guests(
-                        type="number"
-                        min="1"
-                        max="20"
-                        value="2"
-                        placeholder="Guests"
-                    )
+                .home-filter-row.home-filter-row--bottom
+                    .home-filter-group
+                        label.home-filter-label(for="restaurant-date") Date
+                        input#restaurant-date.home-input.js-filter-date(
+                            type="date"
+                        )
 
-                .home-filter-group
-                    label.home-filter-label(for="restaurant-radius") Radius
-                    select#restaurant-radius.home-select.js-filter-radius
-                        option(value="2") 2km
-                        option(value="5") 5km
-                        option(value="10") 10km
-                        option(value="20") 20km
-                        option(value="50") 50km
-                        option(value="100" selected) 100km
+                    .home-filter-group
+                        label.home-filter-label(for="restaurant-guests") Guests
+                        input#restaurant-guests.home-input.js-filter-guests(
+                            type="number"
+                            min="1"
+                            max="20"
+                            value="2"
+                            placeholder="Guests"
+                        )
 
-                .home-filter-group
-                    label.home-filter-label(for="restaurant-category") Category
-                    input#restaurant-category.home-input.js-category-input(
-                        type="text"
-                        list="restaurant-category-options"
-                        placeholder="Type to add category"
-                        autocomplete="off"
-                    )
-                    datalist#restaurant-category-options.js-category-datalist
+                    .home-filter-group
+                        label.home-filter-label(for="restaurant-category") Category
+                        input#restaurant-category.home-input.js-category-input(
+                            type="text"
+                            list="restaurant-category-options"
+                            placeholder="Type to add category"
+                            autocomplete="off"
+                        )
+                        datalist#restaurant-category-options.js-category-datalist
 
-                .home-filter-actions
-                    button.home-submit-btn(type="submit") Search
+                    .home-filter-actions
+                        button.home-submit-btn(type="submit") Search
 
-            //- Selected category chips sit below the filter row
             .home-category-selected.js-selected-categories#selected-categories
 
-    //- ── RESULTS AREA ────────────────────────────────────────────────────
     .home-main
         .dash-card
             .dash-card-head
@@ -78,5 +77,5 @@ section.dashboard-page.home-page
                                 .skeleton-line.meta
 
             .restaurants-container
-                // Restaurant cards injected here
+
     div#pagination

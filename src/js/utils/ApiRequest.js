@@ -236,6 +236,35 @@ export default class ApiRequest {
         }
     }
 
+    static async inviteEmployee(body) {
+        try {
+            const authData = LocalStorage.get('auth');
+            if (!authData?.token) {
+                throw new Error('inviteEmployee - Token is required for this action');
+            }
+
+            const response = await fetch(`${this.baseUrl}/b2b/v1/authorization/employee/invite`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    Authorization: `Bearer ${authData.token}`
+                },
+                body: JSON.stringify({
+                    email: body.email,
+                    restaurantID: body.restaurantID
+                })
+            });
+
+            await ApiRequest.checkResponse(response);
+            const res = await response.json();
+            showSuccess(res.message);
+            return res;
+        } catch (error) {
+            showError(error);
+            return null;
+        }
+    }
+
     // B2B & B2C: User logout
     // ENDPOINTS: GET /b2c/v1/authorization/logout, GET /b2b/v1/authorization/logout
     static async logout() {
@@ -339,18 +368,49 @@ export default class ApiRequest {
         try {
             const queryString = new URLSearchParams();
 
-            if (queryParams.search) queryString.append("search", queryParams.search);
-            if (queryParams.radius) queryString.append("radius", queryParams.radius);
-            if (queryParams.brandID) queryString.append("brandID", queryParams.brandID);
-            if (queryParams.date) queryString.append("date", queryParams.date);
-
-            if (queryParams.statuses && Array.isArray(queryParams.statuses) && queryParams.statuses.length > 0) {
-                queryParams.statuses.forEach(status => queryString.append('statuses', status));
+            if (queryParams.search) {
+                queryString.append("search", queryParams.search);
             }
 
+            if (queryParams.radius) {
+                queryString.append("radius", queryParams.radius);
+            }
 
-            if (queryParams.page) queryString.append("page", queryParams.page);
-            if (queryParams.limit) queryString.append("limit", queryParams.limit);
+            if (queryParams.brandID) {
+                queryString.append("brandID", queryParams.brandID);
+            }
+
+            if (queryParams.date) {
+                queryString.append("date", queryParams.date);
+            }
+
+            if (
+                queryParams.statuses &&
+                Array.isArray(queryParams.statuses) &&
+                queryParams.statuses.length > 0
+            ) {
+                queryParams.statuses.forEach((status) => {
+                    queryString.append("statuses[]", status);
+                });
+            }
+
+            if (
+                queryParams.categories &&
+                Array.isArray(queryParams.categories) &&
+                queryParams.categories.length > 0
+            ) {
+                queryParams.categories.forEach((category) => {
+                    queryString.append("categories[]", category);
+                });
+            }
+
+            if (queryParams.page) {
+                queryString.append("page", queryParams.page);
+            }
+
+            if (queryParams.limit) {
+                queryString.append("limit", queryParams.limit);
+            }
 
             const url = queryString.toString()
                 ? `${this.baseUrl}/b2c/v1/restaurant/?${queryString.toString()}`
@@ -501,6 +561,8 @@ export default class ApiRequest {
 
             await ApiRequest.checkResponse(response);
             const res = await response.json();
+            console.log('!!!!!!!!!!!!!', res)
+            showSuccess(res.message)
             return res;
         } catch (error) {
             showError(error);
@@ -606,7 +668,6 @@ export default class ApiRequest {
             await ApiRequest.checkResponse(response)
             const res = await response.json()
 
-            showSuccess(res.message)
             return res
         } catch (err) {
             showError(err)

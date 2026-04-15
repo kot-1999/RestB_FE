@@ -675,5 +675,44 @@ export default class ApiRequest {
         }
     }
 
+    static async updateBrand(brandID, body) {
+        try {
+            const authData = LocalStorage.get('auth');
+            if (!authData?.token) {
+                throw new Error('updateBrand - Token is required for this action');
+            }
+
+            if (!brandID) {
+                throw new Error('updateBrand - brandID is required');
+            }
+
+            if (!body || Object.keys(body).length === 0) {
+                throw new Error('updateBrand - At least one field must be provided');
+            }
+
+            const response = await fetch(
+                `${this.baseUrl}/b2b/v1/brand/${params.brandID}`,
+                {
+                    method: 'PATCH', // typically used for partial updates
+                    headers: {
+                        'Content-Type': 'application/json',
+                        Authorization: `Bearer ${authData.token}`
+                    },
+                    body: JSON.stringify({
+                        name: body.name ?? undefined,
+                        logoURL: body.logoURL ?? undefined,
+                    })
+                }
+            );
+
+            await ApiRequest.checkResponse(response);
+            const res = await response.json();
+            showSuccess(res.message || 'Brand updated successfully');
+            return res;
+        } catch (error) {
+            showError(error);
+            return null;
+        }
+    }
 }
 

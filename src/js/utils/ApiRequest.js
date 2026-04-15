@@ -236,6 +236,35 @@ export default class ApiRequest {
         }
     }
 
+    static async inviteEmployee(body) {
+        try {
+            const authData = LocalStorage.get('auth');
+            if (!authData?.token) {
+                throw new Error('inviteEmployee - Token is required for this action');
+            }
+
+            const response = await fetch(`${this.baseUrl}/b2b/v1/authorization/employee/invite`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    Authorization: `Bearer ${authData.token}`
+                },
+                body: JSON.stringify({
+                    email: body.email,
+                    restaurantID: body.restaurantID
+                })
+            });
+
+            await ApiRequest.checkResponse(response);
+            const res = await response.json();
+            showSuccess(res.message);
+            return res;
+        } catch (error) {
+            showError(error);
+            return null;
+        }
+    }
+
     // B2B & B2C: User logout
     // ENDPOINTS: GET /b2c/v1/authorization/logout, GET /b2b/v1/authorization/logout
     static async logout() {
@@ -532,6 +561,8 @@ export default class ApiRequest {
 
             await ApiRequest.checkResponse(response);
             const res = await response.json();
+            console.log('!!!!!!!!!!!!!', res)
+            showSuccess(res.message)
             return res;
         } catch (error) {
             showError(error);
@@ -637,7 +668,6 @@ export default class ApiRequest {
             await ApiRequest.checkResponse(response)
             const res = await response.json()
 
-            showSuccess(res.message)
             return res
         } catch (err) {
             showError(err)

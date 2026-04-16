@@ -36,11 +36,40 @@
                 span {{customerPhone}}
 
     // ── CHAT ─────────────────────────────────────────────────────────────
-    .bc-chat
+    .bc-chat(style="position: relative;")
         .bc-chat-messages
-        .bc-chat-input-row
-            input.bc-chat-input(type="text" placeholder="Type a message… send with a status button below")
-            button.bc-chat-send.js-chat-send(title="Queue message") &#9658;
+
+        //- Emoji Picker Window
+        .bc-emoji-picker(style="display: none; position: absolute; bottom: 50px; right: 10px; background: #1c1d22; border: 1px solid rgba(255,255,255,0.1); padding: 10px; border-radius: 8px; z-index: 100; grid-template-columns: repeat(5, 1fr); gap: 10px; box-shadow: 0 4px 12px rgba(0,0,0,0.5);")
+            span.emoji-btn(style="cursor: pointer; font-size: 1.2rem;") 🍴
+            span.emoji-btn(style="cursor: pointer; font-size: 1.2rem;") ❤️
+            span.emoji-btn(style="cursor: pointer; font-size: 1.2rem;") ✅
+            span.emoji-btn(style="cursor: pointer; font-size: 1.2rem;") ⚠️
+            span.emoji-btn(style="cursor: pointer; font-size: 1.2rem;") ✉️
+            span.emoji-btn(style="cursor: pointer; font-size: 1.2rem;") 🍷
+            span.emoji-btn(style="cursor: pointer; font-size: 1.2rem;") ⭐
+            span.emoji-btn(style="cursor: pointer; font-size: 1.2rem;") 🕒
+            span.emoji-btn(style="cursor: pointer; font-size: 1.2rem;") 📞
+            span.emoji-btn(style="cursor: pointer; font-size: 1.2rem;") 🤝
+
+        //- UNIFIED CHAT ROW
+        .bc-chat-input-row(style="display: flex; background: rgba(255,255,255,0.03); border-top: 1px solid rgba(255,255,255,0.05); border-bottom: 1px solid rgba(255,255,255,0.05); align-items: stretch;")
+
+            //- Typing Area
+            input.bc-chat-input(type="text" placeholder="Type a message…" style="flex: 1; background: transparent; border: none; color: #fff; padding: 15px; outline: none;")
+
+            //- Vertical Line
+            div(style="width: 1px; background: rgba(255,255,255,0.05);")
+
+            //- Emoji Trigger
+            button.bc-emoji-trigger(type="button" style="background: transparent; border: none; color: #fff; padding: 0 25px; cursor: pointer; transition: background 0.2s;") 😊
+
+            //- Vertical Line
+            div(style="width: 1px; background: rgba(255,255,255,0.05);")
+
+            //- Send Message (Black with Yellow text, wider)
+            button.bc-chat-send.js-chat-send(type="button" style="background: #000; color: #facc15; border: none; padding: 0 60px; font-weight: bold; cursor: pointer; white-space: nowrap; font-size: 0.9rem; text-transform: uppercase; letter-spacing: 0.5px; transition: all 0.2s ease; min-width: 200px;") Send Message
+
 
     // ── ACTIONS ──────────────────────────────────────────────────────────
     .bc-actions

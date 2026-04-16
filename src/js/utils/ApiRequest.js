@@ -13,7 +13,6 @@ export default class ApiRequest {
     }
 
 
-
     // SHARED: File upload
     // ENDPOINT: PUT /upload-url
     static async uploadFile(file) {
@@ -53,7 +52,6 @@ export default class ApiRequest {
             return null
         }
     }
-
 
 
     // B2B & B2C: User registration
@@ -201,7 +199,7 @@ export default class ApiRequest {
                         Authorization: `Bearer ${token}`
                     },
                     method: 'POST',
-                    body: JSON.stringify({ newPassword })
+                    body: JSON.stringify({newPassword})
                 });
             await ApiRequest.checkResponse(response)
             const res = await response.json()
@@ -310,7 +308,7 @@ export default class ApiRequest {
                 `${this.baseUrl}/${authData?.role ? 'b2b' : 'b2c'}/v1/${authData?.role ? 'admin' : 'user'}/${id ?? authData.id}`, {
                     headers: {
                         'Content-Type': 'application/json',
-                        ...(authData.token && { Authorization: `Bearer ${authData.token}` }),
+                        ...(authData.token && {Authorization: `Bearer ${authData.token}`}),
                     },
                     method: 'GET'
                 });
@@ -326,8 +324,6 @@ export default class ApiRequest {
     }
 
 
-
-
     // B2B & B2C: Update user profile
     // ENDPOINTS: PATCH /b2c/v1/user/, PATCH /b2b/v1/admin/
     static async updateProfile(data) {
@@ -341,10 +337,10 @@ export default class ApiRequest {
                 `${this.baseUrl}/${authData?.role ? 'b2b' : 'b2c'}/v1/${authData?.role ? 'admin' : 'user'}`, {
                     headers: {
                         'Content-Type': 'application/json',
-                        ...(authData.token && { Authorization: `Bearer ${authData.token}` }),
+                        ...(authData.token && {Authorization: `Bearer ${authData.token}`}),
                     },
                     method: 'PATCH',
-                    body:  JSON.stringify({
+                    body: JSON.stringify({
                         firstName: data.firstName,
                         lastName: data.lastName,
                         email: data.email,
@@ -431,6 +427,7 @@ export default class ApiRequest {
             return null;
         }
     }
+
     // B2B & B2C: Get bookings
     // ENDPOINTS: GET /b2c/v1/booking/, GET /b2b/v1/booking/{restaurantID}
     static async getBookings(queryParams = {}, restaurantID = null) {
@@ -532,6 +529,7 @@ export default class ApiRequest {
             return null;
         }
     }
+
     // B2B: Get dashboard data
     // ENDPOINT: GET /b2b/v1/dashboard/
     static async getDashboard(queryParams = {}) {
@@ -587,6 +585,7 @@ export default class ApiRequest {
             return null;
         }
     }
+
     // ... getRestaurant method above ...
 
     // B2B: Update booking (status and/or message)
@@ -617,6 +616,7 @@ export default class ApiRequest {
             return null;
         }
     }
+
     // B2B: Update booking (status and/or message)
     // ENDPOINT: PATCH /b2b/v1/booking/{bookingID}
     // Note: status is always required by the API. message is optional.
@@ -691,16 +691,16 @@ export default class ApiRequest {
             }
 
             const response = await fetch(
-                `${this.baseUrl}/b2b/v1/brand/${params.brandID}`,
+                `${this.baseUrl}/b2b/v1/brand/${brandID}`,
                 {
-                    method: 'PATCH', // typically used for partial updates
+                    method: 'PATCH',
                     headers: {
                         'Content-Type': 'application/json',
                         Authorization: `Bearer ${authData.token}`
                     },
                     body: JSON.stringify({
                         name: body.name ?? undefined,
-                        logoURL: body.logoURL ?? undefined,
+                        logoURL: body.logoURL ?? undefined
                     })
                 }
             );
@@ -715,4 +715,3 @@ export default class ApiRequest {
         }
     }
 }
-

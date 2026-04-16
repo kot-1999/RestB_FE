@@ -26,4 +26,6 @@ form#updateProfileForm
             label Role
             input(type="text" name="role" value="{{admin.role}}" readonly)
 
-    button(type="submit") Update Profile
+    div.profile-actions(style="display: flex; flex-direction: column; gap: 10px; margin-top: 20px;")
+        button(type="submit" style="background: #facc15; color: #000; border: none; padding: 10px; border-radius: 4px; cursor: pointer; font-weight: bold;") Update Profile
+        button.btn-delete-profile(type="button" style="background: transparent; border: 1px solid #ff4d4d; color: #ff4d4d; padding: 10px; border-radius: 4px; cursor: pointer; font-weight: bold;") Delete Profile

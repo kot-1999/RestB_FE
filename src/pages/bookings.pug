@@ -1,39 +1,41 @@
 div.dashboard-page
-  .bookings-layout-container
+    .bookings-layout-container
 
-    // Header
-    main.bookings-main-content
-      div#brand-admin-header.trackable
+        // Header
+        main.bookings-main-content
+            div#brand-admin-header.trackable
 
 
-    aside.home-sidebar
-      .home-sidebar-panel
-        .home-sidebar-head
-          h1 RestBoo
-        p.home-sidebar-copy Filter bookings.
+        aside.home-sidebar
+            .home-sidebar-panel
+                .home-sidebar-head
+                    h1 RestBoo
+                p.home-sidebar-copy Filter bookings.
 
-        .home-filter-group
-          label.home-filter-label(for="filter-from") START DATE
-          input#filter-from.home-input(type="date")
+                .home-filter-group
+                    label.home-filter-label(for="filter-from") START DATE
+                    input#filter-from.home-input(type="date")
 
-        .home-filter-group
-          label.home-filter-label(for="filter-to") END DATE
-          input#filter-to.home-input(type="date")
+                .home-filter-group
+                    label.home-filter-label(for="filter-to") END DATE
+                    input#filter-to.home-input(type="date")
 
-        .home-filter-group
-          label.home-filter-label(for="filter-status") STATUS
-          select#filter-status.home-select
-            option(value="") All Statuses
-            option(value="Pending") Pending
-            option(value="Approved") Approved
-            option(value="Completed") Completed
-            option(value="Cancelled") Cancelled
-            option(value="NoShow") No Show
+                .home-filter-group
+                    label.home-filter-label(for="filter-status") STATUS
+                    select#filter-status.home-select
+                        option(value="") All Statuses
+                        option(value="Pending") Pending
+                        option(value="Approved") Approved
+                        option(value="Completed") Completed
+                        option(value="Cancelled") Cancelled
+                        option(value="NoShow") No Show
 
-        button#apply-filters.home-submit-btn APPLY FILTERS
+                button#apply-filters.home-submit-btn APPLY FILTERS
 
-      // Bookings grid outside the header
-    .bookings-grid#bookings-list
-        // Booking cards will be rendered here by JavaScript
+            // Bookings grid outside the header
+        .bookings-grid#bookings-list
+            // Booking cards will be rendered here by JavaScript
 
-  div#pagination
+    div#pagination
+
+include ./components/headerWithBrand.pug

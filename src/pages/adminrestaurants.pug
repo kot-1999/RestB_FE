@@ -1,27 +1,19 @@
 div.admin-restaurants-page
     .ar-shell
-        .ar-page-head
-            .ar-page-copy
-                h1 Manage Restaurants
-                p Create restaurants, update details, and manage gallery images.
+        main.ar-main-content
+            div#brand-editor-header.trackable
 
             .ar-page-actions
                 button#ar-new-btn.ar-primary-btn(type="button") Create New Restaurant
 
-        #ar-brand-strip.ar-brand-strip
-            .ar-brand-card
-                .ar-brand-copy
-                    span.ar-brand-label Brand
-                    strong#ar-brand-name Loading...
-                .ar-brand-logo-wrap
-                    img#ar-brand-logo.ar-brand-logo(src="/assets/img/default-avatar.png" alt="Brand logo")
+            #restaurants-empty.ar-empty(style="display:none;")
+                h3 No restaurants yet
+                p Create your first restaurant to get started.
 
-        #restaurants-empty.ar-empty(style="display:none;")
-            h3 No restaurants yet
-            p Create your first restaurant to get started.
+            #restaurants-list.ar-list
+                //- Restaurant editor cards injected here
 
-        #restaurants-list.ar-list
-            //- Restaurant editor cards injected here
+        div#pagination
 
-    div#pagination
-
+    include ./components/brandEditorHeader.pug
+    include ./components/restaurantAdminCard.pug

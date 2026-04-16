@@ -10,7 +10,6 @@ export default {
         adminrestaurants: () => document.getElementById("admin-restaurants-template").innerHTML,
         registerEmployee: () => document.getElementById("register-employee-template").innerHTML,
         manageBookings: () => document.getElementById("bookings-manage").innerHTML,
-
     },
     component: {
         login: () => document.getElementById('login-component-template').innerHTML,
@@ -20,7 +19,8 @@ export default {
         restaurantCard: () => document.getElementById('restaurant-card-template').innerHTML,
         bookingCard: () => document.getElementById('booking-card-template').innerHTML,
         headerWithBrand: () => document.getElementById('header-with-brand-template').innerHTML,
-        restaurantBookingCard: () => document.getElementById('restaurant-booking-card-template').innerHTML
+        restaurantBookingCard: () => document.getElementById('restaurant-booking-card-template').innerHTML,
+        restaurantAdminCard: () => document.getElementById('restaurant-admin-card-template').innerHTML,
+        brandEditorHeader: () => document.getElementById('brand-editor-header-template').innerHTML
     }
 }
-

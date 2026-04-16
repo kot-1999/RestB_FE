@@ -7,7 +7,7 @@ div.dashboard-page
             .kpi
                 p.kpi-label Total bookings
                 p.kpi-value 0
-                p.kpi-meta#totalBookingsMeta This week
+                p.kpi-meta#totalBookingsMeta Selected range
             .kpi
                 p.kpi-label Pending bookings
                 p.kpi-value 0
@@ -15,7 +15,7 @@ div.dashboard-page
             .kpi
                 p.kpi-label Cancelled
                 p.kpi-value 0
-                p.kpi-meta#cancelledMeta This week
+                p.kpi-meta#cancelledMeta Selected range
             .kpi
                 p.kpi-label People booked
                 p.kpi-value 0
@@ -24,10 +24,11 @@ div.dashboard-page
         // ===== Chart card =====
         .dash-card
             .dash-card-head
-                h2#chartTitle Weekly bookings
+                h2#chartTitle Booking activity
                 .dash-card-actions
-                    button.dash-chip.is-active(type="button") Past 7 days
-                    button.dash-chip(type="button") Past 30 days
+                    .dash-date-range
+                        input#dateRange.dash-date-input(type="text" placeholder="Select date range" readonly)
+                        button#applyDateFilter.dash-chip(type="button") Apply
             .dash-chart
                 canvas#bookingsChart(width="400" height="400")
 
@@ -38,6 +39,7 @@ div.dashboard-page
                     label Restaurant:
                     .check-row#restaurantFilter
                         // Dynamically populated by JS
+
                 .filter-group
                     label Show Only:
                     .check-row
@@ -53,3 +55,5 @@ div.dashboard-page
                         label.check
                             input(type="checkbox" name="showOnly" value="cancelledUser")
                             span Canceled by User
+
+include ./components/headerWithBrand.pug

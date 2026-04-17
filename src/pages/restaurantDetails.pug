@@ -45,7 +45,7 @@ div.restaurant-book-page
                     ) Confirm Booking
                     p#rb-msg.rb-msg
 
-        //- ── RIGHT: DETAILS / IMAGE / GALLERY / REVIEWS ───────────────
+        //- ── RIGHT: DETAILS / IMAGE / GALLERY / REVIEWS / MAP ─────────
         section.rb-main-flow
             .rb-top-row
                 .rb-panel.rb-details
@@ -82,13 +82,30 @@ div.restaurant-book-page
                         p A little peek before you book.
 
                     .rb-gallery-grid#rb-gallery-grid
-                        a.rb-shot(href="#")
-                            img(
-                                src="/assets/img/restaurant2.jpg"
-                                alt="Loading gallery image"
+                        //- Dynamically populated
+
+                //- ── MAP ───────────────────────────────────────────────
+                section.rb-map-section
+                    .rb-section-title
+                        h2 Find Us
+                        p See exactly where the restaurant is and get directions.
+
+                    .rb-map-card
+                        .rb-map-frame-wrap
+                            iframe#rb-map-frame.rb-map-frame(
+                                src=""
+                                loading="lazy"
+                                referrerpolicy="no-referrer-when-downgrade"
+                                allowfullscreen
                             )
 
-                //- ── REVIEWS (mock, kept intentionally) ───────────────
+                        .rb-map-actions
+                            a#rb-directions-link.rb-btn(
+                                href="#"
+                                target="_blank"
+                                rel="noopener noreferrer"
+                            ) Get Directions
+                //- ── REVIEWS ───────────────────────────────────────────
                 section.rb-reviews
                     .rb-section-title
                         h2 Reviews
@@ -112,3 +129,15 @@ div.restaurant-book-page
                                 strong Emma
                                 span.rb-stars ★★★★☆
                             p.rb-review-text “Really nice place for a casual dinner — the ramen was unreal.”
+
+
+
+    //- ── LIGHTBOX ──────────────────────────────────────────────────────
+    .rb-lightbox#rb-lightbox(hidden)
+        button.rb-lightbox-close#rb-lightbox-close(type="button" aria-label="Close image viewer") ×
+        button.rb-lightbox-nav.rb-lightbox-prev#rb-lightbox-prev(type="button" aria-label="Previous image") ‹
+        .rb-lightbox-stage
+            img#rb-lightbox-image.rb-lightbox-image(src="" alt="Expanded gallery image")
+        button.rb-lightbox-nav.rb-lightbox-next#rb-lightbox-next(type="button" aria-label="Next image") ›
+
+include ./components/headerWithBrand.pug

@@ -1,0 +1,22 @@
+script(type="x-tmpl-mustache" id="brand-editor-header-template")
+    .dash-header.ar-brand-editor-card(data-brand-id="{{id}}")
+        .dash-title.ar-brand-editor-main
+            .ar-brand-edit-fields
+                input.ar-brand-name-input.js-brand-name-input(
+                    type="text"
+                    value="{{name}}"
+                    placeholder="Brand name"
+                )
+                p.ar-brand-editor-sub Update your brand name and logo for the admin experience.
+
+            .ar-brand-editor-actions
+                label.ar-brand-upload-btn
+                    | Choose Logo
+                    input.js-brand-logo-input(type="file" accept="image/*")
+
+                button.ar-primary-btn.js-update-brand(type="button") Update Brand
+
+        div.dash-brand-minimal.ar-brand-editor-side
+            .dash-brand-label.js-brand-name-preview {{name}}
+            .dash-brand-logo
+                img.js-brand-logo-preview(src="{{logoURL}}" alt="{{name}} logo")

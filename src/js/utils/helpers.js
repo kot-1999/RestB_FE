@@ -194,7 +194,9 @@ export function renderHeaderWithBrand(brand, title, secondTitle) {
         $headerWithBrand = $('#brand-user-header')
     }
     const template = Template.component.headerWithBrand()
-    $headerWithBrand.replaceWith(Mustache.render(template, { ...brand, title, secondTitle }))
+    $headerWithBrand.html(
+        Mustache.render(template, { ...brand, title, secondTitle })
+    )
 }
 
 export function authRequired() {

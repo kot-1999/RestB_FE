@@ -1,270 +1,206 @@
-# RestB Frontend
+RestB Frontend
 
-A simple website built with Pug templates that compiles to HTML.
+Restaurant booking app
 
-## How It Works
+Content
+About RestB Frontend
+How to start
+Prerequisites
+Run application
+Useful links
+Project Structure
+Frontend Features
+Pages Overview
+Gallery
+Architecture
+Team
+License
+About RestB Frontend
 
-- **Build**: Node.js converts Pug files to HTML
-- **Run**: Browser shows the HTML files
-- **Backend**: Separate - talks through APIs
+RestB Frontend is the client-side application for the RestBoo restaurant booking platform. It provides a structured and scalable user interface for customers, administrators, and staff to interact with the system.
 
-## Files
+The frontend is designed to work seamlessly with the RestBoo backend API, enabling real-time booking management, restaurant discovery, and administrative control.
 
-```
+The application focuses on delivering a clean, responsive, and intuitive user experience while maintaining a modular and maintainable codebase. It separates concerns between templates, logic, and API communication, ensuring scalability as the platform evolves.
+
+The frontend supports:
+
+Restaurant browsing and filtering for users
+Real-time booking creation and management
+Administrative dashboards for restaurant and staff management
+Brand and restaurant configuration tools
+Role-based UI rendering for User, Admin, and Staff
+
+Overall, the frontend complements the backend by providing a modern interface that simplifies complex booking workflows and operational tasks.
+
+How to start
+Prerequisites
+
+Ensure the following are installed on your system:
+
+Node.js (v18 or higher recommended)
+npm (comes with Node.js)
+Run application
+1. Clone the repository
+   git clone https://github.com/<your-username>/RestB_FE.git
+2. Enter the project directory
+   cd RestB_FE
+3. Install dependencies
+   npm install
+4. Run the development environment
+   npm run devmon
+
+The application will be available at:
+
+http://localhost:3055
+
+📝 The frontend connects to the backend API (default: http://localhost:3000). Ensure the backend is running.
+
+Useful links
+http://localhost:3055
+→ Frontend application
+http://localhost:3000
+→ Backend API
+http://localhost:3000/api/docs
+→ Swagger API documentation
+Project Structure
 RestB_FE/
-|  src/
-|     ├ index.pug
-|     ├ css/
-|     │   └ main.css
-|     ├ js/
-|     │   └ app.js
-|     └ assets/
-├── dist/                # Built website (deploy this)
-├── package.json         # Project settings
-├── package-lock.json    # Dependency lock
-├── instructions.txt     # Setup guide
-└── README.md           # This file
-```
+│
+├── src/
+│   ├── views/
+│   │   ├── pages/               # Page templates
+│   │   └── components/          # Reusable UI components
+│   │
+│   ├── js/
+│   │   ├── pages/               # Page logic
+│   │   ├── components/          # UI logic
+│   │   └── utils/               # API layer, helpers
+│   │
+│   ├── css/                     # Global styles
+│   └── assets/                  # Images and static files
+│
+├── dist/                        # Compiled output (deploy this)
+├── package.json
+├── package-lock.json
+├── README.md
+Frontend Features
+Template System
+Uses Pug for structured templating
+Uses Mustache for dynamic rendering
+Clear separation between structure and data
+API Layer
+Centralised API handling via ApiRequest.js
+Handles authentication tokens and error management
+Supports both B2C and B2B endpoints
+Component-Based UI
 
-## Quick Start
+Reusable components including:
 
-### 1. Install
-```bash
-npm install
-```
+Restaurant cards
+Booking cards
+Admin restaurant editor
+Brand editor
+State Handling
+Lightweight state via DOM + LocalStorage
+No heavy frontend framework required
+File Uploads
+Supports image uploads via presigned URLs
+Integrated with backend S3-compatible storage
+Role-Based UI
+User: booking + browsing
+Admin: full management access
+Staff: limited booking management
+Pages Overview
+AUTH
 
-### 2. Run Development Server
-```bash
-npm run devmon
-```
-This builds your site and starts it at `http://localhost:3000`
+/auth/login
+User, Admin, Staff login
 
-### 3. Make Changes
-- Edit files in `src/`
-- Changes auto-rebuild and refresh
+/auth/register
+User and Admin registration
 
-## Commands
+/auth/forgotPassword
+Password reset flow
 
-```bash
-npm run build        # Build the website
-npm run dev          # Build and serve
-npm run devmon       # Build, serve, and watch changes
-npm run clean        # Delete build folder
-```
+USER
 
-## How to Add a New Page
+/restaurants
 
-1. Copy `src/views/pages/index.pug` to `src/views/pages/yourpage.pug`
-2. Edit the new file
-3. Run `npm run build`
-4. Visit `http://localhost:3000/pages/yourpage.html`
+Restaurant list
+Search and filtering
 
-## Deploy
+/restaurants/:id
 
-Upload the `dist/` folder to any web host or simply open `dist/index.html`.
+Restaurant details
+Booking form
+Gallery and reviews
+USER PROFILE
 
-That's it!
+/profile
 
+User settings
 
-## Pages overview
+/profile/bookings
 
-### IMPLEMENTED (Watch api docs)
-`/api/ b2c | b2b /auth/login`             USER, ADMIN, EMPLOYEE
-`/api/ b2c | b2b /auth/register`          USER, ADMIN, EMPLOYEE
-`/api/ b2c | b2b /auth/forgotPassword`    USER, ADMIN, EMPLOYEE
-`/api/ b2c | b2b /auth/resetPassword`     USER, ADMIN, EMPLOYEE
+Booking history
+Status tracking
+Cancel / update bookings
+ADMIN / STAFF DASHBOARD
 
-Fir this two UPDATE must be added, and phone number field must be created
-`/api/b2c/user`                           USER, ADMIN, EMPLOYEE (GET, DELETE)
-`/api/b2b/admin`                          USER, ADMIN, EMPLOYEE (GET, DELETE)
+/admin
 
-### COMMON
-`api/b2c/bookings/:id`
-- UPDATE (USER, ADMIN, EMPLOYEE) Update booking status
+Dashboard overview
+BRAND MANAGEMENT
 
-### B2C
+/admin/brand
 
-`/api/b2c/restaurants/`
-- GET (PUBLIC) List of restaurants (restaurants, addresses, brands, booking_daily_summary)
+Update brand name
+Upload logo
+RESTAURANT MANAGEMENT
 
-`api/b2c/restaurants/:id`
-- GET (PUBLIC) Restaurant details (restaurants, addresses, brands, booking_daily_summary)
+/admin/restaurants
 
-`api/b2c/bookings`
-- GET (USER) List of user's bookings (bookings, restaurants, brands)
-- POST (USER) Create new booking
+Create / edit / delete restaurants
+Manage employees
+Upload images
+BOOKINGS MANAGEMENT
 
-### B2B
+/admin/bookings
 
-`/api/b2b/auth/employee`
-- POST (ADMIN) Send invitation to a new admin
-- DELETE (ADMIN) Delete employee admin (admins)
+Manage bookings
+Accept / reject
+Modify booking times
+Gallery
 
-`/api/b2b/auth/employee/register`
-- POST (EMPLOYEE) Register new employee (admins)
+📁 Place screenshots inside: /docs/screenshots/
 
-`/api/b2b/bookings`
-- GET (ADMIN, EMPLOYEE) List of restaurants with short stats about bookings (restaurants, addresses, brands, bookings_daily_summary)
+Homepage & Search
 
-`/api/b2b/bookings/:id`
-- GET (ADMIN, EMPLOYEE) Details of restaurant bookings (restaurants, addresses, brands, bookings)
-- POST (ADMIN, EMPLOYEE) CAN BE ADDED IN FUTURE Add new bookings manually
-- DELETE (ADMIN, EMPLOYEE) CAN BE ADDED IN FUTURE Add new bookings manually
+Filtered Results
 
-`/api/b2b/restaurants`
-- GET (ADMIN, EMPLOYEE) List of restaurant details with brand, employees (restaurants, addresses, brands, restaurant_staff)
+Restaurant Details
 
-`/api/b2b/brands/:id`
-- UPDATE Update brand name / logo
+Booking Flow
 
+Admin – Restaurant Management
 
-# Page Details
+Admin – Brand Editor
 
-## AUTH
+Booking Management
 
-### `/auth/login`
-**Roles:** User, Admin, Staff  
-**Features:**
-- Email + password login
-- Role-based redirect
+Architecture
+![mermaid-diagram.png](../OneDrive/Desktop/q%20movies/mermaid-diagram.png)
 
-### `/auth/register`
-**Roles:** User, Admin  
-**Features:**
-- User registration
-- Admin (brand owner) registration
+Team
 
-### `/auth/forgotPassword`
-**Features:**
-- Password reset flow
+Oleksandr Kashytskyi — sashakashytskyy@gmail.com
 
----
+Idea creator, backend developer, system architect, database designer
 
-## USER (PUBLIC)
+Stephen Lyne — slyne234@gmail.com
 
-### `/restaurants`
-**Role:** User  
-**Features:**
-- Restaurants (locations) list
-- Search
-- Filtering (rating, availability)
-- Sorting
-- Average rating & reviews count
+Frontend developer, UI/UX designer
 
-### `/restaurants/:id`
-**Role:** User  
-**Features:**
-- Restaurant details (address)
-- Uses brand logo
-- Restaurant gallery
-- Availability calendar
-- Booking form
-- Booking rules display
-- Reviews & ratings
+License
 
-### `/brands/:id`
-**Role:** User  
-**Features:**
-- Brand information
-- Brand logo & description
-- Brand gallery
-- List of brand restaurants
-
----
-
-## USER PROFILE
-
-### `/profile`
-**Role:** User  
-**Features:**
-- User settings
-- Contact information
-- Password change
-
-### `/profile/bookings`
-**Role:** User  
-**Features:**
-- Booking list
-- Booking status tracking
-- Cancel booking
-- Approve / reject time change
-- Leave review (after completed booking)
-
----
-
-## ADMIN / STAFF DASHBOARD
-
-### `/admin`
-**Roles:** Admin, Staff  
-**Features:**
-- Dashboard overview
-- Pending bookings
-- Quick actions
-
----
-
-## BRAND MANAGEMENT
-
-### `/admin/brand`
-**Roles:** Admin, Staff  
-**Features:**
-- Brand details
-- Brand logo management
-- Brand gallery
-- Brand settings
-
----
-
-## RESTAURANT (LOCATION) MANAGEMENT
-
-### `/admin/restaurants`
-**Role:** Admin  
-**Features:**
-- List of restaurants under brand
-- Create / edit / delete restaurant
-
-### `/admin/restaurants/:id`
-**Role:** Admin  
-**Features:**
-- Restaurant details (address, photos)
-- Booking rules:
-    - Auto-approval ON/OFF
-    - Max auto-approved bookings
-- Opening hours
-- Employee assignment
-
----
-
-## BOOKINGS
-
-### `/admin/bookings`
-**Roles:** Admin, Staff  
-**Features:**
-- Bookings list
-- Filter by restaurant
-- Accept / reject bookings
-- Propose booking time change:
-    - New date/time
-    - Mandatory reason
-- **Staff access limited to assigned restaurants only**
-
----
-
-## ROLE SUMMARY
-
-### User
-- Browse restaurants
-- Create bookings
-- Manage own bookings
-- Leave reviews
-
-### Admin (Brand Owner)
-- Manage brand
-- Manage restaurants
-- Manage staff
-- Manage all bookings
-
-### Staff
-- Invited by Admin
-- Manage bookings only
-- Limited to assigned restaurants
+This project is licensed under the Apache-2.0 License.

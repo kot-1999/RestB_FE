@@ -93,6 +93,88 @@ function initialiseCategorySelector($card) {
     renderCategoryDropdown($card);
 }
 
+function normaliseGallery(restaurant) {
+    if (Array.isArray(restaurant.gallery)) {
+        return restaurant.gallery
+            .map((item, index) => {
+                if (typeof item === "string") {
+                    return {
+                        id: null,
+                        url: item,
+                        name: `Gallery image ${index + 1}`,
+                        isNew: false
+                    };
+                }
+
+                return {
+                    id: item?.id || null,
+                    url: item?.url || item?.imageURL || item?.photoURL || "",
+                    name: item?.name || `Gallery image ${index + 1}`,
+                    isNew: false
+                };
+            })
+            .filter((item) => item.url);
+    }
+
+    if (Array.isArray(restaurant.photosURL)) {
+        return restaurant.photosURL.map((url, index) => ({
+            id: null,
+            url,
+            name: `Gallery image ${index + 1}`,
+            isNew: false
+        }));
+    }
+
+    return [];
+}
+
+function renderGalleryPreview($card) {
+    const $preview = $card.find(".js-ar-gallery-preview");
+    const gallery = $card.data("gallery") || [];
+
+    if (!$preview.length) return;
+
+    if (!gallery.length) {
+        $preview.html(`<div class="ar-gallery-empty">No images uploaded yet.</div>`);
+        return;
+    }
+
+    $preview.html(
+        gallery.map((image, index) => `
+            <div class="ar-gallery-thumb" data-index="${index}" data-id="${image.id || ""}">
+                <button type="button" class="ar-gallery-preview-btn js-ar-gallery-preview-btn" aria-label="Open gallery image">
+                    <img src="${image.url}" alt="${image.name || `Gallery image ${index + 1}`}">
+                </button>
+                <button type="button" class="ar-gallery-remove js-ar-gallery-remove" aria-label="Delete gallery image">&times;</button>
+            </div>
+        `).join("")
+    );
+}
+
+function ensureGalleryLightbox() {
+    if ($("#ar-gallery-lightbox").length) return;
+
+    $("body").append(`
+        <div id="ar-gallery-lightbox" class="ar-gallery-lightbox" style="display:none;">
+            <button type="button" class="ar-gallery-lightbox-close js-ar-gallery-lightbox-close" aria-label="Close preview">&times;</button>
+            <img class="ar-gallery-lightbox-image" src="" alt="Gallery preview">
+        </div>
+    `);
+}
+
+function openGalleryLightbox(imageUrl, altText = "Gallery preview") {
+    ensureGalleryLightbox();
+    const $lightbox = $("#ar-gallery-lightbox");
+    $lightbox.find(".ar-gallery-lightbox-image").attr("src", imageUrl).attr("alt", altText);
+    $lightbox.fadeIn(150);
+    $("body").addClass("ar-gallery-lightbox-open");
+}
+
+function closeGalleryLightbox() {
+    $("#ar-gallery-lightbox").fadeOut(150);
+    $("body").removeClass("ar-gallery-lightbox-open");
+}
+
 function mapRestaurantToView(restaurant) {
     return {
         ...restaurant,
@@ -155,6 +237,8 @@ function renderStaffRows(staff = []) {
 }
 
 function buildRestaurantPayload($card) {
+    const gallery = ($card.data("gallery") || []).map((image) => image.url);
+
     return {
         name: $card.find(".js-ar-name").val()?.trim() || "",
         description: $card.find(".js-ar-description").val()?.trim() || "",
@@ -162,6 +246,7 @@ function buildRestaurantPayload($card) {
         timeTo: $card.find(".js-ar-close").val() || null,
         autoApprovedBookingsNum: Number($card.find(".js-ar-auto").val() || 0),
         categories: parseCategoryValue($card.find(".js-ar-categories").val()),
+        photosURL: gallery,
         address: {
             building: $card.find(".js-ar-building").val()?.trim() || "",
             street: $card.find(".js-ar-street").val()?.trim() || "",
@@ -185,7 +270,8 @@ function cacheOriginalValues($card) {
         postcode: $card.find(".js-ar-postcode").val() || "",
         country: $card.find(".js-ar-country").val() || "",
         autoApprovedBookingsNum: $card.find(".js-ar-auto").val() || "",
-        bannerURL: $card.find(".js-ar-banner-preview").attr("src") || ""
+        bannerURL: $card.find(".js-ar-banner-preview").attr("src") || "",
+        gallery: JSON.parse(JSON.stringify($card.data("gallery") || []))
     };
 
     $card.data("original", original);
@@ -207,9 +293,11 @@ function resetCardValues($card) {
     $card.find(".js-ar-country").val(original.country);
     $card.find(".js-ar-auto").val(original.autoApprovedBookingsNum);
     $card.find(".js-ar-banner-preview").attr("src", original.bannerURL);
-    $card.find(".ar-gallery-preview").empty();
     $card.find(".js-ar-category-search").val("");
+    $card.find(".js-gallery-input").val("");
 
+    $card.data("gallery", JSON.parse(JSON.stringify(original.gallery || [])));
+    renderGalleryPreview($card);
     initialiseCategorySelector($card);
 }
 
@@ -254,7 +342,12 @@ function initialiseCardUi($scope) {
 
         $card.find(".ar-editor-body").hide();
 
+        if (!$card.data("gallery")) {
+            $card.data("gallery", []);
+        }
+
         initialiseCategorySelector($card);
+        renderGalleryPreview($card);
         cacheOriginalValues($card);
         updateCollapsedSummary($card);
     });
@@ -423,23 +516,105 @@ function bindRestaurantPageEvents() {
         .on("change", ".js-gallery-input", function () {
             const files = Array.from(this.files || []);
             const $card = $(this).closest(".ar-editor-card");
-            const $preview = $card.find(".ar-gallery-preview");
+            const existingGallery = $card.data("gallery") || [];
 
-            $preview.empty();
+            const readFilePromises = files
+                .filter((file) => file.type.startsWith("image/"))
+                .map((file) => {
+                    return new Promise((resolve) => {
+                        const reader = new FileReader();
+                        reader.onload = (e) => {
+                            resolve({
+                                id: null,
+                                url: e.target.result,
+                                name: file.name,
+                                isNew: true,
+                                file
+                            });
+                        };
+                        reader.readAsDataURL(file);
+                    });
+                });
 
-            files.forEach((file) => {
-                if (!file.type.startsWith("image/")) return;
-
-                const reader = new FileReader();
-                reader.onload = (e) => {
-                    $preview.append(`
-                        <div class="ar-gallery-thumb">
-                            <img src="${e.target.result}" alt="${file.name}">
-                        </div>
-                    `);
-                };
-                reader.readAsDataURL(file);
+            Promise.all(readFilePromises).then((newImages) => {
+                $card.data("gallery", [...existingGallery, ...newImages]);
+                renderGalleryPreview($card);
             });
+        });
+
+    $(document)
+        .off("click", ".js-ar-gallery-remove")
+        .on("click", ".js-ar-gallery-remove", async function (e) {
+            e.preventDefault();
+            e.stopPropagation();
+
+            const $thumb = $(this).closest(".ar-gallery-thumb");
+            const $card = $thumb.closest(".ar-editor-card");
+            const index = Number($thumb.data("index"));
+            const gallery = [...($card.data("gallery") || [])];
+            const targetImage = gallery[index];
+
+            if (!targetImage) return;
+
+            if (!targetImage.id) {
+                gallery.splice(index, 1);
+                $card.data("gallery", gallery);
+                renderGalleryPreview($card);
+                return;
+            }
+
+            const confirmed = window.confirm("Delete this gallery image?");
+            if (!confirmed) return;
+
+            try {
+                if (typeof ApiRequest.deleteRestaurantImage === "function") {
+                    const response = await ApiRequest.deleteRestaurantImage(targetImage.id);
+                    if (!response) {
+                        throw new Error("Failed to delete image");
+                    }
+                }
+
+                gallery.splice(index, 1);
+                $card.data("gallery", gallery);
+                renderGalleryPreview($card);
+            } catch (err) {
+                showError(err);
+            }
+        });
+
+    $(document)
+        .off("click", ".js-ar-gallery-preview-btn")
+        .on("click", ".js-ar-gallery-preview-btn", function () {
+            const $thumb = $(this).closest(".ar-gallery-thumb");
+            const $card = $thumb.closest(".ar-editor-card");
+            const index = Number($thumb.data("index"));
+            const gallery = $card.data("gallery") || [];
+            const targetImage = gallery[index];
+
+            if (!targetImage?.url) return;
+            openGalleryLightbox(targetImage.url, targetImage.name || "Gallery image");
+        });
+
+    $(document)
+        .off("click", ".js-ar-gallery-lightbox-close")
+        .on("click", ".js-ar-gallery-lightbox-close", function () {
+            closeGalleryLightbox();
+        });
+
+    $(document)
+        .off("click", "#ar-gallery-lightbox")
+        .on("click", "#ar-gallery-lightbox", function (e) {
+            if (e.target.id === "ar-gallery-lightbox") {
+                closeGalleryLightbox();
+            }
+        });
+
+    $(document)
+        .off("keydown.arGalleryLightbox")
+        .on("keydown.arGalleryLightbox", function (e) {
+            if (e.key === "Escape") {
+                closeGalleryLightbox();
+            }
         });
 
     $(document)
@@ -480,6 +655,7 @@ function bindRestaurantPageEvents() {
         .off("click", ".js-gallery-dropzone")
         .on("click", ".js-gallery-dropzone", function (e) {
             if ($(e.target).is("input")) return;
+            if ($(e.target).closest(".ar-gallery-preview").length) return;
             $(this).find(".js-gallery-input").trigger("click");
         });
 
@@ -607,7 +783,7 @@ function bindRestaurantPageEvents() {
         .off("click", "#ar-new-btn")
         .on("click", "#ar-new-btn", async function () {
             const template = Template.component.restaurantAdminCard();
-            const draftHtml = Mustache.render(template, mapRestaurantToView({
+            const draftRestaurant = {
                 id: `draft-${Date.now()}`,
                 name: "New Restaurant",
                 description: "",
@@ -623,12 +799,15 @@ function bindRestaurantPageEvents() {
                     postcode: "",
                     country: ""
                 }
-            }));
+            };
+
+            const draftHtml = Mustache.render(template, mapRestaurantToView(draftRestaurant));
 
             $("#restaurants-empty").hide();
             $("#restaurants-list").prepend(draftHtml);
 
             const $newCard = $("#restaurants-list").children().first();
+            $newCard.data("gallery", []);
             $newCard.find(".js-ar-staff-list").html(renderStaffRows([]));
             initialiseCardUi($newCard);
             expandCard($newCard);
@@ -671,6 +850,9 @@ export default async function loadAdminRestaurants(options = { page: 1 }) {
 
                 const $card = $list.children().last();
                 const staff = normaliseStaffList(restaurant);
+                const gallery = normaliseGallery(restaurant);
+
+                $card.data("gallery", gallery);
                 $card.find(".js-ar-staff-list").html(renderStaffRows(staff));
             });
 

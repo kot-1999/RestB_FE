@@ -152,7 +152,8 @@ script(type="x-tmpl-mustache" id="restaurant-admin-card-template")
                             span.ar-dropzone-copy Drag & drop images here or click to upload
                             input.js-gallery-input(type="file" multiple accept="image/*")
 
-                        .ar-gallery-preview
+                        .ar-gallery-preview.js-ar-gallery-preview
+                            // Existing gallery images injected by JS
 
             .ar-staff-panel
                 .ar-staff-head
@@ -170,4 +171,4 @@ script(type="x-tmpl-mustache" id="restaurant-admin-card-template")
 
             .ar-editor-footer
                 button.ar-ghost-btn.js-reset-restaurant(type="button") Reset Changes
-                button.ar-primary-btn.js-save-restaurant(type="button") Save Changes
+                button.ar-primary-btn.js-save-restaurant(type="button") Save Changess

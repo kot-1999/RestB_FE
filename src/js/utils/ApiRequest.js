@@ -667,7 +667,7 @@ export default class ApiRequest {
                 });
             await ApiRequest.checkResponse(response)
             const res = await response.json()
-
+            showSuccess(res.message);
             return res
         } catch (err) {
             showError(err)

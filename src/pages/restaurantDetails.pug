@@ -84,6 +84,27 @@ div.restaurant-book-page
                     .rb-gallery-grid#rb-gallery-grid
                         //- Dynamically populated
 
+                //- ── MAP ───────────────────────────────────────────────
+                section.rb-map-section
+                    .rb-section-title
+                        h2 Find Us
+                        p See exactly where the restaurant is and get directions.
+
+                    .rb-map-card
+                        .rb-map-frame-wrap
+                            iframe#rb-map-frame.rb-map-frame(
+                                src=""
+                                loading="lazy"
+                                referrerpolicy="no-referrer-when-downgrade"
+                                allowfullscreen
+                            )
+
+                        .rb-map-actions
+                            a#rb-directions-link.rb-btn(
+                                href="#"
+                                target="_blank"
+                                rel="noopener noreferrer"
+                            ) Get Directions
                 //- ── REVIEWS ───────────────────────────────────────────
                 section.rb-reviews
                     .rb-section-title
@@ -109,27 +130,7 @@ div.restaurant-book-page
                                 span.rb-stars ★★★★☆
                             p.rb-review-text “Really nice place for a casual dinner — the ramen was unreal.”
 
-                //- ── MAP ───────────────────────────────────────────────
-                section.rb-map-section
-                    .rb-section-title
-                        h2 Find Us
-                        p See exactly where the restaurant is and get directions.
 
-                    .rb-map-card
-                        .rb-map-frame-wrap
-                            iframe#rb-map-frame.rb-map-frame(
-                                src=""
-                                loading="lazy"
-                                referrerpolicy="no-referrer-when-downgrade"
-                                allowfullscreen
-                            )
-
-                        .rb-map-actions
-                            a#rb-directions-link.rb-btn(
-                                href="#"
-                                target="_blank"
-                                rel="noopener noreferrer"
-                            ) Get Directions
 
     //- ── LIGHTBOX ──────────────────────────────────────────────────────
     .rb-lightbox#rb-lightbox(hidden)

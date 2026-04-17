@@ -102,7 +102,8 @@ function normaliseGallery(restaurant) {
                         id: null,
                         url: item,
                         name: `Gallery image ${index + 1}`,
-                        isNew: false
+                        isNew: false,
+                        file: null
                     };
                 }
 
@@ -110,7 +111,8 @@ function normaliseGallery(restaurant) {
                     id: item?.id || null,
                     url: item?.url || item?.imageURL || item?.photoURL || "",
                     name: item?.name || `Gallery image ${index + 1}`,
-                    isNew: false
+                    isNew: false,
+                    file: null
                 };
             })
             .filter((item) => item.url);
@@ -121,7 +123,8 @@ function normaliseGallery(restaurant) {
             id: null,
             url,
             name: `Gallery image ${index + 1}`,
-            isNew: false
+            isNew: false,
+            file: null
         }));
     }
 
@@ -236,27 +239,6 @@ function renderStaffRows(staff = []) {
     }).join("");
 }
 
-function buildRestaurantPayload($card) {
-    const gallery = ($card.data("gallery") || []).map((image) => image.url);
-
-    return {
-        name: $card.find(".js-ar-name").val()?.trim() || "",
-        description: $card.find(".js-ar-description").val()?.trim() || "",
-        timeFrom: $card.find(".js-ar-open").val() || null,
-        timeTo: $card.find(".js-ar-close").val() || null,
-        autoApprovedBookingsNum: Number($card.find(".js-ar-auto").val() || 0),
-        categories: parseCategoryValue($card.find(".js-ar-categories").val()),
-        photosURL: gallery,
-        address: {
-            building: $card.find(".js-ar-building").val()?.trim() || "",
-            street: $card.find(".js-ar-street").val()?.trim() || "",
-            city: $card.find(".js-ar-city").val()?.trim() || "",
-            postcode: $card.find(".js-ar-postcode").val()?.trim() || "",
-            country: $card.find(".js-ar-country").val()?.trim() || ""
-        }
-    };
-}
-
 function cacheOriginalValues($card) {
     const original = {
         name: $card.find(".js-ar-name").val() || "",
@@ -295,6 +277,7 @@ function resetCardValues($card) {
     $card.find(".js-ar-banner-preview").attr("src", original.bannerURL);
     $card.find(".js-ar-category-search").val("");
     $card.find(".js-gallery-input").val("");
+    $card.find(".js-ar-banner-input").val("");
 
     $card.data("gallery", JSON.parse(JSON.stringify(original.gallery || [])));
     renderGalleryPreview($card);
@@ -346,6 +329,10 @@ function initialiseCardUi($scope) {
             $card.data("gallery", []);
         }
 
+        if (!$card.data("bannerFile")) {
+            $card.data("bannerFile", null);
+        }
+
         initialiseCategorySelector($card);
         renderGalleryPreview($card);
         cacheOriginalValues($card);
@@ -362,6 +349,72 @@ function renderBrandEditor(brand) {
     });
 
     $("#brand-editor-header").html(html);
+}
+
+async function uploadBannerIfNeeded($card) {
+    const bannerFile = $card.data("bannerFile");
+    if (!bannerFile) {
+        return $card.find(".js-ar-banner-preview").attr("src") || "/assets/img/default-avatar.png";
+    }
+
+    const uploaded = await ApiRequest.uploadFile(bannerFile);
+    const uploadedUrl = uploaded?.fileURL || uploaded?.url || uploaded?.publicUrl;
+
+    if (!uploadedUrl) {
+        throw new Error("Failed to upload banner image");
+    }
+
+    $card.find(".js-ar-banner-preview").attr("src", uploadedUrl);
+    $card.data("bannerFile", null);
+    return uploadedUrl;
+}
+
+async function uploadGalleryIfNeeded($card) {
+    const gallery = [...($card.data("gallery") || [])];
+
+    for (let i = 0; i < gallery.length; i++) {
+        const image = gallery[i];
+        if (!image?.isNew || !image?.file) continue;
+
+        const uploaded = await ApiRequest.uploadFile(image.file);
+        const uploadedUrl = uploaded?.fileURL || uploaded?.url || uploaded?.publicUrl;
+
+        if (!uploadedUrl) {
+            throw new Error(`Failed to upload gallery image: ${image.name || "image"}`);
+        }
+
+        gallery[i] = {
+            id: image.id || null,
+            url: uploadedUrl,
+            name: image.name,
+            isNew: false,
+            file: null
+        };
+    }
+
+    $card.data("gallery", gallery);
+    renderGalleryPreview($card);
+    return gallery.map((image) => image.url);
+}
+
+function buildRestaurantPayload($card, bannerURL, galleryUrls) {
+    return {
+        name: $card.find(".js-ar-name").val()?.trim() || "",
+        description: $card.find(".js-ar-description").val()?.trim() || "",
+        bannerURL: bannerURL || "/assets/img/default-avatar.png",
+        timeFrom: $card.find(".js-ar-open").val() || null,
+        timeTo: $card.find(".js-ar-close").val() || null,
+        autoApprovedBookingsNum: Number($card.find(".js-ar-auto").val() || 0),
+        categories: parseCategoryValue($card.find(".js-ar-categories").val()),
+        photosURL: galleryUrls || [],
+        address: {
+            building: $card.find(".js-ar-building").val()?.trim() || "",
+            street: $card.find(".js-ar-street").val()?.trim() || "",
+            city: $card.find(".js-ar-city").val()?.trim() || "",
+            postcode: $card.find(".js-ar-postcode").val()?.trim() || "",
+            country: $card.find(".js-ar-country").val()?.trim() || ""
+        }
+    };
 }
 
 function bindRestaurantPageEvents() {
@@ -508,6 +561,7 @@ function bindRestaurantPageEvents() {
                 $card.find(".js-ar-banner-preview").attr("src", e.target.result);
             };
 
+            $card.data("bannerFile", file);
             reader.readAsDataURL(file);
         });
 
@@ -664,17 +718,16 @@ function bindRestaurantPageEvents() {
         .on("click", ".js-save-restaurant", async function () {
             const $btn = $(this);
             const $card = $btn.closest(".ar-editor-card");
-            const restaurantID = $card.data("id");
-            const payload = buildRestaurantPayload($card);
 
             const originalText = $btn.text();
             $btn.prop("disabled", true).text("Saving...");
 
             try {
-                const response = await ApiRequest.saveRestaurant({
-                    id: restaurantID,
-                    ...payload
-                });
+                const bannerURL = await uploadBannerIfNeeded($card);
+                const galleryUrls = await uploadGalleryIfNeeded($card);
+                const payload = buildRestaurantPayload($card, bannerURL, galleryUrls);
+
+                const response = await ApiRequest.saveRestaurant(payload);
 
                 if (!response) {
                     throw new Error("Failed to update restaurant");
@@ -808,6 +861,7 @@ function bindRestaurantPageEvents() {
 
             const $newCard = $("#restaurants-list").children().first();
             $newCard.data("gallery", []);
+            $newCard.data("bannerFile", null);
             $newCard.find(".js-ar-staff-list").html(renderStaffRows([]));
             initialiseCardUi($newCard);
             expandCard($newCard);
@@ -853,6 +907,7 @@ export default async function loadAdminRestaurants(options = { page: 1 }) {
                 const gallery = normaliseGallery(restaurant);
 
                 $card.data("gallery", gallery);
+                $card.data("bannerFile", null);
                 $card.find(".js-ar-staff-list").html(renderStaffRows(staff));
             });
 

@@ -1,74 +1,66 @@
-RestB Frontend
+## How to start
 
-Restaurant booking app
+### Prerequisites
 
-Content
-About RestB Frontend
-How to start
-Prerequisites
-Run application
-Useful links
-Project Structure
-Frontend Features
-Pages Overview
-Gallery
-Architecture
-Team
-License
-About RestB Frontend
+Ensure the following are installed:
 
-RestB Frontend is the client-side application for the RestBoo restaurant booking platform. It provides a structured and scalable user interface for customers, administrators, and staff to interact with the system.
+- Node.js (v18+ recommended)
+- npm
 
-The frontend is designed to work seamlessly with the RestBoo backend API, enabling real-time booking management, restaurant discovery, and administrative control.
+---
 
-The application focuses on delivering a clean, responsive, and intuitive user experience while maintaining a modular and maintainable codebase. It separates concerns between templates, logic, and API communication, ensuring scalability as the platform evolves.
+### Run application
 
-The frontend supports:
+1. Clone the repository:
 
-Restaurant browsing and filtering for users
-Real-time booking creation and management
-Administrative dashboards for restaurant and staff management
-Brand and restaurant configuration tools
-Role-based UI rendering for User, Admin, and Staff
+```bash
+git clone https://github.com/<your-username>/RestB_FE.git
+```
 
-Overall, the frontend complements the backend by providing a modern interface that simplifies complex booking workflows and operational tasks.
+2. Enter the project directory:
 
-How to start
-Prerequisites
+```bash
+cd RestB_FE
+```
 
-Ensure the following are installed on your system:
+3. Install dependencies:
 
-Node.js (v18 or higher recommended)
-npm (comes with Node.js)
-Run application
-1. Clone the repository
-   git clone https://github.com/<your-username>/RestB_FE.git
-2. Enter the project directory
-   cd RestB_FE
-3. Install dependencies
-   npm install
-4. Run the development environment
-   npm run devmon
+```bash
+npm install
+```
+
+4. Run development server:
+
+```bash
+npm run devmon
+```
 
 The application will be available at:
 
+```text
 http://localhost:3055
+```
 
-📝 The frontend connects to the backend API (default: http://localhost:3000). Ensure the backend is running.
+> The frontend connects to the backend API (default: http://localhost:3000). Make sure the backend is running.
 
-Useful links
-http://localhost:3055
-→ Frontend application
-http://localhost:3000
-→ Backend API
-http://localhost:3000/api/docs
-→ Swagger API documentation
-Project Structure
+---
+
+## Useful links
+
+- http://localhost:3055 → Frontend
+- http://localhost:3000 → Backend API
+- http://localhost:3000/api/docs → Swagger docs
+
+---
+
+## Project Structure
+
+```text
 RestB_FE/
 │
 ├── src/
 │   ├── views/
-│   │   ├── pages/               # Page templates
+│   │   ├── pages/               # Page templates (Pug)
 │   │   └── components/          # Reusable UI components
 │   │
 │   ├── js/
@@ -83,124 +75,173 @@ RestB_FE/
 ├── package.json
 ├── package-lock.json
 ├── README.md
-Frontend Features
-Template System
-Uses Pug for structured templating
-Uses Mustache for dynamic rendering
-Clear separation between structure and data
-API Layer
-Centralised API handling via ApiRequest.js
-Handles authentication tokens and error management
-Supports both B2C and B2B endpoints
-Component-Based UI
+```
 
-Reusable components including:
+---
 
-Restaurant cards
-Booking cards
-Admin restaurant editor
-Brand editor
-State Handling
-Lightweight state via DOM + LocalStorage
-No heavy frontend framework required
-File Uploads
-Supports image uploads via presigned URLs
-Integrated with backend S3-compatible storage
-Role-Based UI
-User: booking + browsing
-Admin: full management access
-Staff: limited booking management
-Pages Overview
-AUTH
+## Frontend Features
 
-/auth/login
-User, Admin, Staff login
+### Template System
 
-/auth/register
-User and Admin registration
+- Pug for templating
+- Mustache for rendering dynamic data
+- Clean separation of structure and data
 
-/auth/forgotPassword
-Password reset flow
+### API Layer
 
-USER
+- Centralised API handling (`ApiRequest.js`)
+- Handles authentication tokens and errors
+- Supports B2C and B2B endpoints
 
-/restaurants
+### Component-Based UI
 
-Restaurant list
-Search and filtering
+Reusable components:
 
-/restaurants/:id
+- Restaurant cards
+- Booking cards
+- Admin restaurant editor
+- Brand editor
 
-Restaurant details
-Booking form
-Gallery and reviews
-USER PROFILE
+### State Handling
 
-/profile
+- Lightweight state via DOM + LocalStorage
+- No heavy framework required
 
-User settings
+### File Uploads
 
-/profile/bookings
+- Uses presigned URLs
+- S3-compatible backend
 
-Booking history
-Status tracking
-Cancel / update bookings
-ADMIN / STAFF DASHBOARD
+### Role-Based UI
 
-/admin
+- User: browsing + booking
+- Admin: full control
+- Staff: limited booking access
 
-Dashboard overview
-BRAND MANAGEMENT
+---
 
-/admin/brand
+## Pages Overview
 
-Update brand name
-Upload logo
-RESTAURANT MANAGEMENT
+### AUTH
 
-/admin/restaurants
+#### `/auth/login`
 
-Create / edit / delete restaurants
-Manage employees
-Upload images
-BOOKINGS MANAGEMENT
+- Login for User, Admin, Staff
 
-/admin/bookings
+#### `/auth/register`
 
-Manage bookings
-Accept / reject
-Modify booking times
-Gallery
+- User and Admin registration
 
-📁 Place screenshots inside: /docs/screenshots/
+#### `/auth/forgotPassword`
 
-Homepage & Search
+- Password reset
 
-Filtered Results
+---
 
-Restaurant Details
+### USER
 
-Booking Flow
+#### `/restaurants`
 
-Admin – Restaurant Management
+- Restaurant list
+- Search and filtering
 
-Admin – Brand Editor
+#### `/restaurants/:id`
 
-Booking Management
+- Restaurant details
+- Booking form
+- Gallery and reviews
 
-Architecture
-![mermaid-diagram.png](../OneDrive/Desktop/q%20movies/mermaid-diagram.png)
+---
 
-Team
+### USER PROFILE
 
-Oleksandr Kashytskyi — sashakashytskyy@gmail.com
+#### `/profile`
 
-Idea creator, backend developer, system architect, database designer
+- User settings
 
-Stephen Lyne — slyne234@gmail.com
+#### `/profile/bookings`
 
+- Booking history
+- Status tracking
+- Cancel / update bookings
+
+---
+
+### ADMIN / STAFF DASHBOARD
+
+#### `/admin`
+
+- Dashboard overview
+
+---
+
+### BRAND MANAGEMENT
+
+#### `/admin/brand`
+
+- Update brand name
+- Upload logo
+
+---
+
+### RESTAURANT MANAGEMENT
+
+#### `/admin/restaurants`
+
+- Create / edit / delete restaurants
+- Manage employees
+- Upload images
+
+---
+
+### BOOKINGS MANAGEMENT
+
+#### `/admin/bookings`
+
+- Manage bookings
+- Accept / reject
+- Modify booking times
+
+---
+
+## Architecture
+
+![Architecture Diagram](./docs/images/architecture.png)
+
+---
+
+## Gallery
+
+Place screenshots in:
+
+```text
+/docs/screenshots/
+```
+
+Suggested screenshots:
+
+- Homepage
+- Search results
+- Restaurant details
+- Booking flow
+- Admin dashboard
+- Restaurant editor
+- Brand editor
+
+---
+
+## Team
+
+**Oleksandr Kashytskyi**  
+[sashakashytskyy@gmail.com](mailto:sashakashytskyy@gmail.com)  
+Backend developer, system architect
+
+**Stephen Lyne**  
+[slyne234@gmail.com](mailto:slyne234@gmail.com)  
 Frontend developer, UI/UX designer
 
-License
+---
+
+## License
 
 This project is licensed under the Apache-2.0 License.

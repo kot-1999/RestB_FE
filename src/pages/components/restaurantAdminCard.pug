@@ -1,0 +1,173 @@
+script(type="x-tmpl-mustache" id="restaurant-admin-card-template")
+    article.ar-editor-card(data-id="{{id}}" data-expanded="false")
+        .ar-card-summary
+            .ar-card-summary-left
+                .ar-card-thumb
+                    img.js-ar-banner-preview(src="{{bannerURL}}" alt="{{name}} banner")
+
+                .ar-editor-title-wrap
+                    h2.ar-editor-title {{name}}
+                    p.ar-editor-sub {{address.city}}, {{address.country}}
+                    .js-ar-compact-meta.ar-compact-meta {{timeFrom}} – {{timeTo}}
+
+                    .ar-card-chips
+                        span.ar-chip {{categoriesText}}
+
+            .ar-card-summary-actions
+                button.ar-secondary-btn.js-toggle-restaurant(type="button") Edit Restaurant
+                button.ar-danger-btn.js-remove-restaurant(type="button") Remove
+
+        .ar-editor-body
+            .ar-banner-upload-row
+                .ar-banner-upload-preview
+                    img.js-ar-banner-preview(src="{{bannerURL}}" alt="{{name}} banner")
+
+                .ar-banner-upload-copy
+                    span.ar-banner-upload-title Banner Image
+                    span.ar-banner-upload-sub Upload a new banner image for this restaurant.
+
+                label.ar-banner-upload-btn
+                    | Choose Banner
+                    input.js-ar-banner-input(type="file" accept="image/*")
+
+            .ar-editor-grid
+                .ar-editor-main
+                    .ar-field
+                        label.ar-label(for="restaurant-name-{{id}}") Restaurant Name
+                        input.ar-input.js-ar-name(
+                            id="restaurant-name-{{id}}"
+                            type="text"
+                            value="{{name}}"
+                            placeholder="Restaurant name"
+                        )
+
+                    .ar-field
+                        label.ar-label(for="restaurant-description-{{id}}") Description
+                        textarea.ar-textarea.js-ar-description(
+                            id="restaurant-description-{{id}}"
+                            rows="5"
+                            placeholder="Describe the restaurant"
+                        ) {{description}}
+
+                    .ar-field-grid
+                        .ar-field
+                            label.ar-label(for="restaurant-open-{{id}}") Opening Time
+                            input.ar-input.js-ar-open(
+                                id="restaurant-open-{{id}}"
+                                type="time"
+                                value="{{timeFrom}}"
+                            )
+
+                        .ar-field
+                            label.ar-label(for="restaurant-close-{{id}}") Closing Time
+                            input.ar-input.js-ar-close(
+                                id="restaurant-close-{{id}}"
+                                type="time"
+                                value="{{timeTo}}"
+                            )
+
+                    .ar-field
+                        label.ar-label(for="restaurant-categories-{{id}}") Categories
+
+                        input.js-ar-categories(
+                            id="restaurant-categories-{{id}}"
+                            type="hidden"
+                            value="{{categoriesText}}"
+                        )
+
+                        .ar-category-selector
+                            .ar-category-pills.js-ar-category-pills
+                            input.ar-input.ar-category-search.js-ar-category-search(
+                                type="text"
+                                placeholder="Search and add categories"
+                                autocomplete="off"
+                            )
+                            .ar-category-dropdown.js-ar-category-dropdown
+
+                    .ar-field-grid.ar-address-grid
+                        .ar-field
+                            label.ar-label(for="restaurant-building-{{id}}") Building
+                            input.ar-input.js-ar-building(
+                                id="restaurant-building-{{id}}"
+                                type="text"
+                                value="{{address.building}}"
+                                placeholder="Building"
+                            )
+
+                        .ar-field
+                            label.ar-label(for="restaurant-street-{{id}}") Street
+                            input.ar-input.js-ar-street(
+                                id="restaurant-street-{{id}}"
+                                type="text"
+                                value="{{address.street}}"
+                                placeholder="Street"
+                            )
+
+                        .ar-field
+                            label.ar-label(for="restaurant-city-{{id}}") City
+                            input.ar-input.js-ar-city(
+                                id="restaurant-city-{{id}}"
+                                type="text"
+                                value="{{address.city}}"
+                                placeholder="City"
+                            )
+
+                        .ar-field
+                            label.ar-label(for="restaurant-postcode-{{id}}") Postcode
+                            input.ar-input.js-ar-postcode(
+                                id="restaurant-postcode-{{id}}"
+                                type="text"
+                                value="{{address.postcode}}"
+                                placeholder="Postcode"
+                            )
+
+                        .ar-field
+                            label.ar-label(for="restaurant-country-{{id}}") Country
+                            input.ar-input.js-ar-country(
+                                id="restaurant-country-{{id}}"
+                                type="text"
+                                value="{{address.country}}"
+                                placeholder="Country"
+                            )
+
+                        .ar-field
+                            label.ar-label(for="restaurant-auto-approve-{{id}}") Auto-Approve Max Guests
+                            input.ar-input.js-ar-auto(
+                                id="restaurant-auto-approve-{{id}}"
+                                type="number"
+                                min="0"
+                                value="{{autoApprovedBookingsNum}}"
+                                placeholder="0"
+                            )
+
+                .ar-editor-side
+                    .ar-media-card
+                        label.ar-media-label Banner Preview
+                        .ar-banner-preview
+                            img.js-ar-banner-preview(src="{{bannerURL}}" alt="{{name}} banner")
+
+                    .ar-media-card
+                        label.ar-media-label Gallery Images
+                        .ar-gallery-dropzone.js-gallery-dropzone
+                            span.ar-dropzone-copy Drag & drop images here or click to upload
+                            input.js-gallery-input(type="file" multiple accept="image/*")
+
+                        .ar-gallery-preview
+
+            .ar-staff-panel
+                .ar-staff-head
+                    h3.ar-staff-title Employees
+                    p.ar-staff-sub Invite a new employee and view current staff for this restaurant.
+
+                .ar-staff-invite-row
+                    input.ar-input.js-ar-employee-email(
+                        type="email"
+                        placeholder="Enter new employee email"
+                    )
+                    button.ar-secondary-btn.js-ar-add-employee(type="button") Add New Employee
+
+                .ar-staff-list.js-ar-staff-list
+
+            .ar-editor-footer
+                button.ar-ghost-btn.js-reset-restaurant(type="button") Reset Changes
+                button.ar-primary-btn.js-save-restaurant(type="button") Save Changes

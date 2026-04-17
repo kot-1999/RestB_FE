@@ -3,6 +3,7 @@ import Mustache from "../utils/mustache.js";
 import Template from "../utils/Template.js";
 import { renderHeaderWithBrand, showError } from "../utils/helpers.js";
 import renderPagination from "./components/pagination.js";
+import {BookingStatus} from "../utils/enums.js";
 
 // ─── Data mapper ──────────────────────────────────────────────────────────────
 function mapBookingToView(b) {
@@ -106,6 +107,10 @@ export default async function loadBookings(options = { page: 1 }) {
 
         let res;
         try {
+            console.log(query)
+            if (!query.statuses) {
+                query.statuses = [BookingStatus.Approved, BookingStatus.Cancelled, BookingStatus.Completed, BookingStatus.NoShow, BookingStatus.Pending];
+            }
             res = await ApiRequest.getBookings(query, restaurantID);
         } catch (err) {
             showError(err);

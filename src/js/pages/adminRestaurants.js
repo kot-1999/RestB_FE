@@ -389,15 +389,18 @@ async function uploadGalleryIfNeeded($card) {
 }
 
 function buildRestaurantPayload($card, bannerURL, galleryUrls) {
-    return {
+    const rawId = $card.data("id");
+    const isDraft = String(rawId).startsWith("draft-");
+
+    const payload = {
         name: $card.find(".js-ar-name").val()?.trim() || "",
         description: $card.find(".js-ar-description").val()?.trim() || "",
         bannerURL: bannerURL || "/assets/img/default-avatar.png",
+        photosURL: galleryUrls || [],
+        categories: parseCategoryValue($card.find(".js-ar-categories").val()),
+        autoApprovedBookingsNum: Number($card.find(".js-ar-auto").val() || 0),
         timeFrom: $card.find(".js-ar-open").val() || null,
         timeTo: $card.find(".js-ar-close").val() || null,
-        autoApprovedBookingsNum: Number($card.find(".js-ar-auto").val() || 0),
-        categories: parseCategoryValue($card.find(".js-ar-categories").val()),
-        photosURL: galleryUrls || [],
         address: {
             building: $card.find(".js-ar-building").val()?.trim() || "",
             street: $card.find(".js-ar-street").val()?.trim() || "",
@@ -406,6 +409,12 @@ function buildRestaurantPayload($card, bannerURL, galleryUrls) {
             country: $card.find(".js-ar-country").val()?.trim() || ""
         }
     };
+
+    if (!isDraft && rawId) {
+        payload.restaurantID = rawId;
+    }
+
+    return payload;
 }
 
 function bindBrandEditorEvents() {
@@ -457,12 +466,7 @@ function bindBrandEditorEvents() {
             const payload = { name };
             if (logoURL) payload.logoURL = logoURL;
 
-            console.log("updateBrand params:", { brandID });
-            console.log("updateBrand body:", payload);
-
             const response = await ApiRequest.updateBrand(brandID, payload);
-
-            console.log("updateBrand response:", response);
 
             if (!response) {
                 throw new Error("Failed to update brand");
@@ -470,7 +474,6 @@ function bindBrandEditorEvents() {
 
             await loadAdminRestaurants({ page: currentAdminRestaurantsPage });
         } catch (err) {
-            console.error("updateBrand error:", err);
             showError(err);
         } finally {
             $btn.prop("disabled", false).text(originalText);
@@ -745,7 +748,11 @@ function bindRestaurantPageEvents() {
                 const galleryUrls = await uploadGalleryIfNeeded($card);
                 const payload = buildRestaurantPayload($card, bannerURL, galleryUrls);
 
+                console.log("saveRestaurant payload:", payload);
+
                 const response = await ApiRequest.saveRestaurant(payload);
+
+                console.log("saveRestaurant response:", response);
 
                 if (!response) {
                     throw new Error("Failed to update restaurant");
@@ -753,6 +760,7 @@ function bindRestaurantPageEvents() {
 
                 await loadAdminRestaurants({ page: currentAdminRestaurantsPage });
             } catch (err) {
+                console.error("saveRestaurant error:", err);
                 showError(err);
             } finally {
                 $btn.prop("disabled", false).text(originalText);
@@ -818,41 +826,6 @@ function bindRestaurantPageEvents() {
                 if (!response) {
                     throw new Error("Failed to invite employee");
                 }
-
-                $(document)
-                    .off("click", ".js-ar-add-employee")
-                    .on("click", ".js-ar-add-employee", async function () {
-                        const $btn = $(this);
-                        const $card = $btn.closest(".ar-editor-card");
-                        const restaurantID = $card.data("id");
-                        const $input = $card.find(".js-ar-employee-email");
-                        const email = $input.val()?.trim();
-
-                        if (!email) {
-                            showError(new Error("Please enter an employee email"));
-                            return;
-                        }
-
-                        const originalText = $btn.text();
-                        $btn.prop("disabled", true).text("Adding...");
-
-                        try {
-                            const response = await ApiRequest.inviteEmployee({
-                                email,
-                                restaurantID
-                            });
-
-                            if (!response) {
-                                throw new Error("Failed to invite employee");
-                            }
-
-                            $input.val("");
-                        } catch (err) {
-                            showError(err);
-                        } finally {
-                            $btn.prop("disabled", false).text(originalText);
-                        }
-                    });
 
                 $input.val("");
             } catch (err) {

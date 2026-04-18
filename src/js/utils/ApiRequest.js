@@ -678,6 +678,7 @@ export default class ApiRequest {
     static async updateBrand(brandID, body) {
         try {
             const authData = LocalStorage.get('auth');
+
             if (!authData?.token) {
                 throw new Error('updateBrand - Token is required for this action');
             }
@@ -689,6 +690,10 @@ export default class ApiRequest {
             if (!body || Object.keys(body).length === 0) {
                 throw new Error('updateBrand - At least one field must be provided');
             }
+
+            console.log("ApiRequest.updateBrand brandID:", brandID);
+            console.log("ApiRequest.updateBrand body:", body);
+            console.log("ApiRequest.updateBrand url:", `${this.baseUrl}/b2b/v1/brand/${brandID}`);
 
             const response = await fetch(
                 `${this.baseUrl}/b2b/v1/brand/${brandID}`,
@@ -706,10 +711,14 @@ export default class ApiRequest {
             );
 
             await ApiRequest.checkResponse(response);
+
             const res = await response.json();
+            console.log("ApiRequest.updateBrand raw response:", res);
+
             showSuccess(res.message || 'Brand updated successfully');
             return res;
         } catch (error) {
+            console.error("ApiRequest.updateBrand error:", error);
             showError(error);
             return null;
         }

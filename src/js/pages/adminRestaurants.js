@@ -4,6 +4,8 @@ import Template from "../utils/Template.js";
 import renderPagination from "./components/pagination.js";
 import { showError } from "../utils/helpers.js";
 
+let currentAdminRestaurantsPage = 1;
+
 const CATEGORY_OPTIONS = [
     "FastFood", "Pizza", "Drinks", "Family", "Party", "Romantic", "Pub",
     "Italian", "American", "Asian", "Chinese", "Japanese", "Indian", "Mexican",
@@ -340,17 +342,6 @@ function initialiseCardUi($scope) {
     });
 }
 
-function renderBrandEditor(brand) {
-    const template = Template.component.brandEditorHeader();
-    const html = Mustache.render(template, {
-        id: brand.id,
-        name: brand.name || "Brand",
-        logoURL: brand.logoURL || "/assets/img/default-avatar.png"
-    });
-
-    $("#brand-editor-header").html(html);
-}
-
 async function uploadBannerIfNeeded($card) {
     const bannerFile = $card.data("bannerFile");
     if (!bannerFile) {
@@ -415,6 +406,88 @@ function buildRestaurantPayload($card, bannerURL, galleryUrls) {
             country: $card.find(".js-ar-country").val()?.trim() || ""
         }
     };
+}
+
+function bindBrandEditorEvents() {
+    const $root = $("#brand-editor-header");
+
+    $root.off("input", ".js-brand-name-input");
+    $root.on("input", ".js-brand-name-input", function () {
+        const value = $(this).val()?.trim() || "Brand";
+        $root.find(".js-brand-name-preview").text(value);
+    });
+
+    $root.off("change", ".js-brand-logo-input");
+    $root.on("change", ".js-brand-logo-input", function () {
+        const file = this.files?.[0];
+        if (!file || !file.type.startsWith("image/")) return;
+
+        const reader = new FileReader();
+        reader.onload = (e) => {
+            $root.find(".js-brand-logo-preview").attr("src", e.target.result);
+        };
+        reader.readAsDataURL(file);
+    });
+
+    $root.off("click", ".js-update-brand");
+    $root.on("click", ".js-update-brand", async function (e) {
+        e.preventDefault();
+
+        const $btn = $(this);
+        const $wrap = $btn.closest(".ar-brand-editor-card");
+        const brandID = $wrap.data("brand-id");
+        const name = $wrap.find(".js-brand-name-input").val()?.trim() || "";
+        const logoFile = $wrap.find(".js-brand-logo-input")[0]?.files?.[0] || null;
+
+        const originalText = $btn.text();
+        $btn.prop("disabled", true).text("Updating...");
+
+        try {
+            let logoURL;
+
+            if (logoFile) {
+                const uploaded = await ApiRequest.uploadFile(logoFile);
+                logoURL = uploaded?.fileURL || uploaded?.url || uploaded?.publicUrl;
+
+                if (!logoURL) {
+                    throw new Error("Brand logo upload failed");
+                }
+            }
+
+            const payload = { name };
+            if (logoURL) payload.logoURL = logoURL;
+
+            console.log("updateBrand params:", { brandID });
+            console.log("updateBrand body:", payload);
+
+            const response = await ApiRequest.updateBrand(brandID, payload);
+
+            console.log("updateBrand response:", response);
+
+            if (!response) {
+                throw new Error("Failed to update brand");
+            }
+
+            await loadAdminRestaurants({ page: currentAdminRestaurantsPage });
+        } catch (err) {
+            console.error("updateBrand error:", err);
+            showError(err);
+        } finally {
+            $btn.prop("disabled", false).text(originalText);
+        }
+    });
+}
+
+function renderBrandEditor(brand) {
+    const template = Template.component.brandEditorHeader();
+    const html = Mustache.render(template, {
+        id: brand.id,
+        name: brand.name || "Brand",
+        logoURL: brand.logoURL || "/assets/img/default-avatar.png"
+    });
+
+    $("#brand-editor-header").html(html);
+    bindBrandEditorEvents();
 }
 
 function bindRestaurantPageEvents() {
@@ -491,61 +564,6 @@ function bindRestaurantPageEvents() {
             const $target = $(e.target);
             if ($target.closest(".ar-category-selector").length) return;
             $(".js-ar-category-dropdown").removeClass("is-open");
-        });
-
-    $(document)
-        .off("input", ".js-brand-name-input")
-        .on("input", ".js-brand-name-input", function () {
-            const value = $(this).val()?.trim() || "Brand";
-            $(".js-brand-name-preview").text(value);
-        });
-
-    $(document)
-        .off("change", ".js-brand-logo-input")
-        .on("change", ".js-brand-logo-input", function () {
-            const file = this.files?.[0];
-            if (!file || !file.type.startsWith("image/")) return;
-
-            const reader = new FileReader();
-            reader.onload = (e) => {
-                $(".js-brand-logo-preview").attr("src", e.target.result);
-            };
-            reader.readAsDataURL(file);
-        });
-
-    $(document)
-        .off("click", ".js-update-brand")
-        .on("click", ".js-update-brand", async function () {
-            const $btn = $(this);
-            const $wrap = $btn.closest(".ar-brand-editor-card");
-            const brandID = $wrap.data("brand-id");
-            const name = $wrap.find(".js-brand-name-input").val()?.trim() || "";
-            const logoFile = $wrap.find(".js-brand-logo-input")[0]?.files?.[0] || null;
-
-            const originalText = $btn.text();
-            $btn.prop("disabled", true).text("Updating...");
-
-            try {
-                let logoURL;
-
-                if (logoFile) {
-                    const uploaded = await ApiRequest.uploadFile(logoFile);
-                    logoURL = uploaded?.fileURL || uploaded?.url || uploaded?.publicUrl;
-                }
-
-                const payload = { name };
-                if (logoURL) payload.logoURL = logoURL;
-
-                const response = await ApiRequest.updateBrand(brandID, payload);
-
-                if (!response) {
-                    throw new Error("Failed to update brand");
-                }
-            } catch (err) {
-                showError(err);
-            } finally {
-                $btn.prop("disabled", false).text(originalText);
-            }
         });
 
     $(document)
@@ -626,11 +644,11 @@ function bindRestaurantPageEvents() {
                     if (!response) {
                         throw new Error("Failed to delete image");
                     }
+                } else {
+                    throw new Error("deleteRestaurantImage is not implemented in ApiRequest.js");
                 }
 
-                gallery.splice(index, 1);
-                $card.data("gallery", gallery);
-                renderGalleryPreview($card);
+                await loadAdminRestaurants({ page: currentAdminRestaurantsPage });
             } catch (err) {
                 showError(err);
             }
@@ -733,12 +751,7 @@ function bindRestaurantPageEvents() {
                     throw new Error("Failed to update restaurant");
                 }
 
-                cacheOriginalValues($card);
-                updateCollapsedSummary($card);
-                collapseCard($card);
-
-                $card.css("outline", "2px solid var(--accent-yellow)");
-                setTimeout(() => $card.css("outline", ""), 1400);
+                await loadAdminRestaurants({ page: currentAdminRestaurantsPage });
             } catch (err) {
                 showError(err);
             } finally {
@@ -806,23 +819,40 @@ function bindRestaurantPageEvents() {
                     throw new Error("Failed to invite employee");
                 }
 
-                const $staffList = $card.find(".js-ar-staff-list");
-                $staffList.find(".ar-staff-empty").remove();
+                $(document)
+                    .off("click", ".js-ar-add-employee")
+                    .on("click", ".js-ar-add-employee", async function () {
+                        const $btn = $(this);
+                        const $card = $btn.closest(".ar-editor-card");
+                        const restaurantID = $card.data("id");
+                        const $input = $card.find(".js-ar-employee-email");
+                        const email = $input.val()?.trim();
 
-                $staffList.append(`
-                    <div class="ar-staff-row">
-                        <div class="ar-staff-main">
-                            <div class="ar-staff-avatar">
-                                <img src="/assets/img/default-avatar.png" alt="Pending employee avatar">
-                            </div>
-                            <div class="ar-staff-copy">
-                                <div class="ar-staff-name">Invitation sent</div>
-                                <div class="ar-staff-meta">Pending acceptance</div>
-                                <div class="ar-staff-meta">${email}</div>
-                            </div>
-                        </div>
-                    </div>
-                `);
+                        if (!email) {
+                            showError(new Error("Please enter an employee email"));
+                            return;
+                        }
+
+                        const originalText = $btn.text();
+                        $btn.prop("disabled", true).text("Adding...");
+
+                        try {
+                            const response = await ApiRequest.inviteEmployee({
+                                email,
+                                restaurantID
+                            });
+
+                            if (!response) {
+                                throw new Error("Failed to invite employee");
+                            }
+
+                            $input.val("");
+                        } catch (err) {
+                            showError(err);
+                        } finally {
+                            $btn.prop("disabled", false).text(originalText);
+                        }
+                    });
 
                 $input.val("");
             } catch (err) {
@@ -869,6 +899,8 @@ function bindRestaurantPageEvents() {
 }
 
 export default async function loadAdminRestaurants(options = { page: 1 }) {
+    currentAdminRestaurantsPage = options?.page || 1;
+
     const $list = $("#restaurants-list");
     const $empty = $("#restaurants-empty");
 
@@ -912,11 +944,11 @@ export default async function loadAdminRestaurants(options = { page: 1 }) {
             });
 
             initialiseCardUi($list);
-            bindRestaurantPageEvents();
         } else {
             $empty.show();
-            bindRestaurantPageEvents();
         }
+
+        bindRestaurantPageEvents();
     } catch (err) {
         showError(err);
         $list.html(`

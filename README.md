@@ -16,7 +16,7 @@ Ensure the following are installed:
 ```bash
 git clone https://github.com/<your-username>/RestB_FE.git
 ```
-
+https://github.com/kot-1999/RestB_FE/blob/main/README.md
 2. Enter the project directory:
 
 ```bash
@@ -32,7 +32,7 @@ npm install
 4. Run development server:
 
 ```bash
-npm run devmon
+npm run dev
 ```
 
 The application will be available at:

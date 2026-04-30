@@ -760,11 +760,7 @@ function bindRestaurantPageEvents() {
             $btn.prop("disabled", true).text("Removing...");
 
             try {
-                const response = await ApiRequest.deleteRestaurant(restaurantID);
-
-                if (!response) {
-                    throw new Error("Failed to remove restaurant");
-                }
+                await ApiRequest.deleteRestaurant(restaurantID);
 
                 $card.slideUp(180, function () {
                     $(this).remove();

@@ -12,7 +12,26 @@ export default class ApiRequest {
         }
     }
 
+    static async deleteRestaurant (restaurantID) {
+        const authData = LocalStorage.get('auth')
+        if (!authData?.token) {
+            throw new Error('deleteRestaurant - Token is required for this action')
+        }
 
+        const response = await fetch(
+            `${this.baseUrl}/b2b/v1/restaurant/` + restaurantID, {
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${authData.token}`
+                },
+                method: 'DELETE'
+            });
+        await ApiRequest.checkResponse(response)
+        const res = await response.json()
+
+        showSuccess(res.message)
+        return res
+    }
     // SHARED: File upload
     // ENDPOINT: PUT /upload-url
     static async uploadFile(file) {

@@ -166,14 +166,24 @@ export default async function loadBookings(options = { page: 1 }) {
         $list.off("click", ".js-chat-send").on("click", ".js-chat-send", async function () {
             const $card = $(this).closest(".booking-card");
             const $input = $card.find(".bc-chat-input");
-            const message = $input.val()?.trim();
+            const $messages = $card.find(".bc-chat-messages");
 
+            const message = $input.val()?.trim();
             if (!message) return;
 
             const bId = $card.data("id");
-            await ApiRequest.updateBooking(bId, { message });
 
-            fetchBookings(options.page);
+            const success = await ApiRequest.updateBooking(bId, { message });
+            if (!success?.booking) return;
+
+            $input.val("");
+
+// rebuild entire chat
+            const html = buildBubbles(success.booking.discussion);
+            $messages.html(html);
+
+// scroll down
+            $messages.scrollTop($messages[0].scrollHeight);
         });
 
         $list.off("keydown", ".bc-chat-input").on("keydown", ".bc-chat-input", function (e) {

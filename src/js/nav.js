@@ -28,10 +28,6 @@ $(document).ready(function () {
             location.hash = '#signin'
         })
 
-        $(document).on('click', '#signup', () => {
-            location.hash = '#signup'
-        })
-
         $(document).on('click', '#signout', () => {
             location.hash = '#signout'
         })

@@ -730,7 +730,7 @@ function bindRestaurantPageEvents() {
                 const response = await ApiRequest.saveRestaurant(payload);
 
                 if (!response) {
-                    throw new Error("Failed to update restaurant");
+                    return
                 }
 
                 cacheOriginalValues($card);
